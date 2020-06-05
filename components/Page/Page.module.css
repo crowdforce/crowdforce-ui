@@ -1,0 +1,13 @@
+.header {
+    background-color: white;
+}
+
+.main {
+    background-color: blue;
+    color: white;
+    flex-grow: 1;
+}
+
+.footer {
+    background-color: red;
+}
