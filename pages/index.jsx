@@ -2,7 +2,7 @@ import Page from '../components/Page';
 
 const MainPage = () => (
   <Page>
-    test
+    test 111
   </Page>
 );
 
