@@ -1,0 +1,15 @@
+.promo {
+    background-color:#E0F8FF;
+    text-align: center;
+    padding: 20px;
+}
+
+.title {
+    padding-bottom: 20px;
+}
+
+.map {
+    height: 600px;
+    overflow: hidden;
+    position: relative;
+}

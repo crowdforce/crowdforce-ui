@@ -3,8 +3,6 @@
 }
 
 .main {
-    background-color: blue;
-    color: white;
     flex-grow: 1;
 }
 
