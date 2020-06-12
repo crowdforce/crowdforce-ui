@@ -25,7 +25,6 @@ const MainPage = () => (
       </Typography>
     </div>
     <div className={classes.map}>
-      <MapSearch />
       <MapProjectList />
       <Map />
     </div>
