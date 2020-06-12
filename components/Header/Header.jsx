@@ -1,11 +1,10 @@
-import { Button, Toolbar } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import classes from './Header.module.css';
+import openLoginForm from '../../actions/openLoginForm';
 
 const Header = () => (
-  <Toolbar className={classes.root}>
-    <div className={classes.logo}>
-      Crowd force
-    </div>
+  <div className={classes.root}>
+    <a className={classes.logo} href="/">Crowd force</a>
     <div className={classes.city}>
       Питер
     </div>
@@ -14,9 +13,9 @@ const Header = () => (
       <a href="/about">О нас</a>
     </nav>
     <div className={classes.user}>
-      <Button color="primary" variant="contained">Войти</Button>
+      <Button onClick={() => openLoginForm(true)} color="primary" variant="contained">Войти</Button>
     </div>
-  </Toolbar>
+  </div>
 );
 
 export default Header;

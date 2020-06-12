@@ -2,6 +2,7 @@
     background-color:#E0F8FF;
     text-align: center;
     padding: 20px;
+    margin: -20px -60px 0;
 }
 
 .title {
@@ -12,6 +13,7 @@
     height: 600px;
     overflow: hidden;
     position: relative;
+    margin: 0 -60px;
 }
 
 .howTo {

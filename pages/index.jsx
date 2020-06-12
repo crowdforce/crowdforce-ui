@@ -1,12 +1,12 @@
 import {
   Typography, List, ListItem, ListItemAvatar, ListItemText, Button,
 } from '@material-ui/core';
-import Link from 'next/link';
 import Page from '../components/Page';
 import classes from './index.module.css';
 import Map from '../components/Map';
 import MapSearch from '../components/MapSearch';
 import MapProjectList from '../components/MapProjectList';
+import openLoginForm from '../actions/openLoginForm';
 
 const MainPage = () => (
   <Page>
@@ -86,7 +86,7 @@ const MainPage = () => (
         <a href="/newProject">Предложи проект</a>
         , тебе помогут. Или присоединяйся к активным проектам!
       </Typography>
-      <Button variant="outlined">Авторизация</Button>
+      <Button onClick={() => openLoginForm(true)} variant="outlined">Авторизация</Button>
     </section>
   </Page>
 );

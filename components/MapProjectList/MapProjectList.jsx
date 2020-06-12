@@ -20,7 +20,7 @@ const MapProjectList = () => {
       {isLoadingProjects && <LinearProgress style={{ marginBottom: '-4px' }} />}
       <List>
         {projects.map((project) => (
-          <ListItem key={project.id} button dense divider>
+          <ListItem key={project.id} button dense divider href={`/project?id=${project.id}`}>
             <ListItemText primary={project.label} secondary={`Активностей в проекте ${project.activities}`} />
             <ListItemSecondaryAction>
               <IconButton>
