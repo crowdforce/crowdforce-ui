@@ -1,12 +1,11 @@
-import Link from 'next/link';
 import classes from './Footer.module.css';
 
 const Footer = () => (
   <nav className={classes.navLinks}>
-    <Link href="/wiki"><a>База знаний</a></Link>
-    <Link href="/about"><a>О нас</a></Link>
-    <Link href="/contacts"><a>Связаться с нами</a></Link>
-    <Link href="/licence"><a>Пользовательское соглашение</a></Link>
+    <a href="/wiki">База знаний</a>
+    <a href="/about">О нас</a>
+    <a href="/contacts">Связаться с нами</a>
+    <a href="/licence">Пользовательское соглашение</a>
   </nav>
 );
 

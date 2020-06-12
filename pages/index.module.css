@@ -13,3 +13,21 @@
     overflow: hidden;
     position: relative;
 }
+
+.howTo {
+    text-align: center;
+    width: 1000px;
+    margin: 40px auto;
+}
+
+.howToList {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.howToStep {
+    color: #ffc107;
+    font-size: 60px;
+    font-weight: 500;
+}
