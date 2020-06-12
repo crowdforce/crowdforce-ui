@@ -6,7 +6,7 @@ const Header = () => (
   <div className={classes.root}>
     <a className={classes.logo} href="/">Crowd force</a>
     <div className={classes.city}>
-      Питер
+      Челябинск
     </div>
     <nav className={classes.navLinks}>
       <a href="/wiki">База знаний</a>
