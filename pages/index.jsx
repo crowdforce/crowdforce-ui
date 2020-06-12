@@ -3,8 +3,7 @@ import {
 } from '@material-ui/core';
 import Page from '../components/Page';
 import classes from './index.module.css';
-import Map from '../components/Map';
-import MapSearch from '../components/MapSearch';
+import MapContainer from '../components/MapContainer';
 import MapProjectList from '../components/MapProjectList';
 import openLoginForm from '../actions/openLoginForm';
 
@@ -25,8 +24,8 @@ const MainPage = () => (
       </Typography>
     </div>
     <div className={classes.map}>
+      <MapContainer />
       <MapProjectList />
-      <Map />
     </div>
     <section className={classes.howTo}>
       <Typography variant="h4" className={classes.title}>
