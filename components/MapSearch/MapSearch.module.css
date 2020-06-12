@@ -1,0 +1,22 @@
+.root {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 500px;
+}
+
+.input {
+    border: none;
+    height: 36px;
+    outline: none;
+    padding: 0 8px;
+    background-color: transparent;
+    flex-grow: 1;
+}
+
+.button {
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+}

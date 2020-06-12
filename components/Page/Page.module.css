@@ -3,9 +3,8 @@
 }
 
 .main {
-    background-color: blue;
-    color: white;
     flex-grow: 1;
+    padding: 20px 60px;
 }
 
 .footer {

@@ -5,12 +5,18 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint --ext .js --ext .jsx ."
   },
   "dependencies": {
+    "@material-ui/core": "^4.10.2",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "next": "9.4.4",
+    "prop-types": "^15.7.2",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "use-common-state": "^1.1.2"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
