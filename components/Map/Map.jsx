@@ -21,9 +21,12 @@ const activityPinIcon = new L.Icon({
 });
 
 const Map = ({
-  projects = [], activities = [], onViewportChange = () => {
-  }
-} = {}) => {
+  projects = [],
+  activities = [],
+  onViewportChange,
+  onProjectClick,
+  onActivityClick
+}) => {
   const mapRef = useRef(null);
   const handleViewportChange = () => {
     const bounds = mapRef.current.leafletElement.getBounds();
@@ -47,10 +50,20 @@ const Map = ({
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
         />
         {projects.map(project => (
-          <Marker key={project.id} position={[project.lat, project.lng]} icon={projectPinIcon}/>
+          <Marker
+            key={project.id}
+            position={[project.lat, project.lng]}
+            icon={projectPinIcon}
+            onClick={() => onProjectClick(project.id)}
+          />
         ))}
         {activities.map(activity => (
-          <Marker key={activity.id} position={[activity.lat, activity.lng]} icon={activityPinIcon}/>
+          <Marker
+            key={activity.id}
+            position={[activity.lat, activity.lng]}
+            icon={activityPinIcon}
+            onClick={() => onActivityClick(activity.id)}
+          />
         ))}
       </LeafletMap>
     </div>

@@ -16,6 +16,7 @@ const makeProjectsFilterByBounds = (bounds) => (project) => {
   return isProjectFit || isAnyActivityFit;
 };
 
+
 const MapContainer = () => {
   useEffect(() => {
     fetchProjects();
@@ -23,11 +24,33 @@ const MapContainer = () => {
   const [isLoadingProjects] = useCommonState('projects.isLoading');
   const [projects] = useCommonState('projects.json', []);
   const [bounds, setBounds] = useState(null);
+  const [activeProjectId, setActiveProjectId] = useState(null);
   const activities = projects.flatMap((project) => project.activities);
   const projectsToShow = projects.filter(makeProjectsFilterByBounds(bounds));
+  const handleProjectClick = (projectId) => {
+    setActiveProjectId(projectId);
+  };
+  const handleActivityClick = (activityId) => {
+    const project = projects.find(
+      (project) => project.activities.find(
+        (activity) => activity.id === activityId
+      )
+    );
+    setActiveProjectId(project.id);
+  };
   return (<div className={classes.wrapper}>
-    <Map projects={projects} activities={activities} onViewportChange={setBounds}/>
-    <MapProjectList projects={projectsToShow} isLoading={isLoadingProjects}/>
+    <Map
+      projects={projects}
+      activities={activities}
+      onViewportChange={setBounds}
+      onProjectClick={handleProjectClick}
+      onActivityClick={handleActivityClick}
+    />
+    <MapProjectList
+      projects={projectsToShow}
+      isLoading={isLoadingProjects}
+      activeProjectId={activeProjectId}
+    />
   </div>);
 };
 
