@@ -1,33 +1,37 @@
-import {
-  Paper, ListItem, ListItemText, ListItemSecondaryAction, IconButton, List, LinearProgress,
-} from '@material-ui/core';
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import { useEffect } from 'react';
-import useCommonState from 'use-common-state';
+import { useEffect, useState } from 'react';
+import { LinearProgress, List, Paper } from '@material-ui/core';
 import classes from './MapProjectList.module.css';
-import fetchProjects from '../../actions/fetchProjects';
+import ProjectListItem from '../ProjectListItem';
+import ActivityListItem from '../ActivityListItem';
 
-const MapProjectList = () => {
-  const [isLoadingProjects] = useCommonState('projects.isLoading');
-  const [projects] = useCommonState('projects.json', []);
-
+const MapProjectList = ({ projects, isLoading, activeProjectId = null }) => {
+  const [expandedProjectId, setExpandedProjectId] = useState(null);
+  const [highlightedProjectId, setHighlightedProjectId] = useState(null);
+  const toggleProject = (projectId) => {
+    setExpandedProjectId(projectId === expandedProjectId ? null : projectId);
+  };
   useEffect(() => {
-    fetchProjects();
-  }, []);
-
+    if (activeProjectId === null) return;
+    setHighlightedProjectId(activeProjectId);
+    setExpandedProjectId(activeProjectId);
+    setTimeout(() => setHighlightedProjectId(null), 500);
+  }, [activeProjectId]);
   return (
     <Paper className={classes.root} elevation={3}>
-      {isLoadingProjects && <LinearProgress style={{ marginBottom: '-4px' }} />}
+      {isLoading && <LinearProgress style={{ marginBottom: '-4px' }}/>}
       <List>
         {projects.map((project) => (
-          <ListItem key={project.id} button dense divider href={`/project?id=${project.id}`}>
-            <ListItemText primary={project.label} secondary={`Активностей в проекте ${project.activities}`} />
-            <ListItemSecondaryAction>
-              <IconButton>
-                <NotificationsNoneIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
+          <ProjectListItem
+            key={project.id}
+            data={project}
+            onClick={console.log}
+            onToggle={() => toggleProject(project.id)}
+            highlighted={highlightedProjectId === project.id}
+            expanded={expandedProjectId === project.id}>
+            {project.activities.map((activity) => (
+              <ActivityListItem key={activity.id} data={activity}/>
+            ))}
+          </ProjectListItem>
         ))}
       </List>
     </Paper>
