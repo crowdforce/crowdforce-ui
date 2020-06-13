@@ -1,5 +1,11 @@
 import {
-  Paper, ListItem, ListItemText, ListItemSecondaryAction, IconButton, List, LinearProgress,
+  IconButton,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  Paper,
 } from '@material-ui/core';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import { useEffect } from 'react';
@@ -17,14 +23,15 @@ const MapProjectList = () => {
 
   return (
     <Paper className={classes.root} elevation={3}>
-      {isLoadingProjects && <LinearProgress style={{ marginBottom: '-4px' }} />}
+      {isLoadingProjects && <LinearProgress style={{ marginBottom: '-4px' }}/>}
       <List>
         {projects.map((project) => (
           <ListItem key={project.id} button dense divider href={`/project?id=${project.id}`}>
-            <ListItemText primary={project.label} secondary={`Активностей в проекте ${project.activities}`} />
+            <ListItemText primary={project.name}
+                          secondary={`Активностей в проекте ${project.activities.length}`}/>
             <ListItemSecondaryAction>
               <IconButton>
-                <NotificationsNoneIcon />
+                <NotificationsNoneIcon/>
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
