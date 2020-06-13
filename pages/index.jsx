@@ -25,7 +25,6 @@ const MainPage = () => (
     </div>
     <div className={classes.map}>
       <MapContainer />
-      <MapProjectList />
     </div>
     <section className={classes.howTo}>
       <Typography variant="h4" className={classes.title}>
