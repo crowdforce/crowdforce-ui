@@ -21,8 +21,7 @@ const MapContainer = () => {
   useEffect(() => {
     fetchProjects();
   }, []);
-  const [isLoadingProjects] = useCommonState('projects.isLoading');
-  const [projects] = useCommonState('projects.json', []);
+  const [projects = []] = useCommonState('projects.json');
   const [bounds, setBounds] = useState(null);
   const [activeProjectId, setActiveProjectId] = useState(null);
   const activities = projects.flatMap((project) => project.activities);
@@ -31,27 +30,28 @@ const MapContainer = () => {
     setActiveProjectId(projectId);
   };
   const handleActivityClick = (activityId) => {
-    const project = projects.find(
+    const activityProject = projects.find(
       (project) => project.activities.find(
-        (activity) => activity.id === activityId
-      )
+        (activity) => activity.id === activityId,
+      ),
     );
-    setActiveProjectId(project.id);
+    setActiveProjectId(activityProject.id);
   };
-  return (<div className={classes.wrapper}>
-    <Map
-      projects={projects}
-      activities={activities}
-      onViewportChange={setBounds}
-      onProjectClick={handleProjectClick}
-      onActivityClick={handleActivityClick}
-    />
-    <MapProjectList
-      projects={projectsToShow}
-      isLoading={isLoadingProjects}
-      activeProjectId={activeProjectId}
-    />
-  </div>);
+  return (
+    <div className={classes.wrapper}>
+      <Map
+        projects={projects}
+        activities={activities}
+        onViewportChange={setBounds}
+        onProjectClick={handleProjectClick}
+        onActivityClick={handleActivityClick}
+      />
+      <MapProjectList
+        projects={projectsToShow}
+        activeProjectId={activeProjectId}
+      />
+    </div>
+  );
 };
 
 

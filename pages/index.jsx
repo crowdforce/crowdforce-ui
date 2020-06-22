@@ -4,7 +4,6 @@ import {
 import Page from '../components/Page';
 import classes from './index.module.css';
 import MapContainer from '../components/MapContainer';
-import MapProjectList from '../components/MapProjectList';
 import openLoginForm from '../actions/openLoginForm';
 
 const MainPage = () => (

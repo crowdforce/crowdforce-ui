@@ -3,13 +3,15 @@ import {
   IconButton,
   ListItem,
   ListItemSecondaryAction,
-  ListItemText
+  ListItemText,
 } from '@material-ui/core';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-const ProjectListItem = ({ data, onClick, onToggle, expanded, highlighted, children }) => (
+const ProjectListItem = ({
+  data, onClick, onToggle, expanded, highlighted, children,
+}) => (
   <>
     <ListItem
       button
@@ -25,10 +27,10 @@ const ProjectListItem = ({ data, onClick, onToggle, expanded, highlighted, child
       />
       <ListItemSecondaryAction>
         <IconButton>
-          <NotificationsNoneIcon/>
+          <NotificationsNoneIcon />
         </IconButton>
         <IconButton onClick={onToggle}>
-          {expanded ? <ExpandLess/> : <ExpandMore/>}
+          {expanded ? <ExpandLess /> : <ExpandMore />}
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>

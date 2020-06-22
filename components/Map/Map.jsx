@@ -3,10 +3,10 @@ import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 
 const INITIAL_POSITION = {
-  lat: 55.167681,
-  lng: 61.391041,
+  lat: 59.937500,
+  lng: 30.308611,
 };
-const INITIAL_ZOOM = 13;
+const INITIAL_ZOOM = 11;
 
 const projectPinIcon = new L.Icon({
   iconUrl: '/project-pin.png',
@@ -25,7 +25,7 @@ const Map = ({
   activities = [],
   onViewportChange,
   onProjectClick,
-  onActivityClick
+  onActivityClick,
 }) => {
   const mapRef = useRef(null);
   const handleViewportChange = () => {
@@ -49,7 +49,7 @@ const Map = ({
           attribution="©OpenStreetMap, ©CartoDB"
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
         />
-        {projects.map(project => (
+        {projects.map((project) => (
           <Marker
             key={project.id}
             position={[project.lat, project.lng]}
@@ -57,7 +57,7 @@ const Map = ({
             onClick={() => onProjectClick(project.id)}
           />
         ))}
-        {activities.map(activity => (
+        {activities.map((activity) => (
           <Marker
             key={activity.id}
             position={[activity.lat, activity.lng]}

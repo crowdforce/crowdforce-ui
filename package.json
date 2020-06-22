@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint --ext .js --ext .jsx ."
+    "lint": "eslint --ext .js --ext .jsx .",
+    "format": "npm run lint -- --fix"
   },
   "dependencies": {
     "@material-ui/core": "^4.10.2",
@@ -18,7 +19,9 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-leaflet": "^2.7.0",
-    "use-common-state": "^1.1.2"
+    "request": "^2.88.2",
+    "use-common-state": "^2.0.2",
+    "validate": "^5.1.0"
   },
   "devDependencies": {
     "@types/jest": "^25.2.3",
@@ -31,6 +34,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^2.5.1",
+    "husky": "^4.2.5",
     "jest": "^26.0.1"
   }
 }
