@@ -5,9 +5,6 @@ import openLoginForm from '../../actions/openLoginForm';
 const Header = () => (
   <div className={classes.root}>
     <a className={classes.logo} href="/">Crowd force</a>
-    <div className={classes.city}>
-      Челябинск
-    </div>
     <nav className={classes.navLinks}>
       <a href="/wiki">База знаний</a>
       <a href="/about">О нас</a>
