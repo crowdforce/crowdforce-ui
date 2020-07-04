@@ -27,7 +27,10 @@
 }
 
 .progress{
-    margin: -20px -20px 16px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
 }
 
 .content {

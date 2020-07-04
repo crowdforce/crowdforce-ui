@@ -47,5 +47,5 @@ export default function (req, res) {
         startTime: '2020-06-13T11:00:00Z',
       },
     ],
-  }), 3000);
+  }), 2000);
 }
