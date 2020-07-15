@@ -21,7 +21,7 @@ const projectPinIcon = new L.Icon({
 
 const Map = () => {
   const mapRef = useRef(null);
-  const [projects = []] = useCommonState('projects.json');
+  const [projects = []] = useCommonState('projects.data');
   const [isLoadingProjects = true] = useCommonState('projects.isLoading');
   const [activeProjectId, setActiveProjectId] = useState(null);
 
@@ -49,7 +49,7 @@ const Map = () => {
           attribution="©OpenStreetMap, ©CartoDB"
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
         />
-        {projects.map((project) => (
+        {projects.length && projects.map((project) => (
           <Marker
             key={project.id}
             position={[project.lat, project.lng]}

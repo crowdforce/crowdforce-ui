@@ -13,7 +13,6 @@ export default function handleHrefClick(event, target) {
   }
 
   if (typeof href === 'string' && href.indexOf('/') === 0) {
-    console.log(11);
     event.preventDefault();
     router.push(href);
   }

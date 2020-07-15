@@ -1,13 +1,19 @@
-import request from 'request';
+function sendCode(req, res) {
+  const url = `${process.env.API_PATH}/auth/send-code`;
 
-export default function (req, res) {
   const options = {
-    method: 'POST',
-    url: `${process.env.NEXT_PUBLIC_API_PATH}/auth/send-code`,
+    method: 'post',
     headers: { 'content-type': 'application/json' },
-    body: req.body,
-    json: true,
+    body: JSON.stringify(req.body),
   };
 
-  request(options).pipe(res);
+  fetch(url, options)
+    .then((response) => {
+      res.status(response.status);
+      return response.status === 200 ? Promise.resolve({ status: 200 }) : response.json();
+    })
+    .then((json) => res.json(json))
+    .catch((error) => res.status(502).json(error));
 }
+
+export default sendCode;

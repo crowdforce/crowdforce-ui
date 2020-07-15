@@ -1,5 +1,5 @@
 import {
-  Dialog, DialogContent, TextField, DialogTitle, Button, LinearProgress,
+  Dialog, TextField, DialogTitle, Button, LinearProgress,
 } from '@material-ui/core';
 import useCommonState from 'use-common-state';
 import { useState } from 'react';
@@ -7,8 +7,11 @@ import Schema from 'validate';
 import { Alert } from '@material-ui/lab';
 import classes from './LoginForm.module.css';
 import openLoginForm from '../../actions/openLoginForm';
+import ajax from '../../utils/ajax';
+import getErrorMessage from '../../utils/getErrorMessage';
+import fetchUser from '../../actions/fetchUser';
 
-const schema = new Schema({
+const sendCodeSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -16,23 +19,40 @@ const schema = new Schema({
   },
 });
 
+const loginSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    message: 'Обязательное поле',
+  },
+  password: {
+    type: String,
+    required: true,
+    message: 'Обязательное поле',
+  },
+});
+
+const defaultFormData = {
+  username: null,
+  password: null,
+};
+
 const LoginForm = () => {
-  const [open = false] = useCommonState('openLoginForm');
-  const [formData, setFormData] = useState({
-    username: null,
-  });
+  const [open = false, setOpenLoginForm] = useCommonState('openLoginForm');
+  const [formData, setFormData] = useState(defaultFormData);
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(0);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSendCodeSubmit = (e) => {
     e.preventDefault();
     setFormErrors({});
-    const errors = schema.validate(formData);
+    const errors = sendCodeSchema.validate(formData);
 
     errors.forEach((error) => {
       const { path, message } = error;
@@ -41,58 +61,104 @@ const LoginForm = () => {
 
     if (!errors.length) {
       setLoading(true);
-      window.fetch('api/sendCode', {
-        method: 'post',
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      }).then((res) => res.json())
-        .then((json) => {
-          if (json.error) {
-            setFormErrors({ global: json.message || json.error });
-          }
-        })
-        .catch((err) => setFormErrors({ global: err.message }))
+      ajax.post('api/sendCode', { userName: formData.username })
+        .then(() => setStep(1))
+        .catch((error) => setFormErrors({ global: getErrorMessage(error) }))
         .finally(() => setLoading(false));
     }
   };
 
+  const handleLoginSubmit = (e) => {
+    e.preventDefault();
+    setFormErrors({});
+    const errors = loginSchema.validate(formData);
+
+    errors.forEach((error) => {
+      const { path, message } = error;
+      setFormErrors((prev) => ({ ...prev, [path]: message }));
+    });
+
+    if (!errors.length) {
+      setLoading(true);
+      ajax.post('api/login', formData)
+        .then(() => fetchUser())
+        .then(() => handleClose())
+        .catch((error) => setFormErrors({ global: getErrorMessage(error) }))
+        .finally(() => setLoading(false));
+    }
+  };
+
+  const handleClose = () => {
+    openLoginForm(false);
+  };
+
+  const handleExited = () => {
+    setFormErrors({});
+    setStep(0);
+    setFormData(defaultFormData);
+  };
+
   return (
-    <Dialog onClose={() => openLoginForm(false)} open={open}>
+    <Dialog onClose={handleClose} open={open} onExited={handleExited}>
       {loading && (
-        <LinearProgress style={{ marginBottom: '-4px' }} />
+        <>
+          <LinearProgress style={{ marginBottom: '-4px' }} />
+          <div className={classes.overlay} />
+        </>
       )}
       {formErrors.global && (
         <Alert severity="error">
           {formErrors.global}
         </Alert>
       )}
-      <DialogTitle>Вход через телеграм</DialogTitle>
-      <form className={classes.root} onSubmit={handleSubmit}>
-        <DialogContent>
+      <DialogTitle style={{ textAlign: 'center' }}>Вход через телеграм</DialogTitle>
+      <div className={classes.formContainer}>
+        <form className={classes.form} onSubmit={handleSendCodeSubmit} style={{ marginLeft: `-${step * 100}%` }}>
           <TextField
+            value={formData.username || ''}
             onChange={handleChange}
             autoFocus
             fullWidth
             helperText={formErrors.username}
             error={!!formErrors.username}
-            label="@username"
+            label="@username или телефон"
             variant="outlined"
             name="username"
           />
-          <div className={classes.button}>
+          <div className={classes.buttons}>
+            <Button onClick={() => setOpenLoginForm(false)}>Закрыть</Button>
             <Button
               type="submit"
               variant="contained"
               color="primary"
-              disabled={loading}
             >
               получить код
             </Button>
           </div>
-        </DialogContent>
-      </form>
+        </form>
+        <form className={classes.form} onSubmit={handleLoginSubmit}>
+          <TextField
+            value={formData.password || ''}
+            onChange={handleChange}
+            fullWidth
+            helperText={formErrors.password}
+            error={!!formErrors.password}
+            label="Код"
+            variant="outlined"
+            name="password"
+          />
+          <div className={classes.buttons}>
+            <Button onClick={() => setOpenLoginForm(false)}>Закрыть</Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              войти
+            </Button>
+          </div>
+        </form>
+      </div>
     </Dialog>
   );
 };

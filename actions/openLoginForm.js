@@ -1,6 +1,6 @@
 import { setCommonState } from 'use-common-state';
 
-const openLoginForm = (isOpen) => {
+const openLoginForm = (isOpen, closable) => {
   setCommonState('openLoginForm', isOpen);
 };
 
