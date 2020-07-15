@@ -1,12 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import useCommonState from 'use-common-state';
 import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
+import { LinearProgress } from '@material-ui/core';
+import fetchProjects from '../../actions/fetchProjects';
+import classes from './Map.module.css';
+import ProjectCard from './ProjectCard';
 
 const INITIAL_POSITION = {
-  lat: 55.167681,
-  lng: 61.391041,
+  lat: 59.937500,
+  lng: 30.308611,
 };
-const INITIAL_ZOOM = 13;
+const INITIAL_ZOOM = 11;
 
 const projectPinIcon = new L.Icon({
   iconUrl: '/project-pin.png',
@@ -14,32 +19,27 @@ const projectPinIcon = new L.Icon({
   iconSize: [34, 49],
 });
 
-const activityPinIcon = new L.Icon({
-  iconUrl: '/activity-pin.png',
-  iconAnchor: [12, 34],
-  iconSize: [24, 34],
-});
-
-const Map = ({
-  projects = [],
-  activities = [],
-  onViewportChange,
-  onProjectClick,
-  onActivityClick
-}) => {
+const Map = () => {
   const mapRef = useRef(null);
-  const handleViewportChange = () => {
-    const bounds = mapRef.current.leafletElement.getBounds();
-    onViewportChange(bounds);
+  const [projects = []] = useCommonState('projects.data');
+  const [isLoadingProjects = true] = useCommonState('projects.isLoading');
+  const [activeProjectId, setActiveProjectId] = useState(null);
+
+  const handleProjectClick = (projectId) => {
+    setActiveProjectId(projectId);
   };
-  useEffect(handleViewportChange, []);
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
   return (
-    <div className="map-root">
+    <div className={classes.root}>
+      {isLoadingProjects && <LinearProgress style={{ marginBottom: '-4px', zIndex: 1 }} />}
       <LeafletMap
         center={[INITIAL_POSITION.lat, INITIAL_POSITION.lng]}
         zoom={INITIAL_ZOOM}
         ref={mapRef}
-        onViewportChanged={handleViewportChange}
         style={{
           height: '600px',
           transform: 'translate3D(0,0,0)',
@@ -49,23 +49,17 @@ const Map = ({
           attribution="©OpenStreetMap, ©CartoDB"
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
         />
-        {projects.map(project => (
+        {projects.length && projects.map((project) => (
           <Marker
             key={project.id}
             position={[project.lat, project.lng]}
             icon={projectPinIcon}
-            onClick={() => onProjectClick(project.id)}
-          />
-        ))}
-        {activities.map(activity => (
-          <Marker
-            key={activity.id}
-            position={[activity.lat, activity.lng]}
-            icon={activityPinIcon}
-            onClick={() => onActivityClick(activity.id)}
+            data-project-id={project.id}
+            onclick={() => handleProjectClick(project.id)}
           />
         ))}
       </LeafletMap>
+      {activeProjectId && <ProjectCard projectId={activeProjectId} onClose={() => setActiveProjectId(null)} />}
     </div>
   );
 };

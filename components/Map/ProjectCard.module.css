@@ -1,0 +1,46 @@
+.root {
+    width: 400px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.image{ 
+    position: relative;
+    padding-bottom: 20px;
+    margin: 0 -16px;
+}
+
+.header {
+    padding: 16px;
+}
+
+.image img {
+    width: 100%;
+}
+
+.description {
+    padding-bottom: 20px;
+}
+
+.progress{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.content {
+    overflow: auto;
+    padding: 0 16px;
+}
+
+.footer {
+    display: flex;
+    border-top: 1px solid #eee;
+    justify-content: space-between;
+    padding: 16px;
+}
