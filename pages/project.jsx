@@ -1,17 +1,72 @@
-import { Typography } from '@material-ui/core';
+import { useState } from 'react';
+import { Typography, Button } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import Page from '../components/Page';
+import classes from './project.module.css';
+import GoalBar from '../components/GoalBar/GoalBar'
+import dynamic from 'next/dynamic'
+
+const Map = dynamic(() => import('../components/Map'), { ssr: false });
 
 const ProjectPage = () => {
   const { query } = useRouter();
+  const imageLink = 'https://images.unsplash.com/photo-1485381771061-e2cbd5317d9c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80'
+  const goals = [
+    {
+      id: 1,
+      name: 'goal 1',
+      progress: 20
+    },
+    {
+      id: 2,
+      name: 'goal 2',
+      progress: 45
+    }
+  ]
+
+  const [ bounds, setBounds ] = useState(null);
 
   return (
     <Page>
-      <Typography variant="h4">
-        Project
-        {' '}
-        {query.id}
-      </Typography>
+      <div className={classes.main}>
+        <div className={classes.imageBlock}>
+          <img className={classes.image} src={imageLink} />
+          <div className={classes.mapContainer}>
+            <Map
+              onViewportChange={setBounds}
+              mapStyle={{ height: '210px' }}
+            />
+          </div>
+        </div>
+
+        <div className={classes.descriptionBlock}>
+          <Typography variant="h4">
+            Project
+            {' '}
+            {query.id}
+          </Typography>
+          <div className={classes.description}>
+            <Typography variant="body1">
+              Описание проекта
+            </Typography>
+          </div>
+
+          <Button
+            className={classes.subscribeButton}
+            color="primary"
+            variant="contained"
+          >Подписаться</Button>
+        </div>
+
+        <div className={classes.goalsBlock}>
+          <div className={classes.goalsTitle}>
+            Наши цели
+          </div>
+
+          {goals.map(goal => <GoalBar {...goal} key={goal.id} />)}
+        </div>
+      </div>
+
     </Page>
   );
 };
