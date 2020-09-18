@@ -3,16 +3,28 @@ import { useEffect } from 'react';
 import useCommonState from 'use-common-state';
 import { Skeleton } from '@material-ui/lab';
 import classes from './Header.module.css';
-import openLoginForm from '../../actions/openLoginForm';
 import fetchUser from '../../actions/fetchUser';
+import ajax from '../../utils/ajax';
 
 const UserButton = () => {
   const [isLoading] = useCommonState('user.isLoading');
   const [username] = useCommonState('user.data.name');
 
   useEffect(() => {
+    window.addEventListener('message', ({ data }) => {
+      if (data.type === 'login') {
+        ajax.get(`/api/auth?auth_date=${data.auth_date}&id=${data.id}&hash=${data.hash}&redirect_to=${window.location.href}`);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
     fetchUser();
   }, []);
+
+  if (typeof window === 'undefined') {
+    return false;
+  }
 
   if (isLoading && !username) {
     return <Skeleton width="120px" height="36px" />;
