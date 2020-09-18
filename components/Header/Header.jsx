@@ -22,7 +22,16 @@ const UserButton = () => {
     return <Button href="/user" color="secondary">{username}</Button>;
   }
 
-  return <Button onClick={() => openLoginForm(true)} color="primary" variant="contained">Войти</Button>;
+  return (
+    <iframe
+      frameBorder="0"
+      scrolling="no"
+      title="login"
+      width="100"
+      height="36"
+      src={`https://crowdforce.ru/loginButton.html?bot_id=${process.env.NEXT_PUBLIC_TELEGRAM_BOT_ID}&origin=${window.location.origin}`}
+    />
+  );
 };
 
 const Header = () => (
