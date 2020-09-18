@@ -2,13 +2,12 @@ import ajax from './ajax';
 
 function proxyRequest(req, res) {
   const {
-    method, headers, body,
+    method, body,
   } = req;
   const url = req.url.replace('/api', process.env.API_PATH);
 
   const options = {
     method,
-    headers,
     body,
     responseType: 'stream',
   };
