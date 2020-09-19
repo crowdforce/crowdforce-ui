@@ -5,10 +5,14 @@ function proxyRequest(req, res) {
     method, body,
   } = req;
   const url = req.url.replace('/api', process.env.API_PATH);
+  const { cookie = '' } = req.headers;
 
   const options = {
     method,
     body,
+    headers: {
+      cookie,
+    },
     responseType: 'stream',
   };
 

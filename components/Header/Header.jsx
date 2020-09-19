@@ -13,7 +13,16 @@ const UserButton = () => {
   useEffect(() => {
     window.addEventListener('message', ({ data }) => {
       if (data.type === 'login' && data.id) {
-        ajax.get(`/api/auth?auth_date=${data.auth_date}&id=${data.id}&hash=${data.hash}&redirect_to=${window.location.href}`);
+        const query = new URLSearchParams();
+        Object.keys(data).forEach((key) => {
+          if (data[key] !== 'login') {
+            query.set(key, data[key]);
+          }
+        });
+        query.set('redirect_to', window.location.href);
+        ajax.get(`/api/auth?${query.toString()}`).then(() => {
+          fetchUser();
+        });
       }
     });
   }, []);
