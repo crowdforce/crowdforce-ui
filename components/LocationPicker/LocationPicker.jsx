@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 
@@ -12,6 +12,7 @@ const projectPinIcon = new L.Icon({
 const LocationPicker = (props) => {
   const { onChange, lat, lng } = props;
   const mapRef = useRef(null);
+  const [zoom, setZoom] = useState(INITIAL_ZOOM);
 
   const handleMarkerMove = ({ latlng }) => {
     onChange(latlng);
@@ -21,9 +22,10 @@ const LocationPicker = (props) => {
     <div>
       <LeafletMap
         center={[lat, lng]}
-        zoom={INITIAL_ZOOM}
+        zoom={zoom}
         ref={mapRef}
         onclick={handleMarkerMove}
+        onzoom={({ target }) => setZoom(target.zoom)}
         style={{
           height: '600px',
           transform: 'translate3D(0,0,0)',
