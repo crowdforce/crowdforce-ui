@@ -78,7 +78,7 @@ const MainPage = () => (
       <Typography variant="h4" style={{ paddingBottom: '40px' }}>
         Есть крутая идея по благоустройству, но ты не знаешь как её реализовать?
         {' '}
-        <a href="/newProject">Предложи проект</a>
+        <a href="/project/editor">Предложи проект</a>
         , тебе помогут. Или присоединяйся к активным проектам!
       </Typography>
     </section>

@@ -1,9 +1,9 @@
 import { setCommonState } from 'use-common-state';
-import axios from 'axios';
+import ajax from '../utils/ajax';
 
 const fetchUser = () => {
   setCommonState('user.isLoading', true);
-  return axios('api/auth/user')
+  return ajax('/api/auth/user')
     .then(({ data }) => setCommonState('user.data', data))
     .catch((error) => setCommonState('user', { data: null, error }))
     .finally(() => setCommonState('user.isLoading', false));

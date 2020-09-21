@@ -18,7 +18,16 @@ function proxyRequest(req, res) {
 
   ajax(url, options)
     .then((response) => response.data.pipe(res))
-    .catch((error) => res.status(502).json({ error, message: error.message }));
+    .catch((error) => {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        res.status(error.response.status).json(error.response.data);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        res.status(502).json({ error, message: error.message });
+      }
+    });
 }
 
 export default proxyRequest;
