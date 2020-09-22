@@ -9,12 +9,15 @@ function proxyRequest(req, res) {
 
   const options = {
     method,
-    body,
+    data: body,
     headers: {
       cookie,
+      'content-type': 'application/json',
     },
     responseType: 'stream',
   };
+
+  console.log(`PROXY ${url} ${JSON.stringify(options, null, 2)}`);
 
   ajax(url, options)
     .then((response) => response.data.pipe(res))

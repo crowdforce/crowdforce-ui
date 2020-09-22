@@ -27,26 +27,26 @@ const ProjectCardSkeleton = () => (
 const ProjectCard = (props) => {
   const { projectId, onClose } = props;
   const [isLoading = true] = useCommonState(['projects', projectId, 'isLoading']);
-  const [projectJson] = useCommonState(['projects', projectId, 'json']);
+  const [projectData = {}] = useCommonState(['projects', projectId, 'data']);
 
   useEffect(() => {
     fetchProject({ projectId });
   }, [projectId]);
 
-  if (isLoading && !projectJson) {
+  if (isLoading && !projectData) {
     return <ProjectCardSkeleton />;
   }
 
   return (
     <Card className={classes.root}>
       {isLoading && <div className={classes.progress}><LinearProgress /></div>}
-      <CardHeader title={projectJson.name} />
+      <CardHeader title={projectData.name} />
       <div className={classes.content}>
         <div className={classes.image}>
-          <img alt={projectJson.name} src={projectJson.imageUrl} />
+          <img alt={projectData.name} src={projectData.imageUrl} />
         </div>
         <div className={classes.description}>
-          <Typography>{projectJson.description}</Typography>
+          <Typography>{projectData.description}</Typography>
         </div>
       </div>
       <div className={classes.footer}>
