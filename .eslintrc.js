@@ -13,7 +13,7 @@ module.exports = {
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
-    L: 'readonly'
+    L: 'readonly',
   },
   parserOptions: {
     ecmaFeatures: {
@@ -27,9 +27,11 @@ module.exports = {
     'jest',
   ],
   rules: {
+    'react-hooks/exhaustive-deps': 'warn',
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'warn',
     'jsx-a11y/anchor-is-valid': 'off',
-    'max-len': 'warn'
-  }
+    'max-len': 'warn',
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.js', 'mocks/**/*.js'] }],
+  },
 };

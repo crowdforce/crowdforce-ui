@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import useCommonState from 'use-common-state';
-import { Map as LeafletMap, Marker, TileLayer } from 'react-leaflet';
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import L from 'leaflet';
 import { LinearProgress } from '@material-ui/core';
-import fetchProjects from '../../actions/fetchProjects';
+import { observer } from 'mobx-react-lite';
 import classes from './Map.module.css';
-import ProjectCard from './ProjectCard';
+import ProjectCard from '../ProjectCard';
+import useApi from '../../utils/useApi';
 
 const INITIAL_POSITION = {
   lat: 59.937500,
@@ -20,9 +20,7 @@ const projectPinIcon = new L.Icon({
 });
 
 const Map = () => {
-  const mapRef = useRef(null);
-  const [projects = []] = useCommonState('projects.data');
-  const [isLoadingProjects = true] = useCommonState('projects.isLoading');
+  const projects = useApi('/api/projects');
   const [activeProjectId, setActiveProjectId] = useState(null);
 
   const handleProjectClick = (projectId) => {
@@ -30,38 +28,40 @@ const Map = () => {
   };
 
   useEffect(() => {
-    fetchProjects();
+    projects.fetch();
   }, []);
 
   return (
     <div className={classes.root}>
-      {isLoadingProjects && <LinearProgress style={{ marginBottom: '-4px', zIndex: 1 }} />}
-      <LeafletMap
+      {projects.isLoading && <LinearProgress style={{ marginBottom: '-4px', zIndex: 1 }} />}
+      <MapContainer
         center={[INITIAL_POSITION.lat, INITIAL_POSITION.lng]}
         zoom={INITIAL_ZOOM}
-        ref={mapRef}
         style={{
           height: '600px',
           transform: 'translate3D(0,0,0)',
         }}
+        scrollWheelZoom={false}
       >
         <TileLayer
           attribution="©OpenStreetMap, ©CartoDB"
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
         />
-        {projects.length && projects.map((project) => (
+        {(projects.data ?? []).map((project) => (
           <Marker
             key={project.id}
             position={[project.lat, project.lng]}
             icon={projectPinIcon}
             data-project-id={project.id}
-            onclick={() => handleProjectClick(project.id)}
+            eventHandlers={{
+              click: () => handleProjectClick(project.id),
+            }}
           />
         ))}
-      </LeafletMap>
+      </MapContainer>
       {activeProjectId && <ProjectCard projectId={activeProjectId} onClose={() => setActiveProjectId(null)} />}
     </div>
   );
 };
 
-export default Map;
+export default observer(Map);

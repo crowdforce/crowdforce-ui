@@ -1,11 +1,11 @@
 import {
-  LinearProgress, Typography, ListItem, ListItemText, Card, CardHeader, CardContent, CardActionArea, Button, Link,
+  LinearProgress, Typography, Card, CardHeader, CardContent, Button,
 } from '@material-ui/core';
-import useCommonState from 'use-common-state';
 import { useEffect } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { observer } from 'mobx-react-lite';
 import classes from './ProjectCard.module.css';
-import fetchProject from '../../actions/fetchProject';
+import useApi from '../../utils/useApi';
 
 const ProjectCardSkeleton = () => (
   <Card className={classes.root} elevation={3}>
@@ -26,37 +26,45 @@ const ProjectCardSkeleton = () => (
 
 const ProjectCard = (props) => {
   const { projectId, onClose } = props;
-  const [isLoading = true] = useCommonState(['projects', projectId, 'isLoading']);
-  const [projectData = {}] = useCommonState(['projects', projectId, 'data']);
+  const project = useApi(`/api/projects/${projectId}`);
+  const projectData = project.data ?? {};
 
   useEffect(() => {
-    fetchProject({ projectId });
+    if (projectId) {
+      project.fetch();
+    }
   }, [projectId]);
 
-  if (isLoading && !projectData) {
+  if (project.isLoading && !projectData) {
     return <ProjectCardSkeleton />;
   }
 
   return (
     <Card className={classes.root}>
-      {isLoading && <div className={classes.progress}><LinearProgress /></div>}
-      <CardHeader title={projectData.name} />
+      {project.isLoading && <div className={classes.progress}><LinearProgress /></div>}
+      <div className={classes.header}>
+        <CardHeader title={projectData.name} />
+      </div>
       <div className={classes.content}>
+        {projectData.imageUrl && (
         <div className={classes.image}>
           <img alt={projectData.name} src={projectData.imageUrl} />
         </div>
+        )}
         <div className={classes.description}>
           <Typography>{projectData.description}</Typography>
         </div>
       </div>
-      <div className={classes.footer}>
-        <Button onClick={onClose}>Закрыть</Button>
-        <Link href={`/project?id=${projectId}`}>
-          <Button variant="contained" color="primary">Подробнее</Button>
-        </Link>
-      </div>
+      {typeof onClose === 'function' && (
+        <div className={classes.footer}>
+          <Button onClick={onClose}>Закрыть</Button>
+          <Button href={`/project?projectId=${projectId}`} variant="contained" color="primary">
+            Подробнее
+          </Button>
+        </div>
+      )}
     </Card>
   );
 };
 
-export default ProjectCard;
+export default observer(ProjectCard);

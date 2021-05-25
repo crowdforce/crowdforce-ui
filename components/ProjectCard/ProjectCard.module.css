@@ -1,5 +1,5 @@
 .root {
-    width: 400px;
+    width: 450px;
     position: absolute;
     top: 20px;
     right: 20px;
@@ -10,12 +10,12 @@
 
 .image{ 
     position: relative;
-    padding-bottom: 20px;
     margin: 0 -16px;
 }
 
 .header {
-    padding: 16px;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
 }
 
 .image img {
@@ -23,7 +23,7 @@
 }
 
 .description {
-    padding-bottom: 20px;
+    padding: 20px 0;
 }
 
 .progress{
@@ -35,7 +35,8 @@
 
 .content {
     overflow: auto;
-    padding: 0 16px;
+    padding: 0 24px;
+    flex-grow: 1;
 }
 
 .footer {

@@ -1,31 +1,29 @@
 import { Typography, LinearProgress, Button } from '@material-ui/core';
-import useCommonState, { setCommonState } from 'use-common-state';
 import { useEffect } from 'react';
 import router from 'next/router';
 import Page from '../components/Page';
-import fetchUser from '../actions/fetchUser';
+import useApi from '../utils/useApi';
 
 const UserPage = () => {
-  const [isLoading] = useCommonState('user.isLoading');
-  const [username] = useCommonState('user.data.name');
+  const user = useApi('/api/user');
 
   useEffect(() => {
-    fetchUser();
+    user.fetch();
   }, []);
 
   const handleLogoutClick = () => {
     fetch('/api/logout').then(() => {
-      setCommonState('user', null);
+      user.fetch();
       router.push('/');
     });
   };
 
   return (
     <Page>
-      {isLoading && <LinearProgress style={{ margin: '-20px -60px 16px' }} />}
-      {username && (
+      {user.isLoading && <LinearProgress style={{ margin: '-20px -60px 16px' }} />}
+      {user.data?.name && (
       <>
-        <Typography variant="h4" style={{ marginBottom: '20px' }}>{username}</Typography>
+        <Typography variant="h4" style={{ marginBottom: '20px' }}>{user.data?.name}</Typography>
         <Button onClick={handleLogoutClick} color="primary" variant="contained">Выйти</Button>
       </>
       )}
