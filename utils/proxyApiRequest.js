@@ -1,6 +1,6 @@
 import ajax from './ajax';
 
-function proxyRequest(req, res) {
+async function proxyRequest(req, res) {
   const {
     method, body,
   } = req;
@@ -14,23 +14,24 @@ function proxyRequest(req, res) {
       cookie,
       'content-type': 'application/json',
     },
-    responseType: 'stream',
   };
 
   console.log(`PROXY ${url} ${JSON.stringify(options, null, 2)}`);
 
-  ajax(url, options)
-    .then((response) => response.data.pipe(res))
-    .catch((error) => {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        res.status(error.response.status).json(error.response.data);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        res.status(502).json({ error, message: error.message });
-      }
-    });
+  try {
+    const response = await ajax(url, options);
+    res.status(response.status).send(response.data);
+  } catch (error) {
+    console.log(`PROXY ERROR ${url} ${JSON.stringify(error.response?.data ?? { message: error.message }, null, 2)}`);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      res.status(error.response.status).send(error.response.data);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      res.status(502).send({ error, message: error.message });
+    }
+  }
 }
 
 export default proxyRequest;

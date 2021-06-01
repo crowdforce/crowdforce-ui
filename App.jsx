@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import catchLinks from 'catch-links';
 import ThemeProvider from './components/ThemeProvider';
+import Header from './components/Header';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'true') {
   // eslint-disable-next-line global-require
@@ -45,6 +46,7 @@ const App = ({ Component, pageProps }) => {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <ThemeProvider>
+        <Header />
         <Component {...pageProps} />
       </ThemeProvider>
     </>

@@ -14,7 +14,29 @@ export const handlers = [
       },
     ]),
   )),
+  rest.post('/api/projects', (req, res, ctx) => res(
+    ctx.status(200),
+    ctx.json({
+      description: 'string',
+      id: 'abc',
+      lat: 59.987868,
+      lng: 30.371842,
+      name: 'string',
+      subscribed: true,
+    }),
+  )),
   rest.get('/api/projects/:projectId', (req, res, ctx) => res(
+    ctx.status(200),
+    ctx.json({
+      description: 'Project description',
+      id: req.params.projectId,
+      lat: 59.987868,
+      lng: 30.371842,
+      name: 'Project name',
+      subscribed: true,
+    }),
+  )),
+  rest.put('/api/projects/:projectId', (req, res, ctx) => res(
     ctx.status(200),
     ctx.json({
       description: 'Project description',

@@ -1,5 +1,4 @@
 import classes from './Page.module.css';
-import Header from '../Header';
 import Footer from '../Footer';
 
 const Page = (props) => {
@@ -7,7 +6,6 @@ const Page = (props) => {
 
   return (
     <>
-      <Header />
       <main className={classes.main}>
         {children}
       </main>

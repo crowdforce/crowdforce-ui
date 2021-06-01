@@ -66,26 +66,30 @@ const AcivityList = (props) => {
 
   return (
     <div className={classes.root}>
-      <Table style={{ tableLayout: 'fixed' }}>
-        <TableBody>
-          {(activitiesData ?? []).map((acitivity) => (
-            <TableRow onClick={() => router.push(`/activity?projectId=${projectId}&activityId=${acitivity.id}`)} key={acitivity.id} hover style={{ cursor: 'pointer' }}>
-              <TableCell style={{ verticalAlign: 'top' }}>
-                <Typography>
-                  <a href={`/activity?projectId=${projectId}&activityId=${acitivity.id}`}>
-                    {acitivity.name}
-                  </a>
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {formatDate(acitivity.startDate)}
-                  {acitivity.endDate && ` - ${formatDate(acitivity.endDate)}`}
-                </Typography>
-              </TableCell>
-              <TableCell>{acitivity.description}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      {activitiesData.length ? (
+        <Table style={{ tableLayout: 'fixed' }}>
+          <TableBody>
+            {(activitiesData ?? []).map((acitivity) => (
+              <TableRow onClick={() => router.push(`/activity?projectId=${projectId}&activityId=${acitivity.id}`)} key={acitivity.id} hover style={{ cursor: 'pointer' }}>
+                <TableCell style={{ verticalAlign: 'top' }}>
+                  <Typography>
+                    <a href={`/activity?projectId=${projectId}&activityId=${acitivity.id}`}>
+                      {acitivity.name}
+                    </a>
+                  </Typography>
+                  <Typography variant="caption" color="textSecondary">
+                    {formatDate(acitivity.startDate)}
+                    {acitivity.endDate && ` - ${formatDate(acitivity.endDate)}`}
+                  </Typography>
+                </TableCell>
+                <TableCell>{acitivity.description}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : (
+        <Typography>В этом проекте еще нет ни одной активности</Typography>
+      )}
     </div>
   );
 };

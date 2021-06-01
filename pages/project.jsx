@@ -1,8 +1,8 @@
 import { Button, Tab, Tabs } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import Page from '../../components/Page';
-import ProjectCard from '../../components/ProjectCard/ProjectCard';
-import ActivityList from '../../components/AcivityList';
+import Page from '../components/Page';
+import ProjectCard from '../components/ProjectCard/ProjectCard';
+import ActivityList from '../components/AcivityList';
 
 const ProjectPage = () => {
   const { query } = useRouter();
