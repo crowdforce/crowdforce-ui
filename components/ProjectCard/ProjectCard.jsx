@@ -1,11 +1,14 @@
 import {
-  LinearProgress, Typography, Card, CardHeader, CardContent, Button,
+  LinearProgress, Typography, Card, CardHeader, CardContent, Button, IconButton,
 } from '@material-ui/core';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { observer } from 'mobx-react-lite';
+import EditIcon from '@material-ui/icons/Edit';
+import { useRouter } from 'next/router';
 import classes from './ProjectCard.module.css';
-import useApi from '../../utils/useApi';
+import useApi from '../../utils/useApi.ts';
+import ProjectEditor from '../ProjectEditor';
 
 const ProjectCardSkeleton = () => (
   <Card className={classes.root} elevation={3}>
@@ -26,24 +29,54 @@ const ProjectCardSkeleton = () => (
 
 const ProjectCard = (props) => {
   const { projectId, onClose } = props;
-  const project = useApi(`/api/projects/${projectId}`);
-  const projectData = project.data ?? {};
+  const projectApi = useApi(`/api/projects/${projectId}`);
+  const projectData = projectApi.data ?? {};
+  const isLoadingProject = projectApi.isLoading ?? true;
+  const [openProjectEditor, setOpenProjectEditor] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (projectId) {
-      project.fetch();
+      projectApi.fetch();
     }
   }, [projectId]);
 
-  if (project.isLoading && !projectData) {
+  const handleEditClick = () => {
+    setOpenProjectEditor(true);
+  };
+
+  const handleDelete = () => {
+    if (typeof onClose === 'function') {
+      onClose();
+    } else {
+      router.push('/');
+    }
+  };
+
+  const handleProjectEditorDialogClose = () => {
+    setOpenProjectEditor(false);
+  };
+
+  if (isLoadingProject && !projectData) {
     return <ProjectCardSkeleton />;
   }
 
   return (
     <Card className={classes.root}>
-      {project.isLoading && <div className={classes.progress}><LinearProgress /></div>}
+      {isLoadingProject && <div className={classes.progress}><LinearProgress /></div>}
       <div className={classes.header}>
-        <CardHeader title={projectData.name} />
+        <Typography variant="h5">
+          <a href={`/project?projectId=${projectId}`}>{projectData.name}</a>
+        </Typography>
+        {projectApi.data?.privilege === 'OWNER' && (
+        <IconButton
+          data-activity-id={projectId}
+          onClick={handleEditClick}
+        >
+          <EditIcon />
+        </IconButton>
+
+        )}
       </div>
       <div className={classes.content}>
         {projectData.imageUrl && (
@@ -63,6 +96,12 @@ const ProjectCard = (props) => {
           </Button>
         </div>
       )}
+      <ProjectEditor
+        projectId={projectId}
+        open={openProjectEditor}
+        onClose={handleProjectEditorDialogClose}
+        onDelete={handleDelete}
+      />
     </Card>
   );
 };

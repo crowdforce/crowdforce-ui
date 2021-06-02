@@ -14,8 +14,16 @@
 }
 
 .header {
-    padding: 8px;
     border-bottom: 1px solid #eee;
+    padding: 16px 24px;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header a {
+    text-decoration: none;
 }
 
 .image img {

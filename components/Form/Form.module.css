@@ -20,19 +20,11 @@
   transform: translate(-50%, -50%);
 }
 
-.map {
-  position: relative;
-  height: 300px;
-  padding-bottom: 20px;
-  margin: 0 -24px;
-  z-index: 1;
-}
-
-.formField {
+.field {
   padding-bottom: 20px;
 }
 
-.dialogActions {
+.formActions {
   padding: 0 24px 20px;
   flex: 0 0 auto;
   display: flex;
@@ -40,6 +32,11 @@
   justify-content: space-between;
 }
 
-.dialogActions > :not(:first-child) {
-  margin-left: 8px;
+.emptyState {
+  text-align: center;
+  padding: 20px;
+}
+
+.emptyStateActions {
+  padding-bottom: 20px;
 }

@@ -3,20 +3,21 @@ import { Button, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import Page from '../../components/Page';
-import ProjectCard from '../../components/ProjectCard/ProjectCard';
-import ActivityItemList from '../../components/ActivityItemList';
-import useApi from '../../utils/useApi.ts';
-import formatDate from '../../utils/formatDate';
+import Page from '../components/Page';
+import ProjectCard from '../components/ProjectCard/ProjectCard';
+import ActivityItemList from '../components/ActivityItemList';
+import useApi from '../utils/useApi.ts';
+import formatDate from '../utils/formatDate';
 
 const ActivityPage = () => {
   const { query } = useRouter();
-  const activity = useApi(`/api/projects/${query.projectId}/activities/${query.activityId}`);
-  const activityData = activity.data ?? {};
+  const activityApi = useApi(`/api/projects/${query.projectId}/activities/${query.activityId}`);
+  const activityData = activityApi.data ?? {};
+  const projectApi = useApi(`/api/projects/${query.projectId}`);
 
   useEffect(() => {
     if (query.projectId && query.activityId) {
-      activity.fetch();
+      activityApi.fetch();
     }
   }, [query.projectId, query.activityId]);
 
@@ -50,9 +51,11 @@ const ActivityPage = () => {
             )}
           </div>
           <ActivityItemList projectId={query.projectId} activityId={query.activityId} />
-          <div style={{ padding: '20px 0' }}>
-            <Button variant="contained" color="primary">Добавить задачу</Button>
-          </div>
+          {projectApi.data?.privilege === 'OWNER' && (
+            <div style={{ padding: '20px 0' }}>
+              <Button variant="contained" color="primary">Добавить задачу</Button>
+            </div>
+          )}
         </div>
       </div>
     </Page>

@@ -98,13 +98,13 @@ export const handlers = [
       },
       {
         activityId: req.params.activityId,
-        id: 0,
+        id: 1,
         name: 'Activity Item name',
         status: 'GREED',
       },
       {
         activityId: req.params.activityId,
-        id: 0,
+        id: 2,
         name: 'Activity Item name',
         status: 'YELLOW',
       },

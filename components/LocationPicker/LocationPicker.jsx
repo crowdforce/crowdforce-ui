@@ -3,6 +3,7 @@ import {
   MapContainer, TileLayer, Marker, useMapEvents,
 } from 'react-leaflet';
 import L from 'leaflet';
+import { useFormContext } from '../Form/Form';
 
 const INITIAL_ZOOM = 11;
 
@@ -25,10 +26,26 @@ const MapWrapper = (props) => {
 };
 
 const LocationPicker = (props) => {
-  const { onChange, lat, lng } = props;
+  const {
+    onChange, lat: latProp, lng: lngProp, name,
+  } = props;
+  const { handleInputChange, formData } = useFormContext();
+  const lat = latProp || formData[name]?.lat;
+  const lng = lngProp || formData[name]?.lng;
 
   const handleMarkerMove = ({ latlng }) => {
-    onChange(latlng);
+    if (typeof onChange === 'function') {
+      onChange(latlng);
+    }
+
+    if (typeof handleInputChange === 'function') {
+      handleInputChange({
+        target: {
+          name,
+          value: latlng,
+        },
+      });
+    }
   };
 
   return (
@@ -58,8 +75,6 @@ const LocationPicker = (props) => {
 };
 
 LocationPicker.defaultProps = {
-  lat: 59.937500,
-  lng: 30.308611,
   onChange() {},
 };
 

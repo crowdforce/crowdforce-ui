@@ -6,18 +6,15 @@ import useApi from '../../utils/useApi';
 import ajax from '../../utils/ajax';
 
 const UserButton = () => {
-  const user = useApi({
-    url: '/api/auth/user',
-  });
-  const isLoading = user.isLoading ?? true;
-  const username = user.data?.name;
+  const userApi = useApi('/api/auth/user');
+  const isLoading = userApi.isLoading ?? true;
+  const username = userApi.data?.name;
 
   useEffect(() => {
     const loginController = new AbortController();
 
     window.addEventListener('message', ({ data }) => {
       if (data.type === 'login' && data.id) {
-        console.log(data);
         const query = new URLSearchParams();
         Object.keys(data).forEach((key) => {
           if (key !== 'type') {
@@ -26,7 +23,7 @@ const UserButton = () => {
         });
         query.set('redirect_to', window.location.href);
         ajax.get(`/api/auth?${query.toString()}`).then(() => {
-          user.fetch();
+          userApi.fetch();
         });
       }
     }, {
@@ -39,11 +36,11 @@ const UserButton = () => {
   }, []);
 
   useEffect(() => {
-    user.fetch();
+    userApi.fetch();
   }, []);
 
   if (isLoading) {
-    return <Skeleton width="120px" height="40px" />;
+    return <Skeleton style={{ width: '120px', display: 'inline-block' }} width="120px" height="40px" />;
   }
 
   if (username) {

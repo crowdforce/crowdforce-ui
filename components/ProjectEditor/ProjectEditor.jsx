@@ -1,97 +1,135 @@
 import {
   Button,
-  CircularProgress,
-  Dialog, DialogActions, DialogContent, DialogTitle, TextField,
+  Dialog, DialogContent, DialogTitle, Typography,
 } from '@material-ui/core';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
-import ajax from '../../utils/ajax';
+import { useState } from 'react';
 import LocationPicker from '../LocationPicker';
 import classes from './ProjectEditor.module.css';
+import formClasses from '../Form/Form.module.css';
+import Form from '../Form';
+import FormInput from '../Form/FormInput';
+import ajax from '../../utils/ajax';
+import useApi from '../../utils/useApi.ts';
 
 const ProjectEditor = (props) => {
-  const { open, onClose, projectId } = props;
-  const { query, push } = useRouter();
-  const [formData, setFormData] = useState({
-    lat: 59.937500,
-    lng: 30.308611,
-  });
-  const [formError, setFormError] = useState({});
-  const [isSaving, setIsSaving] = useState(false);
+  const {
+    open, onClose, projectId = null, onDelete,
+  } = props;
+  const { push } = useRouter();
+  const projectApi = useApi(`/api/projects/${projectId}`);
+  const projectsApi = useApi('/api/projects');
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
-  const handleLocationChange = (location) => {
-    setFormData((data) => ({ ...data, ...location }));
+  const formData = {
+    ...projectApi.data,
+    location: {
+      lat: projectApi.data?.lat ?? 59.937500,
+      lng: projectApi.data?.lng ?? 30.308611,
+    },
   };
 
-  const handleInputChange = (e) => {
-    const { name: inputName, value } = e.target;
-    setFormData((data) => ({ ...data, [inputName]: value }));
+  delete formData.lat;
+  delete formData.lng;
+
+  const handleDelete = () => {
+    ajax.delete(`/api/projects/${projectId}`).then(() => {
+      projectsApi.fetch();
+      setOpenDeleteDialog(false);
+      onDelete();
+      onClose();
+    });
   };
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    setIsSaving(true);
-    setFormError({});
-    const request = projectId ? ajax.put(`/api/projects/${projectId}`, formData) : ajax.post('/api/projects', formData);
-    request
-      .then((response) => {
+  const handleDeleteButtonClick = () => {
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteDialogCancel = () => {
+    setOpenDeleteDialog(false);
+  };
+
+  const submit = ({ name, description, location }) => {
+    const data = {
+      name,
+      description,
+      ...location,
+    };
+    const request = projectId !== null ? ajax.put(`/api/projects/${projectId}`, data) : ajax.post('/api/projects', data);
+    return request.then((response) => {
+      if (projectId !== null) {
+        projectApi.fetch();
+        projectsApi.fetch();
+        onClose();
+      } else {
         push(`/project?projectId=${response.data?.id}`);
-      })
-      .catch((error) => {
-        setFormError(error);
-      })
-      .finally(() => {
-        setIsSaving(false);
-      });
+      }
+    });
   };
 
   return (
-    <Dialog maxWidth="sm" fullWidth className={classes.root} open={open} onClose={onClose} scroll="body">
-      <form onSubmit={handleFormSubmit}>
-        <DialogTitle>Новый проект</DialogTitle>
-        <DialogContent>
-          <div className={classes.formField}>
-            <TextField
-              onChange={handleInputChange}
-              variant="outlined"
-              fullWidth
+    <>
+      <Dialog
+        maxWidth="sm"
+        fullWidth
+        className={classes.root}
+        open={!openDeleteDialog && open}
+        onClose={onClose}
+        scroll="body"
+      >
+        <Form
+          formData={formData}
+          submit={submit}
+          authMessage="Войдите, чтобы создать новый проект"
+        >
+          <DialogTitle>{projectId !== null ? 'Редактировать проект' : 'Новый проект'}</DialogTitle>
+          <DialogContent>
+            <FormInput
               name="name"
               label="Название проекта"
             />
-          </div>
-          <div className={classes.map}>
-            <LocationPicker
-              lat={formData.lat}
-              lng={formData.lng}
-              onChange={handleLocationChange}
-            />
-          </div>
-          <div className={classes.formField}>
-            <TextField
+            <div className={classes.map}>
+              <LocationPicker
+                name="location"
+              />
+            </div>
+            <FormInput
               name="description"
-              onChange={handleInputChange}
-              variant="outlined"
               multiline
               rows={4}
               rowsMax={10}
-              fullWidth
               label="Описание проекта"
             />
+          </DialogContent>
+          <div className={formClasses.formActions}>
+            <Button onClick={onClose}>Отмена</Button>
+            <div>
+              {projectId !== null && <Button style={{ marginRight: '16px' }} onClick={handleDeleteButtonClick}>Удалить</Button>}
+              <Button type="submit" color="primary" variant="contained">{projectId !== null ? 'Редактировать' : 'Создать'}</Button>
+            </div>
           </div>
+        </Form>
+      </Dialog>
+      <Dialog
+        maxWidth="sm"
+        fullWidth
+        open={openDeleteDialog}
+      >
+        <DialogTitle>Удалить проект</DialogTitle>
+        <DialogContent>
+          <Typography style={{ paddingBottom: '20px' }}>
+            Вы уверены, что хотите удалить проект
+            {' '}
+            {projectApi.data?.name}
+            ?
+          </Typography>
         </DialogContent>
-        <div className={classes.dialogActions}>
-          <Button onClick={onClose}>Отмена</Button>
-          <Button type="submit" color="primary" variant="contained">Отправить</Button>
+        <div className={formClasses.formActions}>
+          <Button onClick={handleDeleteDialogCancel} variant="contained" disableElevation>Отмена</Button>
+          <Button onClick={handleDelete}>Удалить</Button>
         </div>
-      </form>
-      {isSaving && (
-        <div className={classes.progressContainer}>
-          <div className={classes.progressWrapper}>
-            <CircularProgress />
-          </div>
-        </div>
-      )}
-    </Dialog>
+      </Dialog>
+    </>
   );
 };
 
