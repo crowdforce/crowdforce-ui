@@ -22,11 +22,11 @@ const ProjectEditor = (props) => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
   const formData = {
-    ...projectApi.data,
     location: {
       lat: projectApi.data?.lat ?? 59.937500,
       lng: projectApi.data?.lng ?? 30.308611,
     },
+    ...projectApi.data,
   };
 
   delete formData.lat;

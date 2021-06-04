@@ -8,6 +8,7 @@ async function proxyRequest(req, res) {
   const { cookie = '' } = req.headers;
 
   const options = {
+    url,
     method,
     data: body,
     headers: {
@@ -16,10 +17,11 @@ async function proxyRequest(req, res) {
     },
   };
 
-  console.log(`PROXY ${url} ${JSON.stringify(options, null, 2)}`);
+  console.log(`PROXY ${JSON.stringify(options, null, 2)}`);
 
   try {
-    const response = await ajax(url, options);
+    const response = await ajax(options);
+    console.log(`PROXY RESPONSE ${response.status} ${method} ${url} ${JSON.stringify(response.data, null, 2)}`);
     res.status(response.status).send(response.data);
   } catch (error) {
     console.log(`PROXY ERROR ${url} ${JSON.stringify(error.response?.data ?? { message: error.message }, null, 2)}`);

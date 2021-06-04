@@ -2,24 +2,38 @@ import { useRouter } from 'next/router';
 import { Button, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import ActivityItemList from '../components/ActivityItemList';
 import useApi from '../utils/useApi.ts';
 import formatDate from '../utils/formatDate';
+import ActivityEditor from '../components/ActivityEditor';
 
 const ActivityPage = () => {
-  const { query } = useRouter();
+  const { query, push } = useRouter();
   const activityApi = useApi(`/api/projects/${query.projectId}/activities/${query.activityId}`);
   const activityData = activityApi.data ?? {};
   const projectApi = useApi(`/api/projects/${query.projectId}`);
+  const [openActivityEditor, setOpenActivityEditor] = useState(false);
 
   useEffect(() => {
     if (query.projectId && query.activityId) {
       activityApi.fetch();
     }
   }, [query.projectId, query.activityId]);
+
+  const handleEditButtonClick = () => {
+    setOpenActivityEditor(true);
+  };
+
+  const handleActivityEditorClose = () => {
+    setOpenActivityEditor(false);
+  };
+
+  const handleDelete = () => {
+    push(`/project?projectId=${query.projectId}`);
+  };
 
   return (
     <Page>
@@ -53,11 +67,19 @@ const ActivityPage = () => {
           <ActivityItemList projectId={query.projectId} activityId={query.activityId} />
           {projectApi.data?.privilege === 'OWNER' && (
             <div style={{ padding: '20px 0' }}>
-              <Button variant="contained" color="primary">Добавить задачу</Button>
+              <Button style={{ marginRight: '20px' }} variant="contained" color="primary">Добавить задачу</Button>
+              <Button onClick={handleEditButtonClick}>Редактировать</Button>
             </div>
           )}
         </div>
       </div>
+      <ActivityEditor
+        projectId={query.projectId}
+        activityId={query.activityId}
+        open={openActivityEditor}
+        onClose={handleActivityEditorClose}
+        onDelete={handleDelete}
+      />
     </Page>
   );
 };
