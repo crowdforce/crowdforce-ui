@@ -6,10 +6,13 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
 import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import classes from './AcivityList.module.css';
 import useApi from '../../utils/useApi.ts';
 import formatDate from '../../utils/formatDate';
 import ActivityEditor from '../ActivityEditor';
+import ajax from '../../utils/ajax';
 
 const AcivityListSkeleton = () => (
   <Table style={{ tableLayout: 'fixed' }}>
@@ -78,6 +81,20 @@ const AcivityList = (props) => {
     setEditActivityId(e.currentTarget.dataset.activityId);
   };
 
+  const handleSubscribeClick = (e) => {
+    e.stopPropagation();
+    ajax.put(`/api/projects/${projectId}/activities/${e.currentTarget.dataset.activityId}/participants`).then(() => {
+      activitiesApi.fetch();
+    });
+  };
+
+  const handleUnSubscribeClick = (e) => {
+    e.stopPropagation();
+    ajax.delete(`/api/projects/${projectId}/activities/${e.currentTarget.dataset.activityId}/participants`).then(() => {
+      activitiesApi.fetch();
+    });
+  };
+
   return (
     <div className={classes.root}>
       {isLoadingActivities && <LinearProgress style={{ marginBottom: '-4px', zIndex: 1 }} />}
@@ -108,6 +125,24 @@ const AcivityList = (props) => {
                     </IconButton>
                   </TableCell>
                 )}
+                <TableCell style={{ width: '48px' }}>
+                  {acitivity.participate && (
+                  <IconButton
+                    data-activity-id={acitivity.id}
+                    onClick={handleUnSubscribeClick}
+                  >
+                    <RemoveIcon />
+                  </IconButton>
+                  )}
+                  {!acitivity.participate && (
+                  <IconButton
+                    data-activity-id={acitivity.id}
+                    onClick={handleSubscribeClick}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
