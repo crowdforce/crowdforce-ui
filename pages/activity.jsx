@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
-import ActivityItemList from '../components/ActivityItemList';
 import useApi from '../utils/useApi.ts';
 import formatDate from '../utils/formatDate';
 import ActivityEditor from '../components/ActivityEditor';
@@ -64,10 +63,8 @@ const ActivityPage = () => {
               </>
             )}
           </div>
-          <ActivityItemList projectId={query.projectId} activityId={query.activityId} />
           {projectApi.data?.privilege === 'OWNER' && (
             <div style={{ padding: '20px 0' }}>
-              <Button style={{ marginRight: '20px' }} variant="contained" color="primary">Добавить задачу</Button>
               <Button onClick={handleEditButtonClick}>Редактировать</Button>
             </div>
           )}
