@@ -5,11 +5,9 @@ import { observer } from 'mobx-react-lite';
 import { useEffect, useState } from 'react';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
-import ActivityItemList from '../components/ActivityItemList';
 import useApi from '../utils/useApi.ts';
 import formatDate from '../utils/formatDate';
 import ActivityEditor from '../components/ActivityEditor';
-import TrackableItemEditor from '../components/TrackableItemEditor';
 
 const ActivityPage = () => {
   const { query, push } = useRouter();
@@ -17,7 +15,6 @@ const ActivityPage = () => {
   const activityData = activityApi.data ?? {};
   const projectApi = useApi(`/api/projects/${query.projectId}`);
   const [openActivityEditor, setOpenActivityEditor] = useState(false);
-  const [openTrackableItemEditor, setOpenTrackableItemEditor] = useState(false);
 
   useEffect(() => {
     if (query.projectId && query.activityId) {
@@ -27,14 +24,6 @@ const ActivityPage = () => {
 
   const handleEditButtonClick = () => {
     setOpenActivityEditor(true);
-  };
-
-  const handleTrackableItemEditButtonClick = () => {
-    setOpenTrackableItemEditor(true);
-  };
-
-  const handleTrackableItemEditorClose = () => {
-    setOpenTrackableItemEditor(false);
   };
 
   const handleActivityEditorClose = () => {
@@ -74,10 +63,8 @@ const ActivityPage = () => {
               </>
             )}
           </div>
-          <ActivityItemList projectId={query.projectId} activityId={query.activityId} />
           {projectApi.data?.privilege === 'OWNER' && (
             <div style={{ padding: '20px 0' }}>
-              <Button style={{ marginRight: '20px' }} variant="contained" color="primary" onClick={handleTrackableItemEditButtonClick}>Добавить интерактивный элемент</Button>
               <Button onClick={handleEditButtonClick}>Редактировать</Button>
             </div>
           )}
@@ -89,12 +76,6 @@ const ActivityPage = () => {
         open={openActivityEditor}
         onClose={handleActivityEditorClose}
         onDelete={handleDelete}
-      />
-      <TrackableItemEditor
-        projectId={query.projectId}
-        activityId={query.activityId}
-        open={openTrackableItemEditor}
-        onClose={handleTrackableItemEditorClose}
       />
     </Page>
   );

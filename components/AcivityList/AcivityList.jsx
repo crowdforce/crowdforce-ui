@@ -58,6 +58,7 @@ const AcivityList = (props) => {
   const { projectId } = props;
   const activitiesApi = useApi(`/api/projects/${projectId}/activities`);
   const projectApi = useApi(`/api/projects/${projectId}`);
+  const userApi = useApi('/api/auth/user');
   const isLoadingActivities = activitiesApi.isLoading ?? true;
   const activitiesData = activitiesApi.data ?? [];
   const [editActivityId, setEditActivityId] = useState(null);
@@ -126,7 +127,7 @@ const AcivityList = (props) => {
                   </TableCell>
                 )}
                 <TableCell style={{ width: '48px' }}>
-                  {acitivity.participate && (
+                  {acitivity.participate && userApi.data && (
                   <IconButton
                     data-activity-id={acitivity.id}
                     onClick={handleUnSubscribeClick}
@@ -134,7 +135,7 @@ const AcivityList = (props) => {
                     <RemoveIcon />
                   </IconButton>
                   )}
-                  {!acitivity.participate && (
+                  {!acitivity.participate && userApi.data && (
                   <IconButton
                     data-activity-id={acitivity.id}
                     onClick={handleSubscribeClick}
