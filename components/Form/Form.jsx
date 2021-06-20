@@ -8,7 +8,9 @@ import FormLogin from './FormLogin';
 import FormProgress from './FormProgress';
 import useApi from '../../utils/useApi';
 
-export const FormContext = createContext();
+export const FormContext = createContext({
+  formData: {},
+});
 export const useFormContext = () => useContext(FormContext);
 
 const Form = ({
@@ -17,6 +19,8 @@ const Form = ({
   authMessage,
   submit,
   loading: loadingProp,
+  resetData = false,
+  onChange,
 }) => {
   const userApi = useApi('/api/auth/user');
   const [formData, setFormData] = useState(formDataProp ?? {});
@@ -32,7 +36,12 @@ const Form = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((data) => ({ ...data, [name]: value }));
+    const newData = { ...formData, [name]: value };
+    if (onChange) {
+      onChange(newData);
+    } else {
+      setFormData(newData);
+    }
   };
 
   const handleFormSubmit = async (e) => {
@@ -44,6 +53,10 @@ const Form = ({
       await submit(formData);
     } catch (error) {
       setFormErrors(error);
+    }
+
+    if (resetData) {
+      setFormData({});
     }
 
     setIsSaving(false);
