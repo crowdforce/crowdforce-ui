@@ -6,20 +6,20 @@ import { observer } from 'mobx-react-lite';
 import formClasses from './Form.module.css';
 import FormLogin from './FormLogin';
 import FormProgress from './FormProgress';
-import useApi from '../../utils/useApi.ts';
+import useApi from '../../utils/useApi';
 
 export const FormContext = createContext();
 export const useFormContext = () => useContext(FormContext);
 
 const Form = ({
   children,
-  formData: formDataProp = {},
+  formData: formDataProp,
   authMessage,
   submit,
   loading: loadingProp,
 }) => {
   const userApi = useApi('/api/auth/user');
-  const [formData, setFormData] = useState(formDataProp);
+  const [formData, setFormData] = useState(formDataProp ?? {});
   const [formErrors, setFormErrors] = useState({});
   const [isSaving, setIsSaving] = useState(false);
 
@@ -27,7 +27,7 @@ const Form = ({
   const requireLogin = authMessage && !userApi.data?.name;
 
   useEffect(() => {
-    setFormData(formDataProp);
+    setFormData(formDataProp ?? {});
   }, [formDataProp]);
 
   const handleInputChange = (e) => {

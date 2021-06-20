@@ -10,7 +10,7 @@ import formClasses from '../Form/Form.module.css';
 import Form from '../Form';
 import FormInput from '../Form/FormInput';
 import ajax from '../../utils/ajax';
-import useApi from '../../utils/useApi.ts';
+import useApi from '../../utils/useApi';
 
 const ProjectEditor = (props) => {
   const {

@@ -1,5 +1,5 @@
 import classes from './Header.module.css';
-import UserButton from '../UserButton'
+import UserButton from '../UserButton';
 
 const Header = () => (
   <div className={classes.root}>

@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true,
+    es2021: true,
     node: true,
   },
   extends: [
@@ -15,13 +15,7 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
     L: 'readonly',
   },
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 11,
-    sourceType: 'module',
-  },
+  parser: 'babel-eslint',
   plugins: [
     'react',
     'jest',

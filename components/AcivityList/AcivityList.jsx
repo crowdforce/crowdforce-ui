@@ -9,7 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import classes from './AcivityList.module.css';
-import useApi from '../../utils/useApi.ts';
+import useApi from '../../utils/useApi';
 import formatDate from '../../utils/formatDate';
 import ActivityEditor from '../ActivityEditor';
 import ajax from '../../utils/ajax';

@@ -8,7 +8,7 @@ import ajax from '../../utils/ajax';
 import classes from './ActivityEditor.module.css';
 import Form from '../Form';
 import FormInput from '../Form/FormInput';
-import useApi from '../../utils/useApi.ts';
+import useApi from '../../utils/useApi';
 import formClasses from '../Form/Form.module.css';
 
 const ActivityEditor = (props) => {

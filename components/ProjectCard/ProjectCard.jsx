@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import EditIcon from '@material-ui/icons/Edit';
 import { useRouter } from 'next/router';
 import classes from './ProjectCard.module.css';
-import useApi from '../../utils/useApi.ts';
+import useApi from '../../utils/useApi';
 import ProjectEditor from '../ProjectEditor';
 
 const ProjectCardSkeleton = () => (
@@ -39,7 +39,7 @@ const ProjectCard = (props) => {
     if (projectId) {
       projectApi.fetch();
     }
-  }, [projectId]);
+  }, [projectId, projectApi]);
 
   const handleEditClick = () => {
     setOpenProjectEditor(true);
@@ -69,13 +69,12 @@ const ProjectCard = (props) => {
           <a href={`/project?projectId=${projectId}`}>{projectData.name}</a>
         </Typography>
         {projectApi.data?.privilege === 'OWNER' && (
-        <IconButton
-          data-activity-id={projectId}
-          onClick={handleEditClick}
-        >
-          <EditIcon />
-        </IconButton>
-
+          <IconButton
+            data-activity-id={projectId}
+            onClick={handleEditClick}
+          >
+            <EditIcon />
+          </IconButton>
         )}
       </div>
       <div className={classes.content}>

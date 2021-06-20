@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import ActivityList from '../components/AcivityList';
-import useApi from '../utils/useApi.ts';
+import useApi from '../utils/useApi';
 import ActivityEditor from '../components/ActivityEditor';
 
 const ProjectPage = () => {
