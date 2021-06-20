@@ -8,7 +8,11 @@ import { useEffect, useState } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
+<<<<<<< HEAD
 import useApi from '../utils/useApi';
+=======
+import useApi from '../utils/useApi.ts';
+>>>>>>> master
 import formatDate from '../utils/formatDate';
 import ActivityEditor from '../components/ActivityEditor';
 import Form from '../components/Form';
@@ -78,6 +82,7 @@ const ActivityPage = () => {
               </>
             )}
           </div>
+<<<<<<< HEAD
           <div>
             <Typography variant="h6" style={{ paddingBottom: '20px' }}>Интерактивные элементы</Typography>
             {activityItemsApi.data ? activityItemsApi.data.map((activityItem) => (
@@ -100,6 +105,13 @@ const ActivityPage = () => {
               </Form>
             )}
           </div>
+=======
+          {projectApi.data?.privilege === 'OWNER' && (
+            <div style={{ padding: '20px 0' }}>
+              <Button onClick={handleEditButtonClick}>Редактировать</Button>
+            </div>
+          )}
+>>>>>>> master
         </div>
       </div>
       <ActivityEditor
