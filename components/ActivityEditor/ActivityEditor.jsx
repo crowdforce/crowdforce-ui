@@ -128,7 +128,7 @@ const ActivityEditor = (props) => {
             <Button onClick={onClose}>Отмена</Button>
             <div>
               {activityId !== null && <Button style={{ marginRight: '16px' }} onClick={handleDeleteButtonClick}>Удалить</Button>}
-              <Button type="submit" color="primary" variant="contained">{activityId !== null ? 'Редактировать' : 'Отправить'}</Button>
+              <Button type="submit" color="primary" variant="contained">Сохранить</Button>
             </div>
           </div>
         </Form>

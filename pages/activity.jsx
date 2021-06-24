@@ -7,9 +7,9 @@ import { Skeleton } from '@material-ui/lab';
 import { observer } from 'mobx-react-lite';
 import { Fragment, useEffect, useState } from 'react';
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import AddAlertIcon from '@material-ui/icons/AddAlert';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import useApi from '../utils/useApi';
@@ -20,6 +20,7 @@ import FormInput from '../components/Form/FormInput';
 import ajax from '../utils/ajax';
 import EventEditor from '../components/EventEditor';
 import EventList from '../components/EventList';
+import TrackableItemEditor from '../components/TrackableItemEditor';
 
 const ActivityPage = () => {
   const { query, push } = useRouter();
@@ -29,6 +30,7 @@ const ActivityPage = () => {
   const projectApi = useApi(`/api/projects/${query.projectId}`);
   const [openActivityEditor, setOpenActivityEditor] = useState(false);
   const [openEventEditor, setOpenEventEditor] = useState(false);
+  const [openItemEditor, setOpenItemEditor] = useState(false);
   const [activeActivityItemId, setActiveActivityItemId] = useState(null);
   const [activeEventId, setActiveEventId] = useState(null);
   const isOwner = projectApi.data?.privilege === 'OWNER';
@@ -48,13 +50,23 @@ const ActivityPage = () => {
     setOpenActivityEditor(false);
   };
 
+  const handleItemEditorClose = () => {
+    setOpenItemEditor(false);
+  };
+
   const handleDelete = () => {
     push(`/project?projectId=${query.projectId}`);
   };
 
-  const handleItemDelete = (e) => {
+  const handleItemEditClick = (e) => {
     const { itemId } = e.currentTarget.dataset;
-    ajax.delete(`/api/projects/${query.projectId}/activities/${query.activityId}/items/${itemId}`).then(() => {
+    setActiveActivityItemId(itemId);
+    setOpenItemEditor(true);
+  };
+
+  const handleItemParticipateClick = (e) => {
+    const { itemId } = e.currentTarget.dataset;
+    ajax.put(`/api/projects/${query.projectId}/activities/${query.activityId}/items/${itemId}/participants`).then(() => {
       activityItemsApi.fetch();
     });
   };
@@ -128,14 +140,19 @@ const ActivityPage = () => {
                     <ListItemText primary={activityItem.name} />
                     {isOwner && (
                       <ListItemSecondaryAction>
+                        <Tooltip title="Участвовать">
+                          <IconButton aria-label="add" onClick={handleItemParticipateClick} data-item-id={activityItem.id}>
+                            <AddAlertIcon />
+                          </IconButton>
+                        </Tooltip>
                         <Tooltip title="Добавить событие">
-                          <IconButton edge="start" aria-label="add" onClick={handleEventAdd} data-item-id={activityItem.id}>
+                          <IconButton aria-label="add" onClick={handleEventAdd} data-item-id={activityItem.id}>
                             <AddIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Удалить элемент">
-                          <IconButton edge="end" aria-label="delete" onClick={handleItemDelete} data-item-id={activityItem.id}>
-                            <DeleteIcon />
+                        <Tooltip title="Редактировать элемент">
+                          <IconButton aria-label="delete" onClick={handleItemEditClick} data-item-id={activityItem.id}>
+                            <EditIcon />
                           </IconButton>
                         </Tooltip>
                       </ListItemSecondaryAction>
@@ -177,6 +194,13 @@ const ActivityPage = () => {
         open={openActivityEditor}
         onClose={handleActivityEditorClose}
         onDelete={handleDelete}
+      />
+      <TrackableItemEditor
+        projectId={query.projectId}
+        activityId={query.activityId}
+        activityItemId={activeActivityItemId}
+        open={openItemEditor}
+        onClose={handleItemEditorClose}
       />
       <EventEditor
         projectId={query.projectId}

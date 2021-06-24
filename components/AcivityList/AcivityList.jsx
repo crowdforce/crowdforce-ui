@@ -6,8 +6,8 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
 import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import AddAlertIcon from '@material-ui/icons/AddAlert';
+import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
 import classes from './AcivityList.module.css';
 import useApi from '../../utils/useApi';
 import formatDate from '../../utils/formatDate';
@@ -116,23 +116,21 @@ const AcivityList = (props) => {
                   </Typography>
                 </TableCell>
                 <TableCell>{acitivity.description}</TableCell>
-                {projectApi.data?.privilege === 'OWNER' && (
-                  <TableCell style={{ width: '48px' }}>
-                    <IconButton
-                      data-activity-id={acitivity.id}
-                      onClick={handleEditClick}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                )}
-                <TableCell style={{ width: '48px' }}>
+                <TableCell style={{ width: '100px', whiteSpace: 'nowrap' }}>
+                  {projectApi.data?.privilege === 'OWNER' && (
+                  <IconButton
+                    data-activity-id={acitivity.id}
+                    onClick={handleEditClick}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  )}
                   {acitivity.participate && userApi.data && (
                   <IconButton
                     data-activity-id={acitivity.id}
                     onClick={handleUnSubscribeClick}
                   >
-                    <RemoveIcon />
+                    <NotificationsOffIcon />
                   </IconButton>
                   )}
                   {!acitivity.participate && userApi.data && (
@@ -140,7 +138,7 @@ const AcivityList = (props) => {
                     data-activity-id={acitivity.id}
                     onClick={handleSubscribeClick}
                   >
-                    <AddIcon />
+                    <AddAlertIcon />
                   </IconButton>
                   )}
                 </TableCell>

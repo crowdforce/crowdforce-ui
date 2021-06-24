@@ -105,7 +105,7 @@ const ProjectEditor = (props) => {
             <Button onClick={onClose}>Отмена</Button>
             <div>
               {projectId !== null && <Button style={{ marginRight: '16px' }} onClick={handleDeleteButtonClick}>Удалить</Button>}
-              <Button type="submit" color="primary" variant="contained">{projectId !== null ? 'Редактировать' : 'Создать'}</Button>
+              <Button type="submit" color="primary" variant="contained">Сохранить</Button>
             </div>
           </div>
         </Form>
