@@ -4,7 +4,7 @@ import {
   Radio,
   RadioGroup, FormControlLabel,
 } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import ajax from '../../utils/ajax';
 import classes from './EventEditor.module.css';
@@ -31,19 +31,18 @@ const EventEditor = (props) => {
     eventId = null,
   } = props;
   const eventsApi = useApi(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}/events`);
-  const eventApi = useApi(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}/events/${eventId}`);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const startDate = eventApi.data?.startDate;
-  const [formData, setFormData] = useState(() => (eventId ? {
-    ...(eventApi.data || {}),
-    startDate: startDate && new Date(startDate).toISOString().substring(0, 10),
-  } : {}));
+  const eventData = useMemo(() => (eventsApi.data || [])
+    .find(({ id }) => String(id) === String(eventId)) || {}, [eventsApi.data, eventId]);
+  const { startDate } = eventData;
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    if (eventId !== null) {
-      eventApi.fetch();
-    }
-  }, [eventId]);
+    setFormData(() => (eventId ? {
+      ...eventData,
+      startDate: startDate && new Date(startDate).toISOString().substring(0, 10),
+    } : {}));
+  }, [eventData, eventId, startDate]);
 
   const handleDelete = () => {
     ajax.delete(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}/events/${eventId}`).then(() => {
@@ -82,14 +81,11 @@ const EventEditor = (props) => {
       ...formData,
       startDate: new Date(formData.startDate).toISOString(),
     };
-    const request = eventId !== null ? ajax.put(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}/events`, submitData)
+    const request = eventId !== null ? ajax.put(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}/events/${eventId}`, submitData)
       : ajax.post(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}/events`, submitData);
 
     return request.then(() => {
       eventsApi.fetch();
-      if (eventId) {
-        eventApi.fetch();
-      }
       setFormData({});
       onClose();
     });
@@ -106,7 +102,7 @@ const EventEditor = (props) => {
         scroll="body"
       >
         <Form
-          loading={eventId !== null && eventApi.isLoading}
+          loading={eventId !== null && eventsApi.isLoading}
           formData={formData}
           onChange={handleFormChange}
           submit={submit}

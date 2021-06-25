@@ -2,7 +2,7 @@ import {
   Button,
   Dialog, DialogContent, DialogTitle, Typography,
 } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import ajax from '../../utils/ajax';
 import classes from './TrackableItemEditor.module.css';
@@ -23,13 +23,9 @@ const TrackableItemEditor = (props) => {
   const itemsApi = useApi(`/api/projects/${projectId}/activities/${activityId}/items`);
   const itemApi = useApi(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}`);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [formData, setFormData] = useState(() => (itemApi.data || {}));
-
-  useEffect(() => {
-    if (activityItemId !== null) {
-      itemApi.fetch();
-    }
-  }, [activityItemId]);
+  const itemData = useMemo(() => (itemsApi.data || [])
+    .find(({ id }) => String(id) === String(activityItemId))
+  || {}, [itemsApi.data, activityItemId]);
 
   const handleDelete = () => {
     ajax.delete(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}`).then(() => {
@@ -54,10 +50,6 @@ const TrackableItemEditor = (props) => {
 
     return request.then(() => {
       itemsApi.fetch();
-      if (activityItemId) {
-        itemApi.fetch();
-      }
-      setFormData({});
       onClose();
     });
   };
@@ -74,7 +66,7 @@ const TrackableItemEditor = (props) => {
       >
         <Form
           loading={activityItemId !== null && itemApi.isLoading}
-          formData={formData}
+          formData={itemData}
           submit={submit}
         >
           <DialogTitle>{activityItemId !== null ? 'Редактировать элемент' : 'Новый элемент'}</DialogTitle>
