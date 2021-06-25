@@ -98,7 +98,7 @@ const EventList = ({
                   </Typography>
                 </TableCell>
                 <TableCell>{recurringMap[event.recurring]}</TableCell>
-                <TableCell>
+                <TableCell style={{ width: '48px' }}>
                   <IconButton
                     data-event-id={event.id}
                     onClick={handleEditClick}
