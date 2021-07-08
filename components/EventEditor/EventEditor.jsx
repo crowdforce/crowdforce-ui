@@ -80,6 +80,7 @@ const EventEditor = (props) => {
     const submitData = {
       ...formData,
       startDate: new Date(formData.startDate).toISOString(),
+      recurring: formData.recurring === undefined ? "NON_RECURRING" : formData.recurring,
     };
     const request = eventId !== null ? ajax.put(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}/events/${eventId}`, submitData)
       : ajax.post(`/api/projects/${projectId}/activities/${activityId}/items/${activityItemId}/events`, submitData);
