@@ -138,13 +138,13 @@ const ActivityPage = () => {
                       />
                     </ListItemAvatar>
                     <ListItemText primary={activityItem.name} />
+                    <Tooltip title="Участвовать">
+                      <IconButton aria-label="add" onClick={handleItemParticipateClick} data-item-id={activityItem.id}>
+                        <AddAlertIcon />
+                      </IconButton>
+                    </Tooltip>
                     {isOwner && (
                       <ListItemSecondaryAction>
-                        <Tooltip title="Участвовать">
-                          <IconButton aria-label="add" onClick={handleItemParticipateClick} data-item-id={activityItem.id}>
-                            <AddAlertIcon />
-                          </IconButton>
-                        </Tooltip>
                         <Tooltip title="Добавить событие">
                           <IconButton aria-label="add" onClick={handleEventAdd} data-item-id={activityItem.id}>
                             <AddIcon />
