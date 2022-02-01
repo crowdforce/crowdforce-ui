@@ -1,6 +1,6 @@
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import { useEffect } from 'react';
-import { Skeleton } from '@material-ui/lab';
+import { Skeleton } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import useApi from '../../utils/useApi';
 import ajax from '../../utils/ajax';

@@ -1,10 +1,10 @@
 import {
   LinearProgress, Typography, Card, CardHeader, CardContent, Button, IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useEffect, useState } from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@mui/material/Skeleton';
 import { observer } from 'mobx-react-lite';
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 import { useRouter } from 'next/router';
 import classes from './ProjectCard.module.css';
 import useApi from '../../utils/useApi';
@@ -15,7 +15,7 @@ const ProjectCardSkeleton = () => (
     <CardHeader title={<Skeleton />} />
     <CardContent className={classes.content}>
       <div className={classes.image}>
-        <Skeleton variant="rect" height="200px" />
+        <Skeleton variant="rectangular" height="200px" />
       </div>
       <div className={classes.description}>
         <Skeleton />
@@ -69,10 +69,7 @@ const ProjectCard = (props) => {
           <a href={`/project?projectId=${projectId}`}>{projectData.name}</a>
         </Typography>
         {projectApi.data?.privilege === 'OWNER' && (
-          <IconButton
-            data-activity-id={projectId}
-            onClick={handleEditClick}
-          >
+          <IconButton data-activity-id={projectId} onClick={handleEditClick} size="large">
             <EditIcon />
           </IconButton>
         )}

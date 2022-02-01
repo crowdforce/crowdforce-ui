@@ -2,14 +2,14 @@ import { useRouter } from 'next/router';
 import {
   IconButton, Typography, ListItem, ListItemAvatar, ListItemText,
   ListItemSecondaryAction, Tooltip,
-} from '@material-ui/core';
-import { Skeleton } from '@material-ui/lab';
+} from '@mui/material';
+import { Skeleton } from '@mui/lab';
 import { observer } from 'mobx-react-lite';
 import { Fragment, useEffect, useState } from 'react';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
-import AddAlertIcon from '@material-ui/icons/AddAlert';
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import AddAlertIcon from '@mui/icons-material/AddAlert';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import useApi from '../utils/useApi';
@@ -103,7 +103,7 @@ const ActivityPage = () => {
           <div style={{ padding: '38px 0' }}>
             {activityData.name ? (
               <>
-                <Typography variant="h5">
+                <Typography variant="h5" colo >
                   {activityData.name}
                   {isOwner && (
                     <IconButton onClick={handleEditButtonClick}>

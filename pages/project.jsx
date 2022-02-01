@@ -1,4 +1,4 @@
-import { Button, Tab, Tabs } from '@material-ui/core';
+import { Button, Tab, Tabs } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';

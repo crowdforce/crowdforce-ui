@@ -4,10 +4,10 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-} from '@material-ui/core';
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
 const ProjectListItem = ({
   data, onClick, onToggle, expanded, highlighted, children,
@@ -26,10 +26,10 @@ const ProjectListItem = ({
         secondary={`Активностей в проекте ${data.activities.length}`}
       />
       <ListItemSecondaryAction>
-        <IconButton>
+        <IconButton size="large">
           <NotificationsNoneIcon />
         </IconButton>
-        <IconButton onClick={onToggle}>
+        <IconButton onClick={onToggle} size="large">
           {expanded ? <ExpandLess /> : <ExpandMore />}
         </IconButton>
       </ListItemSecondaryAction>

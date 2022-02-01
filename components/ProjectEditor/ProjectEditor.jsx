@@ -1,7 +1,7 @@
 import {
   Button,
   Dialog, DialogContent, DialogTitle, Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import LocationPicker from '../LocationPicker';

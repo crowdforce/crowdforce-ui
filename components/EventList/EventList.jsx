@@ -1,10 +1,10 @@
 import {
   Typography, Table, TableRow, TableCell, TableBody, IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useEffect, useState } from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@mui/material/Skeleton';
 import { observer } from 'mobx-react-lite';
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 import classes from './EventList.module.css';
 import useApi from '../../utils/useApi';
 import formatDate from '../../utils/formatDate';
@@ -99,10 +99,7 @@ const EventList = ({
                 </TableCell>
                 <TableCell>{recurringMap[event.recurring]}</TableCell>
                 <TableCell style={{ width: '48px' }}>
-                  <IconButton
-                    data-event-id={event.id}
-                    onClick={handleEditClick}
-                  >
+                  <IconButton data-event-id={event.id} onClick={handleEditClick} size="large">
                     <EditIcon />
                   </IconButton>
                 </TableCell>

@@ -1,4 +1,4 @@
-import { Button, Paper } from '@material-ui/core';
+import { Button, Paper } from '@mui/material';
 import classes from './MapSearch.module.css';
 
 const MapSearch = () => (

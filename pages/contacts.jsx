@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import Page from '../components/Page';
 
 const ContactsPage = () => <Page><Typography variant="h4">Контакты</Typography></Page>;
