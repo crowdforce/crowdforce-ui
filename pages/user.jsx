@@ -1,4 +1,4 @@
-import { Typography, LinearProgress, Button } from '@material-ui/core';
+import { Typography, LinearProgress, Button } from '@mui/material';
 import { useEffect } from 'react';
 import router from 'next/router';
 import Page from '../components/Page';

@@ -1,6 +1,6 @@
 import {
   Typography, List, ListItem, ListItemAvatar, ListItemText,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useState } from 'react';
 import Page from '../components/Page';
 import classes from './index.module.css';

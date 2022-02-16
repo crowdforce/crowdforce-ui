@@ -3,7 +3,7 @@ import {
   Dialog, DialogContent, DialogTitle, Typography,
   Radio,
   RadioGroup, FormControlLabel,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import ajax from '../../utils/ajax';

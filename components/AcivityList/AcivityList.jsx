@@ -1,13 +1,13 @@
 import {
   LinearProgress, Typography, Table, TableRow, TableCell, TableBody, IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useEffect, useState } from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
+import Skeleton from '@mui/material/Skeleton';
 import { observer } from 'mobx-react-lite';
 import { useRouter } from 'next/router';
-import EditIcon from '@material-ui/icons/Edit';
-import AddAlertIcon from '@material-ui/icons/AddAlert';
-import NotificationsOffIcon from '@material-ui/icons/NotificationsOff';
+import EditIcon from '@mui/icons-material/Edit';
+import AddAlertIcon from '@mui/icons-material/AddAlert';
+import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
 import classes from './AcivityList.module.css';
 import useApi from '../../utils/useApi';
 import formatDate from '../../utils/formatDate';
@@ -118,10 +118,7 @@ const AcivityList = (props) => {
                 <TableCell>{acitivity.description}</TableCell>
                 <TableCell style={{ width: '100px', whiteSpace: 'nowrap' }}>
                   {projectApi.data?.privilege === 'OWNER' && (
-                  <IconButton
-                    data-activity-id={acitivity.id}
-                    onClick={handleEditClick}
-                  >
+                  <IconButton data-activity-id={acitivity.id} onClick={handleEditClick} size="large">
                     <EditIcon />
                   </IconButton>
                   )}
@@ -129,7 +126,7 @@ const AcivityList = (props) => {
                   <IconButton
                     data-activity-id={acitivity.id}
                     onClick={handleUnSubscribeClick}
-                  >
+                    size="large">
                     <NotificationsOffIcon />
                   </IconButton>
                   )}
@@ -137,7 +134,7 @@ const AcivityList = (props) => {
                   <IconButton
                     data-activity-id={acitivity.id}
                     onClick={handleSubscribeClick}
-                  >
+                    size="large">
                     <AddAlertIcon />
                   </IconButton>
                   )}

@@ -1,12 +1,17 @@
 import {
-  ThemeProvider as MuiThemeProvider, createGenerateClassName, StylesProvider, createMuiTheme,
-} from '@material-ui/core/styles';
+  ThemeProvider as MuiThemeProvider,
+  StyledEngineProvider,
+  createTheme,
+  adaptV4Theme,
+} from '@mui/material/styles';
+import createGenerateClassName from '@mui/styles/createGenerateClassName';
+import StylesProvider from '@mui/styles/StylesProvider';
 import React from 'react';
-import primary from '@material-ui/core/colors/amber';
-import secondary from '@material-ui/core/colors/blue';
 import PropTypes from 'prop-types';
 
-const theme = createMuiTheme({
+import { amber as primary, blue as secondary } from '@mui/material/colors';
+
+const theme = createTheme(adaptV4Theme({
   palette: {
     primary,
     secondary,
@@ -14,7 +19,7 @@ const theme = createMuiTheme({
       selected: 'rgba(168,119,255,0.08)',
     },
   },
-});
+}));
 
 const generateClassName = createGenerateClassName({
   seed: 'rc',
@@ -22,7 +27,9 @@ const generateClassName = createGenerateClassName({
 
 const ThemeProvider = ({ children }) => (
   <StylesProvider generateClassName={generateClassName}>
-    <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+    </StyledEngineProvider>
   </StylesProvider>
 );
 

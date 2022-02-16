@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
 import formClasses from './Form.module.css';
 import { useFormContext } from './Form';
 

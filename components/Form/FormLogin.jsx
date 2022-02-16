@@ -1,5 +1,5 @@
-import { Typography } from '@material-ui/core';
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import { Typography } from '@mui/material';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import UserButton from '../UserButton/UserButton';
 import formClasses from './Form.module.css';
 
