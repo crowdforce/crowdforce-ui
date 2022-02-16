@@ -31,7 +31,7 @@ const ProjectPage = () => {
     if (query.projectId) {
       projectApi.fetch();
     }
-  }, [query.projectId, userApi.data?.name]);
+  }, [projectApi, query.projectId, userApi.data?.name]);
 
   return (
     <Page>
