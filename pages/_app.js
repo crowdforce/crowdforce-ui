@@ -1,3 +1,3 @@
-import '../node_modules/leaflet/dist/leaflet.css';
+import './style.css';
 
 export { default } from '../App';
