@@ -17,7 +17,6 @@
     "@mui/lab": "^5.0.0-alpha.61",
     "@mui/material": "^5.2.5",
     "@mui/styles": "^5.2.3",
-    "@next-auth/prisma-adapter": "^1.0.3",
     "@prisma/client": "^3.15.2",
     "axios": "^0.21.2",
     "catch-links": "^2.0.1",
