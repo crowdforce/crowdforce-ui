@@ -44,22 +44,21 @@ const layers = {
 const ProjectMapLegend = ({ data, initialCoords }) => {
   const onClick = useCallback((event) => {
     const { lngLat } = event;
-  },
-  []);
+  }, []);
 
   const dataFeatureTypes = featureReduce(data, (acc, x, i) => (acc.includes(getType(x)) ? acc : acc.concat(getType(x))), []);
 
-  const { map } = useMap();
+  const { map: mapInstance } = useMap();
   useEffect(() => {
-    if (!map) { return; }
-    map.fitBounds(
+    if (!mapInstance) { return; }
+    mapInstance.fitBounds(
       bbox(data),
       {
         padding: 20,
         linear: true,
       },
     );
-  }, [map, data]);
+  }, [mapInstance, data]);
 
   return (
     <MapGl
