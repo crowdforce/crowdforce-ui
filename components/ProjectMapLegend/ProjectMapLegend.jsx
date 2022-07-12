@@ -1,12 +1,14 @@
 import { Stack, Typography } from '@mui/material';
 import { getType } from '@turf/invariant';
-import { featureReduce, propEach } from '@turf/meta';
+import { featureReduce, propEach, propReduce } from '@turf/meta';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
-import { useCallback } from 'react';
-import { useState } from 'react';
+import {
+  useCallback, useContext, useState, useRef,
+} from 'react';
+
 import SaveIcon from '@mui/icons-material/Save';
-import { useRef } from 'react';
+
 import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
@@ -38,41 +40,24 @@ const icons = {
   ),
 };
 
-const ProjectMapLegend = ({ data, setGeojson }) => {
-  const [state, setState] = useState(null)
-  const ref = useRef(null)
-  const items = featureReduce(
-    data,
-    (acc, x, i) => ([
-      ...acc,
-      {
-        type: getType(x),
-        name: x.properties?.name ?? `${getType(x)} ${i}`,
-      },
-    ]),
-    []
-  );
+const ProjectMapLegend = ({ geojsonList, setGeojsonList }) => {
+  const [state, setState] = useState(null);
+  const ref = useRef(null);
 
-  const onEdit = useCallback(index => {
-    setGeojson(
-      {
-        ...data,
-        features: data.features.map((x, i) => {
-          return index == i ? { ...x, properties: { ...x.properties, name: ref.current?.value } } : x
-        }),
-      }
-    )
-    setState(null)
-  }, [data, data.features])
+  const onEdit = useCallback((id) => {
+    const newGeojson = geojsonList.map((x, i) => (x.id == id ? { ...x, name: ref.current?.value } : x));
+    setGeojsonList(newGeojson);
+    setState(null);
+  }, [geojsonList]);
 
   return (
     <Stack spacing={2}>
-      {items.map((x, i) => (
+      {geojsonList.map((x, i) => (
         <Stack
           direction="row"
           spacing={2}
-          alignItems='center'
-          flexWrap='nowrap'
+          alignItems="center"
+          flexWrap="nowrap"
           sx={{
             height: 44,
           }}
@@ -86,19 +71,21 @@ const ProjectMapLegend = ({ data, setGeojson }) => {
             {state == i ? (
               <>
                 <Paper
-                  sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', maxWidth: 400 }}
+                  sx={{
+                    p: '2px 4px', display: 'flex', alignItems: 'center', maxWidth: 400,
+                  }}
                 >
                   <InputBase
                     inputRef={ref}
                     sx={{ ml: 1, flex: 1 }}
                     placeholder={x.name}
                   />
-                  <Divider orientation='vertical' />
+                  <Divider orientation="vertical" />
                   <IconButton
                     xs={{
                       marginLeft: 'auto',
                     }}
-                    onClick={() => onEdit(i)}
+                    onClick={() => onEdit(x.id)}
                   >
                     <SaveIcon />
                   </IconButton>

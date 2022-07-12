@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { useRouter } from 'next/router';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import useApi from '../utils/useApi';
 import ActivityEditor from '../components/ActivityEditor';
-import ProjectMap from '../components/ProjectMap';
+import ProjectMap, {DrawControlHOC} from '../components/ProjectMap';
 import ProjectMapLegend from '../components/ProjectMapLegend';
-import geojson from '../public/json/merged.json';
-import { useRouter } from 'next/router'
+import geojsonFile from '../public/json/merged.json';
+import { featureReduce } from '@turf/meta';
+import { getType } from '@turf/invariant';
+import Button from '@mui/material/Button';
 
-{/* <TabPanel value="activities">
+{ /* <TabPanel value="activities">
   <EventList
     projectId={query.projectId}
     activityId={null}
@@ -23,7 +26,7 @@ import { useRouter } from 'next/router'
       <Button onClick={handleNewActivityClick} variant="contained" color="primary">Добавить активность</Button>
     </div>
   )}
-</TabPanel> */}
+</TabPanel> */ }
 
 const ProjectPage = () => {
   const { query } = useRouter();
@@ -46,64 +49,106 @@ const ProjectPage = () => {
     }
   }, [projectApi, query.projectId, userApi.data?.name]);
 
-  const [state, setState] = useState(geojson)
+  const [geojsonList, setGeojsonList] = useState(
+    featureReduce(
+        geojsonFile,
+        (acc, x, i) => (acc.concat([
+            {
+                type: getType(x),
+                name: x.properties?.name ?? `${getType(x)} ${i+1}`,
+                id: x.id,
+            },
+        ])),
+        []
+    )
+  );
+    
+  const onAction = useCallback(props => {
+    const propsIds = props.features.map((x,i) => x.id)
+    const changedIds = geojsonList
+        .filter((x,i) => propsIds.includes(x.id))
+        .map((x,i) => x.id);
+
+    switch (props.type) {
+      case 'draw.create':
+        setGeojsonList(
+            props.features.map((x,i) => ({
+                type: getType(x),
+                id: x.id,
+                name: `New feature`,
+            }))
+                .concat(geojsonList)
+        )
+        break;
+
+      case 'draw.delete':
+        setGeojsonList(
+            geojsonList.filter((x, i) => !changedIds.includes(x.id))
+        )
+        break;
+
+      default:
+        break;
+    }
+  }, [geojsonList]); 
 
   return (
     <Page>
-      <Stack
-        direction={{ sm: 'column', md: 'row' }}
-        spacing={2}
-        sx={{
-          height: '100%',
-        }}
-      >
-        <div
-          style={{
-            position: 'relative',
-            maxWidth: '450px',
-            flex: '1 0 100%',
-          }}
-        >
-          <ProjectCard projectId={query.projectId} />
-        </div>
-        <Card
+        <Stack
+          direction={{ sm: 'column', md: 'row' }}
+          spacing={2}
           sx={{
-            flex: '1 0 auto'
+            height: '100%',
           }}
         >
-          <Stack
-            direction={{ sm: 'column', md: 'row' }}
-            spacing={2}
-            sx={{
-              height: '100%',
-              maxHeight: '80vh',
+          <div
+            style={{
+              position: 'relative',
+              maxWidth: '450px',
+              flex: '1 0 100%',
             }}
           >
-
-            <CardContent
-              style={{
-                flex: '1 0 75%',
-              }}
-            >
-              <ProjectMap
-                data={state}
-              />
-            </CardContent>
-            <CardContent
+            <ProjectCard projectId={query.projectId} />
+          </div>
+          <Card
+            sx={{
+              flex: '1 0 auto',
+            }}
+          >
+            <Stack
+              direction={{ sm: 'column', md: 'row' }}
+              spacing={2}
               sx={{
-                width: '100%',
-                minWidth: 200,
-                overflowY: 'auto',
+                height: '100%',
+                maxHeight: '80vh',
               }}
             >
-              <ProjectMapLegend
-                data={state}
-                setGeojson={setState}
-              />
-            </CardContent>
-          </Stack>
-        </Card>
-      </Stack>
+
+              <CardContent
+                style={{
+                  flex: '1 0 75%',
+                }}
+              >
+                <ProjectMap 
+                    initialGeojson={geojsonFile}
+                    onAction={onAction}
+                />
+              </CardContent>
+              <CardContent
+                sx={{
+                  width: '100%',
+                  minWidth: 200,
+                  overflowY: 'auto',
+                }}
+              >
+                <ProjectMapLegend 
+                    geojsonList={geojsonList} 
+                    setGeojsonList={setGeojsonList}
+                />
+              </CardContent>
+            </Stack>
+          </Card>
+        </Stack>
       <ActivityEditor
         projectId={query.projectId}
         open={openActivityEditor}

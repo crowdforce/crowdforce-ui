@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import catchLinks from 'catch-links';
-import { MapProvider } from 'react-map-gl';
 import ThemeProvider from './components/ThemeProvider';
 import Header from './components/Header';
 
@@ -47,10 +46,8 @@ const App = ({ Component, pageProps }) => {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <ThemeProvider>
-        <MapProvider>
-          <Header />
-          <Component {...pageProps} />
-        </MapProvider>
+        <Header />
+        <Component {...pageProps} />
       </ThemeProvider>
     </>
   );
