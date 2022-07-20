@@ -2,31 +2,17 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import Stack from '@mui/material/Stack';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import { useRouter } from 'next/router';
 import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import useApi from '../utils/useApi';
 import ActivityEditor from '../components/ActivityEditor';
-import ProjectMap, { DrawControlHOC } from '../components/ProjectMap';
+import ProjectMap from '../components/ProjectMap';
 import ProjectMapLegend from '../components/ProjectMapLegend';
 import geojsonFile from '../public/json/merged.json';
 import { featureReduce, featureEach } from '@turf/meta';
 import { getType } from '@turf/invariant';
 import Button from '@mui/material/Button';
-
-{ /* <TabPanel value="activities">
-  <EventList
-    projectId={query.projectId}
-    activityId={null}
-    activityItemId={null}
-  />
-  {projectApi.data?.privilege === 'OWNER' && (
-    <div style={{ padding: '20px 0' }}>
-      <Button onClick={handleNewActivityClick} variant="contained" color="primary">Добавить активность</Button>
-    </div>
-  )}
-</TabPanel> */ }
 
 const ProjectPage = () => {
     const { query } = useRouter();
