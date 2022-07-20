@@ -51,7 +51,13 @@ const ProjectMapLegend = ({ geojsonList, setGeojsonList }) => {
   }, [geojsonList]);
 
   return (
-    <Stack spacing={2}>
+    <Stack
+      spacing={2}
+      sx={{
+        height: '100%',
+        overflowY: 'auto',
+      }}
+    >
       {geojsonList.map((x, i) => (
         <Stack
           direction="row"

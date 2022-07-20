@@ -58,7 +58,7 @@ export const DrawControlHOC = forwardRef(({ initialGeojson, onAction }, ref) => 
   );
 });
 
-const ProjectMap = ({ initialCoords = INITIAL_POSITION, initialGeojson, onAction }) => {
+const ProjectMap = forwardRef(({ initialCoords = INITIAL_POSITION, initialGeojson, onAction }, ref) => {
   const MapGl = ReactMapboxGl({
     accessToken: 'pk.eyJ1Ijoia29wYWJsNCIsImEiOiJja2NkYjVxeDEwY3V2MzVwZzB3dXRndDVyIn0.av_Kw8ZtSe3fPnZttBf3MA',
   });
@@ -67,8 +67,6 @@ const ProjectMap = ({ initialCoords = INITIAL_POSITION, initialGeojson, onAction
     zoom: [INITIAL_ZOOM],
     center: initialCoords,
   });
-
-  const drawRef = useRef(null);
 
   //   const dataFeatureTypes = featureReduce(data, (acc, x, i) => (acc.includes(getType(x)) ? acc : acc.concat(getType(x))), []);
 
@@ -100,7 +98,7 @@ const ProjectMap = ({ initialCoords = INITIAL_POSITION, initialGeojson, onAction
         )} */}
 
         <DrawControlHOC
-          ref={drawRef}
+          ref={ref}
           initialGeojson={initialGeojson}
           onAction={onAction}
         />
@@ -108,6 +106,6 @@ const ProjectMap = ({ initialCoords = INITIAL_POSITION, initialGeojson, onAction
       </MapGl>
     </>
   );
-};
+});
 
 export default memo(ProjectMap);
