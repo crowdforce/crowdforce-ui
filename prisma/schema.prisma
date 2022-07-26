@@ -55,8 +55,8 @@ model TelegramAccount {
 
 model User {
   id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
   name          String?
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
