@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import catchLinks from 'catch-links';
+import { SessionProvider } from 'next-auth/react';
 import ThemeProvider from './components/ThemeProvider';
 import Header from './components/Header';
 
@@ -11,7 +12,7 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === 'true') {
   require('./mocks');
 }
 
-const App = ({ Component, pageProps }) => {
+const App = ({ Component, session, ...pageProps }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -46,8 +47,10 @@ const App = ({ Component, pageProps }) => {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <ThemeProvider>
-        <Header />
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          <Header />
+          <Component {...pageProps} />
+        </SessionProvider>
       </ThemeProvider>
     </>
   );
