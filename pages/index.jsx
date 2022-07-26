@@ -76,13 +76,21 @@ const MainPage = () => {
           <ListItem>
             <ListItemText
               primary={<Typography variant="h6">Календарь</Typography>}
-              secondary={<Typography>Выбери дату, когда готов помочь, и телеграм-бот напомнит тебе о времени активности</Typography>}
+              secondary={(
+                <Typography>
+                  Выбери дату, когда готов помочь, и телеграм-бот напомнит тебе о времени активности
+                </Typography>
+              )}
             />
           </ListItem>
           <ListItem>
             <ListItemText
               primary={<Typography variant="h6">Общение и новости</Typography>}
-              secondary={<Typography>Узнавай первым о последних новостях проектов и достигнутых целях</Typography>}
+              secondary={(
+                <Typography>
+                  Узнавай первым о последних новостях проектов и достигнутых целях
+                </Typography>
+              )}
             />
           </ListItem>
         </List>
