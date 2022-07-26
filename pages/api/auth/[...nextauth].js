@@ -57,6 +57,9 @@ async function findOrCreateUser(credentials) {
       telegram: true,
     }
   });
+  if (user && !user.enabled) {
+    return null
+  }
   if (user) {
     return user
   }
@@ -98,47 +101,47 @@ export default NextAuth({
     // Defaults to `session.maxAge`.
     maxAge: 60 * 60 * 24 * 30,
   },
-  // callbacks: {
-  // async signIn({ user, account, profile, email, credentials }) {
-  //   console.log('signIn callback');
-  //   console.log(user);
-  //   console.log(account);
-  //   // console.log(profile);
-  //   // console.log(email);
-  //   console.log(credentials);
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log('signIn callback');
+      console.log(user);
+      console.log(account);
+      console.log(profile);
+      console.log(email);
+      console.log(credentials);
 
-  //   const isAllowedToSignIn = true
-  //   if (isAllowedToSignIn) {
-  //     return true
-  //   } else {
-  //     // Return false to display a default error message
-  //     return false
-  //     // Or you can return a URL to redirect to:
-  //     // return '/unauthorized'
-  //   }
-  // },
-  // async redirect({ url, baseUrl }) {
-  //   return baseUrl
-  // },
-  // async session({ session, user, token }) {
-  //   console.log('session callback');
-  //   console.log(user);
-  //   console.log(token);
+      //   const isAllowedToSignIn = true
+      //   if (isAllowedToSignIn) {
+      //     return true
+      //   } else {
+      //     // Return false to display a default error message
+      //     return false
+      //     // Or you can return a URL to redirect to:
+      //     // return '/unauthorized'
+      //   }
+    },
+    // async redirect({ url, baseUrl }) {
+    //   return baseUrl
+    // },
+    // async session({ session, user, token }) {
+    //   console.log('session callback');
+    //   console.log(user);
+    //   console.log(token);
 
-  //   return session;
-  // },
-  // async jwt({ token, user, account, profile, isNewUser }) {
-  //   console.log('token callback');
-  //   console.log(user);
-  //   console.log(account);
-  //   console.log(profile);
-  //   console.log(isNewUser);
+    //   return session;
+    // },
+    // async jwt({ token, user, account, profile, isNewUser }) {
+    //   console.log('token callback');
+    //   console.log(user);
+    //   console.log(account);
+    //   console.log(profile);
+    //   console.log(isNewUser);
 
-  //   // token.picture = user.photo_url
+    //   // token.picture = user.photo_url
 
-  //   return token
-  // },
-  // },
+    //   return token
+    // },
+  },
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")

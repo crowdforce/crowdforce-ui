@@ -62,6 +62,8 @@ model User {
   emailVerified DateTime? @map("email_verified")
   image         String?
 
+  enabled Boolean @default(true)
+
   telegramId Int             @map("telegram_id")
   telegram   TelegramAccount @relation(fields: [telegramId], references: [id], onDelete: Cascade)
 
