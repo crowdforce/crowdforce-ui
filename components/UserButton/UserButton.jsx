@@ -43,10 +43,7 @@ const UserButton = () => {
   if (isAuthenticated) {
     return (
       <button onClick={() => signOut()}>
-        <Avatar
-          alt="Remy Sharp"
-          src={session.data?.user?.image}
-        />
+        sign out
       </button>
     );
   }
