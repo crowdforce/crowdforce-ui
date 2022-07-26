@@ -1,7 +1,8 @@
 import {
   Typography, List, ListItem, ListItemAvatar, ListItemText,
 } from '@mui/material';
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Page from '../components/Page';
 import classes from './index.module.css';
 import Map from '../components/Map';
@@ -9,7 +10,7 @@ import ProjectEditor from '../components/ProjectEditor';
 
 const MainPage = () => {
   const [openProjectEditor, setOpenProjectEditor] = useState(false);
-  const handleNewProjectClick = (e) => {
+  const handleNewProjectClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     setOpenProjectEditor(true);
   };
@@ -17,6 +18,7 @@ const MainPage = () => {
   const handleProjectEditorDialogClose = () => {
     setOpenProjectEditor(false);
   };
+  const session = useSession();
 
   return (
     <Page>
