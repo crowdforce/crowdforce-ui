@@ -102,24 +102,23 @@ export default NextAuth({
     maxAge: 60 * 60 * 24 * 30,
   },
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log('signIn callback');
-      console.log(user);
-      console.log(account);
-      console.log(profile);
-      console.log(email);
-      console.log(credentials);
-
-      //   const isAllowedToSignIn = true
-      //   if (isAllowedToSignIn) {
-      //     return true
-      //   } else {
-      //     // Return false to display a default error message
-      //     return false
-      //     // Or you can return a URL to redirect to:
-      //     // return '/unauthorized'
-      //   }
-    },
+    // async signIn({ user, account, profile, email, credentials }) {
+    //   console.log('signIn callback');
+    //   console.log(user);
+    //   console.log(account);
+    //   console.log(profile);
+    //   console.log(email);
+    //   console.log(credentials);
+    //   //   const isAllowedToSignIn = true
+    //   //   if (isAllowedToSignIn) {
+    //   //     return true
+    //   //   } else {
+    //   //     // Return false to display a default error message
+    //   //     return false
+    //   //     // Or you can return a URL to redirect to:
+    //   //     // return '/unauthorized'
+    //   //   }
+    // },
     // async redirect({ url, baseUrl }) {
     //   return baseUrl
     // },
