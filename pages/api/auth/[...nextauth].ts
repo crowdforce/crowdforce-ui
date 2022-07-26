@@ -1,5 +1,5 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import NextAuth from 'next-auth'
+import CredentialsProvider from 'next-auth/providers/credentials'
 
 import crypto from 'crypto'
 
@@ -16,7 +16,7 @@ const prisma = new PrismaClient()
  * @param {*} params
  * @returns
  */
-async function checkSignature(params) {
+async function checkSignature(params: Record<string, any>) {
   const keys = ['id', 'username', 'first_name', 'last_name', 'photo_url', 'auth_date']
   const checkString = keys
     .sort()
@@ -25,7 +25,7 @@ async function checkSignature(params) {
     .join('\n')
 
   const secret = crypto.createHash('sha256')
-    .update(process.env.TELEGRAM_BOT_SECRET)
+    .update(process.env.TELEGRAM_BOT_SECRET!)
     .digest()
 
   const hash = crypto.createHmac('sha256', secret)
@@ -35,13 +35,13 @@ async function checkSignature(params) {
   return hash === params['hash']
 }
 
-function tgAuthDateToDate(value) {
+function tgAuthDateToDate(value: string | number) {
   const n = Number(value)
 
   return new Date(n * 1000)
 }
 
-async function findOrCreateUser(credentials) {
+async function findOrCreateUser(credentials: Record<string, any>) {
   const telegramId = Number(credentials.id)
   if (!telegramId) {
     return null
@@ -153,6 +153,10 @@ export default NextAuth({
         username: { label: 'username', type: 'text' },
       },
       async authorize(credentials, req) {
+        if (!credentials) {
+          return null
+        }
+
         const pass = await checkSignature(credentials)
         if (!pass) {
           return null
@@ -173,33 +177,33 @@ export default NextAuth({
       },
     }),
   ],
-  events: {
-    async signIn(message) {
-      /* on successful sign in */
-      console.log('event:signin', message);
-    },
-    async signOut(message) {
-      /* on signout */
-      console.log('event:signout', message);
-    },
-    async createUser(message) {
-      /* user created */
-      console.log('event:createUser', message);
-    },
-    async updateUser(message) {
-      /* user updated - e.g. their email was verified */
-      console.log('event:updateUser', message);
-    },
-    async linkAccount(message) {
-      /* account (e.g. Twitter) linked to a user */
-      console.log('event:linkAccount', message);
-    },
-    async session(message) {
-      /* session is active */
-      console.log('event:session', message);
-    },
-    async error(message) {
-      console.log('event:error', message);
-    },
-  }
+  // events: {
+  //   async signIn(message) {
+  //     /* on successful sign in */
+  //     console.log('event:signin', message);
+  //   },
+  //   async signOut(message) {
+  //     /* on signout */
+  //     console.log('event:signout', message);
+  //   },
+  //   async createUser(message) {
+  //     /* user created */
+  //     console.log('event:createUser', message);
+  //   },
+  //   async updateUser(message) {
+  //     /* user updated - e.g. their email was verified */
+  //     console.log('event:updateUser', message);
+  //   },
+  //   async linkAccount(message) {
+  //     /* account (e.g. Twitter) linked to a user */
+  //     console.log('event:linkAccount', message);
+  //   },
+  //   async session(message) {
+  //     /* session is active */
+  //     console.log('event:session', message);
+  //   },
+  //   async error(message) {
+  //     console.log('event:error', message);
+  //   },
+  // }
 });
