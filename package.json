@@ -7,8 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --ext .js --ext .jsx .",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build",
-    "prisma:generate": "prisma generate",
     "format": "npm run lint -- --fix"
   },
   "dependencies": {
@@ -18,26 +16,33 @@
     "@mui/lab": "^5.0.0-alpha.61",
     "@mui/material": "^5.2.5",
     "@mui/styles": "^5.2.3",
+    "@turf/bbox": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
+    "@turf/invariant": "^6.5.0",
+    "@turf/meta": "^6.5.0",
     "@prisma/client": "^3.15.2",
     "axios": "^0.21.2",
     "catch-links": "^2.0.1",
     "leaflet": "^1.7.1",
     "lodash": "^4.17.21",
+    "mapbox-gl": "^2.9.1",
     "mobx": "^6.3.2",
     "mobx-react-lite": "^3.2.0",
-    "next": "12.2.2",
-    "next-auth": "^4.9.0",
+    "next": "12.0.10",
+    "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-leaflet": "^3.2.0",
+    "react-map-gl": "^7.0.17",
     "react-telegram-login": "^1.1.2",
     "request": "^2.88.2",
+    "use-common-state": "^2.0.2",
     "validate": "^5.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
     "@types/react": "^17.0.7",
-    "prop-types": "^15.7.2",
+    "airbnb-prop-types": "^2.16.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.28.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -49,8 +54,7 @@
     "husky": "^6.0.0",
     "jest": "^27.0.1",
     "msw": "^0.29.0",
-    "prisma": "^3.15.2",
-    "typescript": "^4.7.4"
+    "typescript": "^4.2.4"
   },
   "msw": {
     "workerDirectory": "public"

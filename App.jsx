@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import catchLinks from 'catch-links';
+import { MapProvider } from 'react-map-gl';
 import { SessionProvider } from 'next-auth/react';
 import ThemeProvider from './components/ThemeProvider';
 import Header from './components/Header';
@@ -48,8 +49,10 @@ const App = ({ Component, session, ...pageProps }) => {
       </Head>
       <ThemeProvider>
         <SessionProvider session={session}>
-          <Header />
-          <Component {...pageProps} />
+          <MapProvider>
+            <Header />
+            <Component {...pageProps} />
+          </MapProvider>
         </SessionProvider>
       </ThemeProvider>
     </>

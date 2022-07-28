@@ -30,7 +30,11 @@ const ProjectCardSkeleton = () => (
 const ProjectCard = (props) => {
   const { projectId, onClose } = props;
   const projectApi = useApi(`/api/projects/${projectId}`);
-  const projectData = projectApi.data ?? {};
+  const projectData = projectApi.data ?? {
+    name: 'proj name',
+    description: 'description placeholder',
+    imageUrl: '/wip.png',
+  }; // {};
   const isLoadingProject = projectApi.isLoading ?? true;
   const [openProjectEditor, setOpenProjectEditor] = useState(false);
   const router = useRouter();
