@@ -1,7 +1,8 @@
 import {
   Typography, List, ListItem, ListItemAvatar, ListItemText,
 } from '@mui/material';
-import { useState } from 'react';
+import { MouseEventHandler, useState } from 'react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Page from '../components/Page';
 import classes from './index.module.css';
 import Map from '../components/Map';
@@ -9,7 +10,7 @@ import ProjectEditor from '../components/ProjectEditor';
 
 const MainPage = () => {
   const [openProjectEditor, setOpenProjectEditor] = useState(false);
-  const handleNewProjectClick = (e) => {
+  const handleNewProjectClick = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     setOpenProjectEditor(true);
   };
@@ -17,6 +18,7 @@ const MainPage = () => {
   const handleProjectEditorDialogClose = () => {
     setOpenProjectEditor(false);
   };
+  const session = useSession();
 
   return (
     <Page>
@@ -76,13 +78,21 @@ const MainPage = () => {
           <ListItem>
             <ListItemText
               primary={<Typography variant="h6">Календарь</Typography>}
-              secondary={<Typography>Выбери дату, когда готов помочь, и телеграм-бот напомнит тебе о времени активности</Typography>}
+              secondary={(
+                <Typography>
+                  Выбери дату, когда готов помочь, и телеграм-бот напомнит тебе о времени активности
+                </Typography>
+              )}
             />
           </ListItem>
           <ListItem>
             <ListItemText
               primary={<Typography variant="h6">Общение и новости</Typography>}
-              secondary={<Typography>Узнавай первым о последних новостях проектов и достигнутых целях</Typography>}
+              secondary={(
+                <Typography>
+                  Узнавай первым о последних новостях проектов и достигнутых целях
+                </Typography>
+              )}
             />
           </ListItem>
         </List>
