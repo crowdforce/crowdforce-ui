@@ -1,4 +1,4 @@
-import { Skeleton } from '@mui/material';
+import { Avatar, Skeleton } from '@mui/material';
 import { useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
