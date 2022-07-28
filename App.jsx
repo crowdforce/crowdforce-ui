@@ -7,6 +7,7 @@ import { MapProvider } from 'react-map-gl';
 import { SessionProvider } from 'next-auth/react';
 import ThemeProvider from './components/ThemeProvider';
 import Header from './components/Header';
+import { MantineProvider } from '@mantine/core';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'true') {
   // eslint-disable-next-line global-require
@@ -48,12 +49,14 @@ const App = ({ Component, session, ...pageProps }) => {
         <meta name="theme-color" content="#ffffff" />
       </Head>
       <ThemeProvider>
-        <SessionProvider session={session}>
-          <MapProvider>
-            <Header />
-            <Component {...pageProps} />
-          </MapProvider>
-        </SessionProvider>
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+          <SessionProvider session={session}>
+            <MapProvider>
+              <Header />
+              <Component {...pageProps} />
+            </MapProvider>
+          </SessionProvider>
+        </MantineProvider>
       </ThemeProvider>
     </>
   );

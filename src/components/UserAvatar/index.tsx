@@ -1,12 +1,14 @@
-import { Avatar } from '@mui/material'
+import { Avatar } from '@mantine/core'
 
 export type UserAvatarProps = {
+  alt?: string
   src: string
 }
 
 export const UserAvatar = (props: UserAvatarProps) => (
   <Avatar
-    alt="Remy Sharp"
+    radius="xl"
+    alt={props.alt}
     src={props.src}
   />
 )
