@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import CardMedia from '@mui/material/CardMedia';
 import Card from '@mui/material/Card';

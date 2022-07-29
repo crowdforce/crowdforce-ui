@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { NavigationControl, Source, Layer, Popup, Marker } from 'react-map-gl';
+import { NavigationControl, Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
-import { featureCollection } from '@turf/helpers'
 import pinIcon from '../../public/activity-pin.png'
 import Image from 'next/image'
 import IndexMapPopup from './IndexMapPopup'
@@ -29,18 +28,18 @@ const layerStyle = {
 };
 
 const IndexMap = ({ data, initialCoords }) => {
-    const [state, setState] = useState([]);
+    const [selectedid, setSelectedId] = useState([]);
     const onClick = useCallback(
         (e, id) => {
             e.originalEvent.stopPropagation();
             // while features are from placeholder: id = index = i  
-            setState(
-                state.includes(id)
-                    ? state.filter((x, i) => i === id)
-                    : state.concat(id)
+            setSelectedId(
+                selectedid.includes(id)
+                    ? selectedid.filter((x, i) => i === id)
+                    : selectedid.concat(id)
             )
         },
-        [state],
+        [selectedid],
     );
 
     return (
@@ -93,13 +92,13 @@ const IndexMap = ({ data, initialCoords }) => {
                 </Marker>
             ))}
 
-            {state.map((x, i) => (
+            {selectedid.map((x, i) => (
                 <IndexMapPopup
                     key={x}
                     feature={data[x]}
                 />
             ))}
-        </MapGl >
+        </MapGl>
     );
 };
 
