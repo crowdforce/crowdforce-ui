@@ -1,7 +1,7 @@
 import {
     Typography, List, ListItem, ListItemAvatar, ListItemText,
 } from '@mui/material';
-import { MouseEventHandler, useState } from 'react';
+import { useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Page from '../components/Page';
 import classes from './index.module.css';

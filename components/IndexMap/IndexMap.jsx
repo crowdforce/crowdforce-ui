@@ -27,12 +27,12 @@ const layerStyle = {
     },
 };
 
-const IndexMap = ({ data, initialCoords }) => {
+const IndexMap = ({ data }) => {
     const [selectedid, setSelectedId] = useState([]);
     const onClick = useCallback(
         (e, id) => {
             e.originalEvent.stopPropagation();
-            // while features are from placeholder: id = index = i  
+            // while features are from placeholder: id = index = i
             setSelectedId(
                 selectedid.includes(id)
                     ? selectedid.filter((x, i) => i === id)
@@ -49,7 +49,7 @@ const IndexMap = ({ data, initialCoords }) => {
             mapStyle="mapbox://styles/mapbox/light-v10"
             mapboxAccessToken={'pk.eyJ1Ijoia29wYWJsNCIsImEiOiJja2NkYjVxeDEwY3V2MzVwZzB3dXRndDVyIn0.av_Kw8ZtSe3fPnZttBf3MA'}
             initialViewState={{
-                ...initialCoords ?? INITIAL_POSITION,
+                INITIAL_POSITION,
                 zoom: INITIAL_ZOOM,
             }}
         >
