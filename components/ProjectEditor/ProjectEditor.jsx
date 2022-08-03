@@ -4,7 +4,6 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import LocationPicker from '../LocationPicker';
 import classes from './ProjectEditor.module.css';
 import formClasses from '../Form/Form.module.css';
 import Form from '../Form';
@@ -89,9 +88,9 @@ const ProjectEditor = (props) => {
               label="Название проекта"
             />
             <div className={classes.map}>
-              <LocationPicker
+              {/* <LocationPicker
                 name="location"
-              />
+              /> */}
             </div>
             <FormInput
               name="description"
