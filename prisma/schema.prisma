@@ -67,6 +67,8 @@ model User {
   telegramId Int             @map("telegram_id")
   telegram   TelegramAccount @relation(fields: [telegramId], references: [id], onDelete: Cascade)
 
+  projects Project[]
+
   @@map("users")
 }
 
@@ -74,7 +76,57 @@ model User {
 //   identifier String
 //   token      String   @unique
 //   expires    DateTime
+enum ProjectStatus {
+  Init
+  Active
+  // Archive
+  // Banned
+
+  @@map("project_status")
+}
 
 //   @@unique([identifier, token])
 //   @@map("verificationtokens")
+
+model MapViewport {
+  id       String  @id @default(cuid())
+  lng      Float
+  lat      Float
+  zoom     Float
+  minZoom  Float   @default(0) @map(name: "min_zoom")
+  maxZoom  Float   @default(22) @map(name: "max_zoom")
+  pitch    Float   @default(0)
+  minPitch Float   @default(0) @map(name: "min_pitch")
+  maxPitch Float   @default(85) @map(name: "max_pitch")
+  bearing  Float   @default(0)
+  isFlat   Boolean @default(true) @map(name: "is_flat")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  projects Project[] @relation()
+
+  @@map(name: "viewports")
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?       @map(name: "image_url")
+  status      ProjectStatus
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  viewportId String
+  viewport   MapViewport @relation(fields: [viewportId], references: [id])
+
+  // objects     Object[]
+
+  @@map(name: "projects")
+}
 // }
