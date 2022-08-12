@@ -87,6 +87,12 @@ enum ProjectStatus {
 
 //   @@unique([identifier, token])
 //   @@map("verificationtokens")
+enum FeatureStatus {
+  Active
+  Deleted
+
+  @@map("feature_status")
+}
 
 model MapViewport {
   id       String  @id @default(cuid())
@@ -125,8 +131,35 @@ model Project {
   viewportId String
   viewport   MapViewport @relation(fields: [viewportId], references: [id])
 
-  // objects     Object[]
+  features Feature[]
 
   @@map(name: "projects")
+}
+
+model Feature {
+  id          String  @id @default(cuid())
+  title       String?
+  description String?
+  imageUrl    String? @map(name: "image_url")
+
+  // objectTypeId Int
+  // objectType   ObjectType? @relation("objectType", fields: [objectTypeId], references: [id])
+
+  status FeatureStatus
+
+  // lng Float
+  // lat Float
+
+  // Point or Polygon
+  geometry Json
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  deletedAt DateTime @default(now()) @map(name: "deleted_at")
+
+  @@map(name: "features")
 }
 // }
