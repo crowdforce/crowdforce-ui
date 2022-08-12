@@ -11,3 +11,9 @@ export type ProjectDto = {
   title: string
   description: string
 }
+
+export type AdminProjectDto = {
+  id: string
+  title: string
+  description: string
+}
