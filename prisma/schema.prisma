@@ -89,10 +89,10 @@ model Project {
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
 
-  ownerId String
+  ownerId String @map(name: "owner_id")
   owner   User   @relation(fields: [ownerId], references: [id])
 
-  viewportId String
+  viewportId String @map(name: "viewport_id")
   viewport   MapViewport @relation(fields: [viewportId], references: [id])
 
   features Feature[]
@@ -113,7 +113,7 @@ model Feature {
 
   geometry Json
 
-  projectId String
+  projectId String @map(name: "project_id")
   project   Project @relation(fields: [projectId], references: [id])
 
   createdAt DateTime @default(now()) @map(name: "created_at")
