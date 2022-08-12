@@ -36,7 +36,7 @@ export default withUser<NewProjectDto>(async (req, res) => {
     data: {
       title,
       description,
-      status: ProjectStatus.Init,
+      updatedAt: new Date(),
     },
   })
 

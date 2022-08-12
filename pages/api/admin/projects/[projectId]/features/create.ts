@@ -1,17 +1,17 @@
 import prisma from "@/server/prisma";
-import { NewProjectDto } from "@/common/types";
+import { NewFeatureDto, NewProjectDto } from "@/common/types";
 import { withUser } from "@/server/middlewares/withUser";
-import { FeatureStatus, Project } from "@prisma/client";
+import { Feature, FeatureStatus } from "@prisma/client";
 import { switchProjectToActiveStatus } from "@/server/app/project";
 import { single } from "@/common/lib/array";
 
-function mapResponse<T extends { id: string } = Project>(project: T): NewProjectDto {
+function mapResponse<T extends { id: string } = Feature>(project: T): NewFeatureDto {
   return {
     id: project.id,
   }
 }
 
-export default withUser<NewProjectDto>(async (req, res) => {
+export default withUser<NewFeatureDto>(async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(404).json({
       error: 'Not found',

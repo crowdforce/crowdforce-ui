@@ -9,6 +9,7 @@ function mapResponse(project: Project): AdminProjectDto {
     id: project.id,
     title: project.title,
     description: project.description,
+    status: project.status,
   }
 }
 
