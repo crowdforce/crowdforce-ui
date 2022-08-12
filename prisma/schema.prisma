@@ -111,10 +111,6 @@ model Feature {
 
   status FeatureStatus
 
-  // lng Float
-  // lat Float
-
-  // Point or Polygon
   geometry Json
 
   projectId String
