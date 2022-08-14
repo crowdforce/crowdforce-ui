@@ -10,6 +10,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  Admin
+  User
+
+  @@map("user_role")
+}
+
 model TelegramAccount {
   id        Int      @id
   username  String
@@ -31,6 +38,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
+  role          UserRole  @default(User)
 
   enabled Boolean @default(true)
 
@@ -92,7 +100,7 @@ model Project {
   ownerId String @map(name: "owner_id")
   owner   User   @relation(fields: [ownerId], references: [id])
 
-  viewportId String @map(name: "viewport_id")
+  viewportId String      @map(name: "viewport_id")
   viewport   MapViewport @relation(fields: [viewportId], references: [id])
 
   features Feature[]
@@ -113,7 +121,7 @@ model Feature {
 
   geometry Json
 
-  projectId String @map(name: "project_id")
+  projectId String  @map(name: "project_id")
   project   Project @relation(fields: [projectId], references: [id])
 
   createdAt DateTime @default(now()) @map(name: "created_at")
