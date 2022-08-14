@@ -3,7 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 
 import crypto from 'crypto'
 
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, UserRole } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
@@ -69,6 +69,7 @@ async function findOrCreateUser(credentials: Record<string, any>) {
     data: {
       name,
       image: credentials.photo_url,
+      role: UserRole.User,
       telegram: {
         connectOrCreate: {
           where: {
@@ -122,24 +123,18 @@ export default NextAuth({
     // async redirect({ url, baseUrl }) {
     //   return baseUrl
     // },
-    // async session({ session, user, token }) {
-    //   console.log('session callback');
-    //   console.log(user);
-    //   console.log(token);
+    async session({ session, user, token }) {
+      (session.user as any).role = token.role
 
-    //   return session;
-    // },
-    // async jwt({ token, user, account, profile, isNewUser }) {
-    //   console.log('token callback');
-    //   console.log(user);
-    //   console.log(account);
-    //   console.log(profile);
-    //   console.log(isNewUser);
+      return session
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      if (user) {
+        token.role = user?.role ?? 'Unknown'
+      }
 
-    //   // token.picture = user.photo_url
-
-    //   return token
-    // },
+      return token
+    },
   },
   providers: [
     CredentialsProvider({
@@ -173,6 +168,7 @@ export default NextAuth({
           id: user.id,
           name: user.name,
           image: user.image,
+          role: user.role,
         };
       },
     }),
