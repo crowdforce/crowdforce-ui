@@ -92,7 +92,7 @@ model Project {
   ownerId String @map(name: "owner_id")
   owner   User   @relation(fields: [ownerId], references: [id])
 
-  viewportId String @map(name: "viewport_id")
+  viewportId String      @map(name: "viewport_id")
   viewport   MapViewport @relation(fields: [viewportId], references: [id])
 
   features Feature[]
