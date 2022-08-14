@@ -113,7 +113,7 @@ model Feature {
 
   geometry Json
 
-  projectId String @map(name: "project_id")
+  projectId String  @map(name: "project_id")
   project   Project @relation(fields: [projectId], references: [id])
 
   createdAt DateTime @default(now()) @map(name: "created_at")
