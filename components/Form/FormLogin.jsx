@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import UserButton from '../UserButton/UserButton';
+import UserButton from '../../src/components/UserButton';
 import formClasses from './Form.module.css';
 
 const FormLogin = ({ message }) => (
