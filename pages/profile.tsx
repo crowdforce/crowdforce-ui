@@ -24,6 +24,21 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
+type DataType = {
+    following: {
+        image: string
+        href: string
+        name: string
+        description: string
+    }[]
+    owned: {
+        image: string
+        href: string
+        name: string
+        description: string
+    }[]
+}
+
 const MainPage = () => {
     const session = useSession();
     const isAuthenticated = session.status === 'authenticated'
@@ -76,20 +91,20 @@ const MainPage = () => {
                         <Stack
                             py='inherit'
                         >
-                            {data && data.following.map((x, i) => (
+                            {data && (data as DataType).following.map(({ image, href, name, description }, i) => (
                                 <Card withBorder>
                                     <Card.Section>
                                         <Image
-                                            src={x.image}
+                                            src={image}
                                             height={200}
                                         />
                                     </Card.Section>
                                     <Stack>
                                         <Title order={3}>
-                                            {x.name}
+                                            {name}
                                         </Title>
                                         <Text>
-                                            {x.description}
+                                            {description}
                                         </Text>
                                     </Stack>
                                     <Card.Section
@@ -100,7 +115,7 @@ const MainPage = () => {
                                         <Button
                                             fullWidth
                                             component='a'
-                                            href={x.href}
+                                            href={href}
                                         >
                                             Посмотреть проект
                                         </Button>
@@ -122,20 +137,20 @@ const MainPage = () => {
                         <Stack
                             py='inherit'
                         >
-                            {data && data.owned.map((x, i) => (
+                            {data && (data as DataType).owned.map(({ image, href, name, description }, i) => (
                                 <Card withBorder>
                                     <Card.Section>
                                         <Image
-                                            src={x.image}
+                                            src={image}
                                             height={200}
                                         />
                                     </Card.Section>
                                     <Stack>
                                         <Title order={3}>
-                                            {x.name}
+                                            {name}
                                         </Title>
                                         <Text>
-                                            {x.description}
+                                            {description}
                                         </Text>
                                     </Stack>
                                     <Card.Section
@@ -146,7 +161,7 @@ const MainPage = () => {
                                         <Button
                                             fullWidth
                                             component='a'
-                                            href={x.href}
+                                            href={href}
                                         >
                                             Посмотреть проект
                                         </Button>

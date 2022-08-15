@@ -1,7 +1,7 @@
 import classes from './Header.module.css';
 
 import dynamic from 'next/dynamic';
-const UserButton = dynamic(
+const UserButton = dynamic<React.ReactNode>(
     () => import('@/components/UserButton').then(x => x.UserButton),
     {
         ssr: false,

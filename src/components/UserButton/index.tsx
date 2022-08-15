@@ -32,11 +32,13 @@ export const UserButton = () => {
                 Object.keys(data).forEach((key) => {
                     if (key !== 'type') {
                         query.set(key, data[key]);
+                        // @ts-ignore 
                         cred[key] = data[key];
                     }
                 });
 
                 signIn('credentials', {
+                    // @ts-ignore 
                     redirect: '/',
                     ...cred,
                 });
