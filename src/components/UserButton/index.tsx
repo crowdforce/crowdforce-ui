@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { Avatar, Group, Menu, UnstyledButton, Text, createStyles, Loader } from '@mantine/core';
+import { useRouter } from 'next/router';
+import { NewProjectDto } from '@/common/types';
 
 const useStyles = createStyles((theme) => ({
     user: {
@@ -52,6 +54,31 @@ export const UserButton = () => {
         };
     }, []);
 
+
+    const router = useRouter()
+    const onNewProject = useCallback(() => {
+        // its fetch() until swr2.0 useSWRMutation // https://github.com/vercel/swr/releases/tag/2.0.0-beta.0
+        fetch(
+            '/api/admin/projects/create',
+            {
+                method: 'POST',
+            },
+        )
+            .then(async res => {
+                if (res.ok && res.status == 200) {
+                    return await res.json()
+                } else {
+                    throw Error(res.statusText)
+                }
+            })
+            .then((res: NewProjectDto) => {
+                router.push(`/projects/${res.id}/edit`)
+            })
+            .catch(e => {
+                console.log('API error: ', e)
+            })
+    }, [router])
+
     if (isAuthenticated) {
         return (
             <Menu
@@ -89,6 +116,20 @@ export const UserButton = () => {
                         )}
                     >
                         Профиль
+                    </Menu.Item>
+                    <Menu.Item
+                        icon={(
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                                <line x1="12" y1="11" x2="12" y2="17" />
+                                <line x1="9" y1="14" x2="15" y2="14" />
+                            </svg>
+                        )}
+                        onClick={onNewProject}
+                    >
+                        Новый проект
                     </Menu.Item>
                     <Menu.Item
                         icon={(
