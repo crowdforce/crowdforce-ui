@@ -1,14 +1,14 @@
 import { createStyles, Textarea, TextInput, Button, Stack, Tooltip } from '@mantine/core'
 import { useForm } from 'react-hook-form'
-import { NewProjectDto } from '@/common/types'
-import { useCallback, useState } from 'react'
+import { AdminProjectDto, NewProjectDto } from '@/common/types'
+import React, { useCallback, useState } from 'react'
 import { useSWRConfig } from 'swr'
 
 const useStyles = createStyles((theme) => ({
 
 }))
 
-export const ProjectEditForm = ({ data }) => {
+export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) => {
     const { classes: s, cx } = useStyles();
 
     const { handleSubmit, register } = useForm({
@@ -88,7 +88,7 @@ export const ProjectEditForm = ({ data }) => {
                     position='top'
                     radius='xl'
                     transition='slide-up'
-                    color={error && 'red'}
+                    color={error && 'red' as any}
                     opened={saved || error}
                 >
                     <Button
