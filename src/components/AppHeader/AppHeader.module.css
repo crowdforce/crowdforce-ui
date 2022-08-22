@@ -1,15 +1,7 @@
 .root {
     display: flex;
     align-items: center;
-}
-
-.logo {
-    font-size: 20px;
-    text-transform: uppercase;
-    padding-left: 10px;
-    padding-right: 40px;
-    text-decoration: none;
-    color: #333;
+    justify-content: space-between;
 }
 
 .navLinks {

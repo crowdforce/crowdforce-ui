@@ -1,6 +1,7 @@
 import s from './AppHeader.module.css'
 import dynamic from 'next/dynamic'
 import { Header } from '@mantine/core'
+import { Logo } from './Logo'
 
 const UserButton = dynamic<React.ReactNode>(
     () => import('@/components/UserButton').then(x => x.UserButton),
@@ -11,18 +12,16 @@ const UserButton = dynamic<React.ReactNode>(
 
 export const AppHeader = () => (
     <Header
-        height={80}
-        // p={'md'}
+        height={60}
+        p={'sm'}
     >
         <div className={s.root}>
-            <a className={s.logo} href="/">Crowd force</a>
+            <Logo />
             <nav className={s.navLinks}>
                 <a href="/wiki">База знаний</a>
                 <a href="/about">О нас</a>
             </nav>
             <UserButton />
-            {/* <div className={s.userButton}>
-            </div> */}
         </div>
     </Header>
 )
