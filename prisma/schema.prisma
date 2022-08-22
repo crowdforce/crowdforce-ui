@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+  // output     = "../dbml"
+  outputName = "prisma.dbml"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  Admin
+  User
+
+  @@map("user_role")
+}
+
+model TelegramAccount {
+  id        Int      @id
+  username  String
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  photoUrl  String   @map("photo_url")
+  authDate  DateTime @map("auth_date")
+
+  User User[]
+
+  @@map("telegram_accounts")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  role          UserRole  @default(User)
+
+  enabled Boolean @default(true)
+
+  telegramId Int             @map("telegram_id")
+  telegram   TelegramAccount @relation(fields: [telegramId], references: [id], onDelete: Cascade)
+
+  projects Project[]
+
+  @@map("users")
+}
+
+enum ProjectStatus {
+  Init
+  Active
+  // Archive
+  // Banned
+
+  @@map("project_status")
+}
+
+enum FeatureStatus {
+  Active
+  Deleted
+
+  @@map("feature_status")
+}
+
+model MapViewport {
+  id       String  @id @default(cuid())
+  lng      Float
+  lat      Float
+  zoom     Float
+  minZoom  Float   @default(0) @map(name: "min_zoom")
+  maxZoom  Float   @default(22) @map(name: "max_zoom")
+  pitch    Float   @default(0)
+  minPitch Float   @default(0) @map(name: "min_pitch")
+  maxPitch Float   @default(85) @map(name: "max_pitch")
+  bearing  Float   @default(0)
+  isFlat   Boolean @default(true) @map(name: "is_flat")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  projects Project[] @relation()
+
+  @@map(name: "viewports")
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String?       @map(name: "image_url")
+  status      ProjectStatus
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  ownerId String @map(name: "owner_id")
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  viewportId String      @map(name: "viewport_id")
+  viewport   MapViewport @relation(fields: [viewportId], references: [id])
+
+  features Feature[]
+
+  @@map(name: "projects")
+}
+
+model Feature {
+  id          String  @id @default(cuid())
+  title       String?
+  description String?
+  imageUrl    String? @map(name: "image_url")
+
+  // objectTypeId Int
+  // objectType   ObjectType? @relation("objectType", fields: [objectTypeId], references: [id])
+
+  status FeatureStatus
+
+  geometry Json
+
+  projectId String  @map(name: "project_id")
+  project   Project @relation(fields: [projectId], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  deletedAt DateTime @default(now()) @map(name: "deleted_at")
+
+  @@map(name: "features")
+}
+// }
