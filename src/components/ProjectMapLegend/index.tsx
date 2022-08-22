@@ -1,4 +1,3 @@
-import { Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import {
@@ -11,6 +10,7 @@ import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { ActionIcon, Group, Stack, Text } from '@mantine/core';
 
 const icons = {
     Point: (
@@ -49,24 +49,18 @@ const ProjectMapLegend = ({ geojsonList, setGeojsonList }) => {
     }, [geojsonList]);
 
     return (
-        <Stack
-            spacing={2}
-            sx={{
-                height: '100%',
-                overflowY: 'auto',
-            }}
-        >
+        <Stack>
             {geojsonList.map((x, i) => (
-                <Stack
-                    direction="row"
-                    spacing={2}
-                    alignItems="center"
-                    flexWrap="nowrap"
+                <Group
+                    // direction="row"
+                    // spacing={2}
+                    // alignItems="center"
+                    // flexWrap="nowrap"
                     sx={{
                         height: 44,
                     }}
                 >
-                    {icons[x.type]}
+                    {icons[x.geometryType]}
                     <div
                         style={{
                             flex: 1,
@@ -82,47 +76,47 @@ const ProjectMapLegend = ({ geojsonList, setGeojsonList }) => {
                                     <InputBase
                                         inputRef={ref}
                                         sx={{ ml: 1, flex: 1 }}
-                                        placeholder={x.name}
+                                        placeholder={x.title}
                                     />
                                     <Divider orientation="vertical" />
-                                    <IconButton
-                                        xs={{
+                                    <ActionIcon
+                                        sx={{
                                             marginLeft: 'auto',
                                         }}
                                         onClick={() => onEdit(x.id)}
                                     >
                                         <SaveIcon />
-                                    </IconButton>
+                                    </ActionIcon>
                                 </Paper>
                             </>
                         ) : (
-                            <Typography>
-                                {x.name}
-                            </Typography>
+                            <Text>
+                                {x.title}
+                            </Text>
                         )}
                     </div>
                     {state != null ? (
                         state == i && (
-                            <IconButton
-                                xs={{
+                            <ActionIcon
+                                sx={{
                                     marginLeft: 'auto',
                                 }}
                                 onClick={() => setState(null)}
                             >
                                 <CancelIcon />
-                            </IconButton>
+                            </ActionIcon>
                         )
                     ) : (
-                        <IconButton
-                            xs={{
-                                flex: '1 0 auto',
+                        <ActionIcon
+                            sx={{
+                                marginLeft: 'auto',
                             }}
                             onClick={() => setState(i)}
                         >
                             <EditIcon />
-                        </IconButton>
+                        </ActionIcon>
                     )}
-                </Stack>
+                </Group>
             ))}
         </Stack>
     );

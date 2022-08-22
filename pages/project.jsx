@@ -7,7 +7,7 @@ import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import useApi from '../utils/useApi';
 import ActivityEditor from '../components/ActivityEditor';
-import ProjectMap from '../components/ProjectMap';
+import ProjectMap from '../src/components/ProjectMap';
 import ProjectMapLegend from '../components/ProjectMapLegend';
 import geojsonFile from '../public/json/merged.json';
 import { featureReduce, featureEach } from '@turf/meta';

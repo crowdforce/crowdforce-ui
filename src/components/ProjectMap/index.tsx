@@ -1,4 +1,4 @@
-import React, { useEffect, forwardRef, useState, memo, } from 'react';
+import React, { useEffect, forwardRef, useState, memo, useRef, } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapboxGl, { GeoJSONLayer, ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
@@ -42,6 +42,8 @@ export const DrawControlHOC = forwardRef(({ initialGeojson, onAction }, ref) => 
                 line_string: false,
                 combine_features: false,
                 uncombine_features: false,
+                trash: false,
+                polygon: false,
             }}
             onDrawCreate={(props) => onAction(props)}
             onDrawDelete={(props) => onAction(props)}
@@ -49,7 +51,7 @@ export const DrawControlHOC = forwardRef(({ initialGeojson, onAction }, ref) => 
     );
 });
 
-const ProjectMap = forwardRef(({ initialCoords = INITIAL_POSITION, initialGeojson, onAction }, ref) => {
+const ProjectMap: React.ForwardRefExoticComponent<any> = ({ initialCoords = INITIAL_POSITION, initialGeojson, onAction }) => {
     const MapGl = ReactMapboxGl({
         accessToken: 'pk.eyJ1Ijoia29wYWJsNCIsImEiOiJja2NkYjVxeDEwY3V2MzVwZzB3dXRndDVyIn0.av_Kw8ZtSe3fPnZttBf3MA',
     });
@@ -61,32 +63,22 @@ const ProjectMap = forwardRef(({ initialCoords = INITIAL_POSITION, initialGeojso
 
     //   const dataFeatureTypes = featureReduce(data, (acc, x, i) => (acc.includes(getType(x)) ? acc : acc.concat(getType(x))), []);
 
+    const ref = useRef(null)
     return (
         <>
             <MapGl
                 id="map"
-                containerStyle={{ width: '100%', height: '100%' }}
+                containerStyle={{ position: 'absolute', width: '100%', height: '100%' }}
                 style="mapbox://styles/mapbox/light-v10"
                 {...viewport}
-                fitBounds={bbox(initialGeojson)}
+                // dosent work if data is []
+                // fitBounds={bbox(initialGeojson)} 
                 fitBoundsOptions={{
                     padding: 20,
                     linear: true,
                 }}
             >
                 <ZoomControl />
-
-                {/* {Boolean(data) && (
-          dataFeatureTypes.map((x, i) => (
-            <GeoJSONLayer
-              key={i}
-              data={featureCollection(
-                featureReduce(data, (acc, j) => (getType(j) === x ? acc.concat(j) : acc), []),
-              )}
-              {...layers[x]}
-            />
-          ))
-        )} */}
 
                 <DrawControlHOC
                     ref={ref}
@@ -97,6 +89,6 @@ const ProjectMap = forwardRef(({ initialCoords = INITIAL_POSITION, initialGeojso
             </MapGl>
         </>
     );
-});
+}
 
 export default memo(ProjectMap);

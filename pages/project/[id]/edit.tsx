@@ -1,14 +1,26 @@
 import { useRouter } from 'next/router'
 import Page from 'components/Page/Page'
 import useSWR, { useSWRConfig } from 'swr'
-import { Alert, Button, Card, Center, Grid, Loader, Stack } from '@mantine/core'
+import { Alert, Button, Card, Center, Grid, Loader, Stack, Text } from '@mantine/core'
 import { ProjectEditForm } from '@/components/ProjectEditForm'
 import { NewProjectDto } from '@/common/types'
 import { useCallback } from 'react'
+import { useSession } from 'next-auth/react'
+import dynamic from 'next/dynamic';
+import { ProjectMapEditor } from '@/components/ProjectMapEditor'
+const UserButton = dynamic<React.ReactNode>(
+    () => import('@/components/UserButton').then(x => x.UserButton),
+    {
+        ssr: false,
+    }
+)
 
 const ProjectEditPage = () => {
+    const session = useSession()
     const { query } = useRouter()
     const { mutate } = useSWRConfig()
+    const isLoadingAuth = session.status === 'loading'
+    const isAuthenticated = session.status === 'authenticated'
     const { data, error } = useSWR([
         `/api/admin/projects/${query.id}`,
         {
@@ -29,7 +41,7 @@ const ProjectEditPage = () => {
     ]
         .every((x) => Boolean(x))
 
-    const onPublic = useCallback(
+    const onPublish = useCallback(
         () => {
             fetch(
                 `/api/admin/projects/${query.id}/update`,
@@ -58,6 +70,22 @@ const ProjectEditPage = () => {
         [data]
     )
 
+    if (!isAuthenticated && !isLoadingAuth) {
+        return (
+            <Center
+                sx={{
+                    height: '100%',
+                }}
+            >
+                <Stack align='center'>
+                    <Text>
+                        Войдите чтобы изменить проект
+                    </Text>
+                    <UserButton />
+                </Stack>
+            </Center>
+        )
+    }
 
     if (error || data?.error) {
         return (
@@ -81,7 +109,7 @@ const ProjectEditPage = () => {
     }
 
 
-    if (!data) {
+    if (!data || isLoadingAuth) {
         return (
             <Center
                 sx={{
@@ -96,7 +124,7 @@ const ProjectEditPage = () => {
     return (
         <Page>
             <Grid>
-                <Grid.Col xs={12} md={6}>
+                <Grid.Col xs={12} md={4}>
                     <Stack>
                         <Card
                             withBorder
@@ -105,24 +133,25 @@ const ProjectEditPage = () => {
                                 data={data}
                             />
                         </Card>
+                        <Card withBorder>
+                            {data.status === 'Init' && (
+                                <Button
+                                    fullWidth
+                                    onClick={onPublish}
+                                    disabled={!isReadyToPublish}
+                                >
+                                    Опубликовать
+                                </Button>
+                            )}
+                        </Card>
                     </Stack>
                 </Grid.Col>
-                <Grid.Col xs={12} md={6}>
-                    <Card
-                        withBorder
-                    >
-                        PROJECT MAP EDITOR PLACEHOLDER
-                    </Card>
-                </Grid.Col>
-                <Grid.Col xs={12} md={6}>
-                    {data.status === 'Init' && (
-                        <Button
-                            fullWidth
-                            onClick={onPublic}
-                            disabled={!isReadyToPublish}
-                        >
-                            Опубликовать
-                        </Button>
+                <Grid.Col xs={12} md={8}>
+                    {mapData && (
+                    <ProjectMapEditor
+                        data={mapData}
+                        projectId={query.id}
+                    />
                     )}
                 </Grid.Col>
             </Grid>
