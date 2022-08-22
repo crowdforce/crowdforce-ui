@@ -6,7 +6,7 @@ import catchLinks from 'catch-links';
 import { MapProvider } from 'react-map-gl';
 import { SessionProvider } from 'next-auth/react';
 import ThemeProvider from './components/ThemeProvider';
-import Header from './components/Header';
+import { AppHeader } from '@/components/AppHeader';
 import { MantineProvider } from '@mantine/core';
 import { SWRConfig } from 'swr';
 
@@ -56,7 +56,7 @@ const App = ({ Component, session, ...pageProps }) => {
                             <SWRConfig value={{
                                 fetcher: (...args) => fetch(...args).then(res => res.json())
                             }}>
-                                <Header />
+                                <AppHeader />
                                 <Component {...pageProps} />
                             </SWRConfig>
                         </MapProvider>
