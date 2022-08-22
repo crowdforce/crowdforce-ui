@@ -7,12 +7,12 @@ import Page from '../components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import useApi from '../utils/useApi';
 import ActivityEditor from '../components/ActivityEditor';
-import ProjectMap from '../src/components/ProjectMap';
-import ProjectMapLegend from '../components/ProjectMapLegend';
 import geojsonFile from '../public/json/merged.json';
 import { featureReduce, featureEach } from '@turf/meta';
 import { getType } from '@turf/invariant';
 import Button from '@mui/material/Button';
+import ProjectMap from '../src/components/ProjectMap';
+import ProjectMapLegend from '../src/components/ProjectMapLegend';
 
 const ProjectPage = () => {
     const { query } = useRouter();
