@@ -1,1 +1,1 @@
-export { default } from './ProjectMap';
+export { default, DrawControlHOC } from './ProjectMap';
