@@ -72,7 +72,7 @@ export const UserButton = () => {
                 }
             })
             .then((res: NewProjectDto) => {
-                router.push(`/projects/${res.id}/edit`)
+                router.push(`/project/${res.id}/edit`)
             })
             .catch(e => {
                 console.log('API error: ', e)
