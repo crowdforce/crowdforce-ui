@@ -66,7 +66,7 @@ export const UserButton = () => {
         )
             .then(async res => {
                 if (res.ok && res.status == 200) {
-                    return await res.json()
+                    return res.json()
                 } else {
                     throw Error(res.statusText)
                 }
