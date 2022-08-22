@@ -38,11 +38,13 @@ const icons = {
     ),
 };
 
-const ProjectMapLegend = ({ geojsonList, setGeojsonList }) => {
+const ProjectMapLegend: React.FC<any> = ({ geojsonList, setGeojsonList }) => {
     const [state, setState] = useState(null);
     const ref = useRef(null);
 
+    // @ts-ignore
     const onEdit = useCallback((id) => {
+        // @ts-ignore
         const newGeojson = geojsonList.map((x, i) => (x.id == id ? { ...x, name: ref.current?.value } : x));
         setGeojsonList(newGeojson);
         setState(null);
@@ -50,6 +52,7 @@ const ProjectMapLegend = ({ geojsonList, setGeojsonList }) => {
 
     return (
         <Stack>
+            {/* @ts-ignore */}
             {geojsonList.map((x, i) => (
                 <Group
                     // direction="row"
@@ -60,6 +63,7 @@ const ProjectMapLegend = ({ geojsonList, setGeojsonList }) => {
                         height: 44,
                     }}
                 >
+                    {/* @ts-ignore */}
                     {icons[x.geometryType]}
                     <div
                         style={{

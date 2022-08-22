@@ -14,12 +14,13 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-const dataToGeojson = data => featureCollection(
-    data.map(({ id, geometryType, coordinates, ...x }, i) => ({
+const dataToGeojson = (data: any) => featureCollection(
+    // @ts-ignore
+    data.map((x, i) => ({
         ...x,
         'type': 'Feature',
         geometry: {
-            coordinates,
+            coordinates: x.coordinates,
             'type': 'Point',
         }
     }))
@@ -120,7 +121,7 @@ export const ProjectMapEditor: React.FC<any> = ({ data, projectId }) => {
                     }}>
                         <ProjectMap
                             initialGeojson={dataToGeojson(geojsonList)}
-                            onAction={setMapAction}                            
+                            onAction={setMapAction}
                         />
                     </div>
                 </Stack>

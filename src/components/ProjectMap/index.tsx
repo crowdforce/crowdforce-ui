@@ -29,14 +29,18 @@ const layers = {
     },
 };
 
+// @ts-ignore
 export const DrawControlHOC = forwardRef(({ initialGeojson, onAction }, ref) => {
     useEffect(() => {
+        // @ts-ignore
         if (!ref.current) { return; }
+        // @ts-ignore
         ref.current.draw.add(initialGeojson);
     }, []);
 
     return (
         <DrawControl
+            // @ts-ignore
             ref={ref}
             controls={{
                 line_string: false,
@@ -51,7 +55,7 @@ export const DrawControlHOC = forwardRef(({ initialGeojson, onAction }, ref) => 
     );
 });
 
-const ProjectMap: React.ForwardRefExoticComponent<any> = ({ initialCoords = INITIAL_POSITION, initialGeojson, onAction }) => {
+const ProjectMap: React.FC<any> = ({ initialCoords = INITIAL_POSITION, initialGeojson, onAction }) => {
     const MapGl = ReactMapboxGl({
         accessToken: 'pk.eyJ1Ijoia29wYWJsNCIsImEiOiJja2NkYjVxeDEwY3V2MzVwZzB3dXRndDVyIn0.av_Kw8ZtSe3fPnZttBf3MA',
     });
@@ -67,6 +71,7 @@ const ProjectMap: React.ForwardRefExoticComponent<any> = ({ initialCoords = INIT
     return (
         <>
             <MapGl
+                // @ts-ignore
                 id="map"
                 containerStyle={{ position: 'absolute', width: '100%', height: '100%' }}
                 style="mapbox://styles/mapbox/light-v10"
@@ -82,6 +87,7 @@ const ProjectMap: React.ForwardRefExoticComponent<any> = ({ initialCoords = INIT
 
                 <DrawControlHOC
                     ref={ref}
+                    // @ts-ignore
                     initialGeojson={initialGeojson}
                     onAction={onAction}
                 />
