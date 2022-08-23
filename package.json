@@ -26,7 +26,6 @@
     "@turf/invariant": "^6.5.0",
     "@turf/meta": "^6.5.0",
     "axios": "^0.21.2",
-    "catch-links": "^2.0.1",
     "lodash": "^4.17.21",
     "mapbox-gl": "^2.9.1",
     "mobx": "^6.3.2",
