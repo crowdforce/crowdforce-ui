@@ -19,7 +19,7 @@ export default withUser<NewFeatureDto>(async (req, res) => {
     }
 
     const { coordinates } = JSON.parse(req.body)
-    const projectId = single(req.query.projectId)
+    const projectId = single(req.query.projectId as string)
     const feature = await prisma.feature.create({
         data: {
             title: '',
@@ -36,6 +36,9 @@ export default withUser<NewFeatureDto>(async (req, res) => {
             }
         },
     })
+
+    // try to turn project to active after feature creation
+    await switchProjectToActiveStatus(projectId)
 
     return res.json(mapResponse(feature))
 })
