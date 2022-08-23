@@ -13,6 +13,15 @@ export type ProjectDto = {
   imageUrl: string | null
 }
 
+export type PublicProjectDto = {
+  id: string
+  title: string
+  description: string
+  imageUrl: string | null
+  lng: number
+  lat: number
+}
+
 export type AdminProjectDto = {
   id: string
   title: string
