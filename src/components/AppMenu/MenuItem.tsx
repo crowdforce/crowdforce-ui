@@ -15,9 +15,10 @@ const useStyles = createStyles((theme) => ({
 
 export type MenuItemProps = {
     href: string
+    children?: React.ReactNode
 }
 
-export const MenuItem: React.FC<MenuItemProps> = (props) => {
+export const MenuItem: React.FC<MenuItemProps> = props => {
     const { classes: s, cx } = useStyles();
 
     return (
