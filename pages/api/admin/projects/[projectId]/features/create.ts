@@ -37,8 +37,5 @@ export default withUser<NewFeatureDto>(async (req, res) => {
         },
     })
 
-    // try to turn project to active after feature creation
-    await switchProjectToActiveStatus(projectId)
-
     return res.json(mapResponse(feature))
 })

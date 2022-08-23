@@ -7,7 +7,6 @@ import { NewProjectDto } from '@/common/types';
 const useStyles = createStyles((theme) => ({
     user: {
         color: theme.black,
-        padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
         borderRadius: theme.radius.sm,
 
         '&:hover': {
@@ -16,7 +15,9 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-export const UserButton = () => {
+export type UserButtonProps = {}
+
+export const UserButton: React.FC<UserButtonProps> = () => {
     const botId = process.env.NEXT_PUBLIC_TELEGRAM_BOT_ID
     const session = useSession()
     const isLoading = session.status === 'loading'
@@ -91,8 +92,12 @@ export const UserButton = () => {
                         className={s.user}
                     >
                         <Group>
-                            <Avatar src={session.data?.user?.image!} radius="xl" size={32} />
-                            <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
+                            <Avatar
+                                src={session.data?.user?.image!}
+                                // radius="xl"
+                                size={32}
+                            />
+                            <Text weight={500} size="sm" sx={{ lineHeight: 1 }} pr={'sm'}>
                                 {session.data?.user?.name!}
                             </Text>
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" stroke-width="1.5" stroke="#2c3e50" fill="none" stroke-linecap="round" stroke-linejoin="round">

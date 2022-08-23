@@ -1,29 +1,21 @@
+import './style.css';
+
 /* eslint-disable react/jsx-props-no-spreading */
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-import catchLinks from 'catch-links';
 import { MapProvider } from 'react-map-gl';
 import { SessionProvider } from 'next-auth/react';
-import ThemeProvider from './components/ThemeProvider';
-import Header from './components/Header';
+import ThemeProvider from '../components/ThemeProvider';
+import { AppHeader } from '@/components/AppHeader';
 import { MantineProvider } from '@mantine/core';
 import { SWRConfig } from 'swr';
+import { AppProps } from 'next/app';
+import { Session } from 'next-auth';
 
-if (process.env.NEXT_PUBLIC_API_MOCKING === 'true') {
-    // eslint-disable-next-line global-require
-    require('./mocks');
+type Props = AppProps & {
+    session: Session
 }
 
-const App = ({ Component, session, ...pageProps }) => {
-    const router = useRouter();
-
-    useEffect(() => {
-        catchLinks(window, (href) => {
-            router.push(href);
-        });
-    }, []);
-
+export default function MyApp({ Component, pageProps }: Props) {
     return (
         <>
             <Head>
@@ -44,19 +36,19 @@ const App = ({ Component, session, ...pageProps }) => {
                 <link rel="manifest" href="/manifest.json" />
                 <link rel="stylesheet" href="/main.css" />
                 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet" />
                 <meta name="msapplication-TileColor" content="#ffffff" />
                 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
                 <meta name="theme-color" content="#ffffff" />
             </Head>
+
             <ThemeProvider>
                 <MantineProvider withGlobalStyles withNormalizeCSS>
-                    <SessionProvider session={session}>
+                    <SessionProvider session={pageProps.session}>
                         <MapProvider>
                             <SWRConfig value={{
-                                fetcher: (...args) => fetch(...args).then(res => res.json())
+                                fetcher: (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json())
                             }}>
-                                <Header />
+                                <AppHeader />
                                 <Component {...pageProps} />
                             </SWRConfig>
                         </MapProvider>
@@ -66,5 +58,3 @@ const App = ({ Component, session, ...pageProps }) => {
         </>
     );
 };
-
-export default App;

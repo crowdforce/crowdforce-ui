@@ -10,6 +10,7 @@ export type ProjectDto = {
   id: string
   title: string
   description: string
+  imageUrl: string | null
 }
 
 export type AdminProjectDto = {

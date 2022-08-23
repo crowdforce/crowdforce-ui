@@ -18,7 +18,7 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
     const { mutate } = useSWRConfig()
 
     const onSubmit = useCallback(
-        (formData) => {
+        (formData: any) => {
             setSaved(false)
             setError(false)
 
