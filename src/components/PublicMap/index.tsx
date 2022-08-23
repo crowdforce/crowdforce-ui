@@ -30,7 +30,7 @@ export const PublicMap: React.FC<PublicMapProps> = ({ data, ...props }) => {
     return (
         <MapGl
             id="map"
-            style={{ width: '100%', height: '100%', borderRadius: 10 }}
+            style={{ width: '100%', height: '100%' }}
             mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
             mapboxAccessToken={token}
             initialViewState={props.initialViewState}
