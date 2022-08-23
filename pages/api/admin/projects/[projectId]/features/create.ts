@@ -1,9 +1,8 @@
 import prisma from "@/server/prisma";
-import { NewFeatureDto, NewProjectDto } from "@/common/types";
 import { withUser } from "@/server/middlewares/withUser";
-import { Feature, FeatureStatus, Prisma } from "@prisma/client";
+import { Feature, FeatureStatus } from "@prisma/client";
 import { switchProjectToActiveStatus } from "@/server/app/project";
-import { single } from "@/common/lib/array";
+import type { Geometry, NewFeatureDto } from "@/common/types";
 
 function mapResponse<T extends { id: string } = Feature>(project: T): NewFeatureDto {
     return {
@@ -11,7 +10,6 @@ function mapResponse<T extends { id: string } = Feature>(project: T): NewFeature
     }
 }
 
-type Geometry = GeoJSON.Point | GeoJSON.Polygon
 type Payload = {
     geometry: Geometry
 }

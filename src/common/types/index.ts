@@ -2,6 +2,8 @@ export type ErrorDto = {
   error: string
 }
 
+export type Geometry = GeoJSON.Point | GeoJSON.Polygon
+
 export type NewProjectDto = {
   id: string
 }

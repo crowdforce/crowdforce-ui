@@ -17,13 +17,14 @@ export type ProjectDrawProps = {
 export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectId }) => {
     const { mutate } = useSWRConfig()
     const onChange = useCallback<OnChangeDraw>(async (event, draw) => {
+        const feature = event.features[0]
+        const featureId = feature.id! as string
         const ids = event.features.map(x => x.id) as string[]
 
         switch (event.type) {
             case 'draw.create': {
-                const f = event.features[0]
                 const payload = {
-                    geometry: f.geometry,
+                    geometry: feature.geometry,
                 }
                 await fetch(`/api/admin/projects/${projectId}/features/create`, {
                     method: 'POST',
@@ -46,7 +47,21 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                         console.log('API error: ', e)
                         draw.delete(ids)
                     })
-                break;
+                break
+            }
+
+            case 'draw.update': {
+                const payload = {
+                    geometry: feature.geometry,
+                }
+                await fetch(`/api/admin/features/${featureId}/update-geometry`, {
+                    method: 'PUT',
+                    headers: {
+                        'content-type': 'application/json',
+                    },
+                    body: JSON.stringify(payload),
+                })
+                break
             }
 
             default: {
