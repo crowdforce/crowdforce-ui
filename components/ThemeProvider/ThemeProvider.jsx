@@ -7,7 +7,6 @@ import {
 import createGenerateClassName from '@mui/styles/createGenerateClassName';
 import StylesProvider from '@mui/styles/StylesProvider';
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { amber as primary, blue as secondary } from '@mui/material/colors';
 
@@ -32,9 +31,5 @@ const ThemeProvider = ({ children }) => (
     </StyledEngineProvider>
   </StylesProvider>
 );
-
-ThemeProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default ThemeProvider;
