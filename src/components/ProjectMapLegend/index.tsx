@@ -45,7 +45,7 @@ export type ProjectMapLegendProps = {
 }
 
 const ProjectMapLegend: React.FC<ProjectMapLegendProps> = ({ projectId }) => {
-    const [state, setState] = useState(null);
+    const [state, setState] = useState<number | null>(null);
     const ref = useRef(null);
     const { data, error } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
 
