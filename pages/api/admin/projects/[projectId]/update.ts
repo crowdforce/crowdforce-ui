@@ -23,7 +23,7 @@ export default withUser<NewProjectDto>(async (req, res) => {
     })
   }
 
-  const projectId = single(req.query.projectId)
+  const projectId = single(req.query.projectId as string)
 
   const payload = req.body as Payload
   const title = payload.title ?? ''

@@ -15,7 +15,9 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-export const UserButton = () => {
+export type UserButtonProps = {}
+
+export const UserButton: React.FC<UserButtonProps> = () => {
     const botId = process.env.NEXT_PUBLIC_TELEGRAM_BOT_ID
     const session = useSession()
     const isLoading = session.status === 'loading'
