@@ -8,13 +8,6 @@
     padding-bottom: 20px;
 }
 
-.map {
-    height: 600px;
-    overflow: hidden;
-    position: relative;
-    margin: 0 -60px;
-}
-
 .howTo {
     text-align: center;
     width: 1000px;

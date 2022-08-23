@@ -6,8 +6,6 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import Page from '../components/Page';
 import classes from './index.module.css';
 import ProjectEditor from '../components/ProjectEditor';
-import IndexMap from '../components/IndexMap'
-import placeholderFeatures from '../public/json/index.json'
 
 const MainPage = () => {
     const [openProjectEditor, setOpenProjectEditor] = useState(false);
@@ -32,11 +30,6 @@ const MainPage = () => {
                     для ухода за садами и огородами. Начни системный уход за садом твоего <br />
                     сообщества или присоединяйся к активным проектам!
                 </Typography>
-            </div>
-            <div className={classes.map}>
-                <IndexMap
-                    data={placeholderFeatures}
-                />
             </div>
             <section className={classes.howTo}>
                 <Typography variant="h4" className={classes.title}>

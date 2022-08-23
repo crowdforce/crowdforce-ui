@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { NavigationControl, Marker } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
-import pinIcon from '../../public/activity-pin.png'
+import pinIcon from '../../../public/activity-pin.png'
 import Image from 'next/image'
 import IndexMapPopup from './IndexMapPopup'
 
@@ -27,7 +27,11 @@ const layerStyle = {
     },
 };
 
-const IndexMap = ({ data }) => {
+export type PublicMapProps = {
+    data: any
+}
+
+export const IndexMap: React.FC<PublicMapProps> = ({ data }) => {
     const [selectedid, setSelectedId] = useState([]);
     const onClick = useCallback(
         (e, id) => {
@@ -101,5 +105,3 @@ const IndexMap = ({ data }) => {
         </MapGl>
     );
 };
-
-export default IndexMap;
