@@ -6,14 +6,7 @@ import { ProjectEditForm } from '@/components/ProjectEditForm'
 import { NewProjectDto } from '@/common/types'
 import { useCallback } from 'react'
 import { useSession } from 'next-auth/react'
-import dynamic from 'next/dynamic';
 import { ProjectMapEditor } from '@/components/ProjectMapEditor'
-const UserButton = dynamic<React.ReactNode>(
-    () => import('@/components/UserButton').then(x => x.UserButton),
-    {
-        ssr: false,
-    }
-)
 
 const ProjectEditPage = () => {
     const session = useSession()
@@ -69,23 +62,6 @@ const ProjectEditPage = () => {
         },
         [data]
     )
-
-    if (!isAuthenticated && !isLoadingAuth) {
-        return (
-            <Center
-                sx={{
-                    height: '100%',
-                }}
-            >
-                <Stack align='center'>
-                    <Text>
-                        Войдите чтобы изменить проект
-                    </Text>
-                    <UserButton />
-                </Stack>
-            </Center>
-        )
-    }
 
     if (error || data?.error) {
         return (
