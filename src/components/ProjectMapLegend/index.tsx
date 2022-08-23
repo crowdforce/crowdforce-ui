@@ -11,6 +11,8 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { ActionIcon, Group, Stack, Text } from '@mantine/core';
+import useSWR from 'swr';
+import { AdminFeatureDto } from '@/common/types';
 
 const icons = {
     Point: (
@@ -38,23 +40,29 @@ const icons = {
     ),
 };
 
-const ProjectMapLegend: React.FC<any> = ({ geojsonList, setGeojsonList }) => {
+export type ProjectMapLegendProps = {
+    projectId: string
+}
+
+const ProjectMapLegend: React.FC<ProjectMapLegendProps> = ({ projectId }) => {
     const [state, setState] = useState(null);
     const ref = useRef(null);
+    const { data, error } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
 
     // @ts-ignore
     const onEdit = useCallback((id) => {
         // @ts-ignore
-        const newGeojson = geojsonList.map((x, i) => (x.id == id ? { ...x, name: ref.current?.value } : x));
-        setGeojsonList(newGeojson);
+        const newGeojson = data.map((x, i) => (x.id == id ? { ...x, name: ref.current?.value } : x));
+        // setGeojsonList(newGeojson);
         setState(null);
-    }, [geojsonList]);
+    }, [data]);
 
     return (
         <Stack>
             {/* @ts-ignore */}
-            {geojsonList.map((x, i) => (
+            {(data ?? []).map((x, i) => (
                 <Group
+                    key={i}
                     // direction="row"
                     // spacing={2}
                     // alignItems="center"

@@ -1,12 +1,6 @@
-import { createStyles, Textarea, TextInput, Button, Stack, Tooltip, Card, Group, ScrollArea, Container, Loader } from '@mantine/core'
-import { AdminProjectDto, NewFeatureDto, NewProjectDto } from '@/common/types'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { featureReduce, featureEach } from '@turf/meta'
-import { getType } from '@turf/invariant'
+import { createStyles, Stack, Card, Group, ScrollArea } from '@mantine/core'
 import ProjectMap from '@/components/ProjectMap'
-import ProjectMapLegend from '@/components/ProjectMapLegend'
-import useSWR, { useSWRConfig } from 'swr'
-import { featureCollection } from '@turf/helpers'
+import ProjectMapLegend from '../ProjectMapLegend'
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -14,36 +8,12 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-const dataToGeojson = (data: any) => featureCollection(
-    // @ts-ignore
-    data.map((x, i) => ({
-        ...x,
-        'type': 'Feature',
-        geometry: {
-            coordinates: x.coordinates,
-            'type': 'Point',
-        }
-    }))
-)
+export type ProjectMapEditorProps = {
+    projectId: string
+}
 
-export const ProjectMapEditor: React.FC<any> = ({ data, projectId }) => {
+export const ProjectMapEditor: React.FC<ProjectMapEditorProps> = ({ projectId }) => {
     const { classes: s, cx } = useStyles()
-
-    const [geojsonState, setGeojsonState] = useState(
-        data
-    )
-
-
-    if (!data) {
-        return (
-            <Card
-                withBorder
-                className={s.card}
-            >
-                <Loader />
-            </Card>
-        )
-    }
 
     return (
         <Card
@@ -60,7 +30,6 @@ export const ProjectMapEditor: React.FC<any> = ({ data, projectId }) => {
                         minHeight: 'min(100vh, 400px)',
                     }}>
                         <ProjectMap
-                            initialGeojson={dataToGeojson(geojsonState)}
                             projectId={projectId}
                         />
                     </div>
@@ -68,8 +37,7 @@ export const ProjectMapEditor: React.FC<any> = ({ data, projectId }) => {
                 <Stack>
                     <ScrollArea>
                         <ProjectMapLegend
-                            geojsonList={data}
-                            setGeojsonList={setGeojsonState}
+                            projectId={projectId}
                         />
                     </ScrollArea>
                 </Stack>

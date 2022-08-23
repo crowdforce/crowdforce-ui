@@ -3,67 +3,63 @@ import Page from 'components/Page/Page'
 import useSWR, { useSWRConfig } from 'swr'
 import { Alert, Button, Card, Center, Grid, Loader, Stack, Text } from '@mantine/core'
 import { ProjectEditForm } from '@/components/ProjectEditForm'
-import { NewProjectDto } from '@/common/types'
+import { AdminFeatureDto, AdminProjectDto, NewProjectDto } from '@/common/types'
 import { useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { ProjectMapEditor } from '@/components/ProjectMapEditor'
 
 const ProjectEditPage = () => {
     const session = useSession()
-    const { query } = useRouter()
+    const router = useRouter()
+    const projectId = router.query.projectId as string
     const { mutate } = useSWRConfig()
     const isLoadingAuth = session.status === 'loading'
     const isAuthenticated = session.status === 'authenticated'
-    const { data, error } = useSWR([
-        `/api/admin/projects/${query.id}`,
-        {
-            method: 'GET',
-        },
-    ])
-    const { data: mapData, error: mapError } = useSWR([
-        `/api/admin/projects/${query.id}/features`,
+    const { data, error } = useSWR<AdminProjectDto>([
+        `/api/admin/projects/${projectId}`,
         {
             method: 'GET',
         },
     ])
 
-    const isReadyToPublish = [
-        data?.title,
-        data?.description,
-        mapData?.length
-    ]
-        .every((x) => Boolean(x))
+    const isReadyToPublish = false
+    // [
+    //     data?.title,
+    //     data?.description,
+    //     features?.length
+    // ]
+    //     .every((x) => Boolean(x))
 
     const onPublish = useCallback(
         () => {
-            fetch(
-                `/api/admin/projects/${query.id}/update`,
-                {
-                    method: 'PUT',
-                    body: JSON.stringify(data),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            )
-                .then(async res => {
-                    if (res.ok && res.status == 200) {
-                        return await res.json()
-                    } else {
-                        throw Error(res.statusText)
-                    }
-                })
-                .then((res: NewProjectDto) => {
-                    mutate(`/api/admin/projects/${data.id}`)
-                })
-                .catch(e => {
-                    console.log('API error: ', e)
-                })
+            // fetch(
+            //     `/api/admin/projects/${projectId}/update`,
+            //     {
+            //         method: 'PUT',
+            //         body: JSON.stringify(data),
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //     }
+            // )
+            //     .then(async res => {
+            //         if (res.ok && res.status == 200) {
+            //             return await res.json()
+            //         } else {
+            //             throw Error(res.statusText)
+            //         }
+            //     })
+            //     .then((res: NewProjectDto) => {
+            //         mutate(`/api/admin/projects/${data.id}`)
+            //     })
+            //     .catch(e => {
+            //         console.log('API error: ', e)
+            //     })
         },
         [data]
     )
 
-    if (error || data?.error) {
+    if (error) {
         return (
             <Page>
                 <Alert
@@ -83,7 +79,6 @@ const ProjectEditPage = () => {
             </Page>
         )
     }
-
 
     if (!data || isLoadingAuth) {
         return (
@@ -123,12 +118,9 @@ const ProjectEditPage = () => {
                     </Stack>
                 </Grid.Col>
                 <Grid.Col xs={12} md={8}>
-                    {mapData && (
                     <ProjectMapEditor
-                        data={mapData}
-                        projectId={query.id}
+                        projectId={projectId}
                     />
-                    )}
                 </Grid.Col>
             </Grid>
         </Page>

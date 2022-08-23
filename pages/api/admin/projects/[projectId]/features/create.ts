@@ -1,7 +1,7 @@
 import prisma from "@/server/prisma";
 import { NewFeatureDto, NewProjectDto } from "@/common/types";
 import { withUser } from "@/server/middlewares/withUser";
-import { Feature, FeatureStatus } from "@prisma/client";
+import { Feature, FeatureStatus, Prisma } from "@prisma/client";
 import { switchProjectToActiveStatus } from "@/server/app/project";
 import { single } from "@/common/lib/array";
 
@@ -11,23 +11,33 @@ function mapResponse<T extends { id: string } = Feature>(project: T): NewFeature
     }
 }
 
+type Geometry = GeoJSON.Point | GeoJSON.Polygon
+type Payload = {
+    geometry: Geometry
+}
+
 export default withUser<NewFeatureDto>(async (req, res) => {
     if (req.method !== 'POST') {
         return res.status(404).json({
             error: 'Not found',
         })
     }
+    const payload = req.body as Payload
+    if (!payload) {
+        return res.status(400).json({
+            error: 'Body is empty',
+        })
+    }
 
-    const { coordinates } = JSON.parse(req.body)
-    const projectId = single(req.query.projectId as string)
+    const projectId = req.query.projectId as string
     const feature = await prisma.feature.create({
         data: {
             title: '',
             description: '',
             status: FeatureStatus.Active,
             geometry: {
-                type: 'Point',
-                coordinates: coordinates ?? [60, 30],
+                type: payload.geometry.type,
+                coordinates: payload.geometry.coordinates,
             },
             project: {
                 connect: {
