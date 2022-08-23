@@ -59,7 +59,6 @@ const ProjectMapLegend: React.FC<ProjectMapLegendProps> = ({ projectId }) => {
 
     return (
         <Stack>
-            {/* @ts-ignore */}
             {(data ?? []).map((x, i) => (
                 <Group
                     key={i}
