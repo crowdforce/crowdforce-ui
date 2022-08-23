@@ -3,7 +3,6 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import { useControl } from 'react-map-gl'
 import type { ControlPosition } from 'react-map-gl'
-// import { Feature } from 'react-mapbox-gl'
 
 type Feature = any
 type Callback = (ev: any) => void
