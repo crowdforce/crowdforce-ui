@@ -1,9 +1,11 @@
-import React, { useEffect, forwardRef, useState, memo, useRef, } from 'react';
+import React, { useEffect, forwardRef, useState, memo, useRef, useCallback, } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import ReactMapboxGl, { GeoJSONLayer, ZoomControl } from 'react-mapbox-gl';
 import DrawControl from 'react-mapbox-gl-draw';
 import bbox from '@turf/bbox';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
+import { NewFeatureDto } from '@/common/types';
+import { useSWRConfig } from 'swr';
 
 const INITIAL_POSITION = [
     30.308611,
@@ -55,19 +57,68 @@ export const DrawControlHOC = forwardRef(({ initialGeojson, onAction }, ref) => 
     );
 });
 
-const ProjectMap: React.FC<any> = ({ initialCoords = INITIAL_POSITION, initialGeojson, onAction }) => {
+const ProjectMap: React.FC<any> = ({ initialCoords = INITIAL_POSITION, initialGeojson, projectId }) => {
+    const { mutate } = useSWRConfig()
     const MapGl = ReactMapboxGl({
         accessToken: 'pk.eyJ1Ijoia29wYWJsNCIsImEiOiJja2NkYjVxeDEwY3V2MzVwZzB3dXRndDVyIn0.av_Kw8ZtSe3fPnZttBf3MA',
-    });
+    })
 
     const [viewport, setViewport] = useState({
         zoom: [INITIAL_ZOOM],
         center: initialCoords,
-    });
-
-    //   const dataFeatureTypes = featureReduce(data, (acc, x, i) => (acc.includes(getType(x)) ? acc : acc.concat(getType(x))), []);
+    })
 
     const ref = useRef(null)
+
+    const onAction = useCallback(async props => {
+        // const propsIds = props.features.map((x, i) => x.id)
+        // const changedIds = geojsonList
+        //     .filter((x, i) => propsIds.includes(x.id))
+        //     .map((x, i) => x.id);
+
+        switch (props.type) {
+            case 'draw.create':
+                await fetch(
+                    `/api/admin/projects/${projectId}/features/create`,
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            coordinates: props.features[0].geometry.coordinates,
+                        }),
+                    }
+                )
+                    .then(async res => {
+                        if (res.ok && res.status == 200) {
+                            return await res.json()
+                        } else {
+                            throw Error(res.statusText)
+                        }
+                    })
+                    .then((res: NewFeatureDto) => {
+                        mutate(`/api/admin/projects/${projectId}/features`)
+                    })
+                    .catch(e => {
+                        console.log('API error: ', e)
+                    })
+                break;
+
+            // case 'draw.delete':
+            //     setGeojsonList(
+            //         geojsonList.filter((x, i) => !changedIds.includes(x.id))
+            //     )
+            //     break;
+
+            default:
+                break;
+        }
+    }, [])
+
+    const [mapAction, setMapAction] = useState(null)
+    useEffect(() => {
+        if (!mapAction) { return }
+        onAction(mapAction)
+    }, [mapAction])
+
     return (
         <>
             <MapGl

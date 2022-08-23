@@ -27,71 +27,11 @@ const dataToGeojson = (data: any) => featureCollection(
 )
 
 export const ProjectMapEditor: React.FC<any> = ({ data, projectId }) => {
-    const { classes: s, cx } = useStyles();
-    const { mutate } = useSWRConfig()
+    const { classes: s, cx } = useStyles()
 
-    const [geojsonList, setGeojsonList] = useState(
+    const [geojsonState, setGeojsonState] = useState(
         data
     )
-
-    const onAction = useCallback(props => {
-        // const propsIds = props.features.map((x, i) => x.id)
-        // const changedIds = geojsonList
-        //     .filter((x, i) => propsIds.includes(x.id))
-        //     .map((x, i) => x.id);
-
-
-        switch (props.type) {
-            case 'draw.create':
-                fetch(
-                    `/api/admin/projects/${projectId}/features/create`,
-                    {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            coordinates: props.features[0].geometry.coordinates,
-                        }),
-                    }
-                )
-                    .then(async res => {
-                        if (res.ok && res.status == 200) {
-                            return await res.json()
-                        } else {
-                            throw Error(res.statusText)
-                        }
-                    })
-                    .then((res: NewFeatureDto) => {
-                        console.log('NEW POINT:', res)
-                        mutate(`/api/admin/projects/${projectId}/features`)
-                    })
-                    .catch(e => {
-                        console.log('API error: ', e)
-                    })
-                // setGeojsonList(
-                //     props.features.map((x, i) => ({
-                //         type: getType(x),
-                //         id: x.id,
-                //         name: `New feature`,
-                //     }))
-                //         .concat(geojsonList)
-                // )
-                break;
-
-            // case 'draw.delete':
-            //     setGeojsonList(
-            //         geojsonList.filter((x, i) => !changedIds.includes(x.id))
-            //     )
-            //     break;
-
-            default:
-                break;
-        }
-    }, [geojsonList]);
-
-    const [mapAction, setMapAction] = useState(null)
-    useEffect(() => {
-        if (!mapAction) { return }
-        onAction(mapAction)
-    }, [mapAction])
 
 
     if (!data) {
@@ -120,8 +60,8 @@ export const ProjectMapEditor: React.FC<any> = ({ data, projectId }) => {
                         minHeight: 'min(100vh, 400px)',
                     }}>
                         <ProjectMap
-                            initialGeojson={dataToGeojson(geojsonList)}
-                            onAction={setMapAction}
+                            initialGeojson={dataToGeojson(geojsonState)}
+                            projectId={projectId}
                         />
                     </div>
                 </Stack>
@@ -129,7 +69,7 @@ export const ProjectMapEditor: React.FC<any> = ({ data, projectId }) => {
                     <ScrollArea>
                         <ProjectMapLegend
                             geojsonList={data}
-                            setGeojsonList={setGeojsonList}
+                            setGeojsonList={setGeojsonState}
                         />
                     </ScrollArea>
                 </Stack>
