@@ -1,18 +1,24 @@
 import prisma from "@/server/prisma";
-import { ErrorDto, ProjectDto } from "@/common/types";
-import { Project, ProjectStatus } from "@prisma/client";
+import { ErrorDto, PublicProjectDto } from "@/common/types";
+import { MapViewport, Project, ProjectStatus } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
-function mapResponse<T extends Project>(project: T): ProjectDto {
+type ProjectWithViewport = Project & {
+  viewport: MapViewport
+}
+
+function mapResponse(item: ProjectWithViewport): PublicProjectDto {
   return {
-    id: project.id,
-    title: project.title,
-    description: project.description,
-    imageUrl: project.imageUrl,
+    id: item.id,
+    title: item.title,
+    description: item.description,
+    imageUrl: item.imageUrl,
+    lng: item.viewport.lng,
+    lat: item.viewport.lat,
   }
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse<ProjectDto[] | ErrorDto>) => {
+export default async (req: NextApiRequest, res: NextApiResponse<PublicProjectDto[] | ErrorDto>) => {
   if (req.method !== 'GET') {
     return res.status(404).json({
       error: 'Not found',
@@ -22,6 +28,9 @@ export default async (req: NextApiRequest, res: NextApiResponse<ProjectDto[] | E
   const projects = await prisma.project.findMany({
     where: {
       status: ProjectStatus.Active,
+    },
+    include: {
+      viewport: true,
     },
   })
 
