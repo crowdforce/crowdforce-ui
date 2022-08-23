@@ -4,6 +4,7 @@ import { Avatar, Card, createStyles, Group, Stack, Text, Title, Image, Button } 
 import { GetServerSideProps, NextPage } from 'next';
 import { getUserId } from '@/server/lib';
 import { getProjects, ProfileResponseDto } from '@/server/controllers/profile';
+import Link from 'next/link';
 
 const useStyles = createStyles((theme) => ({
     bigGroup: {
@@ -88,13 +89,14 @@ const ProfilePage: NextPage<Props> = props => {
                                     p='xs'
                                     mt='xs'
                                 >
-                                    <Button
-                                        fullWidth
-                                        component='a'
-                                        href={`/project/${id}/edit`}
-                                    >
-                                        Посмотреть проект
-                                    </Button>
+                                    <Link href={`/project/${id}/edit`} passHref>
+                                        <Button
+                                            fullWidth
+                                            component='a'
+                                        >
+                                            Посмотреть проект
+                                        </Button>
+                                    </Link>
                                 </Card.Section>
                             </Card>
                         ))}
@@ -134,13 +136,14 @@ const ProfilePage: NextPage<Props> = props => {
                                     p='xs'
                                     mt='xs'
                                 >
-                                    <Button
-                                        fullWidth
-                                        component='a'
-                                        href={`/project/${id}/edit`}
-                                    >
-                                        Посмотреть проект
-                                    </Button>
+                                    <Link href={`/project/${id}/edit`} passHref>
+                                        <Button
+                                            fullWidth
+                                            component='a'
+                                        >
+                                            Посмотреть проект
+                                        </Button>
+                                    </Link>
                                 </Card.Section>
                             </Card>
                         ))}

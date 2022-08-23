@@ -21,6 +21,7 @@
     "@mui/material": "^5.2.5",
     "@mui/styles": "^5.2.3",
     "@prisma/client": "^4.2.1",
+    "@tabler/icons": "^1.86.0",
     "@turf/bbox": "^6.5.0",
     "@turf/helpers": "^6.5.0",
     "@turf/invariant": "^6.5.0",
