@@ -18,7 +18,7 @@ export default withUser<NewFeatureDto>(async (req, res) => {
     })
   }
 
-  const projectId = single(req.query.projectId)
+  const projectId = single(req.query.projectId as string)
   const feature = await prisma.feature.create({
     data: {
       title: '',
