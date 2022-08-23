@@ -8,6 +8,7 @@ function mapResponse<T extends Project>(project: T): ProjectDto {
     id: project.id,
     title: project.title,
     description: project.description,
+    imageUrl: project.imageUrl,
   }
 }
 

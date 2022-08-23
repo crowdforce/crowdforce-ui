@@ -1,8 +1,9 @@
 import { useSession } from 'next-auth/react';
 import Page from '../components/Page';
-import { UserButton } from '@/components/UserButton';
-import { Avatar, Card, Center, createStyles, Group, Stack, Text, Title, Image, Button } from '@mantine/core';
-import useSWR from 'swr';
+import { Avatar, Card, createStyles, Group, Stack, Text, Title, Image, Button } from '@mantine/core';
+import { GetServerSideProps, NextPage } from 'next';
+import { getUserId } from '@/server/lib';
+import { getProjects, ProfileResponseDto } from '@/server/controllers/profile';
 
 const useStyles = createStyles((theme) => ({
     bigGroup: {
@@ -24,165 +25,150 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-type DataType = {
-    following: {
-        image: string
-        href: string
-        name: string
-        description: string
-    }[]
-    owned: {
-        image: string
-        href: string
-        name: string
-        description: string
-    }[]
+type Props = {
+    profile: ProfileResponseDto
 }
 
-const MainPage = () => {
-    const session = useSession();
-    const isAuthenticated = session.status === 'authenticated'
-    const { classes: s, cx } = useStyles();
-
-    // PLACEHOLDER API
-    const { data, error } = useSWR([
-        '/api/profile',
-        {
-            method: 'post',
-            body: JSON.stringify({ id: null }),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        },
-    ])
+const ProfilePage: NextPage<Props> = props => {
+    const session = useSession()
+    const { classes: s, cx } = useStyles()
 
     return (
         <Page>
-            {isAuthenticated ? (
-                <Group
-                    noWrap
-                    grow
-                    className={s.bigGroup}
+            <Group
+                noWrap
+                grow
+                className={s.bigGroup}
+            >
+                <Card
+                    withBorder
+                    p='lg'
+                    className={s.generalInfo}
                 >
-                    <Card
+                    <Group position='center'>
+                        <Stack>
+                            <Avatar src={session.data?.user?.image!} size={256} radius={'50%' as any} />
+                            <Title order={1}>
+                                {session.data?.user?.name!}
+                            </Title>
+                        </Stack>
+                    </Group>
+                </Card>
+                <Card withBorder>
+                    <Card.Section
                         withBorder
-                        p='lg'
-                        className={s.generalInfo}
+                        inheritPadding
+                        py='inherit'
                     >
-                        <Group position='center'>
-                            <Stack>
-                                <Avatar src={session.data?.user?.image!} size={256} radius={'50%' as any} />
-                                <Title order={1}>
-                                    {session.data?.user?.name!}
-                                </Title>
-                            </Stack>
-                        </Group>
-                    </Card>
-                    <Card withBorder>
-                        <Card.Section
-                            withBorder
-                            inheritPadding
-                            py='inherit'
-                        >
-                            <Title order={2}>
-                                Проекты за которыми вы следите
-                            </Title>
-                        </Card.Section>
-                        <Stack
-                            py='inherit'
-                        >
-                            {data && (data as DataType).following.map(({ image, href, name, description }, i) => (
-                                <Card withBorder>
-                                    <Card.Section>
-                                        <Image
-                                            src={image}
-                                            height={200}
-                                        />
-                                    </Card.Section>
-                                    <Stack>
-                                        <Title order={3}>
-                                            {name}
-                                        </Title>
-                                        <Text>
-                                            {description}
-                                        </Text>
-                                    </Stack>
-                                    <Card.Section
-                                        inheritPadding
-                                        p='xs'
-                                        mt='xs'
+                        <Title order={2}>
+                            Проекты за которыми вы следите
+                        </Title>
+                    </Card.Section>
+                    <Stack
+                        py='inherit'
+                    >
+                        {props.profile.following.map(({ id, title, description, imageUrl }) => (
+                            <Card withBorder key={id}>
+                                <Card.Section>
+                                    <Image
+                                        src={imageUrl ?? '/wip.png'}
+                                        height={200}
+                                    />
+                                </Card.Section>
+                                <Stack>
+                                    <Title order={3}>
+                                        {title}
+                                    </Title>
+                                    <Text>
+                                        {description}
+                                    </Text>
+                                </Stack>
+                                <Card.Section
+                                    inheritPadding
+                                    p='xs'
+                                    mt='xs'
+                                >
+                                    <Button
+                                        fullWidth
+                                        component='a'
+                                        href={`/project/${id}/edit`}
                                     >
-                                        <Button
-                                            fullWidth
-                                            component='a'
-                                            href={href}
-                                        >
-                                            Посмотреть проект
-                                        </Button>
-                                    </Card.Section>
-                                </Card>
-                            ))}
-                        </Stack>
-                    </Card>
-                    <Card withBorder>
-                        <Card.Section
-                            withBorder
-                            inheritPadding
-                            py='inherit'
-                        >
-                            <Title order={2}>
-                                Проекты которые вы курируете
-                            </Title>
-                        </Card.Section>
-                        <Stack
-                            py='inherit'
-                        >
-                            {data && (data as DataType).owned.map(({ image, href, name, description }, i) => (
-                                <Card withBorder>
-                                    <Card.Section>
-                                        <Image
-                                            src={image}
-                                            height={200}
-                                        />
-                                    </Card.Section>
-                                    <Stack>
-                                        <Title order={3}>
-                                            {name}
-                                        </Title>
-                                        <Text>
-                                            {description}
-                                        </Text>
-                                    </Stack>
-                                    <Card.Section
-                                        inheritPadding
-                                        p='xs'
-                                        mt='xs'
-                                    >
-                                        <Button
-                                            fullWidth
-                                            component='a'
-                                            href={href}
-                                        >
-                                            Посмотреть проект
-                                        </Button>
-                                    </Card.Section>
-                                </Card>
-                            ))}
-                        </Stack>
-                    </Card>
-                </Group>
-            ) : (
-                <Center>
-                    <Stack align='center'>
-                        <Text size='lg'>
-                            Войдите чтобы увидеть свой профиль
-                        </Text>
-                        <UserButton />
+                                        Посмотреть проект
+                                    </Button>
+                                </Card.Section>
+                            </Card>
+                        ))}
                     </Stack>
-                </Center>
-            )}
+                </Card>
+                <Card withBorder>
+                    <Card.Section
+                        withBorder
+                        inheritPadding
+                        py='inherit'
+                    >
+                        <Title order={2}>
+                            Проекты которые вы курируете
+                        </Title>
+                    </Card.Section>
+                    <Stack
+                        py='inherit'
+                    >
+                        {props.profile.owned.map(({ id, title, description, imageUrl }) => (
+                            <Card withBorder key={id}>
+                                <Card.Section>
+                                    <Image
+                                        src={imageUrl!}
+                                        height={200}
+                                    />
+                                </Card.Section>
+                                <Stack>
+                                    <Title order={3}>
+                                        {title}
+                                    </Title>
+                                    <Text>
+                                        {description}
+                                    </Text>
+                                </Stack>
+                                <Card.Section
+                                    inheritPadding
+                                    p='xs'
+                                    mt='xs'
+                                >
+                                    <Button
+                                        fullWidth
+                                        component='a'
+                                        href={`/project/${id}/edit`}
+                                    >
+                                        Посмотреть проект
+                                    </Button>
+                                </Card.Section>
+                            </Card>
+                        ))}
+                    </Stack>
+                </Card>
+            </Group>
         </Page>
     );
 };
 
-export default MainPage;
+export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
+    const userId = await getUserId(ctx)
+    if (!userId) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false,
+            },
+        }
+    }
+
+    const profile = await getProjects(userId)
+
+    return {
+        props: {
+            profile,
+        },
+    }
+}
+
+export default ProfilePage
