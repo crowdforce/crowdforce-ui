@@ -22,6 +22,10 @@ const ProjectMap: React.FC<ProjectMapProps> = ({ id, projectId }) => {
     const { data: project } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
     const { data: features } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
 
+    if (!project) {
+        return null
+    }
+
     return (
         <MapGl
             id={id}
