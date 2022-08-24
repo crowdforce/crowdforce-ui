@@ -1,9 +1,10 @@
-import { createStyles, Stack, Card, Group, ScrollArea } from '@mantine/core'
+import { createStyles, Card, ScrollArea, Paper } from '@mantine/core'
 import ProjectMap from '@/components/ProjectMap'
-import ProjectMapLegend from '../ProjectMapLegend'
+import { ProjectMapLegend } from '@/components/ProjectMapLegend'
 
 const useStyles = createStyles((theme) => ({
     card: {
+        minHeight: '400px',
         maxHeight: '100vh',
     }
 }))
@@ -20,28 +21,29 @@ export const ProjectMapEditor: React.FC<ProjectMapEditorProps> = ({ projectId })
             withBorder
             className={s.card}
         >
-            <Group
-                grow
-                align='flex-start'
-            >
-                <Stack>
-                    <div style={{
-                        position: 'relative',
-                        minHeight: 'min(100vh, 400px)',
-                    }}>
-                        <ProjectMap
-                            projectId={projectId}
-                        />
-                    </div>
-                </Stack>
-                <Stack>
+            <div style={{
+                position: 'relative',
+                width: '100%',
+                height: '600px',
+                minHeight: 'min(100vh, 400px)',
+            }}>
+                <ProjectMap
+                    projectId={projectId}
+                />
+            </div>
+            <div style={{
+                top: 25,
+                right: 25,
+                position: 'absolute',
+            }}>
+                <Paper p={'sm'}>
                     <ScrollArea>
                         <ProjectMapLegend
                             projectId={projectId}
                         />
                     </ScrollArea>
-                </Stack>
-            </Group>
+                </Paper>
+            </div>
         </Card>
     )
 }
