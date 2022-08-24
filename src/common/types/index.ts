@@ -47,3 +47,7 @@ export type AdminFeatureDto = {
   geometryType: string
   coordinates: object
 }
+
+export type FollowResponseDto = {
+  status: boolean
+}
