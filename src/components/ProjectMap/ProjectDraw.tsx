@@ -58,6 +58,16 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                 break
             }
 
+            case 'draw.delete': {
+                await fetch(`/api/admin/features/${featureId}/delete`, {
+                    method: 'DELETE',
+                })
+                    .then(() => {
+                        mutate(`/api/admin/projects/${projectId}/features`)
+                    })
+                break
+            }
+
             default: {
                 console.log(event.type, event.features)
                 break
@@ -71,7 +81,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
         controls: {
             point: true,
             // polygon: true,
-            // trash: true,
+            trash: true,
         },
         displayControlsDefault: false,
     })
