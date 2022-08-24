@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic'
 import useSWR from 'swr'
 import { ProjectDraw } from './ProjectDraw'
 import { dataToGeojson } from './lib'
-import { AdminFeatureDto } from '@/common/types'
+import { AdminFeatureDto, AdminProjectDto } from '@/common/types'
 
 const MapGl = dynamic(
     () => import('react-map-gl'),
@@ -13,23 +13,25 @@ const MapGl = dynamic(
 );
 
 export type ProjectMapProps = {
+    id: string
     projectId: string
 }
 
-const ProjectMap: React.FC<ProjectMapProps> = ({ projectId }) => {
+const ProjectMap: React.FC<ProjectMapProps> = ({ id, projectId }) => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
-    const { data, error } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
+    const { data: project } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
+    const { data: features } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
 
     return (
         <MapGl
-            id="map"
-            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            id={id}
+            style={{ width: '100%', height: '100%' }}
             mapStyle='mapbox://styles/mapbox/satellite-streets-v11'
             mapboxAccessToken={token}
             initialViewState={{
-                latitude: 59.94670423319895,
-                longitude: 30.371801220550694,
-                zoom: 14,
+                longitude: project?.viewport.lng,
+                latitude: project?.viewport.lat,
+                zoom: project?.viewport.zoom,
             }}
         // fitBounds={bbox(initialGeojson)}
         // fitBoundsOptions={{
@@ -39,7 +41,7 @@ const ProjectMap: React.FC<ProjectMapProps> = ({ projectId }) => {
         >
             {/* <ZoomControl /> */}
             <ProjectDraw
-                initialValue={dataToGeojson(data ?? [])}
+                initialValue={dataToGeojson(features ?? [])}
                 projectId={projectId}
             />
         </MapGl>

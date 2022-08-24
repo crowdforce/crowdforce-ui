@@ -1,15 +1,23 @@
 import prisma from "@/server/prisma";
 import { AdminProjectDto } from "@/common/types";
 import { withUser } from "@/server/middlewares/withUser";
-import { Project } from "@prisma/client";
-import { single } from "@/common/lib/array";
+import { MapViewport, Project } from "@prisma/client";
 
-function mapResponse(project: Project): AdminProjectDto {
+type ProjectWithViewport = Project & {
+  viewport: MapViewport
+}
+
+function mapResponse(project: ProjectWithViewport): AdminProjectDto {
   return {
     id: project.id,
     title: project.title,
     description: project.description,
     status: project.status,
+    viewport: {
+      lng: project.viewport.lng,
+      lat: project.viewport.lat,
+      zoom: project.viewport.zoom,
+    }
   }
 }
 
@@ -20,11 +28,14 @@ export default withUser<AdminProjectDto>(async (req, res) => {
     })
   }
 
-  const projectId = single(req.query.projectId)
+  const projectId = req.query.projectId as string
 
   const project = await prisma.project.findUnique({
     where: {
       id: projectId,
+    },
+    include: {
+      viewport: true,
     }
   })
   if (!project) {
