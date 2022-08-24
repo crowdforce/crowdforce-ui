@@ -80,7 +80,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
         position: 'top-left',
         controls: {
             point: true,
-            // polygon: true,
+            polygon: true,
             trash: true,
         },
         displayControlsDefault: false,
