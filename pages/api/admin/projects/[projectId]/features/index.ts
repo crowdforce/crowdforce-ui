@@ -1,7 +1,7 @@
 import prisma from "@/server/prisma";
 import { AdminFeatureDto } from "@/common/types";
 import { withUser } from "@/server/middlewares/withUser";
-import { Feature } from "@prisma/client";
+import { Feature, FeatureStatus } from "@prisma/client";
 
 function mapResponse(item: Feature): AdminFeatureDto {
   const geom = item.geometry ?? {} as any
@@ -28,6 +28,7 @@ export default withUser<AdminFeatureDto[]>(async (req, res) => {
   const features = await prisma.feature.findMany({
     where: {
       projectId,
+      status: FeatureStatus.Active,
     }
   })
 
