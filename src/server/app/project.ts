@@ -23,7 +23,7 @@ export async function switchProjectToActiveStatus(projectId: string): Promise<vo
     return
   }
 
-  // Do nothing if title or description is not set
+  // Do not switch state if title or description is not set
   if (!item.title || !item.description) {
     return
   }
@@ -34,7 +34,7 @@ export async function switchProjectToActiveStatus(projectId: string): Promise<vo
     },
   })
 
-  // Do nothing if no features added to project yet
+  // Do not switch state if no features added to project yet
   if (features === 0) {
     return
   }
