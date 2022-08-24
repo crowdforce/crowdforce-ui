@@ -4,6 +4,7 @@ import { Burger, Header, MediaQuery } from '@mantine/core'
 import { Logo } from './Logo'
 import { AppMenu } from '../AppMenu'
 import { UserButtonProps } from '@/components/UserButton'
+import React, { Dispatch, SetStateAction } from 'react'
 
 const UserButton = dynamic<UserButtonProps>(
     () => import('@/components/UserButton').then(x => x.UserButton),
@@ -12,7 +13,12 @@ const UserButton = dynamic<UserButtonProps>(
     }
 )
 
-export const AppHeader = ({ opened, setOpened }) => (
+type AppHeaderProps = {
+    opened: boolean
+    setOpened: Dispatch<SetStateAction<boolean>>
+}
+
+export const AppHeader: React.FC<AppHeaderProps> = ({ opened, setOpened }) => (
     <Header
         height={60}
         p={'sm'}
