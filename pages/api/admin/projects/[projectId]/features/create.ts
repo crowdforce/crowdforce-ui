@@ -27,10 +27,12 @@ export default withUser<NewFeatureDto>(async (req, res) => {
         })
     }
 
+    const suffix = Math.floor(Math.random() * 100)
+    const title = `${payload.geometry.type} ${suffix}`
     const projectId = req.query.projectId as string
     const feature = await prisma.feature.create({
         data: {
-            title: '',
+            title,
             description: '',
             status: FeatureStatus.Active,
             geometry: {
