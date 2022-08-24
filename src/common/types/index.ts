@@ -2,6 +2,8 @@ export type ErrorDto = {
   error: string
 }
 
+export type Geometry = GeoJSON.Point | GeoJSON.Polygon
+
 export type NewProjectDto = {
   id: string
 }
@@ -27,6 +29,11 @@ export type AdminProjectDto = {
   title: string
   description: string
   status: string
+  viewport: {
+    lng: number
+    lat: number
+    zoom: number
+  }
 }
 
 export type NewFeatureDto = {

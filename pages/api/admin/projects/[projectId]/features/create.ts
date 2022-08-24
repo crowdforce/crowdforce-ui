@@ -1,43 +1,54 @@
 import prisma from "@/server/prisma";
-import { NewFeatureDto, NewProjectDto } from "@/common/types";
 import { withUser } from "@/server/middlewares/withUser";
 import { Feature, FeatureStatus } from "@prisma/client";
 import { switchProjectToActiveStatus } from "@/server/app/project";
-import { single } from "@/common/lib/array";
+import type { Geometry, NewFeatureDto } from "@/common/types";
 
 function mapResponse<T extends { id: string } = Feature>(project: T): NewFeatureDto {
-  return {
-    id: project.id,
-  }
+    return {
+        id: project.id,
+    }
+}
+
+type Payload = {
+    geometry: Geometry
 }
 
 export default withUser<NewFeatureDto>(async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(404).json({
-      error: 'Not found',
+    if (req.method !== 'POST') {
+        return res.status(404).json({
+            error: 'Not found',
+        })
+    }
+    const payload = req.body as Payload
+    if (!payload) {
+        return res.status(400).json({
+            error: 'Body is empty',
+        })
+    }
+
+    const suffix = Math.floor(Math.random() * 100)
+    const title = `${payload.geometry.type} ${suffix}`
+    const projectId = req.query.projectId as string
+    const feature = await prisma.feature.create({
+        data: {
+            title,
+            description: '',
+            status: FeatureStatus.Active,
+            geometry: {
+                type: payload.geometry.type,
+                coordinates: payload.geometry.coordinates,
+            },
+            project: {
+                connect: {
+                    id: projectId,
+                }
+            }
+        },
     })
-  }
 
-  const projectId = single(req.query.projectId as string)
-  const feature = await prisma.feature.create({
-    data: {
-      title: '',
-      description: '',
-      status: FeatureStatus.Active,
-      geometry: {
-        type: 'Point',
-        coordinates: [60, 30],
-      },
-      project: {
-        connect: {
-          id: projectId,
-        }
-      }
-    },
-  })
+    // try to turn project to active after feature creation
+    await switchProjectToActiveStatus(projectId)
 
-  // try to turn project to active after feature creation
-  await switchProjectToActiveStatus(projectId)
-
-  return res.json(mapResponse(feature))
+    return res.json(mapResponse(feature))
 })
