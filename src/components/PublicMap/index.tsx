@@ -74,6 +74,7 @@ export const PublicMap: React.FC<PublicMapProps> = ({ data, ...props }) => {
                     caption={currentProject.description}
                     src={currentProject.imageUrl}
                     href={`/project/${currentProject.id}`}
+                    projectId={currentProject.id}
                 />
             )}
         </MapGl>
