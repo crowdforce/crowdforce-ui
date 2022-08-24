@@ -16,12 +16,7 @@ const ProjectEditPage = () => {
     const { mutate } = useSWRConfig()
     const isLoadingAuth = session.status === 'loading'
     const isAuthenticated = session.status === 'authenticated'
-    const { data, error } = useSWR<AdminProjectDto>([
-        `/api/admin/projects/${projectId}`,
-        {
-            method: 'GET',
-        },
-    ])
+    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
 
     const isReadyToPublish = false
     // [
