@@ -9,7 +9,6 @@ const Page = (props) => {
       <main className={classes.main}>
         {children}
       </main>
-      <Footer />
     </>
   );
 };

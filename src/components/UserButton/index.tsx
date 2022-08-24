@@ -15,7 +15,12 @@ const useStyles = createStyles((theme) => ({
         '&:hover': {
             backgroundColor: theme.colors.gray[0],
         },
-    }
+    },
+    mobileHidden: {
+        [theme.fn.smallerThan('sm')]: {
+            display: 'none',
+        }
+    },
 }))
 
 export type UserButtonProps = {}
@@ -38,13 +43,11 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                 Object.keys(data).forEach((key) => {
                     if (key !== 'type') {
                         query.set(key, data[key]);
-                        // @ts-ignore
                         cred[key] = data[key];
                     }
                 });
 
                 signIn('credentials', {
-                    // @ts-ignore
                     redirect: '/',
                     ...cred,
                 });
@@ -100,10 +103,14 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                                 // radius="xl"
                                 size={32}
                             />
-                            <Text size="sm" sx={{ lineHeight: 1 }}>
+                            <Text size="sm" sx={{ lineHeight: 1 }}
+                                className={s.mobileHidden}
+                            >
                                 {session.data?.user?.name!}
                             </Text>
-                            <IconChevronDown size={20} />
+                            <IconChevronDown size={20}
+                                className={s.mobileHidden}
+                            />
                         </Group>
                     </UnstyledButton>
                 </Menu.Target>

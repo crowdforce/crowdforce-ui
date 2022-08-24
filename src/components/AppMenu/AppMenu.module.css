@@ -13,3 +13,8 @@
     font-size: 15px;
     margin: 0 20px;
 }
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+}
