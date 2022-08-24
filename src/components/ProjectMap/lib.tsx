@@ -5,7 +5,7 @@ export function dataToGeojson(data: AdminFeatureDto[]): GeoJSON.FeatureCollectio
     const xs = data.map(x => {
         const geometry = {
             coordinates: x.coordinates,
-            type: 'Point',
+            type: x.geometryType,
         }
         const properties = { title: x.title, description: x.description }
         const f = feature(geometry, properties) as unknown as GeoJSON.Feature
