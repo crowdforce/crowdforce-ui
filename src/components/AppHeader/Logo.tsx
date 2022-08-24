@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Avatar, Group, Text } from '@mantine/core'
+import { Avatar, Badge, Group, Text } from '@mantine/core'
 
 export const Logo = () => (
     <Link href={'/'} passHref>
@@ -11,6 +11,7 @@ export const Logo = () => (
                 src={'/favicon-96x96.png'}
             />
             <Text size={'xl'}>CROWD FORCE</Text>
+            <Badge>Beta</Badge>
         </Group>
     </Link>
 )
