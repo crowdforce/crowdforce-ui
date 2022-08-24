@@ -130,9 +130,9 @@ model Feature {
   projectId String  @map(name: "project_id")
   project   Project @relation(fields: [projectId], references: [id])
 
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
-  deletedAt DateTime @map(name: "deleted_at")
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @default(now()) @map(name: "updated_at")
+  deletedAt DateTime? @map(name: "deleted_at")
 
   @@map(name: "features")
 }
