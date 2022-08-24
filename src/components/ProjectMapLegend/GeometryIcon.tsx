@@ -11,7 +11,7 @@ export const GeometryIcon: React.FC<GeometryIconProps> = ({ type }) => {
         )
     }
 
-    if (type === 'Polygin') {
+    if (type === 'Polygon') {
         return (
             <IconPolygon />
         )
