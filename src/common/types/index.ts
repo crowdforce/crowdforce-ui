@@ -29,6 +29,11 @@ export type AdminProjectDto = {
   title: string
   description: string
   status: string
+  viewport: {
+    lng: number
+    lat: number
+    zoom: number
+  }
 }
 
 export type NewFeatureDto = {

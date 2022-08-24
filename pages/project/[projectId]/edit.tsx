@@ -7,6 +7,7 @@ import { AdminFeatureDto, AdminProjectDto, NewProjectDto } from '@/common/types'
 import { useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { ProjectMapEditor } from '@/components/ProjectMapEditor'
+import { MapProvider } from 'react-map-gl'
 
 const ProjectEditPage = () => {
     const session = useSession()
@@ -118,9 +119,11 @@ const ProjectEditPage = () => {
                     </Stack>
                 </Grid.Col>
                 <Grid.Col xs={12} md={8}>
-                    <ProjectMapEditor
-                        projectId={projectId}
-                    />
+                    <MapProvider>
+                        <ProjectMapEditor
+                            projectId={projectId}
+                        />
+                    </MapProvider>
                 </Grid.Col>
             </Grid>
         </Page>
