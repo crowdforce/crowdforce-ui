@@ -13,32 +13,27 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { ActionIcon, Group, Stack, Text } from '@mantine/core';
 import useSWR from 'swr';
 import { AdminFeatureDto } from '@/common/types';
+import { IconPoint, IconPolygon } from '@tabler/icons';
 
-const icons = {
-    Point: (
-        <div
-            style={{
-                width: 25,
-                height: 25,
-                borderRadius: '50%',
-                background: '#4E3FC8',
-                border: 'solid 3px black',
-            }}
-        />
-    ),
-    Polygon: (
-        <div
-            style={{
-                width: 25,
-                height: 25,
-                background: '#4E3FC8',
-                opacity: 0.52,
-                border: 'solid 1px black',
-                transform: 'skew(0deg, 15deg)',
-            }}
-        />
-    ),
-};
+type GeometryIconProps = {
+    type: string
+}
+
+const GeometryIcon: React.FC<GeometryIconProps> = ({ type }) => {
+    if (type === 'Point') {
+        return (
+            <IconPoint />
+        )
+    }
+
+    if (type === 'Polygin') {
+        return (
+            <IconPolygon />
+        )
+    }
+
+    return null
+}
 
 export type ProjectMapLegendProps = {
     projectId: string
@@ -70,8 +65,7 @@ const ProjectMapLegend: React.FC<ProjectMapLegendProps> = ({ projectId }) => {
                         height: 44,
                     }}
                 >
-                    {/* @ts-ignore */}
-                    {icons[x.geometryType]}
+                    <GeometryIcon type={x.geometryType} />
                     <div
                         style={{
                             flex: 1,
