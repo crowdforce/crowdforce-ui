@@ -33,12 +33,14 @@ export async function getProjects(userId: string): Promise<ProfileResponseDto>  
             title: x.title,
             description: x.description,
             imageUrl: x.imageUrl,
+            isFollowed: null,
         })),
         following: following.map(x => ({
             id: x.id,
             title: x.title,
             description: x.description,
             imageUrl: x.imageUrl,
+            isFollowed: true,
         }))
     }
 }

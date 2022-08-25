@@ -13,6 +13,7 @@ export type ProjectDto = {
   title: string
   description: string
   imageUrl: string | null
+  isFollowed: boolean | null
 }
 
 export type PublicProjectDto = {
@@ -50,4 +51,10 @@ export type AdminFeatureDto = {
 
 export type FollowResponseDto = {
   status: boolean
+}
+
+export type MapViewportDto = {
+  lng: number
+  lat: number
+  zoom: number
 }
