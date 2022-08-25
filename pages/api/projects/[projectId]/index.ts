@@ -1,6 +1,6 @@
 import prisma from "@/server/prisma";
 import { ProjectDto } from "@/common/types";
-import { Project, UserFollows } from "@prisma/client";
+import { Project, ProjectStatus, UserFollows } from "@prisma/client";
 import { withOptionalUser } from "@/server/middlewares/withOptionalUser";
 
 type ProjectAndFollow = {
@@ -19,9 +19,10 @@ function mapResponse(item: ProjectAndFollow): ProjectDto {
 }
 
 export async function getProject(projectId: string, userId?: string) {
-  const project = await prisma.project.findUnique({
+  const project = await prisma.project.findFirst({
     where: {
       id: projectId,
+      status: ProjectStatus.Active,
     },
   })
   if (!project) {
