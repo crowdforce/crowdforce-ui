@@ -10,7 +10,7 @@ import { ProjectMapEditor } from '@/components/ProjectMapEditor'
 import { MapProvider } from 'react-map-gl'
 import { getUserId } from '@/server/lib'
 import type { GetServerSideProps, NextPage } from 'next'
-import { getProject } from 'pages/api/admin/projects/[projectId]'
+import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
 
 type Props = {
     fallback: Record<string, any>
@@ -150,7 +150,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     }
 
     const projectId = ctx.params?.projectId as string
-    const project = await getProject(projectId)
+    const project = await getAdminProject(projectId)
 
     return {
         props: {
