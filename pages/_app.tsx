@@ -1,14 +1,15 @@
-import './style.css'
+import './style.css';
 
 /* eslint-disable react/jsx-props-no-spreading */
-import Head from 'next/head'
-import { MapProvider } from 'react-map-gl'
-import { SessionProvider } from 'next-auth/react'
-import { MantineProvider } from '@mantine/core'
-import { SWRConfig } from 'swr'
-import { AppProps } from 'next/app'
-import { Session } from 'next-auth'
-import { App } from '@/components/App'
+import Head from 'next/head';
+import { MapProvider } from 'react-map-gl';
+import { SessionProvider } from 'next-auth/react';
+import ThemeProvider from '../components/ThemeProvider';
+import { MantineProvider } from '@mantine/core';
+import { SWRConfig } from 'swr';
+import { AppProps } from 'next/app';
+import { Session } from 'next-auth';
+import { App } from '@/components/App';
 
 type Props = AppProps & {
     session: Session
@@ -40,19 +41,21 @@ export default function MyApp({ Component, pageProps }: Props) {
                 <meta name="theme-color" content="#ffffff" />
             </Head>
 
-            <MantineProvider withGlobalStyles withNormalizeCSS>
-                <SessionProvider session={pageProps.session}>
-                    <MapProvider>
-                        <SWRConfig value={{
-                            fetcher: (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json())
-                        }}>
-                            <App>
-                                <Component {...pageProps} />
-                            </App>
-                        </SWRConfig>
-                    </MapProvider>
-                </SessionProvider>
-            </MantineProvider>
+            <ThemeProvider>
+                <MantineProvider withGlobalStyles withNormalizeCSS>
+                    <SessionProvider session={pageProps.session}>
+                        <MapProvider>
+                            <SWRConfig value={{
+                                fetcher: (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json())
+                            }}>
+                                <App>
+                                    <Component {...pageProps} />
+                                </App>
+                            </SWRConfig>
+                        </MapProvider>
+                    </SessionProvider>
+                </MantineProvider>
+            </ThemeProvider>
         </>
-    )
-}
+    );
+};
