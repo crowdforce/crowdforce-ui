@@ -1,8 +1,8 @@
 import { AppHeader } from '@/components/AppHeader'
 import { AppShell, Burger, MediaQuery, Navbar } from '@mantine/core'
 import { useState } from 'react'
+import Footer from 'components/Footer/Footer'
 import { AppMenu } from '@/components/AppMenu'
-import { Footer } from '@/components/Footer'
 
 export type AppProps = {
     children?: React.ReactNode

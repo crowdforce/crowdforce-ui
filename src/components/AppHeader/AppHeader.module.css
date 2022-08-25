@@ -3,10 +3,3 @@
     align-items: center;
     justify-content: space-between;
 }
-
-.centered {
-    flex: 1;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}

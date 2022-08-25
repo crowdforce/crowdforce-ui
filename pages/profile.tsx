@@ -1,10 +1,10 @@
 import { useSession } from 'next-auth/react';
+import Page from '../components/Page';
 import { Avatar, Card, createStyles, Group, Stack, Text, Title, Image, Button } from '@mantine/core';
 import { GetServerSideProps, NextPage } from 'next';
 import { getUserId } from '@/server/lib';
 import { getProjects, ProfileResponseDto } from '@/server/controllers/profile';
 import Link from 'next/link';
-import Page from '@/components/Page';
 
 const useStyles = createStyles((theme) => ({
     bigGroup: {

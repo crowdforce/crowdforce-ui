@@ -1,3 +1,12 @@
+.navLinks {
+    /* display: flex;
+    align-items: center;
+    justify-content: space-between; */
+    flex-grow: 1;
+    text-align: right;
+    padding-right: 40px;
+}
+
 .navLinks a {
     color: #362034;
     text-decoration: none;
