@@ -24,6 +24,25 @@ export default withUser<FollowResponseDto>(async (req, res) => {
   const projectId = req.query.projectId as string
   const payload = req.body as Payload
 
+  const projectOwner = await prisma.project.findUnique({
+    where: {
+      id: projectId,
+    },
+    select: {
+      ownerId: true
+    }
+  })
+  if (!projectOwner) {
+    return res.status(404).json({
+      error: 'Project not found',
+    })
+  }
+  if (projectOwner.ownerId === userId) {
+    return res.status(400).json({
+      error: 'User cannot follow your own project',
+    })
+  }
+
   const follow = await prisma.userFollows.upsert({
     where: {
       userId_projectId: {
