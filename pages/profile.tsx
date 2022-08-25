@@ -89,7 +89,7 @@ const ProfilePage: NextPage<Props> = props => {
                                     p='xs'
                                     mt='xs'
                                 >
-                                    <Link href={`/project/${id}`} passHref>
+                                    <Link href={`/project/${id}/edit`} passHref>
                                         <Button
                                             fullWidth
                                             component='a'
