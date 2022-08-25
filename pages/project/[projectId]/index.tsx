@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Page from 'components/Page/Page'
 import useSWR, { SWRConfig } from 'swr'
 import { Box, Center, Grid, Loader, Stack, Text, Title } from '@mantine/core'
 import { ProjectDto } from '@/common/types'
@@ -7,7 +8,6 @@ import type { GetServerSideProps, NextPage } from 'next'
 import SchemaMap from '@/components/SchemaMap'
 import { FollowProjectButton } from '@/components/FollowProjectButton'
 import { getProject } from 'pages/api/projects/[projectId]'
-import Page from '@/components/Page'
 
 type Props = {
     fallback: Record<string, any>

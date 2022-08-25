@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Page from 'components/Page/Page'
 import useSWR, { SWRConfig, useSWRConfig } from 'swr'
 import { Alert, Button, Card, Center, Grid, Loader, Stack, Text } from '@mantine/core'
 import { ProjectEditForm } from '@/components/ProjectEditForm'
@@ -10,7 +11,6 @@ import { MapProvider } from 'react-map-gl'
 import { getUserId } from '@/server/lib'
 import type { GetServerSideProps, NextPage } from 'next'
 import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
-import Page from '@/components/Page'
 
 type Props = {
     fallback: Record<string, any>
