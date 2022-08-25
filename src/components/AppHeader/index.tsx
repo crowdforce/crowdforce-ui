@@ -29,7 +29,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => (
             <Logo />
 
             <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-                <div>
+                <div className={s.centered}>
                     <AppMenu />
                 </div>
             </MediaQuery>

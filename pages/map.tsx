@@ -1,9 +1,9 @@
-import Page from '../components/Page';
 import { PublicMap } from '@/components/PublicMap'
 import { NextPage } from 'next'
 import useSWR from 'swr'
-import { PublicProjectDto } from '@/common/types';
-import { Box } from '@mantine/core';
+import { PublicProjectDto } from '@/common/types'
+import { Box } from '@mantine/core'
+import Page from '@/components/Page'
 
 const Index: NextPage = () => {
     const { data, error } = useSWR<PublicProjectDto[]>(`/api/projects`)
@@ -23,7 +23,7 @@ const Index: NextPage = () => {
                 />
             </Box>
         </Page>
-    );
-};
+    )
+}
 
-export default Index;
+export default Index
