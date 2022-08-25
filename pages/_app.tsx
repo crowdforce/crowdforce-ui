@@ -5,21 +5,17 @@ import Head from 'next/head';
 import { MapProvider } from 'react-map-gl';
 import { SessionProvider } from 'next-auth/react';
 import ThemeProvider from '../components/ThemeProvider';
-import { AppHeader } from '@/components/AppHeader';
-import { AppShell, Burger, MantineProvider, MediaQuery, Navbar } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import { SWRConfig } from 'swr';
 import { AppProps } from 'next/app';
 import { Session } from 'next-auth';
-import { useState } from 'react';
-import Footer from 'components/Footer/Footer';
-import { AppMenu } from '@/components/AppMenu';
+import { App } from '@/components/App';
 
 type Props = AppProps & {
     session: Session
 }
 
 export default function MyApp({ Component, pageProps }: Props) {
-    const [opened, setOpened] = useState(false)
     return (
         <>
             <Head>
@@ -52,30 +48,9 @@ export default function MyApp({ Component, pageProps }: Props) {
                             <SWRConfig value={{
                                 fetcher: (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json())
                             }}>
-                                <AppShell
-                                    header={
-                                        <AppHeader
-                                            opened={opened}
-                                            setOpened={setOpened}
-                                        />
-                                    }
-                                    navbar={
-                                        <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-                                            <Navbar
-                                                hidden={!opened}
-                                            >
-                                                <AppMenu
-                                                    vertical
-                                                />
-                                            </Navbar>
-                                        </MediaQuery>
-                                    }
-                                    footer={
-                                        <Footer />
-                                    }
-                                >
+                                <App>
                                     <Component {...pageProps} />
-                                </AppShell>
+                                </App>
                             </SWRConfig>
                         </MapProvider>
                     </SessionProvider>

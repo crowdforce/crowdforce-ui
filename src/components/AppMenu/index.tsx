@@ -5,7 +5,11 @@ import { MenuItem } from './MenuItem'
 const useStyles = createStyles((theme) => ({
 }))
 
-export const AppMenu = ({ vertical = false }) => {
+export type AppMenuProps = {
+    vertical?: boolean
+}
+
+export const AppMenu: React.FC<AppMenuProps> = ({ vertical = false }) => {
     const { cx } = useStyles()
     return (
         <nav className={cx(s.navLinks, vertical && s.vertical)}>
