@@ -44,26 +44,7 @@ export const ProjectPopup: React.FC<ProjectPopupProps> = props => {
                     p='xs'
                     mt='xs'
                 >
-                    <Button
-                        fullWidth
-                        component='a'
-                        size='xs'
-                        onClick={async () => {
-                            const payload = {
-                                follow: true,
-                            }
-                            await fetch(`/api/projects/${props.projectId}/follow`, {
-                                method: 'POST',
-                                headers: {
-                                    'content-type': 'application/json',
-                                },
-                                body: JSON.stringify(payload),
-                            })
-                        }}
-                    >
-                        Следить за проектом
-                    </Button>
-                    {/* <Link href={props.href} passHref>
+                    <Link href={props.href} passHref>
                         <Button
                             fullWidth
                             component='a'
@@ -71,7 +52,7 @@ export const ProjectPopup: React.FC<ProjectPopupProps> = props => {
                         >
                             Посмотреть проект
                         </Button>
-                    </Link> */}
+                    </Link>
                 </Card.Section>
             </Card>
         </Popup>
