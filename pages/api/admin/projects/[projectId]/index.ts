@@ -21,6 +21,22 @@ function mapResponse(project: ProjectWithViewport): AdminProjectDto {
   }
 }
 
+export async function getProject(projectId: string) {
+  const project = await prisma.project.findUnique({
+    where: {
+      id: projectId,
+    },
+    include: {
+      viewport: true,
+    },
+  })
+  if (!project) {
+    return null
+  }
+
+  return mapResponse(project)
+}
+
 export default withUser<AdminProjectDto>(async (req, res) => {
   if (req.method !== 'GET') {
     return res.status(404).json({
@@ -30,19 +46,12 @@ export default withUser<AdminProjectDto>(async (req, res) => {
 
   const projectId = req.query.projectId as string
 
-  const project = await prisma.project.findUnique({
-    where: {
-      id: projectId,
-    },
-    include: {
-      viewport: true,
-    }
-  })
+  const project = await getProject(projectId)
   if (!project) {
     return res.status(404).json({
       error: 'Not found',
     })
   }
 
-  return res.json(mapResponse(project))
+  return res.json(project)
 })

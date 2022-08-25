@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import Page from 'components/Page/Page'
-import useSWR, { useSWRConfig } from 'swr'
+import useSWR, { SWRConfig, useSWRConfig } from 'swr'
 import { Alert, Button, Card, Center, Grid, Loader, Stack, Text } from '@mantine/core'
 import { ProjectEditForm } from '@/components/ProjectEditForm'
 import { AdminFeatureDto, AdminProjectDto, NewProjectDto } from '@/common/types'
@@ -8,8 +8,15 @@ import { useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { ProjectMapEditor } from '@/components/ProjectMapEditor'
 import { MapProvider } from 'react-map-gl'
+import { getUserId } from '@/server/lib'
+import type { GetServerSideProps, NextPage } from 'next'
+import { getProject } from 'pages/api/admin/projects/[projectId]'
 
-const ProjectEditPage = () => {
+type Props = {
+    fallback: Record<string, any>
+}
+
+const Container: React.FC = () => {
     const session = useSession()
     const router = useRouter()
     const projectId = router.query.projectId as string
@@ -123,6 +130,35 @@ const ProjectEditPage = () => {
             </Grid>
         </Page>
     )
+}
+
+const ProjectEditPage: NextPage<Props> = ({ fallback }) => (
+    <SWRConfig value={{ fallback }}>
+        <Container />
+    </SWRConfig>
+)
+
+export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
+    const userId = await getUserId(ctx)
+    if (!userId) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: '/',
+            }
+        }
+    }
+
+    const projectId = ctx.params?.projectId as string
+    const project = await getProject(projectId)
+
+    return {
+        props: {
+            fallback: {
+                [`/api/admin/projects/${projectId}`]: project,
+            },
+        }
+    }
 }
 
 export default ProjectEditPage
