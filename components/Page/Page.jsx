@@ -1,16 +1,11 @@
-import classes from './Page.module.css';
-import Footer from '../Footer';
+import classes from './Page.module.css'
 
-const Page = (props) => {
-  const { children } = props;
+const Page = ({ children }) => {
+    return (
+        <main className={classes.main}>
+            {children}
+        </main>
+    )
+}
 
-  return (
-    <>
-      <main className={classes.main}>
-        {children}
-      </main>
-    </>
-  );
-};
-
-export default Page;
+export default Page

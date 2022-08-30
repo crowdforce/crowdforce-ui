@@ -1,108 +1,386 @@
-import {
-    Typography, List, ListItem, ListItemAvatar, ListItemText,
-} from '@mui/material';
-import { useState } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import Page from '../components/Page';
-import classes from './index.module.css';
-import ProjectEditor from '../components/ProjectEditor';
+import { Button, Center, Container, createStyles, Group, keyframes, MediaQuery, SimpleGrid, Text, Title } from '@mantine/core'
+import { Stack } from '@mui/system'
+import { IconMouse, IconUser } from '@tabler/icons'
+import Image from 'next/image'
+import Page from '../components/Page'
+import heroLine from '@/../public/index/heroLine.svg'
+import bigLine from '@/../public/index/bigLine.svg'
+import blueLine from '@/../public/index/blueLine.svg'
+import phone from '@/../public/index/phone.png'
+import list from '@/../public/index/list.png'
+import planet from '@/../public/index/planet.png'
+import target from '@/../public/index/target.png'
+import { GetServerSideProps } from 'next'
+import { getProjects } from './api/projects'
+import { ProjectCard } from '@/components/ProjectCard'
 
-const MainPage = () => {
-    const [openProjectEditor, setOpenProjectEditor] = useState(false);
-    const handleNewProjectClick = (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault();
-        setOpenProjectEditor(true);
-    };
+export const mouseAnimation = keyframes({
+    '0%': { transform: 'translateY(0)' },
+    '50%': { transform: 'translateY(10px)' },
+    '100%': { transform: 'translateY(0)' },
+})
 
-    const handleProjectEditorDialogClose = () => {
-        setOpenProjectEditor(false);
-    };
-    const session = useSession();
+const useStyles = createStyles((theme) => ({
+    container: {
+        position: 'relative',
+        maxWidth: 1160,
+        overflow: 'visible',
+        [theme.fn.smallerThan('sm')]: {
+            paddingLeft: 'unset',
+            paddingRight: 'unset',
+        }
+    },
+    containerHero: {
+        [theme.fn.smallerThan('xs')]: {
+            display: 'flex',
+            flexDirection: 'column-reverse',
+            gap: theme.spacing.xl,
+        }
+    },
+    stackHero: {
+        minHeight: 'min(min(100vh, 100vw) - 60px * 2 - 10vh, 925px)',
+        position: 'relative',
+        gap: '4rem',
+        overflow: 'visible',
+        [theme.fn.smallerThan('sm')]: {
+            gap: '2rem',
+        },
+        [theme.fn.smallerThan('xs')]: {
+            textAlign: 'center',
+            justifyContent: 'space-evenly',
+            minHeight: 'unset',
+            paddingTop: '2rem',
+        }
 
+    },
+    imageHero: {
+        position: 'absolute',
+        width: '100% ',
+        height: 0,
+        paddingTop: `${727 / 1047 * 100}%`,
+        right: '-25%',
+        [theme.fn.smallerThan('xs')]: {
+            position: 'relative',
+            right: 'unset',
+            transform: 'scale(1.4)',
+        }
+    },
+    buttonHero: {
+        [theme.fn.smallerThan('xs')]: {
+            width: '100%',
+            position: 'relative',
+        }
+    },
+    subtitleHero: {
+        fontSize: 30,
+        zIndex: 1,
+        [theme.fn.smallerThan('sm')]: {
+            fontSize: 24,
+        }
+    },
+    buttonShadow: {
+        position: 'absolute',
+        bottom: -10,
+        opacity: .5,
+        filter: 'blur(28px)',
+        width: 250,
+        height: 60,
+        background: theme.colors.lime[6],
+        borderRadius: theme.radius.lg,
+    },
+    lineHero: {
+        position: 'absolute',
+        bottom: 0,
+        transform: 'translate(-40%, 25%)',
+        [theme.fn.smallerThan('xs')]: {
+            display: 'none',
+        }
+    },
+    bigLineStack: {
+        position: 'absolute',
+        zIndex: 1,
+        top: 250,
+        width: 'min(100%, calc(642px * 1.25))',
+        height: '100%',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        gap: '145px !important',
+        [theme.fn.smallerThan('xs')]: {
+            position: 'relative',
+            top: 0,
+            width: '100%',
+            gap: 'unset !important',
+            backgroundImage: 'url(/index/bigLaneMobile.svg)',
+            backgroundPosition: 'center top',
+            backgroundRepeat: 'no-repeat',
+        }
+    },
+    bigLineGroup: {
+        flexWrap: 'nowrap',
+        '& > *': {
+            flex: '1 0 auto',
+        },
+        '& > span': {
+            [theme.fn.smallerThan('xs')]: {
+                flexBasis: 160,
+            },
+        },
+        [theme.fn.smallerThan('xs')]: {
+            flexDirection: 'column-reverse',
+            '& > div': {
+                width: '100%',
+            }
+        }
+    },
+    bigLineOdd: {
+        flexDirection: 'row-reverse',
+    },
+    blueLine: {
+        position: 'absolute',
+        bottom: '12%',
+        right: 0,
+        transform: 'translate(40%)',
+        [theme.fn.smallerThan('xs')]: {
+            display: 'none',
+        },
+    },
+    iconMouse: {
+        animation: `${mouseAnimation} 3s ease-out infinite`,
+    },
+}))
+
+const bigLineData = [
+    {
+        src: phone,
+        title: (<>
+            Присоединяйтесь <br />
+            к Crowdforce
+        </>),
+        text: (<>
+            Зарегистрируйтесь на сайте через <br />
+            ваш акканут в Телеграм
+        </>)
+    },
+    {
+        src: list,
+        title: (<>
+            Наведите порядок <br />
+            в садовых работах
+        </>),
+        subtitle: (<>
+            вы куратор
+        </>),
+        text: (<>
+            Создайте свой проект и запланируйте задачи  <br />
+            по садовому уходу
+        </>)
+    },
+    {
+        src: planet,
+        title: (<>
+            Помогайте городам <br />
+            процветать
+        </>),
+        subtitle: (<>
+            вы помощник
+        </>),
+        text: (<>
+            Выберите проект, которому вы хотите помочь <br />
+            процветать и подпишитесь на его
+        </>)
+    },
+    {
+        src: target,
+        title: (<>
+            Помогаем <br />
+            самоорганизоваться
+        </>),
+        text: (<>
+            Телеграмм бот оповестит вас и ваших <br />
+            помощников о задачах в саду, которые можно <br />
+            взять на себя и к которым можно присоединиться.
+        </>)
+    },
+]
+
+const MainPage = ({ projects }) => {
+    const { classes: s, cx } = useStyles()
     return (
         <Page>
-            <div className={classes.promo}>
-                <Typography variant="h5" className={classes.title}>
-                    Сделай свой город зеленым!
-                </Typography>
-                <Typography>
-                    Помогаем навести порядок в расписании садовых работ и найти помощников <br />
-                    для ухода за садами и огородами. Начни системный уход за садом твоего <br />
-                    сообщества или присоединяйся к активным проектам!
-                </Typography>
-            </div>
-            <section className={classes.howTo}>
-                <Typography variant="h4" className={classes.title}>
-                    Как это работает
-                </Typography>
-                <List className={classes.howToList}>
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Typography variant="h3" color="primary">1</Typography>
-                        </ListItemAvatar>
-                        <ListItemText primary="Пройдите регистрацию и авторизуйтесь через ваш Телеграм" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar className={classes.howToStep}>
-                            <Typography variant="h3" color="primary">2</Typography>
-                        </ListItemAvatar>
-                        <ListItemText primary='Выберите проект, которому Вы можете помочь' />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemAvatar className={classes.howToStep}>
-                            <Typography variant="h3" color="primary">3</Typography>
-                        </ListItemAvatar>
-                        <ListItemText primary="Телеграм-бот напомнит Вам о времени активности и новостях проекта" />
-                    </ListItem>
-                </List>
-            </section>
-            <section className={classes.howTo}>
-                <Typography variant="h4" className={classes.title}>
-                    Все через телеграм
-                </Typography>
-                <List className={classes.howToList}>
-                    <ListItem>
-                        <ListItemText
-                            primary={<Typography variant="h6">Авторизация</Typography>}
-                            secondary={<Typography>Укажи свой телеграм и получи код авторизации</Typography>}
-                        />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemText
-                            primary={<Typography variant="h6">Календарь</Typography>}
-                            secondary={(
-                                <Typography>
-                                    Выбери дату, когда готов помочь, и телеграм-бот напомнит тебе о времени активности
-                                </Typography>
-                            )}
-                        />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemText
-                            primary={<Typography variant="h6">Общение и новости</Typography>}
-                            secondary={(
-                                <Typography>
-                                    Узнавай первым о последних новостях проектов и достигнутых целях
-                                </Typography>
-                            )}
-                        />
-                    </ListItem>
-                </List>
-            </section>
-            <section className={classes.howTo}>
-                <Typography variant="h4" style={{ paddingBottom: '40px' }}>
-                    Есть крутая идея по благоустройству, но ты не знаешь как её реализовать?
-                    {' '}
-                    <a onClick={handleNewProjectClick} href="#">Предложи проект</a>
-                    , тебе помогут. Или присоединяйся к активным проектам!
-                </Typography>
-            </section>
-            <ProjectEditor
-                open={openProjectEditor}
-                onClose={handleProjectEditorDialogClose}
-            />
-        </Page>
-    );
-};
+            <Container
+                className={cx(s.container, s.containerHero)}
+            >
+                <div
+                    className={s.imageHero}
+                >
+                    <Image
+                        src={'/index/hero.png'}
+                        layout='fill'
+                        quality={100}
+                    />
+                </div>
+                <Stack
+                    justifyContent='center'
+                    className={s.stackHero}
+                >
+                    <Title
+                        order={1}
+                        sx={{
+                            textTransform: 'uppercase',
+                        }}
+                    >
+                        Помогаем <br />
+                        навести порядок <br />
+                        в расписании <br />
+                    </Title>
+                    <Text
+                        className={s.subtitleHero}
+                    >
+                        садовых работ и найти помощников для <br />
+                        ухода за садами и огородами
+                    </Text>
 
-export default MainPage;
+                    <div
+                        className={s.lineHero}
+                    >
+                        <Image
+                            src={heroLine}
+                            quality={100}
+                        />
+                    </div>
+                    <div
+                        className={s.buttonShadow}
+                    />
+                    <Button
+                        uppercase
+                        size='xl'
+                        leftIcon={<IconUser />}
+                        sx={{
+                            position: 'absolute',
+                            bottom: 0,
+                        }}
+                        className={s.buttonHero}
+                    >
+                        войти через тг
+                    </Button>
+                </Stack>
+            </Container>
+
+            <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                <Center
+                    sx={{
+                        paddingTop: '4rem',
+                        transform: 'scale(1.5)',
+                        color: 'rgba(39, 39, 46, 0.6)',
+                    }}
+                >
+                    <IconMouse
+                        className={s.iconMouse}
+                    />
+                </Center>
+            </MediaQuery>
+
+            <Container
+                className={s.container}
+                sx={{
+                    paddingTop: '8rem',
+                }}
+            >
+                <Title order={2}>
+                    <Text inherit align='center'>
+                        <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                            <span>
+                                Начни системный уход за своим садом <br />
+                                или присоединяйся к проектам сообществ!
+                            </span>
+                        </MediaQuery>
+                        <MediaQuery largerThan='xs' styles={{ display: 'none' }}>
+                            <span>
+                                Преимущества
+                            </span>
+                        </MediaQuery>
+                    </Text>
+                </Title>
+            </Container>
+            <Container
+                className={s.container}
+                sx={{
+                    marginTop: '2rem',
+                }}
+            >
+                <Center>
+                    <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                        <div>
+                            <Image
+                                src={bigLine}
+                                quality={100}
+                            />
+                        </div>
+                    </MediaQuery>
+                </Center>
+                <Stack
+                    className={s.bigLineStack}
+                >
+                    {bigLineData.map((x, i) => (
+                        <Group
+                            key={i}
+                            position='apart'
+                            className={cx(s.bigLineGroup, i % 2 == 1 && s.bigLineOdd)}
+                        >
+                            <Stack
+                                sx={{
+                                    gap: '1rem',
+                                }}
+                            >
+                                {x.subtitle && (
+                                    <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                                        <Title order={5}>
+                                            {x.subtitle}
+                                        </Title>
+                                    </MediaQuery>
+                                )}
+                                <Title order={3}>
+                                    {x.title}
+                                </Title>
+                                <Text
+                                    size='xl'
+                                >
+                                    {x.text}
+                                </Text>
+                            </Stack>
+                            <Image
+                                src={x.src}
+                                quality={100}
+                                objectFit='contain'
+                            />
+                        </Group>
+                    ))}
+                </Stack>
+                <div
+                    className={s.blueLine}
+                >
+                    <Image
+                        src={blueLine}
+                        quality={100}
+                    />
+                </div>
+            </Container>
+            <div style={{
+                height: '8rem'
+            }} />
+        </Page >
+    )
+}
+
+export const getServerSideProps: GetServerSideProps = async ctx => {
+
+    const projects = await getProjects()
+
+    return {
+        props: {
+            projects,
+        }
+    }
+}
+
+export default MainPage

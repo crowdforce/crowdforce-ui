@@ -18,8 +18,12 @@ type AppHeaderProps = {
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => (
     <Header
+        withBorder={false}
         height={60}
         p={'sm'}
+        sx={{
+            backgroundColor: 'transparent',
+        }}
     >
         <div className={s.root}>
             <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
