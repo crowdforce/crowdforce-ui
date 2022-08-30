@@ -13,6 +13,8 @@ import target from '@/../public/index/target.png'
 import { GetServerSideProps } from 'next'
 import { getProjects } from './api/projects'
 import { ProjectCard } from '@/components/ProjectCard'
+import React from 'react'
+import { PublicProjectDto } from '@/common/types'
 
 export const mouseAnimation = keyframes({
     '0%': { transform: 'translateY(0)' },
@@ -66,6 +68,9 @@ const useStyles = createStyles((theme) => ({
         }
     },
     buttonHero: {
+        position: 'absolute',
+        bottom: 0,
+        zIndex: 1,
         [theme.fn.smallerThan('xs')]: {
             width: '100%',
             position: 'relative',
@@ -203,7 +208,7 @@ const bigLineData = [
     },
 ]
 
-const MainPage = ({ projects }) => {
+const MainPage: React.FC<{ projects: PublicProjectDto[] }> = ({ projects }) => {
     const { classes: s, cx } = useStyles()
     return (
         <Page>
@@ -255,10 +260,6 @@ const MainPage = ({ projects }) => {
                         uppercase
                         size='xl'
                         leftIcon={<IconUser />}
-                        sx={{
-                            position: 'absolute',
-                            bottom: 0,
-                        }}
                         className={s.buttonHero}
                     >
                         войти через тг
@@ -365,6 +366,39 @@ const MainPage = ({ projects }) => {
                     />
                 </div>
             </Container>
+            <Container
+                className={s.container}
+                sx={{
+                    paddingTop: '8rem',
+                }}
+            >
+                <Title order={2}>
+                    <Text inherit align='center'>
+                        Галерея проектов
+                    </Text>
+                </Title>
+            </Container>
+            <Container
+                className={s.container}
+                sx={{
+                    paddingTop: '8rem',
+                }}
+            >
+                <SimpleGrid
+                    cols={3}
+                    breakpoints={[
+                        { maxWidth: 'xl', cols: 3, },
+                        { maxWidth: 'md', cols: 2, },
+                        { maxWidth: 'xs', cols: 1, },
+                    ]}
+                >
+                    {projects.map((x, i) => (
+                        <ProjectCard
+                            data={x}
+                        />
+                    ))}
+                </SimpleGrid>
+            </Container>
             <div style={{
                 height: '8rem'
             }} />
@@ -373,9 +407,7 @@ const MainPage = ({ projects }) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-
     const projects = await getProjects()
-
     return {
         props: {
             projects,
