@@ -1,10 +1,10 @@
 import { AppHeader } from '@/components/AppHeader'
 import { AppShell, Burger, MediaQuery, Navbar } from '@mantine/core'
 import { useState } from 'react'
-import Footer from 'components/Footer/Footer'
 import { AppMenu } from '@/components/AppMenu'
 import dynamic from 'next/dynamic'
 import { UserButtonProps } from '@/components/UserButton'
+import { AppFooter } from '../AppFooter'
 const UserButton = dynamic<UserButtonProps>(
     () => import('@/components/UserButton').then(x => x.UserButton),
     {
@@ -21,6 +21,7 @@ export const App: React.FC<AppProps> = ({ children }) => {
 
     return (
         <AppShell
+            fixed={false}
             styles={theme => ({
                 main: {
                     overflow: 'hidden',
@@ -55,7 +56,7 @@ export const App: React.FC<AppProps> = ({ children }) => {
                 </MediaQuery>
             )}
             footer={(
-                <Footer />
+                <AppFooter />
             )}
         >
             {children}

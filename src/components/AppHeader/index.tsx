@@ -20,6 +20,8 @@ const useStyles = createStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'baseline',
+        position: 'sticky',
+        top: 0,
     },
     root: {
         flex: 1,
@@ -43,7 +45,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
                 <Logo />
 
                 <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
-                    <Group>
+                    <Group
+                        noWrap
+                    >
                         <AppMenu />
                         <UserButton />
                     </Group>

@@ -6,6 +6,7 @@ import Image from 'next/image'
 export const Logo = () => (
     <Link href={'/'} passHref>
         <Group
+            noWrap
             sx={{
                 userSelect: 'none',
                 cursor: 'pointer',
@@ -16,7 +17,7 @@ export const Logo = () => (
                 position: 'relative',
                 height: 40,
                 display: 'flex',
-                flex: '0 1 150px',
+                maxWidth: 150,
             }}>
                 <Image
                     src={logo}
