@@ -1,5 +1,5 @@
 import { Button, Center, Container, createStyles, Group, keyframes, Loader, MediaQuery, SimpleGrid, Stack, Text, Title } from '@mantine/core'
-import { IconMouse, IconUser } from '@tabler/icons'
+import { IconCornerLeftDownDouble, IconMouse } from '@tabler/icons'
 import Image from 'next/image'
 import Page from '@/components/Page'
 import heroLine from '@/../public/index/heroLine.svg'
@@ -15,6 +15,15 @@ import { ProjectCard } from '@/components/ProjectCard'
 import React from 'react'
 import { PublicProjectDto } from '@/common/types'
 import useSWR, { SWRConfig } from 'swr'
+import dynamic from 'next/dynamic'
+import { UserButtonWithIconProps } from '@/components/UserButton/WithIcon'
+import { useSession } from 'next-auth/react'
+const UserButtonWithIcon = dynamic<UserButtonWithIconProps>(
+    () => import('@/components/UserButton/WithIcon').then(x => x.UserButtonWithIcon),
+    {
+        ssr: false,
+    }
+)
 
 type Props = {
     fallback: Record<string, any>
@@ -96,6 +105,9 @@ const useStyles = createStyles((theme) => ({
         height: 60,
         background: theme.colors.lime[6],
         borderRadius: theme.radius.lg,
+        [theme.fn.smallerThan('xs')]: {
+            width: ' 100%',
+        },
     },
     lineHero: {
         position: 'absolute',
@@ -213,6 +225,8 @@ const bigLineData = [
 ]
 
 const MainPageContainer: React.FC = () => {
+    const session = useSession()
+    const isAuthenticated = session.status === 'authenticated'
     const { data: projects, error } = useSWR<PublicProjectDto[]>(`/api/projects`)
     const { classes: s, cx } = useStyles()
 
@@ -262,14 +276,24 @@ const MainPageContainer: React.FC = () => {
                     <div
                         className={s.buttonShadow}
                     />
-                    <Button
-                        uppercase
-                        size='xl'
-                        leftIcon={<IconUser />}
-                        className={s.buttonHero}
-                    >
-                        войти через тг
-                    </Button>
+                    {isAuthenticated ? (
+                        <Button
+                            uppercase
+                            size='xl'
+                            leftIcon={<IconCornerLeftDownDouble />}
+                            component='a'
+                            href='#projects'
+                            className={s.buttonHero}
+                        >
+                            Галерея проектов
+                        </Button>
+                    ) : (
+                        <div
+                            className={s.buttonHero}
+                        >
+                            <UserButtonWithIcon />
+                        </div>
+                    )}
                 </Stack>
             </Container>
 
@@ -313,6 +337,7 @@ const MainPageContainer: React.FC = () => {
                 className={s.container}
                 sx={{
                     marginTop: '2rem',
+                    overflow: 'hidden',
                 }}
             >
                 <Center>
@@ -384,6 +409,8 @@ const MainPageContainer: React.FC = () => {
                     </Text>
                 </Title>
             </Container>
+
+            <span id='projects' />
             <Container
                 className={s.container}
                 sx={{

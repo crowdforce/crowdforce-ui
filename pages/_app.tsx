@@ -37,7 +37,7 @@ export default function MyApp({ Component, pageProps }: Props) {
                 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
                 <meta name="theme-color" content="#ffffff" />
             </Head>
-            
+
             <MantineProvider withGlobalStyles withNormalizeCSS
                 theme={{
                     fontFamily: 'Raleway',
@@ -80,7 +80,8 @@ export default function MyApp({ Component, pageProps }: Props) {
                     },
                     primaryColor: 'lime',
                     defaultRadius: 'lg',
-                    white: '#ECF2F6'
+                    white: '#ECF2F6',
+                    defaultGradient: { deg: 112, from: 'cyan', to: 'lime', },
                 }}
             >
                 <SessionProvider session={pageProps.session}>
