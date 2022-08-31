@@ -1,4 +1,4 @@
-import { Button, Center, Container, createStyles, Group, keyframes, MediaQuery, SimpleGrid, Stack, Text, Title } from '@mantine/core'
+import { Button, Center, Container, createStyles, Group, keyframes, Loader, MediaQuery, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import { IconMouse, IconUser } from '@tabler/icons'
 import Image from 'next/image'
 import Page from '@/components/Page'
@@ -9,11 +9,16 @@ import phone from '@/../public/index/phone.png'
 import list from '@/../public/index/list.png'
 import planet from '@/../public/index/planet.png'
 import target from '@/../public/index/target.png'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps, NextPage } from 'next'
 import { getProjects } from './api/projects'
 import { ProjectCard } from '@/components/ProjectCard'
 import React from 'react'
 import { PublicProjectDto } from '@/common/types'
+import useSWR, { SWRConfig } from 'swr'
+
+type Props = {
+    fallback: Record<string, any>
+}
 
 export const mouseAnimation = keyframes({
     '0%': { transform: 'translateY(0)' },
@@ -207,8 +212,10 @@ const bigLineData = [
     },
 ]
 
-const MainPage: React.FC<{ projects: PublicProjectDto[] }> = ({ projects }) => {
+const MainPageContainer: React.FC = () => {
+    const { data: projects, error } = useSWR<PublicProjectDto[]>(`/api/projects`)
     const { classes: s, cx } = useStyles()
+
     return (
         <Page>
             <Container
@@ -383,20 +390,31 @@ const MainPage: React.FC<{ projects: PublicProjectDto[] }> = ({ projects }) => {
                     paddingTop: '8rem',
                 }}
             >
-                <SimpleGrid
-                    cols={3}
-                    breakpoints={[
-                        { maxWidth: 'xl', cols: 3, },
-                        { maxWidth: 'md', cols: 2, },
-                        { maxWidth: 'xs', cols: 1, },
-                    ]}
-                >
-                    {projects.map((x, i) => (
-                        <ProjectCard
-                            data={x}
-                        />
-                    ))}
-                </SimpleGrid>
+                {(!projects) ? (
+                    <Center
+                        sx={{
+                            height: '100%',
+                        }}
+                    >
+                        <Loader />
+                    </Center>
+                ) : (
+                    <SimpleGrid
+                        cols={3}
+                        breakpoints={[
+                            { maxWidth: 'xl', cols: 3, },
+                            { maxWidth: 'md', cols: 2, },
+                            { maxWidth: 'xs', cols: 1, },
+                        ]}
+                    >
+                        {projects.map((x, i) => (
+                            <ProjectCard
+                                key={x.id}
+                                data={x}
+                            />
+                        ))}
+                    </SimpleGrid>
+                )}
             </Container>
             <div style={{
                 height: '8rem'
@@ -405,11 +423,19 @@ const MainPage: React.FC<{ projects: PublicProjectDto[] }> = ({ projects }) => {
     )
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
+const MainPage: NextPage<Props> = ({ fallback }) => (
+    <SWRConfig value={{ fallback }}>
+        <MainPageContainer />
+    </SWRConfig>
+)
+
+export const getStaticProps: GetStaticProps = async ctx => {
     const projects = await getProjects()
     return {
         props: {
-            projects,
+            fallback: {
+                '/api/projects': projects
+            }
         }
     }
 }
