@@ -4,7 +4,6 @@ import './style.css'
 import Head from 'next/head'
 import { MapProvider } from 'react-map-gl'
 import { SessionProvider } from 'next-auth/react'
-import ThemeProvider from '../components/ThemeProvider'
 import { MantineProvider } from '@mantine/core'
 import { SWRConfig } from 'swr'
 import { AppProps } from 'next/app'
@@ -38,66 +37,64 @@ export default function MyApp({ Component, pageProps }: Props) {
                 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
                 <meta name="theme-color" content="#ffffff" />
             </Head>
-
-            <ThemeProvider>
-                <MantineProvider withGlobalStyles withNormalizeCSS
-                    theme={{
+            
+            <MantineProvider withGlobalStyles withNormalizeCSS
+                theme={{
+                    fontFamily: 'Raleway',
+                    fontSizes: {
+                        // xs: 16,
+                        // sm: 16,
+                        // md: 16,
+                        // lg: 16,
+                        xl: 16,
+                    },
+                    headings: {
                         fontFamily: 'Raleway',
-                        fontSizes: {
-                            // xs: 16,
-                            // sm: 16,
-                            // md: 16,
-                            // lg: 16,
-                            xl: 16,
-                        },
-                        headings: {
-                            fontFamily: 'Raleway',
-                            sizes: {
-                                h1: {
-                                    fontSize: 73,
-                                    fontWeight: 900,
-                                    lineHeight: '100%',
-                                },
-                                h2: {
-                                    fontSize: 47,
-                                    fontWeight: 800,
-                                    lineHeight: '100%',
-                                },
-                                h3: {
-                                    fontSize: 53,
-                                    fontWeight: 800,
-                                    lineHeight: '110%',
-                                },
-                                h4: {
-                                    fontSize: 24,
-                                    fontWeight: 600,
-                                    lineHeight: '110%',
-                                },
-                                h5: {
-                                    fontSize: 30,
-                                    fontWeight: 400,
-                                    lineHeight: '100%',
-                                },
+                        sizes: {
+                            h1: {
+                                fontSize: 73,
+                                fontWeight: 900,
+                                lineHeight: '100%',
+                            },
+                            h2: {
+                                fontSize: 47,
+                                fontWeight: 800,
+                                lineHeight: '100%',
+                            },
+                            h3: {
+                                fontSize: 53,
+                                fontWeight: 800,
+                                lineHeight: '110%',
+                            },
+                            h4: {
+                                fontSize: 24,
+                                fontWeight: 600,
+                                lineHeight: '110%',
+                            },
+                            h5: {
+                                fontSize: 30,
+                                fontWeight: 400,
+                                lineHeight: '100%',
                             },
                         },
-                        primaryColor: 'lime',
-                        defaultRadius: 'lg',
-                        white: '#ECF2F6'
-                    }}
-                >
-                    <SessionProvider session={pageProps.session}>
-                        <MapProvider>
-                            <SWRConfig value={{
-                                fetcher: (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json())
-                            }}>
-                                <App>
-                                    <Component {...pageProps} />
-                                </App>
-                            </SWRConfig>
-                        </MapProvider>
-                    </SessionProvider>
-                </MantineProvider>
-            </ThemeProvider>
+                    },
+                    primaryColor: 'lime',
+                    defaultRadius: 'lg',
+                    white: '#ECF2F6'
+                }}
+            >
+                <SessionProvider session={pageProps.session}>
+                    <MapProvider>
+                        <SWRConfig value={{
+                            fetcher: (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json())
+                        }}>
+                            <App>
+                                <Component {...pageProps} />
+                            </App>
+                        </SWRConfig>
+                    </MapProvider>
+                </SessionProvider>
+            </MantineProvider>
         </>
     )
 }
