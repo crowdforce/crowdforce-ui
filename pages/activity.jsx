@@ -10,7 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import AddAlertIcon from '@mui/icons-material/AddAlert';
-import Page from '../components/Page';
+import Page from '@/components/Page';
 import ProjectCard from '../components/ProjectCard/ProjectCard';
 import useApi from '../utils/useApi';
 import formatDate from '../utils/formatDate';

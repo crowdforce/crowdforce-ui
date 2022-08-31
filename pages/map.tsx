@@ -1,4 +1,4 @@
-import Page from '../components/Page';
+import Page from '@/components/Page';
 import { PublicMap } from '@/components/PublicMap'
 import { NextPage } from 'next'
 import useSWR from 'swr'
