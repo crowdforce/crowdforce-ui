@@ -28,6 +28,9 @@ export const App: React.FC<AppProps> = ({ children }) => {
                 },
                 body: {
                     minHeight: 'calc(100vh - 60px * 2)', // fullscreen - header - footer
+                    '& > nav': {
+                        minHeight: 'calc(100vh - 60px)',
+                    }
                 }
             })}
             header={(
@@ -44,17 +47,16 @@ export const App: React.FC<AppProps> = ({ children }) => {
                 <MediaQuery largerThan='xs' styles={{ display: 'none' }}>
                     <Navbar
                         hidden={!opened}
+                        fixed
                     >
                         <AppMenu vertical />
-                        <MediaQuery largerThan='xs' styles={{ display: 'none' }}>
-                            <div style={{
-                                width: ' fit-content',
-                                margin: '0 20px',
-                                bottom: 0,
-                            }}>
-                                <UserButton />
-                            </div>
-                        </MediaQuery>
+                        <div style={{
+                            width: ' fit-content',
+                            margin: '0 20px',
+                            bottom: 0,
+                        }}>
+                            <UserButton />
+                        </div>
                     </Navbar>
                 </MediaQuery>
             )}
