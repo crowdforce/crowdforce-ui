@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+#__next {
+    height: 100vh;
+    min-height: 100vh;
+}
+
 body {
     overflow-x: hidden;
 }
