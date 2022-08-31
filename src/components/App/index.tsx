@@ -3,7 +3,14 @@ import { AppShell, Burger, MediaQuery, Navbar } from '@mantine/core'
 import { useState } from 'react'
 import Footer from 'components/Footer/Footer'
 import { AppMenu } from '@/components/AppMenu'
-import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
+import { UserButtonProps } from '@/components/UserButton'
+const UserButton = dynamic<UserButtonProps>(
+    () => import('@/components/UserButton').then(x => x.UserButton),
+    {
+        ssr: false,
+    }
+)
 
 export type AppProps = {
     children?: React.ReactNode
@@ -11,15 +18,10 @@ export type AppProps = {
 
 export const App: React.FC<AppProps> = ({ children }) => {
     const [opened, setOpened] = useState(false)
-    const router = useRouter()
-    const isIndexPage = router.asPath === '/'
 
     return (
         <AppShell
             styles={theme => ({
-                root: {
-                    background: isIndexPage ? '#ECF2F6' : theme.white,
-                },
                 main: {
                     overflow: 'hidden',
                 },
@@ -35,11 +37,20 @@ export const App: React.FC<AppProps> = ({ children }) => {
                 />
             )}
             navbar={(
-                <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
+                <MediaQuery largerThan='xs' styles={{ display: 'none' }}>
                     <Navbar
                         hidden={!opened}
                     >
                         <AppMenu vertical />
+                        <MediaQuery largerThan='xs' styles={{ display: 'none' }}>
+                            <div style={{
+                                width: ' fit-content',
+                                margin: '0 20px',
+                                bottom: 0,
+                            }}>
+                                <UserButton />
+                            </div>
+                        </MediaQuery>
                     </Navbar>
                 </MediaQuery>
             )}

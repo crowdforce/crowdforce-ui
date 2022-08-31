@@ -10,7 +10,6 @@ const useStyles = createStyles((theme) => ({
     user: {
         color: theme.black,
         borderRadius: theme.radius.sm,
-        paddingRight: theme.spacing.sm,
 
         '&:hover': {
             backgroundColor: theme.colors.gray[0],
@@ -102,7 +101,6 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                         <Group>
                             <Avatar
                                 src={session.data?.user?.image!}
-                                // radius="xl"
                                 size={32}
                             />
                             <Text size="sm" sx={{ lineHeight: 1 }}

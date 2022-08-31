@@ -1,5 +1,4 @@
-import { Button, Center, Container, createStyles, Group, keyframes, MediaQuery, SimpleGrid, Text, Title } from '@mantine/core'
-import { Stack } from '@mui/system'
+import { Button, Center, Container, createStyles, Group, keyframes, MediaQuery, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import { IconMouse, IconUser } from '@tabler/icons'
 import Image from 'next/image'
 import Page from '../components/Page'
@@ -225,7 +224,7 @@ const MainPage: React.FC<{ projects: PublicProjectDto[] }> = ({ projects }) => {
                     />
                 </div>
                 <Stack
-                    justifyContent='center'
+                    justify='center'
                     className={s.stackHero}
                 >
                     <Title

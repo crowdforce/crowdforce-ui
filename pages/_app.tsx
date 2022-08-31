@@ -83,6 +83,7 @@ export default function MyApp({ Component, pageProps }: Props) {
                         },
                         primaryColor: 'lime',
                         defaultRadius: 'lg',
+                        white: '#ECF2F6'
                     }}
                 >
                     <SessionProvider session={pageProps.session}>
