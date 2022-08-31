@@ -22,7 +22,7 @@ const useStyles = createStyles((theme) => ({
     },
     mobileCol: {
         display: 'flex',
-        [theme.fn.smallerThan('xs')]: {
+        [theme.fn.smallerThan('md')]: {
             flexDirection: 'column',
         }
     }
@@ -32,7 +32,7 @@ export const AppFooter: React.FC = () => {
     const { classes: s, cx } = useStyles()
     return (
         <Footer
-            height={'auto'}
+            height={60}
             p={'sm'}
             className={s.footer}
         >

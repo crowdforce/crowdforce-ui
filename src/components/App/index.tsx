@@ -26,6 +26,9 @@ export const App: React.FC<AppProps> = ({ children }) => {
                 main: {
                     overflow: 'hidden',
                 },
+                body: {
+                    minHeight: 'calc(100vh - 60px * 2)', // fullscreen - header - footer
+                }
             })}
             header={(
                 <AppHeader
