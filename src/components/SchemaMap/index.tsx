@@ -65,15 +65,31 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
             >
                 <Button
                     size='xs'
-                    variant={mapStyle === mapStyles.satellite ? 'filled' : 'subtle'}
+                    color='gray'
+                    variant='filled'
                     onClick={() => setMapStyle(mapStyles.satellite)}
+                    sx={theme => ({
+                        background: 'white',
+                        color: mapStyle === mapStyles.satellite ? theme.colors.lime : theme.colors.gray,
+                        ':hover': {
+                            background: 'white',
+                        }
+                    })}
                 >
                     Спутник
                 </Button>
                 <Button
                     size='xs'
-                    variant={mapStyle === mapStyles.vector ? 'filled' : 'subtle'}
+                    color='gray'
+                    variant='filled'
                     onClick={() => setMapStyle(mapStyles.vector)}
+                    sx={theme => ({
+                        background: 'white',
+                        color: mapStyle === mapStyles.vector ? theme.colors.lime : theme.colors.gray,
+                        ':hover': {
+                            background: 'white',
+                        }
+                    })}
                 >
                     Вектор
                 </Button>
