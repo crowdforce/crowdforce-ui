@@ -21,11 +21,15 @@ export const Edit: React.FC<ProjectAsideProps> = ({ data }) => {
     const { classes: s, cx } = useStyles()
 
     return (
-        <>
+        <Aside.Section
+            grow
+            component={ScrollArea}
+            px='xs'
+        >
             EDIT TAB
             <pre>
                 {JSON.stringify(data, null, 3)}
             </pre>
-        </>
+        </Aside.Section>
     )
 }

@@ -69,13 +69,7 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ data }) => {
                     </Group>
                 </Group>
             </Aside.Section>
-            <Aside.Section
-                grow
-                component={ScrollArea}
-                px='xs'
-            >
-                {React.cloneElement(asideTabComponents[openId], { data })}
-            </Aside.Section>
+            {React.cloneElement(asideTabComponents[openId], { data })}
         </Aside>
     )
 }

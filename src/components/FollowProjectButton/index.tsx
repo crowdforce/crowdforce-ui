@@ -1,18 +1,21 @@
-import { Button } from '@mantine/core'
+import { Button, MantineSize } from '@mantine/core'
 import { useSWRConfig } from 'swr'
 
 export type FollowProjectProps = {
     projectId: string
     status: boolean | null
+    fullWidth?: boolean
+    size?: MantineSize
 }
 
-export const FollowProjectButton: React.FC<FollowProjectProps> = ({ projectId, status }) => {
+export const FollowProjectButton: React.FC<FollowProjectProps> = ({ projectId, status, fullWidth = false, size = 'xs' }) => {
     const { mutate } = useSWRConfig()
 
     if (status === null) {
         return (
             <Button
-                size='xs'
+                size={size}
+                fullWidth={fullWidth}
                 disabled
             >
                 Следить за проектом
@@ -23,7 +26,8 @@ export const FollowProjectButton: React.FC<FollowProjectProps> = ({ projectId, s
     return (
         <Button
             component='a'
-            size='xs'
+            size={size}
+            fullWidth={fullWidth}
             variant={status ? 'filled' : 'default'}
             onClick={async () => {
                 const payload = {
