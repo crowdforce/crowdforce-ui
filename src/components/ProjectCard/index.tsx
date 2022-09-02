@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 const useStyles = createStyles((theme) => ({
     card: {
-        boxShadow: '0px 10px 3px 0px #0000000D, 0px 10px 28px -7px #0000000D, 0px 17px 17px -7px #0000000A',
+        boxShadow: '0 4px 8px 2px rgba(10, 60, 30, 0.05), 0px 8px 16px -4px rgba(0, 0, 0, 0.1), 8px 24px 24px 0px rgba(0, 0, 0, 0)',
     },
     cardSection: {
         position: 'relative',
