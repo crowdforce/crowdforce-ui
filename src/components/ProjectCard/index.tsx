@@ -66,6 +66,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, co
                             style={{
                                 maxWidth: 'unset',
                             }}
+                            radius={'md'}
                         >
                             Посмотреть детали
                         </Button>
