@@ -15,7 +15,6 @@ import { ProjectCard } from '@/components/ProjectCard'
 import React from 'react'
 import { PublicProjectDto } from '@/common/types'
 import useSWR, { SWRConfig } from 'swr'
-import dynamic from 'next/dynamic'
 
 type Props = {
     fallback: Record<string, any>
