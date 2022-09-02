@@ -68,9 +68,6 @@ const useStyles = createStyles((theme) => ({
         }
     },
     asideId: {
-        '& span': {
-            marginRight: 0,
-        },
         '& svg': {
             transform: 'rotate(-180deg)',
         }
@@ -82,7 +79,7 @@ const useStyles = createStyles((theme) => ({
         left: '50%',
         transform: 'translateX(-50%) !important',
         color: theme.colors.lime,
-    }
+    },
 }))
 
 export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = () => {
@@ -126,8 +123,13 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = () => {
                         className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
                         leftIcon={x.icon}
                         onClick={() => onAction(x.id)}
+                        styles={{
+                            inner: {
+                                justifyContent: 'flex-start'
+                            }
+                        }}
                     >
-                        {x.text}
+                        {x.id == 'aside' ? (open ? 'Закрыть панель' : 'Открыть панель') : (x.text)}
                     </Button>
                 ) : (
                     <ActionIcon
