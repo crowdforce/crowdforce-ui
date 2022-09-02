@@ -1,4 +1,3 @@
-import { PublicProjectDto } from '@/common/types'
 import { createStyles, Group, Text, Stack, Title, Button, Card } from '@mantine/core'
 import { IconUsers } from '@tabler/icons'
 import Image from 'next/image'
@@ -6,7 +5,7 @@ import Link from 'next/link'
 
 const useStyles = createStyles((theme) => ({
     card: {
-        boxShadow: '0px 10px 3px 0px #0000000D, 0px 10px 28px -7px #0000000D, 0px 17px 17px -7px #0000000A',
+        boxShadow: '0 4px 8px 2px rgba(10, 60, 30, 0.05), 0px 8px 16px -4px rgba(0, 0, 0, 0.1), 8px 24px 24px 0px rgba(0, 0, 0, 0)',
     },
     cardSection: {
         position: 'relative',
@@ -19,21 +18,28 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-export const ProjectCard: React.FC<{ data: PublicProjectDto }> = ({ data }) => {
-    const { classes: s, cx } = useStyles()
+export type ProjectCardProps = {
+    title: string
+    description: string
+    href: string
+    coverSrc: string | null
+    followers: number
+}
+
+export const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, coverSrc, href, followers }) => {
+    const { classes: s } = useStyles()
 
     return (
         <Card
-            key={data.id}
             className={s.card}
         >
             <Card.Section
                 className={s.cardSection}
             >
                 <div>
-                    {data.imageUrl && (
+                    {!coverSrc ? null : (
                         <Image
-                            src={data.imageUrl}
+                            src={coverSrc}
                             layout='fill'
                             objectFit='cover'
                         />
@@ -42,24 +48,25 @@ export const ProjectCard: React.FC<{ data: PublicProjectDto }> = ({ data }) => {
             </Card.Section>
             <Stack>
                 <Title order={4}>
-                    {data.title}
+                    {title}
                 </Title>
                 <Text>
-                    {data.description}
+                    {description}
                 </Text>
                 <Group
                     grow
                     position='apart'
                     noWrap
                 >
-                    <Link href={`/project/${data.id}`} passHref>
+                    <Link href={href} passHref>
                         <Button
                             component='a'
                             className={s.button}
                             fullWidth
                             style={{
-                                maxWidth: ' unset',
+                                maxWidth: 'unset',
                             }}
+                            radius={'md'}
                         >
                             Посмотреть детали
                         </Button>
@@ -72,7 +79,7 @@ export const ProjectCard: React.FC<{ data: PublicProjectDto }> = ({ data }) => {
                     >
                         <IconUsers />
                         <div>
-                            69
+                            {followers}
                         </div>
                     </Group>
                 </Group>

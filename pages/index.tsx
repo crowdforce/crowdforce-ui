@@ -15,15 +15,6 @@ import { ProjectCard } from '@/components/ProjectCard'
 import React from 'react'
 import { PublicProjectDto } from '@/common/types'
 import useSWR, { SWRConfig } from 'swr'
-import dynamic from 'next/dynamic'
-import { UserButtonWithIconProps } from '@/components/UserButton/WithIcon'
-import { useSession } from 'next-auth/react'
-const UserButtonWithIcon = dynamic<UserButtonWithIconProps>(
-    () => import('@/components/UserButton/WithIcon').then(x => x.UserButtonWithIcon),
-    {
-        ssr: false,
-    }
-)
 
 type Props = {
     fallback: Record<string, any>
@@ -225,8 +216,6 @@ const bigLineData = [
 ]
 
 const MainPageContainer: React.FC = () => {
-    const session = useSession()
-    const isAuthenticated = session.status === 'authenticated'
     const { data: projects, error } = useSWR<PublicProjectDto[]>(`/api/projects`)
     const { classes: s, cx } = useStyles()
 
@@ -276,24 +265,16 @@ const MainPageContainer: React.FC = () => {
                     <div
                         className={s.buttonShadow}
                     />
-                    {isAuthenticated ? (
-                        <Button
-                            uppercase
-                            size='xl'
-                            leftIcon={<IconCornerLeftDownDouble />}
-                            component='a'
-                            href='#projects'
-                            className={s.buttonHero}
-                        >
-                            Галерея проектов
-                        </Button>
-                    ) : (
-                        <div
-                            className={s.buttonHero}
-                        >
-                            <UserButtonWithIcon />
-                        </div>
-                    )}
+                    <Button
+                        uppercase
+                        size='xl'
+                        leftIcon={<IconCornerLeftDownDouble />}
+                        component='a'
+                        href='#projects'
+                        className={s.buttonHero}
+                    >
+                        Галерея проектов
+                    </Button>
                 </Stack>
             </Container>
 
@@ -437,7 +418,11 @@ const MainPageContainer: React.FC = () => {
                         {projects.map((x, i) => (
                             <ProjectCard
                                 key={x.id}
-                                data={x}
+                                title={x.title}
+                                description={x.description}
+                                href={`/project/${x.id}`}
+                                coverSrc={x.imageUrl}
+                                followers={69}
                             />
                         ))}
                     </SimpleGrid>
