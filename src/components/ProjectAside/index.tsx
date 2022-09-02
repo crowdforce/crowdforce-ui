@@ -21,7 +21,7 @@ const useStyles = createStyles((theme) => ({
 
 const asideTabComponents: AsideTabComponents = {
     'info': <ProjectAsideTab.Info />,
-    'tasks': <div />,
+    'tasks': <ProjectAsideTab.Tasks />,
     'add-task': <div />,
     'edit': <ProjectAsideTab.Edit />,
 }
