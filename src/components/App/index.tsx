@@ -53,6 +53,9 @@ export const App: React.FC<AppProps> = ({ children }) => {
                     <Navbar
                         hidden={!opened}
                         fixed
+                        sx={{
+                            zIndex: 101,
+                        }}
                     >
                         <AppMenu vertical />
                         <div style={{

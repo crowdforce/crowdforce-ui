@@ -1,13 +1,22 @@
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { ActionIcon, Box, createStyles, Stack } from '@mantine/core'
-import { IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconTools } from '@tabler/icons'
-import { Dispatch, SetStateAction, useCallback, useContext, useState } from 'react'
+import { ActionIcon, Box, Button, createStyles, Group, Stack } from '@mantine/core'
+import { useMediaQuery } from '@mantine/hooks'
+import { IconArrowAutofitWidth, IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconTools } from '@tabler/icons'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 
 type ProjectSideMenuProps = {
 
 }
 
-export const buttons = [
+export type ProjectSideMenuIds = 'aside' | 'info' | 'tasks' | 'add-task' | 'edit'
+type ProjectSideMenuButtons = {
+    icon: JSX.Element
+    text: string
+    id: ProjectSideMenuIds
+    owner?: boolean
+}[]
+
+export const buttons: ProjectSideMenuButtons = [
     {
         icon: <IconArrowBarToRight />,
         text: '',
@@ -15,7 +24,7 @@ export const buttons = [
     },
     {
         icon: <IconNotes />,
-        text: 'Описание пректа',
+        text: 'Описание проекта',
         id: 'info',
     },
     {
@@ -27,33 +36,65 @@ export const buttons = [
         icon: <IconClipboardList />,
         text: 'Добавить задачу',
         id: 'add-task',
+        owner: true,
     },
     {
         icon: <IconTools />,
         text: 'Редактирование',
         id: 'edit',
+        owner: true,
     },
 ]
 
 const useStyles = createStyles((theme) => ({
     container: {
-        position: 'absolute',
-        zIndex: 101, // aside+1
+        position: 'relative',
+        zIndex: 101,
         height: '100%',
-        width: 50,
         background: theme.colors.dark[7],
         left: 0,
         top: 0,
         paddingTop: theme.spacing.xs,
+    },
+    icon: {
+        border: 'none',
+        color: theme.colors.gray[0],
+    },
+    iconSelected: {
+        color: theme.colors.lime,
+        background: '#ECF2F6',
+        '&:hover': {
+            background: theme.colors.lime[0],
+        }
+    },
+    asideId: {
+        '& span': {
+            marginRight: 0,
+        },
+        '& svg': {
+            transform: 'rotate(-180deg)',
+        }
+    },
+    iconWide: {
+        position: 'absolute',
+        zIndex: 1,
+        bottom: theme.spacing.xs,
+        left: '50%',
+        transform: 'translateX(-50%) !important',
+        color: theme.colors.lime,
     }
 }))
 
 export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = () => {
     const { classes: s, cx } = useStyles()
-
+    const smallerThanSm = useMediaQuery('(max-width: 800px)', false)
     const { open, setOpen, openId, setOpenId } = useContext(ProjectSideMenuContext)
+    const [wide, setWide] = useState(!smallerThanSm)
+    useEffect(() => {
+        setWide(!smallerThanSm)
+    }, [smallerThanSm])
 
-    const onAction = useCallback<(id: string) => void>(id => {
+    const onAction = useCallback<(id: ProjectSideMenuIds) => void>(id => {
         if (id == 'aside') {
             setOpen(!open)
             return
@@ -66,24 +107,50 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = () => {
     return (
         <Box
             className={s.container}
+            sx={{
+                width: wide ? 260 : 50,
+                overflow: 'visible'
+            }}
         >
             <Stack
                 align='center'
                 spacing='xs'
+                px={wide ? 'xs' : 0}
             >
-                {buttons.map((x, i) => (
+                {buttons.map((x, i) => wide ? (
+                    <Button
+                        key={x.id}
+                        size='md'
+                        fullWidth
+                        variant={openId === x.id ? 'light' : 'outline'}
+                        className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
+                        leftIcon={x.icon}
+                        onClick={() => onAction(x.id)}
+                    >
+                        {x.text}
+                    </Button>
+                ) : (
                     <ActionIcon
+                        key={x.id}
                         size='xl'
                         variant={openId === x.id ? 'light' : 'outline'}
-                        sx={{
-                            border: 'none',
-                        }}
+                        className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
                         onClick={() => onAction(x.id)}
                     >
                         {x.icon}
                     </ActionIcon>
                 ))}
             </Stack>
+
+            <ActionIcon
+                size='xs'
+                variant='default'
+                className={cx(s.iconWide)}
+
+                onClick={() => setWide(!wide)}
+            >
+                <IconArrowAutofitWidth />
+            </ActionIcon>
         </Box>
     )
 
