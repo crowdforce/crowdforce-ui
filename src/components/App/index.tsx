@@ -5,6 +5,7 @@ import { AppMenu } from '@/components/AppMenu'
 import dynamic from 'next/dynamic'
 import { UserButtonProps } from '@/components/UserButton'
 import { AppFooter } from '../AppFooter'
+import { useRouter } from 'next/router'
 const UserButton = dynamic<UserButtonProps>(
     () => import('@/components/UserButton').then(x => x.UserButton),
     {

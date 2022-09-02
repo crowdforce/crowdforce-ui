@@ -30,7 +30,7 @@ const useStyles = createStyles((theme) => ({
     container: {
         position: 'relative',
         maxWidth: 1160,
-        overflow: 'visible',
+        overflow: 'visible !important',
         [theme.fn.smallerThan('sm')]: {
             paddingLeft: 'unset',
             paddingRight: 'unset',
