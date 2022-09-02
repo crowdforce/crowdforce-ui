@@ -119,7 +119,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                 px={wide ? 'xs' : 0}
             >
                 {buttons
-                    .filter((x, i) => data && data?.error && !x.admin)
+                    .filter((x, i) => (data && data?.error || error) && !x.admin)
                     .map((x, i) => wide ? (
                         <Button
                             key={x.id}
