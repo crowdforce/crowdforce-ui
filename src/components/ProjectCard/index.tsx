@@ -1,4 +1,3 @@
-import { PublicProjectDto } from '@/common/types'
 import { createStyles, Group, Text, Stack, Title, Button, Card } from '@mantine/core'
 import { IconUsers } from '@tabler/icons'
 import Image from 'next/image'
@@ -19,21 +18,28 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-export const ProjectCard: React.FC<{ data: PublicProjectDto }> = ({ data }) => {
-    const { classes: s, cx } = useStyles()
+export type ProjectCardProps = {
+    title: string
+    description: string
+    href: string
+    coverSrc: string | null
+    followers: number
+}
+
+export const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, coverSrc, href, followers }) => {
+    const { classes: s } = useStyles()
 
     return (
         <Card
-            key={data.id}
             className={s.card}
         >
             <Card.Section
                 className={s.cardSection}
             >
                 <div>
-                    {data.imageUrl && (
+                    {!coverSrc ? null : (
                         <Image
-                            src={data.imageUrl}
+                            src={coverSrc}
                             layout='fill'
                             objectFit='cover'
                         />
@@ -42,17 +48,17 @@ export const ProjectCard: React.FC<{ data: PublicProjectDto }> = ({ data }) => {
             </Card.Section>
             <Stack>
                 <Title order={4}>
-                    {data.title}
+                    {title}
                 </Title>
                 <Text>
-                    {data.description}
+                    {description}
                 </Text>
                 <Group
                     grow
                     position='apart'
                     noWrap
                 >
-                    <Link href={`/project/${data.id}`} passHref>
+                    <Link href={href} passHref>
                         <Button
                             component='a'
                             className={s.button}
@@ -72,7 +78,7 @@ export const ProjectCard: React.FC<{ data: PublicProjectDto }> = ({ data }) => {
                     >
                         <IconUsers />
                         <div>
-                            69
+                            {followers}
                         </div>
                     </Group>
                 </Group>

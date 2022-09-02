@@ -419,7 +419,11 @@ const MainPageContainer: React.FC = () => {
                         {projects.map((x, i) => (
                             <ProjectCard
                                 key={x.id}
-                                data={x}
+                                title={x.title}
+                                description={x.description}
+                                href={`/project/${x.id}`}
+                                coverSrc={x.imageUrl}
+                                followers={69}
                             />
                         ))}
                     </SimpleGrid>
