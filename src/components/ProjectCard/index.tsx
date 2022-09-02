@@ -64,7 +64,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, co
                             className={s.button}
                             fullWidth
                             style={{
-                                maxWidth: ' unset',
+                                maxWidth: 'unset',
                             }}
                         >
                             Посмотреть детали
