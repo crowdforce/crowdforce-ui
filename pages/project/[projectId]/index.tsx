@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import Page from 'components/Page/Page'
+import Page from '@/components/Page'
 import useSWR, { SWRConfig } from 'swr'
 import { Box, Center, Grid, Loader, Stack, Text, Title } from '@mantine/core'
 import { ProjectDto } from '@/common/types'

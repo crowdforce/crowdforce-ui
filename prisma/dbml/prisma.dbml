@@ -1,0 +1,117 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table telegram_accounts {
+  id Int [pk]
+  username String [not null]
+  firstName String [not null]
+  lastName String [not null]
+  photoUrl String [not null]
+  authDate DateTime [not null]
+  User users [not null]
+}
+
+Table users {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  name String
+  email String [unique]
+  emailVerified DateTime
+  image String
+  role UserRole [not null, default: 'User']
+  enabled Boolean [not null, default: true]
+  telegramId Int [not null]
+  telegram telegram_accounts [not null]
+  projects projects [not null]
+  follows user_follows [not null]
+}
+
+Table viewports {
+  id String [pk]
+  lng Float [not null]
+  lat Float [not null]
+  zoom Float [not null]
+  minZoom Float [not null, default: 0]
+  maxZoom Float [not null, default: 22]
+  pitch Float [not null, default: 0]
+  minPitch Float [not null, default: 0]
+  maxPitch Float [not null, default: 85]
+  bearing Float [not null, default: 0]
+  isFlat Boolean [not null, default: true]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  projects projects [not null]
+}
+
+Table projects {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  imageUrl String
+  status ProjectStatus [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  ownerId String [not null]
+  owner users [not null]
+  viewportId String [not null]
+  viewport viewports [not null]
+  features features [not null]
+  follows user_follows [not null]
+}
+
+Table features {
+  id String [pk]
+  title String
+  description String
+  imageUrl String
+  status FeatureStatus [not null]
+  geometry Json [not null]
+  projectId String [not null]
+  project projects [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  deletedAt DateTime
+}
+
+Table user_follows {
+  userId String [not null]
+  user users [not null]
+  projectId String [not null]
+  project projects [not null]
+  active Boolean [not null]
+  followedAt DateTime
+  unfollowedAt DateTime
+
+  indexes {
+    (userId, projectId) [pk]
+  }
+}
+
+Enum UserRole {
+  Admin
+  User
+}
+
+Enum ProjectStatus {
+  Init
+  Active
+}
+
+Enum FeatureStatus {
+  Active
+  Deleted
+}
+
+Ref: users.telegramId > telegram_accounts.id [delete: Cascade]
+
+Ref: projects.ownerId > users.id
+
+Ref: projects.viewportId > viewports.id
+
+Ref: features.projectId > projects.id
+
+Ref: user_follows.userId > users.id
+
+Ref: user_follows.projectId > projects.id

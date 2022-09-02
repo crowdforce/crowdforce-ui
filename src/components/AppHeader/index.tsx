@@ -1,6 +1,5 @@
-import s from './AppHeader.module.css'
 import dynamic from 'next/dynamic'
-import { Header, MediaQuery } from '@mantine/core'
+import { createStyles, Group, Header, MediaQuery } from '@mantine/core'
 import { Logo } from './Logo'
 import { AppMenu } from '../AppMenu'
 import { UserButtonProps } from '@/components/UserButton'
@@ -16,25 +15,49 @@ type AppHeaderProps = {
     burger: React.ReactNode
 }
 
-export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => (
-    <Header
-        height={60}
-        p={'sm'}
-    >
-        <div className={s.root}>
-            <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-                {burger}
-            </MediaQuery>
+const useStyles = createStyles((theme) => ({
+    header: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'baseline',
+        position: 'sticky',
+        top: 0,
+    },
+    root: {
+        flex: 1,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        maxWidth: 1160,
+    }
+}))
 
-            <Logo />
+export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
+    const { classes: s, cx } = useStyles()
+    return (
+        <Header
+            withBorder={false}
+            height={60}
+            p={'sm'}
+            className={s.header}
+        >
+            <div className={s.root}>
+                <Logo />
 
-            <MediaQuery smallerThan='sm' styles={{ display: 'none' }}>
-                <div>
-                    <AppMenu />
-                </div>
-            </MediaQuery>
+                <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                    <Group
+                        noWrap
+                    >
+                        <AppMenu />
+                        <UserButton />
+                    </Group>
+                </MediaQuery>
 
-            <UserButton />
-        </div>
-    </Header>
-)
+                <MediaQuery largerThan='xs' styles={{ display: 'none' }}>
+                    {burger}
+                </MediaQuery>
+            </div>
+        </Header>
+    )
+
+}

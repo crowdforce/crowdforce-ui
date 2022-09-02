@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/react';
-import Page from '../components/Page';
+import Page from '@/components/Page';
 import { Avatar, Card, createStyles, Group, Stack, Text, Title, Image, Button } from '@mantine/core';
 import { GetServerSideProps, NextPage } from 'next';
 import { getUserId } from '@/server/lib';

@@ -1,21 +1,30 @@
 import Link from 'next/link'
-import { Avatar, Badge, Group, MediaQuery, Text } from '@mantine/core'
+import { Badge, Group } from '@mantine/core'
+import logo from '@/../public/logo.svg'
+import Image from 'next/image'
 
 export const Logo = () => (
     <Link href={'/'} passHref>
-        <Group sx={{
-            userSelect: 'none',
-            cursor: 'pointer',
-        }}>
-            <Avatar
-                src={'/favicon-96x96.png'}
-            />
-            <MediaQuery smallerThan='md' styles={{ display: 'none' }}>
-                <Text size={'xl'}>CROWD FORCE</Text>
-            </MediaQuery>
-            <MediaQuery smallerThan='md' styles={{ display: 'none' }}>
-                <Badge>Beta</Badge>
-            </MediaQuery>
+        <Group
+            noWrap
+            sx={{
+                userSelect: 'none',
+                cursor: 'pointer',
+                gap: 0,
+            }}
+        >
+            <div style={{
+                position: 'relative',
+                height: 40,
+                display: 'flex',
+                maxWidth: 150,
+            }}>
+                <Image
+                    src={logo}
+                    quality={100}
+                />
+            </div>
+            <Badge>Beta</Badge>
         </Group>
     </Link>
 )
