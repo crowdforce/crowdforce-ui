@@ -1,6 +1,6 @@
 import { ProjectDto } from '@/common/types'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { Aside, createStyles, Group, ScrollArea, Title } from '@mantine/core'
+import { Aside, createStyles, Group, Title } from '@mantine/core'
 import { IconUsers } from '@tabler/icons'
 import React, { useContext, } from 'react'
 import ProjectAsideTab from '../ProjectAsideTab'
@@ -9,7 +9,7 @@ import { ProjectSideMenuIds } from '../ProjectSideMenu'
 type ProjectAsideProps = {
     data: ProjectDto
 }
-type AsideTabComponents = Record<Exclude<ProjectSideMenuIds, 'aside'>, React.ReactNode>
+type AsideTabComponents = Record<Exclude<ProjectSideMenuIds, 'aside'>, React.ReactElement<ProjectAsideProps>>
 
 const useStyles = createStyles((theme) => ({
     aside: {

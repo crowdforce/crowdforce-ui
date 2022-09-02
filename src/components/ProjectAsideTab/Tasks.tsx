@@ -7,7 +7,7 @@ import useSWR from 'swr'
 import { buttons, ProjectSideMenuIds } from '../ProjectSideMenu'
 
 type ProjectAsideProps = {
-    data: ProjectDto
+    data?: ProjectDto
 }
 
 const useStyles = createStyles((theme) => ({
@@ -20,7 +20,7 @@ const useStyles = createStyles((theme) => ({
 
 export const Tasks: React.FC<ProjectAsideProps> = ({ data: dataPublic }) => {
     const { classes: s, cx } = useStyles()
-    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${dataPublic.id}`)
+    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${dataPublic?.id}`)
 
     return (
         <Aside.Section

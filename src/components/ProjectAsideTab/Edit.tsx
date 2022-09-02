@@ -4,7 +4,7 @@ import React from 'react'
 import useSWR from 'swr'
 
 type ProjectAsideProps = {
-    data: ProjectDto
+    data?: ProjectDto
 }
 
 const useStyles = createStyles((theme) => ({
@@ -17,7 +17,7 @@ const useStyles = createStyles((theme) => ({
 
 export const Edit: React.FC<ProjectAsideProps> = ({ data: dataPublic }) => {
     const { classes: s, cx } = useStyles()
-    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${dataPublic.id}`)
+    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${dataPublic?.id}`)
 
     return (
         <Aside.Section

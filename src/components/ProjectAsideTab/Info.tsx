@@ -7,7 +7,7 @@ import { FollowProjectButton } from '../FollowProjectButton'
 import { buttons, ProjectSideMenuIds } from '../ProjectSideMenu'
 
 type ProjectAsideProps = {
-    data: ProjectDto
+    data?: ProjectDto
 }
 
 const useStyles = createStyles((theme) => ({
@@ -30,13 +30,13 @@ export const Info: React.FC<ProjectAsideProps> = ({ data }) => {
             >
                 <AspectRatio ratio={16 / 9}>
                     <Image
-                        src={data.imageUrl ?? '/wip.png'}
+                        src={data?.imageUrl ?? '/wip.png'}
                     />
                 </AspectRatio>
                 <Space h='xs' />
 
                 <Text>
-                    {data.description}
+                    {data?.description}
                 </Text>
                 <Space h='xs' />
             </Aside.Section>
@@ -50,8 +50,8 @@ export const Info: React.FC<ProjectAsideProps> = ({ data }) => {
                 <FollowProjectButton
                     size='xl'
                     fullWidth
-                    status={data.isFollowed}
-                    projectId={data.id}
+                    status={data?.isFollowed ?? null}
+                    projectId={data?.id ?? ''}
                 />
             </Aside.Section>
         </>
