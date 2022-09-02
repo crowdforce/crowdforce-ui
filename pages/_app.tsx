@@ -35,7 +35,7 @@ export default function MyApp({ Component, pageProps }: Props) {
                 <link rel="manifest" href="/manifest.json" />
                 <meta name="msapplication-TileColor" content="#ffffff" />
                 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-                <meta name="theme-color" content="#ffffff" />
+                <meta name="theme-color" content="#ECF2F6" />
             </Head>
 
             <MantineProvider withGlobalStyles withNormalizeCSS
