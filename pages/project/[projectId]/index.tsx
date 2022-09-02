@@ -11,6 +11,7 @@ import { ProjectSideMenu, ProjectSideMenuIds } from '@/components/ProjectSideMen
 import { useState } from 'react'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { ProjectAside } from '@/components/ProjectAside'
+import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
 
 type Props = {
     fallback: Record<string, any>
@@ -52,7 +53,9 @@ const Container: React.FC = () => {
                         display: 'flex',
                         height: '100%',
                     }}>
-                        <ProjectSideMenu />
+                        <ProjectSideMenu 
+                            projectId={projectId}
+                        />
 
                         <ProjectAside
                             data={data}
@@ -90,10 +93,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const projectId = ctx.params?.projectId as string
     const project = await getProject(projectId)
 
+    const adminProject = await getAdminProject(projectId)
+
     return {
         props: {
             fallback: {
                 [`/api/projects/${projectId}`]: project,
+                [`/api/admin/projects/${projectId}`]: adminProject,
             },
         }
     }

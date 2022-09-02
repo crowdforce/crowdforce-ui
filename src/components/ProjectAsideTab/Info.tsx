@@ -42,7 +42,7 @@ export const Info: React.FC<ProjectAsideProps> = ({ data }) => {
             </Aside.Section>
 
             <Aside.Section
-                p='xs'
+                p='xl'
                 sx={{
                     bottom: 0,
                 }}

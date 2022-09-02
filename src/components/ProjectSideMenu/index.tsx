@@ -1,11 +1,13 @@
+import { AdminProjectDto } from '@/common/types'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { ActionIcon, Box, Button, createStyles, Group, Stack } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 import { IconArrowAutofitWidth, IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconTools } from '@tabler/icons'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
+import useSWR from 'swr'
 
 type ProjectSideMenuProps = {
-
+    projectId: string
 }
 
 export type ProjectSideMenuIds = 'aside' | 'info' | 'tasks' | 'add-task' | 'edit'
@@ -13,7 +15,7 @@ type ProjectSideMenuButtons = {
     icon: JSX.Element
     text: string
     id: ProjectSideMenuIds
-    owner?: boolean
+    admin?: boolean
 }[]
 
 export const buttons: ProjectSideMenuButtons = [
@@ -36,13 +38,13 @@ export const buttons: ProjectSideMenuButtons = [
         icon: <IconClipboardList />,
         text: 'Добавить задачу',
         id: 'add-task',
-        owner: true,
+        admin: true,
     },
     {
         icon: <IconTools />,
         text: 'Редактирование',
         id: 'edit',
-        owner: true,
+        admin: true,
     },
 ]
 
@@ -82,8 +84,10 @@ const useStyles = createStyles((theme) => ({
     },
 }))
 
-export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = () => {
+export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) => {
     const { classes: s, cx } = useStyles()
+    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
+
     const smallerThanSm = useMediaQuery('(max-width: 800px)', false)
     const { open, setOpen, openId, setOpenId } = useContext(ProjectSideMenuContext)
     const [wide, setWide] = useState(!smallerThanSm)
@@ -114,34 +118,36 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = () => {
                 spacing='xs'
                 px={wide ? 'xs' : 0}
             >
-                {buttons.map((x, i) => wide ? (
-                    <Button
-                        key={x.id}
-                        size='md'
-                        fullWidth
-                        variant={openId === x.id ? 'light' : 'outline'}
-                        className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
-                        leftIcon={x.icon}
-                        onClick={() => onAction(x.id)}
-                        styles={{
-                            inner: {
-                                justifyContent: 'flex-start'
-                            }
-                        }}
-                    >
-                        {x.id == 'aside' ? (open ? 'Закрыть панель' : 'Открыть панель') : (x.text)}
-                    </Button>
-                ) : (
-                    <ActionIcon
-                        key={x.id}
-                        size='xl'
-                        variant={openId === x.id ? 'light' : 'outline'}
-                        className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
-                        onClick={() => onAction(x.id)}
-                    >
-                        {x.icon}
-                    </ActionIcon>
-                ))}
+                {buttons
+                    .filter((x, i) => data && data?.error && !x.admin)
+                    .map((x, i) => wide ? (
+                        <Button
+                            key={x.id}
+                            size='md'
+                            fullWidth
+                            variant={openId === x.id ? 'light' : 'outline'}
+                            className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
+                            leftIcon={x.icon}
+                            onClick={() => onAction(x.id)}
+                            styles={{
+                                inner: {
+                                    justifyContent: 'flex-start'
+                                }
+                            }}
+                        >
+                            {x.id == 'aside' ? (open ? 'Закрыть панель' : 'Открыть панель') : (x.text)}
+                        </Button>
+                    ) : (
+                        <ActionIcon
+                            key={x.id}
+                            size='xl'
+                            variant={openId === x.id ? 'light' : 'outline'}
+                            className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
+                            onClick={() => onAction(x.id)}
+                        >
+                            {x.icon}
+                        </ActionIcon>
+                    ))}
             </Stack>
 
             <ActionIcon

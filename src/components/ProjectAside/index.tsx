@@ -45,6 +45,7 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ data }) => {
         >
             <Aside.Section
                 p='xs'
+                py='md'
             >
                 <Group
                     position='apart'

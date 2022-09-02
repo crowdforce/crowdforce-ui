@@ -1,8 +1,9 @@
-import { ProjectDto } from '@/common/types'
+import { AdminProjectDto, ProjectDto } from '@/common/types'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { Aside, createStyles, Group, ScrollArea, Title, Text } from '@mantine/core'
+import { Aside, createStyles, Group, ScrollArea, Title, Text, Stack } from '@mantine/core'
 import { IconUsers } from '@tabler/icons'
 import React, { useContext, } from 'react'
+import useSWR from 'swr'
 import { buttons, ProjectSideMenuIds } from '../ProjectSideMenu'
 
 type ProjectAsideProps = {
@@ -17,8 +18,9 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-export const Edit: React.FC<ProjectAsideProps> = ({ data }) => {
+export const Edit: React.FC<ProjectAsideProps> = ({ data: dataPublic }) => {
     const { classes: s, cx } = useStyles()
+    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${dataPublic.id}`)
 
     return (
         <Aside.Section
@@ -26,7 +28,11 @@ export const Edit: React.FC<ProjectAsideProps> = ({ data }) => {
             component={ScrollArea}
             px='xs'
         >
-            EDIT TAB
+            PUBLIC DATA
+            <pre>
+                {JSON.stringify(dataPublic, null, 3)}
+            </pre>
+            ADMIN DATA
             <pre>
                 {JSON.stringify(data, null, 3)}
             </pre>
