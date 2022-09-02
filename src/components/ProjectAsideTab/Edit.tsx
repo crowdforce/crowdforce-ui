@@ -1,10 +1,7 @@
 import { AdminProjectDto, ProjectDto } from '@/common/types'
-import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { Aside, createStyles, Group, ScrollArea, Title, Text, Stack } from '@mantine/core'
-import { IconUsers } from '@tabler/icons'
-import React, { useContext, } from 'react'
+import { Aside, createStyles, ScrollArea, } from '@mantine/core'
+import React from 'react'
 import useSWR from 'swr'
-import { buttons, ProjectSideMenuIds } from '../ProjectSideMenu'
 
 type ProjectAsideProps = {
     data: ProjectDto
