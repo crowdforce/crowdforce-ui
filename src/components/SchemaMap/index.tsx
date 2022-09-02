@@ -1,11 +1,12 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import useSWR from 'swr'
 import { MapViewportDto } from '@/common/types'
-import { Layer } from 'react-map-gl'
+import { GeolocateControl, Layer, NavigationControl } from 'react-map-gl'
 import { SchemaSource } from './SchemaSource'
+import { Button } from '@mantine/core'
 
 const MapGl = dynamic(
     () => import('react-map-gl'),
@@ -17,9 +18,15 @@ export type SchemaMapProps = {
     projectId: string
 }
 
+const mapStyles = {
+    satellite: 'mapbox://styles/mapbox/satellite-streets-v11',
+    vector: 'mapbox://styles/mapbox/streets-v11',
+}
+
 export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
     const { data: viewport } = useSWR<MapViewportDto>(`/api/projects/${projectId}/viewport`)
+    const [mapStyle, setMapStyle] = useState(mapStyles.satellite)
     if (!viewport) {
         return null
     }
@@ -28,7 +35,7 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
         <MapGl
             id={id}
             style={{ width: '100%', height: '100%' }}
-            mapStyle='mapbox://styles/mapbox/satellite-streets-v11'
+            mapStyle={mapStyle}
             mapboxAccessToken={token}
             initialViewState={{
                 longitude: viewport?.lng,
@@ -36,6 +43,42 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
                 zoom: viewport?.zoom,
             }}
         >
+            <NavigationControl
+                showCompass={false}
+                style={{
+                    borderRadius: '16px',
+                }}
+            />
+            <GeolocateControl
+                style={{
+                    borderRadius: '16px',
+                }}
+            />
+
+            <Button.Group
+                sx={{
+                    position: 'absolute',
+                    zIndex: 2,
+                    bottom: 16,
+                    right: 16,
+                }}
+            >
+                <Button
+                    size='xs'
+                    variant={mapStyle === mapStyles.satellite ? 'filled' : 'subtle'}
+                    onClick={() => setMapStyle(mapStyles.satellite)}
+                >
+                    Спутник
+                </Button>
+                <Button
+                    size='xs'
+                    variant={mapStyle === mapStyles.vector ? 'filled' : 'subtle'}
+                    onClick={() => setMapStyle(mapStyles.vector)}
+                >
+                    Вектор
+                </Button>
+            </Button.Group>
+
             <SchemaSource
                 id={`trees`}
                 projectId={projectId}
