@@ -79,7 +79,7 @@ export default function MyApp({ Component, pageProps }: Props) {
                         },
                     },
                     primaryColor: 'lime',
-                    defaultRadius: 'lg',
+                    defaultRadius: 'md',
                     white: '#ECF2F6',
                     defaultGradient: { deg: 112, from: 'cyan', to: 'lime', },
                 }}
