@@ -160,7 +160,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
             title="login"
             width="100"
             height="36"
-            src={`https://crowdforce.ru/loginButton.html?bot_id=${botId}&origin=${window.location.origin}`}
+            src={`/loginButton.html?bot_id=${botId}&origin=${window.location.origin}`}
         />
     )
 }
