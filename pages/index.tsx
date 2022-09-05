@@ -272,6 +272,7 @@ const MainPageContainer: React.FC = () => {
                         component='a'
                         href='#projects'
                         className={s.buttonHero}
+                        radius={'lg'}
                     >
                         Галерея проектов
                     </Button>

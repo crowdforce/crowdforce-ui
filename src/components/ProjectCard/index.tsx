@@ -32,6 +32,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, co
     return (
         <Card
             className={s.card}
+            radius={'lg'}
         >
             <Card.Section
                 className={s.cardSection}

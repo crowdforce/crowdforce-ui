@@ -48,6 +48,9 @@ export default function MyApp({ Component, pageProps }: Props) {
                         // lg: 16,
                         xl: 16,
                     },
+                    shadows: {
+                        lg: '0 4px 8px 2px rgba(10, 60, 30, 0.05), 0px 8px 16px -4px rgba(0, 0, 0, 0.1), 8px 24px 24px 0px rgba(0, 0, 0, 0)',
+                    },
                     headings: {
                         fontFamily: 'Raleway',
                         sizes: {
@@ -79,7 +82,7 @@ export default function MyApp({ Component, pageProps }: Props) {
                         },
                     },
                     primaryColor: 'lime',
-                    defaultRadius: 'lg',
+                    defaultRadius: 'md',
                     white: '#ECF2F6',
                     defaultGradient: { deg: 112, from: 'cyan', to: 'lime', },
                 }}

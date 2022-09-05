@@ -9,7 +9,8 @@ import Link from 'next/link';
 const useStyles = createStyles((theme) => ({
     user: {
         color: theme.black,
-        borderRadius: theme.radius.sm,
+        borderRadius: theme.radius.md,
+        paddingRight: theme.spacing.sm,
 
         '&:hover': {
             backgroundColor: theme.colors.gray[0],
@@ -93,6 +94,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                 width={200}
                 position="bottom-end"
                 transition="pop-top-right"
+                shadow={'lg'}
             >
                 <Menu.Target>
                     <UnstyledButton
@@ -158,7 +160,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
             title="login"
             width="100"
             height="36"
-            src={`https://crowdforce.ru/loginButton.html?bot_id=${botId}&origin=${window.location.origin}`}
+            src={`/loginButton.html?bot_id=${botId}&origin=${window.location.origin}`}
         />
     )
 }
