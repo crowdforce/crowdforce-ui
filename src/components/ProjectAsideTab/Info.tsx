@@ -31,6 +31,7 @@ export const Info: React.FC<ProjectAsideProps> = ({ data }) => {
                 <AspectRatio ratio={16 / 9}>
                     <Image
                         src={data?.imageUrl ?? '/wip.png'}
+                        radius='lg'
                     />
                 </AspectRatio>
                 <Space h='xs' />

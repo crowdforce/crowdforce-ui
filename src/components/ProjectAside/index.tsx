@@ -15,7 +15,7 @@ const useStyles = createStyles((theme) => ({
     aside: {
         position: 'sticky',
         borderRadius: theme.radius.lg,
-        margin: theme.spacing.xs,
+        margin: 2,
     }
 }))
 
@@ -36,7 +36,7 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ data }) => {
                 transform: `translateX(${open ? 0 : '-100%'})`,
                 zIndex: open ? 100 : -1,
             }}
-            height='calc(100% - 20px)'
+            height='calc(100% - 4px)'
             width={{
                 base: 'calc(100% - 50px)',
                 xs: 520,

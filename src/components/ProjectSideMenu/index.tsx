@@ -2,7 +2,7 @@ import { AdminProjectDto } from '@/common/types'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { ActionIcon, Box, Button, createStyles, Group, Stack } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import { IconArrowAutofitWidth, IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconTools } from '@tabler/icons'
+import { IconArrowAutofitWidth, IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSettings, IconTools } from '@tabler/icons'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import useSWR from 'swr'
 
@@ -56,7 +56,7 @@ const useStyles = createStyles((theme) => ({
         background: theme.colors.dark[7],
         left: 0,
         top: 0,
-        paddingTop: theme.spacing.xs,
+        paddingTop: 2,
     },
     icon: {
         border: 'none',
@@ -73,14 +73,6 @@ const useStyles = createStyles((theme) => ({
         '& svg': {
             transform: 'rotate(-180deg)',
         }
-    },
-    iconWide: {
-        position: 'absolute',
-        zIndex: 1,
-        bottom: theme.spacing.xs,
-        left: '50%',
-        transform: 'translateX(-50%) !important',
-        color: theme.colors.lime,
     },
 }))
 
@@ -106,17 +98,18 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
     }, [open, openId])
 
     return (
-        <Box
+        <Stack
             className={s.container}
+            justify='space-between'
             sx={{
                 width: wide ? 260 : 50,
-                overflow: 'visible'
+                overflow: 'hidden',
             }}
         >
             <Stack
                 align='center'
-                spacing='xs'
-                px={wide ? 'xs' : 0}
+                spacing={2}
+                px={2}
             >
                 {buttons
                     // .filter((x, i) => ((data as any)?.error || error) || !x.admin)
@@ -125,13 +118,15 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                             key={x.id}
                             size='md'
                             fullWidth
+                            radius='md'
                             variant={openId === x.id ? 'light' : 'outline'}
                             className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
                             leftIcon={x.icon}
                             onClick={() => onAction(x.id)}
                             styles={{
                                 inner: {
-                                    justifyContent: 'flex-start'
+                                    justifyContent: 'flex-start',
+                                    fontWeight: 'normal',
                                 }
                             }}
                         >
@@ -141,6 +136,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                         <ActionIcon
                             key={x.id}
                             size='xl'
+                            radius='md'
                             variant={openId === x.id ? 'light' : 'outline'}
                             className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
                             onClick={() => onAction(x.id)}
@@ -150,16 +146,33 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                     ))}
             </Stack>
 
-            <ActionIcon
-                size='xs'
-                variant='default'
-                className={cx(s.iconWide)}
-
-                onClick={() => setWide(!wide)}
+            <Stack
+                align='center'
+                spacing={2}
+                sx={{
+                    position: 'sticky',
+                    bottom: 2,
+                }}
             >
-                <IconArrowAutofitWidth />
-            </ActionIcon>
-        </Box>
+                <ActionIcon
+                    size='xl'
+                    radius='md'
+                    variant='outline'
+                    className={s.icon}
+                    onClick={() => setWide(!wide)}
+                >
+                    <IconArrowAutofitWidth />
+                </ActionIcon>
+                <ActionIcon
+                    size='xl'
+                    radius='md'
+                    variant='outline'
+                    className={s.icon}
+                >
+                    <IconSettings />
+                </ActionIcon>
+            </Stack>
+        </Stack>
     )
 
 }
