@@ -1,7 +1,7 @@
 import { AdminProjectDto } from '@/common/types'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { ActionIcon, Button, createStyles, Stack } from '@mantine/core'
-import { IconArrowAutofitWidth, IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSettings, IconTools } from '@tabler/icons'
+import { IconArrowAutofitWidth, IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSelector, IconSettings, IconTools } from '@tabler/icons'
 import React, { useCallback, useContext } from 'react'
 import useSWR from 'swr'
 
@@ -139,7 +139,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                     ))}
             </Stack>
 
-            <Stack                
+            <Stack
                 spacing={2}
                 sx={{
                     position: 'sticky',
@@ -152,8 +152,11 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                     variant='outline'
                     className={s.icon}
                     onClick={() => setWide(!wide)}
+                    style={{
+                        transform: 'rotate(90deg)',
+                    }}
                 >
-                    <IconArrowAutofitWidth />
+                    <IconSelector />
                 </ActionIcon>
                 <ActionIcon
                     size='xl'
