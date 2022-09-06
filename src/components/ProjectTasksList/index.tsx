@@ -197,7 +197,7 @@ export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = 'd
                             </Text>
                             <Group
                                 noWrap
-                                spacing={4}
+                                spacing={'xs'}
                             >
                                 <Stack
                                     spacing={0}

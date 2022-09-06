@@ -79,6 +79,7 @@ export default function MyApp({ Component, pageProps }: Props) {
                     defaultRadius: 'md',
                     white: '#ECF2F6',
                     defaultGradient: { deg: 112, from: 'cyan', to: 'lime', },
+                    datesLocale: 'ru',
                     components: {
                         Button: {
                             styles: {
