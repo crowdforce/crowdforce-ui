@@ -32,32 +32,33 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
             return
 
             // below not relevant, change on backend upd
-            fetch(
-                `/api/admin/projects/${data.id}/update`,
-                {
-                    method: 'PUT',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                }
-            )
-                .then(async res => {
-                    if (res.ok && res.status == 200) {
-                        return await res.json()
-                    } else {
-                        throw Error(res.statusText)
-                    }
-                })
-                .then((res) => {
-                    setSaved(true)
-                    setError(false)
-                    // mutate()
-                })
-                .catch(e => {
-                    setError(true)
-                    console.log('API error: ', e)
-                })
+
+            // fetch(
+            //     `/api/admin/projects/${data.id}/update`,
+            //     {
+            //         method: 'PUT',
+            //         body: JSON.stringify(formData),
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //     }
+            // )
+            //     .then(async res => {
+            //         if (res.ok && res.status == 200) {
+            //             return await res.json()
+            //         } else {
+            //             throw Error(res.statusText)
+            //         }
+            //     })
+            //     .then((res) => {
+            //         setSaved(true)
+            //         setError(false)
+            //         // mutate()
+            //     })
+            //     .catch(e => {
+            //         setError(true)
+            //         console.log('API error: ', e)
+            //     })
         },
         []
     )
