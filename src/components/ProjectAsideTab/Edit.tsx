@@ -3,7 +3,7 @@ import { Aside, createStyles, ScrollArea, } from '@mantine/core'
 import React from 'react'
 import useSWR from 'swr'
 
-type ProjectAsideProps = {
+type ProjectEditProps = {
     data?: ProjectDto
 }
 
@@ -15,7 +15,7 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-export const Edit: React.FC<ProjectAsideProps> = ({ data: dataPublic }) => {
+export const Edit: React.FC<ProjectEditProps> = ({ data: dataPublic }) => {
     const { classes: s, cx } = useStyles()
     const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${dataPublic?.id}`)
 
