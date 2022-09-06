@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+:root {
+    font-feature-settings: "lnum";
+}
+
 #__next {
     height: 100vh;
     min-height: 100vh;
