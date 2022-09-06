@@ -79,6 +79,15 @@ export default function MyApp({ Component, pageProps }: Props) {
                     defaultRadius: 'md',
                     white: '#ECF2F6',
                     defaultGradient: { deg: 112, from: 'cyan', to: 'lime', },
+                    components: {
+                        Button: {
+                            styles: {
+                                label: {
+                                    fontWeight: 400,
+                                }
+                            }
+                        }
+                    }
                 }}
             >
                 <SessionProvider session={pageProps.session}>
