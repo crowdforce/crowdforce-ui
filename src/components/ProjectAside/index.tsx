@@ -13,9 +13,10 @@ type AsideTabComponents = Record<Exclude<ProjectSideMenuIds, 'aside'>, React.Rea
 
 const useStyles = createStyles((theme) => ({
     aside: {
-        position: 'sticky',
+        position: 'absolute',
+        top: 2,
+        right: -2,
         borderRadius: theme.radius.lg,
-        margin: 2,
     }
 }))
 
@@ -33,12 +34,12 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ data }) => {
     return (
         <Aside
             sx={{
-                transform: `translateX(${open ? 0 : '-100%'})`,
-                zIndex: open ? 100 : -1,
+                transform: `translateX(${open ? '100%' : 0})`,
+                zIndex: open ? 3 : -1,
             }}
             height='calc(100% - 4px)'
             width={{
-                base: 'calc(100% - 50px)',
+                base: 'calc(100vw - 48px - 2px  * 2)',
                 xs: 520,
             }}
             className={s.aside}

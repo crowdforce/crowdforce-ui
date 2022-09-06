@@ -1,9 +1,8 @@
 import { AdminProjectDto } from '@/common/types'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { ActionIcon, Box, Button, createStyles, Group, Stack } from '@mantine/core'
-import { useMediaQuery } from '@mantine/hooks'
+import { ActionIcon, Button, createStyles, Stack } from '@mantine/core'
 import { IconArrowAutofitWidth, IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSettings, IconTools } from '@tabler/icons'
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext } from 'react'
 import useSWR from 'swr'
 
 type ProjectSideMenuProps = {
@@ -51,8 +50,7 @@ export const buttons: ProjectSideMenuButtons = [
 const useStyles = createStyles((theme) => ({
     container: {
         position: 'relative',
-        zIndex: 101,
-        height: '100%',
+        height: 'calc(100vh - 60px)',
         background: theme.colors.dark[7],
         left: 0,
         top: 0,
@@ -80,12 +78,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
     const { classes: s, cx } = useStyles()
     const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
 
-    const smallerThanSm = useMediaQuery('(max-width: 800px)', false)
-    const { open, setOpen, openId, setOpenId } = useContext(ProjectSideMenuContext)
-    const [wide, setWide] = useState(!smallerThanSm)
-    useEffect(() => {
-        setWide(!smallerThanSm)
-    }, [smallerThanSm])
+    const { open, setOpen, openId, setOpenId, wide, setWide } = useContext(ProjectSideMenuContext)
 
     const onAction = useCallback<(id: ProjectSideMenuIds) => void>(id => {
         if (id == 'aside') {
@@ -100,16 +93,16 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
     return (
         <Stack
             className={s.container}
+            px={2}
             justify='space-between'
             sx={{
-                width: wide ? 260 : 50,
+                width: wide ? 260 : 48,
                 overflow: 'hidden',
             }}
         >
             <Stack
                 align='center'
                 spacing={2}
-                px={2}
             >
                 {buttons
                     // .filter((x, i) => ((data as any)?.error || error) || !x.admin)
@@ -146,8 +139,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                     ))}
             </Stack>
 
-            <Stack
-                align='center'
+            <Stack                
                 spacing={2}
                 sx={{
                     position: 'sticky',

@@ -8,10 +8,11 @@ import type { GetServerSideProps, NextPage } from 'next'
 import SchemaMap from '@/components/SchemaMap'
 import { getProject } from 'pages/api/projects/[projectId]'
 import { ProjectSideMenu, ProjectSideMenuIds } from '@/components/ProjectSideMenu'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { ProjectAside } from '@/components/ProjectAside'
 import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
+import { useMediaQuery } from '@mantine/hooks'
 
 type Props = {
     fallback: Record<string, any>
@@ -24,6 +25,11 @@ const Container: React.FC = () => {
 
     const [open, setOpen] = useState(true)
     const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, 'aside'>>('info')
+    const smallerThanSm = useMediaQuery('(max-width: 800px)', false)
+    const [wide, setWide] = useState(!smallerThanSm)
+    useEffect(() => {
+        setWide(!smallerThanSm)
+    }, [smallerThanSm])
 
     if (!data) {
         return (
@@ -44,19 +50,14 @@ const Container: React.FC = () => {
                 display: 'flex',
             }}>
                 <ProjectSideMenuContext.Provider
-                    value={{ open, setOpen, openId, setOpenId }}
+                    value={{ open, setOpen, openId, setOpenId, wide, setWide }}
                 >
                     <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        display: 'flex',
-                        height: '100%',
+                        position: 'relative',
                     }}>
-                        <ProjectSideMenu 
+                        <ProjectSideMenu
                             projectId={projectId}
                         />
-
                         <ProjectAside
                             data={data}
                         />
@@ -64,10 +65,10 @@ const Container: React.FC = () => {
 
                     <div
                         style={{
-                            flex: '1 0 100%',
+                            flex: '1 1 100%',
                             position: 'relative',
                             height: 'calc(100vh - 60px)',
-                            zIndex: 0,
+                            display: 'flex',
                         }}
                     >
                         <MapProvider>
@@ -79,7 +80,7 @@ const Container: React.FC = () => {
                     </div>
                 </ProjectSideMenuContext.Provider>
             </div>
-        </Page >
+        </Page>
     )
 }
 

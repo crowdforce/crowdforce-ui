@@ -1,12 +1,13 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { memo, useState } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import useSWR from 'swr'
 import { MapViewportDto } from '@/common/types'
-import { GeolocateControl, Layer, NavigationControl } from 'react-map-gl'
+import { GeolocateControl, Layer, NavigationControl, useMap } from 'react-map-gl'
 import { SchemaSource } from './SchemaSource'
 import { Button } from '@mantine/core'
+import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 
 const MapGl = dynamic(
     () => import('react-map-gl'),
@@ -27,6 +28,14 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
     const { data: viewport } = useSWR<MapViewportDto>(`/api/projects/${projectId}/viewport`)
     const [mapStyle, setMapStyle] = useState(mapStyles.satellite)
+    const { wide } = useContext(ProjectSideMenuContext)
+    const { schema: map } = useMap()
+    useEffect(() => {
+        if (map) {
+            map.resize()
+        }
+    }, [wide])
+
     if (!viewport) {
         return null
     }
@@ -34,7 +43,6 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
     return (
         <MapGl
             id={id}
-            style={{ width: '100%', height: '100%' }}
             mapStyle={mapStyle}
             mapboxAccessToken={token}
             initialViewState={{
