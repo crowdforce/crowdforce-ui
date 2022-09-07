@@ -8,6 +8,8 @@ type ProjectSideMenuContextProps = {
     setOpenId: Dispatch<SetStateAction<Exclude<ProjectSideMenuIds, 'aside'>>>
     wide: boolean
     setWide: React.Dispatch<React.SetStateAction<boolean>>
+    isAdmin: boolean
+    isInit: boolean
 }
 
 export const ProjectSideMenuContext = React.createContext<ProjectSideMenuContextProps>({
@@ -16,5 +18,7 @@ export const ProjectSideMenuContext = React.createContext<ProjectSideMenuContext
     openId: 'info',
     setOpenId: () => null,
     wide: true,
-    setWide: () => null
+    setWide: () => null,
+    isAdmin: false,
+    isInit: false,
 })

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import Page from '@/components/Page'
 import useSWR, { SWRConfig } from 'swr'
 import { Center, Loader } from '@mantine/core'
-import { ProjectDto } from '@/common/types'
+import { AdminProjectDto, ProjectDto } from '@/common/types'
 import { MapProvider } from 'react-map-gl'
 import type { GetServerSideProps, NextPage } from 'next'
 import SchemaMap from '@/components/SchemaMap'
@@ -22,6 +22,9 @@ const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data, error } = useSWR<ProjectDto>(`/api/projects/${projectId}`)
+    const { data: adminData, error: adminError } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
+    const isAdmin = Boolean(adminData && !(adminData as any)?.error)
+    const isInit = isAdmin && adminData?.status == 'Init'
 
     const [open, setOpen] = useState(true)
     const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, 'aside'>>('info')
@@ -50,7 +53,7 @@ const Container: React.FC = () => {
                 display: 'flex',
             }}>
                 <ProjectSideMenuContext.Provider
-                    value={{ open, setOpen, openId, setOpenId, wide, setWide }}
+                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit }}
                 >
                     <div style={{
                         position: 'relative',

@@ -1,7 +1,7 @@
 import { AdminProjectDto } from '@/common/types'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { ActionIcon, Button, createStyles, Stack } from '@mantine/core'
-import { IconArrowAutofitWidth, IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSelector, IconSettings, IconTools } from '@tabler/icons'
+import { IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSelector, IconSettings, IconTools } from '@tabler/icons'
 import React, { useCallback, useContext } from 'react'
 import useSWR from 'swr'
 
@@ -76,9 +76,8 @@ const useStyles = createStyles((theme) => ({
 
 export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) => {
     const { classes: s, cx } = useStyles()
-    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
 
-    const { open, setOpen, openId, setOpenId, wide, setWide } = useContext(ProjectSideMenuContext)
+    const { open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit } = useContext(ProjectSideMenuContext)
 
     const onAction = useCallback<(id: ProjectSideMenuIds) => void>(id => {
         if (id == 'aside') {
@@ -105,7 +104,16 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                 spacing={2}
             >
                 {buttons
-                    // .filter((x, i) => ((data as any)?.error || error) || !x.admin)
+                    .filter((x, i) => {
+                        if (isInit) { // project just created
+                            return ['aside', 'edit'].includes(x.id)
+                        }
+                        if (isAdmin) { // reqested by admin
+                            return true
+                        } else {  // requested by NOT admin
+                            return ['aside', 'info', 'tasks'].includes(x.id)
+                        }
+                    })
                     .map((x, i) => wide ? (
                         <Button
                             key={x.id}

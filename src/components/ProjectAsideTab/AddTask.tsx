@@ -21,7 +21,7 @@ const useStyles = createStyles((theme) => ({
 
 export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { classes: s, cx } = useStyles()
-    const { handleSubmit, register, setValue, watch } = useForm()
+    const { handleSubmit, register, setValue } = useForm()
     const { mutate } = useSWRConfig()
 
     const onSubmit = useCallback(

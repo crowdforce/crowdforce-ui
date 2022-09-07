@@ -1,4 +1,6 @@
+import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { createStyles, Group, Text, Stack, Button, Accordion, Avatar, Center, Space } from '@mantine/core'
+import { useContext } from 'react'
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -78,7 +80,7 @@ const tasksDataPlaceholder = [
                 status: 'follower',
             },
             {
-                name: 'Бильбо Беггинс',
+                name: 'Фродо Беггинс',
                 image: '/ms-icon-150x150.png',
                 status: 'leader',
             },
@@ -160,6 +162,7 @@ const tasksDataPlaceholder = [
 
 export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = 'default' }) => {
     const { classes: s, cx } = useStyles()
+    const { isAdmin } = useContext(ProjectSideMenuContext)
     const isDefault = variant === 'default'
     const isCompleted = variant === 'completed'
     return (
@@ -255,64 +258,70 @@ export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = 'd
                                 </>
                             )}
 
-                            {x.followers.map((y, iy) => (
-                                <Group
-                                    key={y.name}
-                                    noWrap
-                                    position='apart'
-                                >
+                            {x.followers
+                                .sort((a, b) => {
+                                    if (a.status == 'leader') return -1
+                                    if (b.status == 'leader') return 1
+                                    return 0
+                                })
+                                .map((y, iy) => (
                                     <Group
+                                        key={y.name}
                                         noWrap
-                                        sx={{
-                                            flex: '1 1 auto',
-                                        }}
+                                        position='apart'
                                     >
-                                        <Avatar
-                                            size='sm'
-                                            src={y.image}
-                                        />
-                                        <Text
+                                        <Group
+                                            noWrap
                                             sx={{
                                                 flex: '1 1 auto',
                                             }}
                                         >
-                                            {y.name}
-                                        </Text>
-                                    </Group>
-                                    {y.status == 'leader' ? (
-                                        <Center>
+                                            <Avatar
+                                                size='sm'
+                                                src={y.image}
+                                            />
                                             <Text
-                                                weight={700}
-                                                transform='uppercase'
                                                 sx={{
-                                                    fontSize: 13,
-                                                    whiteSpace: 'nowrap',
+                                                    flex: '1 1 auto',
                                                 }}
                                             >
-                                                ответственый
+                                                {y.name}
                                             </Text>
-                                        </Center>
-                                    ) : isDefault && (
-                                        <Button
-                                            size='xs'
-                                            compact
-                                            px='xs'
-                                            py={4}
-                                            styles={{
-                                                root: {
-                                                    height: ' auto',
-                                                    fontSize: 10,
-                                                },
-                                                label: {
-                                                    textAlign: 'center',
-                                                }
-                                            }}
-                                        >
-                                            назначить<br />ответственым
-                                        </Button>
-                                    )}
-                                </Group>
-                            ))}
+                                        </Group>
+                                        {y.status == 'leader' ? (
+                                            <Center>
+                                                <Text
+                                                    weight={700}
+                                                    transform='uppercase'
+                                                    sx={{
+                                                        fontSize: 13,
+                                                        whiteSpace: 'nowrap',
+                                                    }}
+                                                >
+                                                    ответственый
+                                                </Text>
+                                            </Center>
+                                        ) : isDefault && isAdmin && (
+                                            <Button
+                                                size='xs'
+                                                compact
+                                                px='xs'
+                                                py={4}
+                                                styles={{
+                                                    root: {
+                                                        height: ' auto',
+                                                        fontSize: 10,
+                                                    },
+                                                    label: {
+                                                        textAlign: 'center',
+                                                    }
+                                                }}
+                                            >
+                                                назначить<br />ответственым
+                                            </Button>
+                                        )}
+                                    </Group>
+                                ))}
                         </Stack>
                     </Accordion.Panel>
                 </Accordion.Item>
