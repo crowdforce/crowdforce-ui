@@ -70,6 +70,11 @@ const useStyles = createStyles((theme) => ({
     asideId: {
         '& svg': {
             transform: 'rotate(-180deg)',
+        },
+    },
+    mobileHidden: {
+        [theme.fn.smallerThan('sm')]: {
+            display: 'none',
         }
     },
 }))
@@ -139,7 +144,12 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                             size='xl'
                             radius='md'
                             variant={openId === x.id ? 'light' : 'outline'}
-                            className={cx(s.icon, openId === x.id && s.iconSelected, x.id == 'aside' && open && s.asideId)}
+                            className={cx(
+                                s.icon,
+                                openId === x.id && s.iconSelected,
+                                x.id == 'aside' && open && s.asideId,
+                                x.id == 'edit' && s.mobileHidden,
+                            )}
                             onClick={() => onAction(x.id)}
                         >
                             {x.icon}
@@ -158,7 +168,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ projectId }) =
                     size='xl'
                     radius='md'
                     variant='outline'
-                    className={s.icon}
+                    className={cx(s.icon, s.mobileHidden)}
                     onClick={() => setWide(!wide)}
                     style={{
                         transform: 'rotate(90deg)',
