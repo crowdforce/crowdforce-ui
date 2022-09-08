@@ -1,6 +1,8 @@
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { createStyles, Group, Text, Stack, Button, Accordion, Avatar, Center, Space } from '@mantine/core'
+import { useRouter } from 'next/router'
 import { useContext } from 'react'
+import useSWR from 'swr'
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -33,138 +35,14 @@ export type ProjectTasksListProps = {
     variant?: 'default' | 'completed'
 }
 
-const tasksDataPlaceholder = [
-    {
-        id: 'one',
-        title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
-        description: 'Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.',
-        dateStart: '06.06.2022',
-        timeStart: '10:00',
-        dateEnd: '07.06.2022',
-        timeEnd: '13:00',
-        followers: [
-            {
-                name: 'Арагорн, сын Агронома',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-            {
-                name: 'Фродо Беггинс',
-                image: '/ms-icon-150x150.png',
-                status: 'leader',
-            },
-            {
-                name: 'Шмыга',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-            {
-                name: 'Пендальф Серый',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-        ]
-    },
-    {
-        id: 'two',
-        title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
-        description: 'Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.',
-        dateStart: '06.06.2022',
-        timeStart: '11:00',
-        dateEnd: '06.07.2022',
-        timeEnd: '13:00',
-        followers: [
-            {
-                name: 'Арагорн, сын Агронома',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-            {
-                name: 'Фродо Беггинс',
-                image: '/ms-icon-150x150.png',
-                status: 'leader',
-            },
-            {
-                name: 'Шмыга',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-            {
-                name: 'Сильмариллион Варфолломилович',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-        ]
-    },
-    {
-        id: 'tree',
-        title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
-        description: 'Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.',
-        dateStart: '06.06.2022',
-        timeStart: '10:00',
-        dateEnd: '06.06.2022',
-        timeEnd: '13:00',
-        followers: [
-            {
-                name: 'Арагорн, сын Агронома',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-            {
-                name: 'Фродо Беггинс',
-                image: '/ms-icon-150x150.png',
-                status: 'leader',
-            },
-            {
-                name: 'Шмыга',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-            {
-                name: 'Пендальф Серый',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-        ]
-    },
-    {
-        id: 'four',
-        title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
-        description: 'Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.',
-        dateStart: '06.06.2022',
-        timeStart: '10:00',
-        dateEnd: '06.06.2022',
-        timeEnd: '13:00',
-        followers: [
-            {
-                name: 'Арагорн, сын Агронома',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-            {
-                name: 'Фродо Беггинс',
-                image: '/ms-icon-150x150.png',
-                status: 'leader',
-            },
-            {
-                name: 'Шмыга',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-            {
-                name: 'Пендальф Серый',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
-            },
-        ]
-    },
-]
-
 export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = 'default' }) => {
     const { classes: s, cx } = useStyles()
     const { isAdmin } = useContext(ProjectSideMenuContext)
     const isDefault = variant === 'default'
     const isCompleted = variant === 'completed'
+    const router = useRouter()
+    const { data, error } = useSWR(`/api/projects/${router.query.projectId}/tasks`)
+
     return (
         <Accordion
             chevron={null}
@@ -180,7 +58,7 @@ export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = 'd
                 }
             }}
         >
-            {tasksDataPlaceholder.map((x, i) => (
+            {data.map((x, i) => (
                 <Accordion.Item
                     key={x.id}
                     value={x.id}
@@ -257,7 +135,6 @@ export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = 'd
                                     <Space />
                                 </>
                             )}
-
                             {x.followers
                                 .sort((a, b) => {
                                     if (a.status == 'leader') return -1

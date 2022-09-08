@@ -13,6 +13,7 @@ import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { ProjectAside } from '@/components/ProjectAside'
 import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
 import { useMediaQuery } from '@mantine/hooks'
+import { getTasks } from 'pages/api/projects/[projectId]/tasks'
 
 type Props = {
     fallback: Record<string, any>
@@ -94,6 +95,7 @@ const Index: NextPage<Props> = ({ fallback }) => (
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const projectId = ctx.params?.projectId as string
     const project = await getProject(projectId)
+    const tasks = await getTasks(projectId)
 
     const adminProject = await getAdminProject(projectId)
 
@@ -102,6 +104,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
             fallback: {
                 [`/api/projects/${projectId}`]: project,
                 [`/api/admin/projects/${projectId}`]: adminProject,
+                [`/api/projects/${projectId}/tasks`]: tasks
             },
         }
     }
