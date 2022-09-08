@@ -6,8 +6,8 @@ import useSWR from 'swr'
 import { MapViewportDto } from '@/common/types'
 import { GeolocateControl, Layer, NavigationControl, useMap } from 'react-map-gl'
 import { SchemaSource } from './SchemaSource'
-import { Button } from '@mantine/core'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
+import { MapStyleSelector } from './MapStyleSelector'
 
 const MapGl = dynamic(
     () => import('react-map-gl'),
@@ -20,14 +20,20 @@ export type SchemaMapProps = {
 }
 
 const mapStyles = {
-    satellite: 'mapbox://styles/mapbox/satellite-streets-v11',
-    vector: 'mapbox://styles/mapbox/streets-v11',
+    satellite: {
+        style: 'mapbox://styles/mapbox/satellite-streets-v11',
+        title: 'Спутник',
+    },
+    vector: {
+        style: 'mapbox://styles/mapbox/streets-v11',
+        title: 'Вектор',
+    }
 }
 
 export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
     const { data: viewport } = useSWR<MapViewportDto>(`/api/projects/${projectId}/viewport`)
-    const [mapStyle, setMapStyle] = useState(mapStyles.satellite)
+    const [mapStyle, setMapStyle] = useState(mapStyles.satellite.style)
     const { wide } = useContext(ProjectSideMenuContext)
     const { schema: map } = useMap()
     useEffect(() => {
@@ -63,45 +69,9 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
                 }}
             />
 
-            <Button.Group
-                sx={{
-                    position: 'absolute',
-                    zIndex: 2,
-                    bottom: 16,
-                    right: 16,
-                }}
-            >
-                <Button
-                    size='xs'
-                    color='gray'
-                    variant='filled'
-                    onClick={() => setMapStyle(mapStyles.satellite)}
-                    sx={theme => ({
-                        background: 'white',
-                        color: mapStyle === mapStyles.satellite ? theme.colors.lime : theme.colors.gray,
-                        ':hover': {
-                            background: 'white',
-                        }
-                    })}
-                >
-                    Спутник
-                </Button>
-                <Button
-                    size='xs'
-                    color='gray'
-                    variant='filled'
-                    onClick={() => setMapStyle(mapStyles.vector)}
-                    sx={theme => ({
-                        background: 'white',
-                        color: mapStyle === mapStyles.vector ? theme.colors.lime : theme.colors.gray,
-                        ':hover': {
-                            background: 'white',
-                        }
-                    })}
-                >
-                    Вектор
-                </Button>
-            </Button.Group>
+            <MapStyleSelector
+                {...{ mapStyle, setMapStyle, mapStyles }}
+            />
 
             <SchemaSource
                 id={`trees`}
