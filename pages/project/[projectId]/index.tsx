@@ -58,9 +58,7 @@ const Container: React.FC = () => {
                     <div style={{
                         position: 'relative',
                     }}>
-                        <ProjectSideMenu
-                            projectId={projectId}
-                        />
+                        <ProjectSideMenu />
                         <ProjectAside
                             data={data}
                         />
