@@ -23,6 +23,7 @@ export const MapStyleSelector: React.FC<MapStyleSelectorProps> = ({ mapStyle, se
         >
             {Object.values(mapStyles).map((x, i) => (
                 <Button
+                    key={x.style}
                     size='xs'
                     color='gray'
                     variant='filled'
