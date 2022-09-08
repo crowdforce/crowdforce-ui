@@ -35,7 +35,7 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
     const { data: viewport } = useSWR<MapViewportDto>(`/api/projects/${projectId}/viewport`)
     const [mapStyle, setMapStyle] = useState(mapStyles.satellite.style)
     const { wide } = useContext(ProjectSideMenuContext)
-    const { schema: map } = useMap()
+    const { [id]: map } = useMap()
     useEffect(() => {
         if (map) {
             map.resize()
