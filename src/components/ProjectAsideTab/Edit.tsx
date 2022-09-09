@@ -1,10 +1,10 @@
-import { AdminProjectDto, ProjectDto } from '@/common/types'
 import { Aside, createStyles, ScrollArea, } from '@mantine/core'
+import { useRouter } from 'next/router'
 import React from 'react'
 import useSWR from 'swr'
 
 type ProjectEditProps = {
-    data?: ProjectDto
+
 }
 
 const useStyles = createStyles((theme) => ({
@@ -15,9 +15,12 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-export const Edit: React.FC<ProjectEditProps> = ({ data: dataPublic }) => {
+export const Edit: React.FC<ProjectEditProps> = () => {
     const { classes: s, cx } = useStyles()
-    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${dataPublic?.id}`)
+
+    const router = useRouter()
+    const { data: dataPublic, error: errorPublic } = useSWR(`/api/projects/${router.query.projectId}`)
+    const { data, error } = useSWR(`/api/admin/projects/${dataPublic?.id}`)
 
     return (
         <Aside.Section

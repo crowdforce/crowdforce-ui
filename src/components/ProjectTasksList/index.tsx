@@ -1,6 +1,7 @@
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { createStyles, Group, Text, Stack, Button, Accordion, Avatar, Center, Space } from '@mantine/core'
+import { createStyles, Group, Text, Stack, Button, Accordion, Avatar, Center, Space, Loader } from '@mantine/core'
 import { useRouter } from 'next/router'
+import { ProjectTask } from 'pages/api/projects/[projectId]/tasks'
 import { useContext } from 'react'
 import useSWR from 'swr'
 
@@ -41,7 +42,11 @@ export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = 'd
     const isDefault = variant === 'default'
     const isCompleted = variant === 'completed'
     const router = useRouter()
-    const { data, error } = useSWR(`/api/projects/${router.query.projectId}/tasks`)
+    const { data, error } = useSWR<ProjectTask[]>(`/api/projects/${router.query.projectId}/tasks`)
+
+    if (!data) {
+        return <Loader />
+    }
 
     return (
         <Accordion

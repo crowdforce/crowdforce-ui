@@ -1,12 +1,14 @@
-import { ProjectDto } from '@/common/types'
-import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack } from '@mantine/core'
+import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack, Loader } from '@mantine/core'
 import { IconMapPin } from '@tabler/icons'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { ProjectData } from 'pages/project/[projectId]'
 import React from 'react'
+import useSWR from 'swr'
 import { FollowProjectButton } from '../FollowProjectButton'
 
 type ProjectInfoProps = {
-    data?: ProjectDto
+
 }
 
 const useStyles = createStyles((theme) => ({
@@ -22,8 +24,14 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-export const Info: React.FC<ProjectInfoProps> = ({ data }) => {
+export const Info: React.FC<ProjectInfoProps> = () => {
     const { classes: s, cx } = useStyles()
+    const router = useRouter()
+    const { data, error } = useSWR<ProjectData>(`/api/projects/${router.query.projectId}`)
+
+    if (!data) {
+        return (<Loader />)
+    }
 
     return (
         <>

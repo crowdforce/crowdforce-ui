@@ -4,11 +4,20 @@ import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import useSWR, { useSWRConfig } from 'swr'
 import { DatePicker, TimeInput } from '@mantine/dates'
-import 'dayjs/locale/ru'
 import { useRouter } from 'next/router'
+import 'dayjs/locale/ru'
 
 type ProjectAddTaskProps = {
 
+}
+
+type FeaturesData = {
+    id: string
+    title: string
+    description: string
+    geometryType: string
+    coordinates: object
+    type: string
 }
 
 const useStyles = createStyles((theme) => ({
@@ -23,7 +32,7 @@ const useStyles = createStyles((theme) => ({
 export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { classes: s, cx } = useStyles()
     const router = useRouter()
-    const { data, error } = useSWR(`/api/admin/projects/${router.query.projectId}/features`)
+    const { data, error } = useSWR<FeaturesData[]>(`/api/admin/projects/${router.query.projectId}/features`)
     const { handleSubmit, register, setValue } = useForm()
     const { mutate } = useSWRConfig()
 
@@ -180,10 +189,10 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
 
                     <MultiSelect
                         {...register('features')}
-                        onChange={value => setValue('features', value)} // value: string[]
+                        onChange={value => setValue('features', value)}
                         label='Элементы учавствующие в задаче'
                         placeholder='Какие элементы относятся к задаче?'
-                        data={data.map((x, i) => ({
+                        data={!data ? [] : data.map((x, i) => ({
                             value: x.id,
                             label: x.title,
                             group: x.type,

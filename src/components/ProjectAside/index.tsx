@@ -1,15 +1,16 @@
-import { ProjectDto } from '@/common/types'
 import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
 import { Aside, createStyles, Group, Title } from '@mantine/core'
 import { IconUsers } from '@tabler/icons'
+import { ProjectData } from 'pages/project/[projectId]'
 import React, { useContext, } from 'react'
 import ProjectAsideTab from '../ProjectAsideTab'
 import { ProjectSideMenuIds } from '../ProjectSideMenu'
 
 type ProjectAsideProps = {
-    data: ProjectDto
+    data: ProjectData
 }
-type AsideTabComponents = Record<Exclude<ProjectSideMenuIds, 'aside'>, React.ReactElement<ProjectAsideProps>>
+
+type AsideTabComponents = Record<Exclude<ProjectSideMenuIds, 'aside'>, React.ReactElement>
 
 const useStyles = createStyles((theme) => ({
     aside: {
@@ -71,7 +72,7 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ data }) => {
                     </Group>
                 </Group>
             </Aside.Section>
-            {React.cloneElement(asideTabComponents[openId], { data })}
+            {React.cloneElement(asideTabComponents[openId])}
         </Aside>
     )
 }

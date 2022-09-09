@@ -1,9 +1,23 @@
 import { ErrorDto } from "@/common/types";
+import { User } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from "next";
 
-// on types for Task ):
+export type ProjectTask = {
+    id: string
+    title: string
+    description: string
+    dateStart: string
+    timeStart: string
+    dateEnd: string
+    timeEnd: string
+    followers: Follower[]
+}
 
-const dataPlaceholder = [
+type Follower = Partial<User> & {
+    status: 'leader' | 'follower'
+}
+
+const dataPlaceholder: ProjectTask[] = [
     {
         id: 'one',
         title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
@@ -138,7 +152,7 @@ export async function getTasks(projectId: string) {
 
 
 
-export default async (req: NextApiRequest, res: NextApiResponse<any[] | ErrorDto>) => {
+export default async (req: NextApiRequest, res: NextApiResponse<ProjectTask[] | ErrorDto>) => {
     if (req.method !== 'GET') {
         return res.status(404).json({
             error: 'Not found',

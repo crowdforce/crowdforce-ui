@@ -2,7 +2,6 @@ import { useRouter } from 'next/router'
 import Page from '@/components/Page'
 import useSWR, { SWRConfig } from 'swr'
 import { Center, Loader } from '@mantine/core'
-import { AdminProjectDto, ProjectDto } from '@/common/types'
 import { MapProvider } from 'react-map-gl'
 import type { GetServerSideProps, NextPage } from 'next'
 import SchemaMap from '@/components/SchemaMap'
@@ -15,16 +14,40 @@ import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
 import { useMediaQuery } from '@mantine/hooks'
 import { getTasks } from 'pages/api/projects/[projectId]/tasks'
 import { getFeatures } from 'pages/api/admin/projects/[projectId]/features'
+import { User } from '@prisma/client'
 
 type Props = {
     fallback: Record<string, any>
 }
 
+export type ProjectData = {
+    id: string
+    title: string
+    description: string
+    imageUrl: string | null
+    isFollowed: boolean | null
+    address: string
+    link: string
+    admin: Partial<User>
+}
+
+export type AdminProjectData = {
+    id: string
+    title: string
+    description: string
+    status: string
+    viewport: {
+        lng: number
+        lat: number
+        zoom: number
+    }
+}
+
 const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
-    const { data, error } = useSWR<ProjectDto>(`/api/projects/${projectId}`)
-    const { data: adminData, error: adminError } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
+    const { data, error } = useSWR<ProjectData>(`/api/projects/${projectId}`)
+    const { data: adminData, error: adminError } = useSWR<AdminProjectData>(`/api/admin/projects/${projectId}`)
     const isAdmin = Boolean(adminData && !(adminData as any)?.error)
     const isInit = isAdmin && adminData?.status == 'Init'
 
