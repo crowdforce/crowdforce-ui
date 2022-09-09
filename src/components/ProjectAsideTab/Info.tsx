@@ -1,11 +1,9 @@
 import { ProjectDto } from '@/common/types'
-import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { Aside, createStyles, Group, ScrollArea, Title, Text, Image, Space, AspectRatio, Container, Box, Stack } from '@mantine/core'
-import { IconMapPin, IconUsers } from '@tabler/icons'
+import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack } from '@mantine/core'
+import { IconMapPin } from '@tabler/icons'
 import Link from 'next/link'
-import React, { useContext, } from 'react'
+import React from 'react'
 import { FollowProjectButton } from '../FollowProjectButton'
-import { buttons, ProjectSideMenuIds } from '../ProjectSideMenu'
 
 type ProjectInfoProps = {
     data?: ProjectDto
@@ -53,11 +51,13 @@ export const Info: React.FC<ProjectInfoProps> = ({ data }) => {
                         <Stack
                             spacing='xs'
                         >
-                            <Text
-                                color='dimmed'
-                            >
-                                Санкт-Петербург, наб. р. Карповки, 26/4
-                            </Text>
+                            {data?.address && (
+                                <Text
+                                    color='dimmed'
+                                >
+                                    {data.address}
+                                </Text>
+                            )}
                             <Group
                                 noWrap
                                 spacing='xs'
@@ -66,17 +66,19 @@ export const Info: React.FC<ProjectInfoProps> = ({ data }) => {
                                 <Text
                                     color='dimmed'
                                 >
-                                    Папочка Эльф
+                                    {data.admin.name}
                                 </Text>
-                                <Link href={'www.redisYdorogi.ru'} passHref>
-                                    <Text
-                                        color='dimmed'
-                                        component='a'
-                                        underline
-                                    >
-                                        www.redisYdorogi.ru
-                                    </Text>
-                                </Link>
+                                {data?.link && (
+                                    <Link href={data.link} passHref>
+                                        <Text
+                                            color='dimmed'
+                                            component='a'
+                                            underline
+                                        >
+                                            {data.link}
+                                        </Text>
+                                    </Link>
+                                )}
                             </Group>
                         </Stack>
                     </Group>

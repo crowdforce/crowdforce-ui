@@ -2,9 +2,10 @@ import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, St
 import { IconCalendarEvent, IconClock } from '@tabler/icons'
 import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useSWRConfig } from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { DatePicker, TimeInput } from '@mantine/dates'
 import 'dayjs/locale/ru'
+import { useRouter } from 'next/router'
 
 type ProjectAddTaskProps = {
 
@@ -21,13 +22,15 @@ const useStyles = createStyles((theme) => ({
 
 export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { classes: s, cx } = useStyles()
+    const router = useRouter()
+    const { data, error } = useSWR(`/api/admin/projects/${router.query.projectId}/features`)
     const { handleSubmit, register, setValue } = useForm()
     const { mutate } = useSWRConfig()
 
     const onSubmit = useCallback(
         (formData: any) => {
             setSaved(false)
-            setError(false)
+            setFormError(false)
             alert(JSON.stringify(formData, null, 3))
             return
 
@@ -64,7 +67,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     )
 
     const [saved, setSaved] = useState(false)
-    const [error, setError] = useState(false)
+    const [formError, setFormError] = useState(false)
 
     return (
         <Aside.Section
@@ -180,13 +183,11 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                         onChange={value => setValue('features', value)} // value: string[]
                         label='Элементы учавствующие в задаче'
                         placeholder='Какие элементы относятся к задаче?'
-                        data={[
-                            { value: '1', label: 'Леголас', group: 'Эльфы' },
-                            { value: '2', label: 'Литариель', group: 'Эльфы' },
-                            { value: '3', label: 'Саурон', group: 'Эльфы' },
-                            { value: '4', label: 'Ogthrak', group: 'Урки' },
-                            { value: '5', label: 'Mûzglob', group: 'Урки' },
-                        ]}
+                        data={data.map((x, i) => ({
+                            value: x.id,
+                            label: x.title,
+                            group: x.type,
+                        }))}
                     />
 
                     <Center

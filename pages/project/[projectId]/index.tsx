@@ -14,6 +14,7 @@ import { ProjectAside } from '@/components/ProjectAside'
 import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
 import { useMediaQuery } from '@mantine/hooks'
 import { getTasks } from 'pages/api/projects/[projectId]/tasks'
+import { getFeatures } from 'pages/api/admin/projects/[projectId]/features'
 
 type Props = {
     fallback: Record<string, any>
@@ -96,15 +97,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const projectId = ctx.params?.projectId as string
     const project = await getProject(projectId)
     const tasks = await getTasks(projectId)
-
     const adminProject = await getAdminProject(projectId)
+    const features = await getFeatures(projectId)
 
     return {
         props: {
             fallback: {
                 [`/api/projects/${projectId}`]: project,
+                [`/api/projects/${projectId}/tasks`]: tasks,
                 [`/api/admin/projects/${projectId}`]: adminProject,
-                [`/api/projects/${projectId}/tasks`]: tasks
+                [`/api/admin/projects/${projectId}/features`]: features,
             },
         }
     }
