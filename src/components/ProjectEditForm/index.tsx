@@ -1,15 +1,15 @@
-import { createStyles, Textarea, TextInput, Button, Stack, Tooltip } from '@mantine/core'
-import { useForm } from 'react-hook-form'
-import { AdminProjectDto, NewProjectDto } from '@/common/types'
-import React, { useCallback, useState } from 'react'
-import { useSWRConfig } from 'swr'
+import { createStyles, Textarea, TextInput, Button, Stack, Tooltip } from "@mantine/core"
+import { useForm } from "react-hook-form"
+import { AdminProjectDto, NewProjectDto } from "@/common/types"
+import React, { useCallback, useState } from "react"
+import { useSWRConfig } from "swr"
 
 const useStyles = createStyles((theme) => ({
 
 }))
 
 export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) => {
-    const { classes: s, cx } = useStyles();
+    const { classes: s, cx } = useStyles()
 
     const { handleSubmit, register } = useForm({
         defaultValues: data,
@@ -25,10 +25,10 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
             fetch(
                 `/api/admin/projects/${data.id}/update`,
                 {
-                    method: 'PUT',
+                    method: "PUT",
                     body: JSON.stringify(formData),
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Content-Type": "application/json",
                     },
                 }
             )
@@ -49,7 +49,7 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
                 })
                 .catch(e => {
                     setError(true)
-                    console.log('API error: ', e)
+                    console.log("API error: ", e)
                 })
         },
         [data?.id]
@@ -63,9 +63,9 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
             <Stack>
                 <TextInput
                     {...register(
-                        'title',
+                        "title",
                         {
-                            required: 'Добавьте название',
+                            required: "Добавьте название",
                         },
                     )}
                     label='Название проекта'
@@ -73,9 +73,9 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
                 />
                 <Textarea
                     {...register(
-                        'description',
+                        "description",
                         {
-                            required: 'Добавьте описание'
+                            required: "Добавьте описание",
                         },
                     )}
                     label='Описание проекта'
@@ -84,11 +84,11 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
                 />
 
                 <Tooltip
-                    label={error ? 'Ошибка' : 'Сохранено'}
+                    label={error ? "Ошибка" : "Сохранено"}
                     position='top'
                     radius='xl'
                     transition='slide-up'
-                    color={error && 'red' as any}
+                    color={error && "red" as any}
                     opened={saved || error}
                 >
                     <Button

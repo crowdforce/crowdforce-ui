@@ -1,16 +1,16 @@
-import 'mapbox-gl/dist/mapbox-gl.css'
+import "mapbox-gl/dist/mapbox-gl.css"
 
-import { memo } from 'react'
-import dynamic from 'next/dynamic'
-import useSWR from 'swr'
-import { MapViewportDto } from '@/common/types'
-import { Layer } from 'react-map-gl'
-import { SchemaSource } from './SchemaSource'
+import { memo } from "react"
+import dynamic from "next/dynamic"
+import useSWR from "swr"
+import { MapViewportDto } from "@/common/types"
+import { Layer } from "react-map-gl"
+import { SchemaSource } from "./SchemaSource"
 
 const MapGl = dynamic(
-    () => import('react-map-gl'),
+    () => import("react-map-gl"),
     { ssr: false },
-);
+)
 
 export type SchemaMapProps = {
     id: string
@@ -27,7 +27,7 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
     return (
         <MapGl
             id={id}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: "100%", height: "100%" }}
             mapStyle='mapbox://styles/mapbox/satellite-streets-v11'
             mapboxAccessToken={token}
             initialViewState={{
@@ -37,34 +37,34 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
             }}
         >
             <SchemaSource
-                id={`trees`}
+                id={"trees"}
                 projectId={projectId}
-                type={'Point'}
+                type={"Point"}
             >
                 <Layer
-                    id={`trees`}
+                    id={"trees"}
                     type='circle'
                     paint={{
-                        'circle-radius': 10,
-                        'circle-color': '#0f0'
+                        "circle-radius": 10,
+                        "circle-color": "#0f0",
                     }}
                 />
             </SchemaSource>
             <SchemaSource
-                id={`border`}
+                id={"border"}
                 projectId={projectId}
-                type={'Polygon'}
+                type={"Polygon"}
             >
                 <Layer
-                    id={`border`}
+                    id={"border"}
                     type='line'
                     paint={{
-                        'line-color': '#ff0000',
-                        'line-width': 2,
+                        "line-color": "#ff0000",
+                        "line-width": 2,
                     }}
                     layout={{
-                        'line-join': 'round',
-                        'line-cap': 'round'
+                        "line-join": "round",
+                        "line-cap": "round",
                     }}
                 />
             </SchemaSource>

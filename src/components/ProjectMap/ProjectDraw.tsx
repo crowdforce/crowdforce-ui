@@ -1,7 +1,7 @@
-import { useCallback, useEffect } from 'react'
-import { OnChangeDraw } from './useDrawControl'
-import { useSWRConfig } from 'swr'
-import { useDrawControl } from './useDrawControl'
+import { useCallback, useEffect } from "react"
+import { OnChangeDraw } from "./useDrawControl"
+import { useSWRConfig } from "swr"
+import { useDrawControl } from "./useDrawControl"
 
 export type ProjectDrawProps = {
     projectId: string
@@ -16,14 +16,14 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
         const ids = event.features.map(x => x.id) as string[]
 
         switch (event.type) {
-            case 'draw.create': {
+            case "draw.create": {
                 const payload = {
                     geometry: feature.geometry,
                 }
                 await fetch(`/api/admin/projects/${projectId}/features/create`, {
-                    method: 'POST',
+                    method: "POST",
                     headers: {
-                        'content-type': 'application/json',
+                        "content-type": "application/json",
                     },
                     body: JSON.stringify(payload),
                 })
@@ -38,29 +38,29 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                         mutate(`/api/admin/projects/${projectId}/features`)
                     })
                     .catch(e => {
-                        console.log('API error: ', e)
+                        console.log("API error: ", e)
                         draw.delete(ids)
                     })
                 break
             }
 
-            case 'draw.update': {
+            case "draw.update": {
                 const payload = {
                     geometry: feature.geometry,
                 }
                 await fetch(`/api/admin/features/${featureId}/update-geometry`, {
-                    method: 'PUT',
+                    method: "PUT",
                     headers: {
-                        'content-type': 'application/json',
+                        "content-type": "application/json",
                     },
                     body: JSON.stringify(payload),
                 })
                 break
             }
 
-            case 'draw.delete': {
+            case "draw.delete": {
                 await fetch(`/api/admin/features/${featureId}/delete`, {
-                    method: 'DELETE',
+                    method: "DELETE",
                 })
                     .then(() => {
                         mutate(`/api/admin/projects/${projectId}/features`)
@@ -77,7 +77,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
 
     const draw = useDrawControl({
         onChange,
-        position: 'top-left',
+        position: "top-left",
         controls: {
             point: true,
             polygon: true,

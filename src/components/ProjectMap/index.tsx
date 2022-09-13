@@ -1,16 +1,16 @@
-import 'mapbox-gl/dist/mapbox-gl.css'
+import "mapbox-gl/dist/mapbox-gl.css"
 
-import { memo } from 'react'
-import dynamic from 'next/dynamic'
-import useSWR from 'swr'
-import { ProjectDraw } from './ProjectDraw'
-import { dataToGeojson } from './lib'
-import { AdminFeatureDto, AdminProjectDto } from '@/common/types'
+import { memo } from "react"
+import dynamic from "next/dynamic"
+import useSWR from "swr"
+import { ProjectDraw } from "./ProjectDraw"
+import { dataToGeojson } from "./lib"
+import { AdminFeatureDto, AdminProjectDto } from "@/common/types"
 
 const MapGl = dynamic(
-    () => import('react-map-gl'),
+    () => import("react-map-gl"),
     { ssr: false },
-);
+)
 
 export type ProjectMapProps = {
     id: string
@@ -29,7 +29,7 @@ const ProjectMap: React.FC<ProjectMapProps> = ({ id, projectId }) => {
     return (
         <MapGl
             id={id}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: "100%", height: "100%" }}
             mapStyle='mapbox://styles/mapbox/satellite-streets-v11'
             mapboxAccessToken={token}
             initialViewState={{
@@ -49,7 +49,7 @@ const ProjectMap: React.FC<ProjectMapProps> = ({ id, projectId }) => {
                 projectId={projectId}
             />
         </MapGl>
-    );
+    )
 }
 
-export default memo(ProjectMap);
+export default memo(ProjectMap)
