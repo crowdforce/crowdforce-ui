@@ -1,7 +1,7 @@
-import NextAuth from 'next-auth'
-import CredentialsProvider from 'next-auth/providers/credentials'
+import NextAuth from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
 
-import crypto from 'crypto'
+import crypto from "crypto"
 
 import { PrismaClient, UserRole } from "@prisma/client"
 
@@ -17,92 +17,92 @@ const prisma = new PrismaClient()
  * @returns
  */
 async function checkSignature(params: Record<string, any>) {
-  const keys = ['id', 'username', 'first_name', 'last_name', 'photo_url', 'auth_date']
-  const checkString = keys
-    .sort()
-    .map(key => [key, params[key]])
-    .map(([key, value]) => `${key}=${value}`)
-    .join('\n')
+    const keys = ["id", "username", "first_name", "last_name", "photo_url", "auth_date"]
+    const checkString = keys
+        .sort()
+        .map(key => [key, params[key]])
+        .map(([key, value]) => `${key}=${value}`)
+        .join("\n")
 
-  const secret = crypto.createHash('sha256')
-    .update(process.env.TELEGRAM_BOT_SECRET!)
-    .digest()
+    const secret = crypto.createHash("sha256")
+        .update(process.env.TELEGRAM_BOT_SECRET!)
+        .digest()
 
-  const hash = crypto.createHmac('sha256', secret)
-    .update(checkString)
-    .digest('hex')
+    const hash = crypto.createHmac("sha256", secret)
+        .update(checkString)
+        .digest("hex")
 
-  return hash === params['hash']
+    return hash === params["hash"]
 }
 
 function tgAuthDateToDate(value: string | number) {
-  const n = Number(value)
+    const n = Number(value)
 
-  return new Date(n * 1000)
+    return new Date(n * 1000)
 }
 
 async function findOrCreateUser(credentials: Record<string, any>) {
-  const telegramId = Number(credentials.id)
-  if (!telegramId) {
-    return null
-  }
-
-  const user = await prisma.user.findFirst({
-    where: {
-      telegram: {
-        id: telegramId,
-      }
-    },
-    include: {
-      telegram: true,
+    const telegramId = Number(credentials.id)
+    if (!telegramId) {
+        return null
     }
-  });
-  if (user && !user.enabled) {
-    return null
-  }
-  if (user) {
-    return user
-  }
 
-  const name = `${credentials.first_name} ${credentials.last_name}`
-  const newUser = await prisma.user.create({
-    data: {
-      name,
-      image: credentials.photo_url,
-      role: UserRole.User,
-      telegram: {
-        connectOrCreate: {
-          where: {
-            id: telegramId,
-          },
-          create: {
-            id: telegramId,
-            username: credentials.username,
-            authDate: tgAuthDateToDate(credentials.auth_date),
-            firstName: credentials.first_name,
-            lastName: credentials.last_name,
-            photoUrl: credentials.photo_url,
-          }
-        }
-      }
-    },
-    include: {
-      telegram: true,
+    const user = await prisma.user.findFirst({
+        where: {
+            telegram: {
+                id: telegramId,
+            },
+        },
+        include: {
+            telegram: true,
+        },
+    })
+    if (user && !user.enabled) {
+        return null
     }
-  })
-  return newUser
+    if (user) {
+        return user
+    }
+
+    const name = `${credentials.first_name} ${credentials.last_name}`
+    const newUser = await prisma.user.create({
+        data: {
+            name,
+            image: credentials.photo_url,
+            role: UserRole.User,
+            telegram: {
+                connectOrCreate: {
+                    where: {
+                        id: telegramId,
+                    },
+                    create: {
+                        id: telegramId,
+                        username: credentials.username,
+                        authDate: tgAuthDateToDate(credentials.auth_date),
+                        firstName: credentials.first_name,
+                        lastName: credentials.last_name,
+                        photoUrl: credentials.photo_url,
+                    },
+                },
+            },
+        },
+        include: {
+            telegram: true,
+        },
+    })
+    return newUser
 }
 
 export default NextAuth({
-  session: {
-    strategy: "jwt",
-  },
-  jwt: {
+    session: {
+        strategy: "jwt",
+    },
+    jwt: {
     // The maximum age of the NextAuth.js issued JWT in seconds.
     // Defaults to `session.maxAge`.
-    maxAge: 60 * 60 * 24 * 30,
-  },
-  callbacks: {
+        maxAge: 60 * 60 * 24 * 30,
+    },
+    callbacks: {
     // async signIn({ user, account, profile, email, credentials }) {
     //   console.log('signIn callback');
     //   console.log(user);
@@ -123,83 +123,83 @@ export default NextAuth({
     // async redirect({ url, baseUrl }) {
     //   return baseUrl
     // },
-    async session({ session, user, token }) {
-      (session.user as any).role = token.role
+        async session({ session, user, token }) {
+            (session.user as any).role = token.role
 
-      return session
+            return session
+        },
+        async jwt({ token, user, account, profile, isNewUser }) {
+            if (user) {
+                token.role = user?.role ?? "Unknown"
+            }
+
+            return token
+        },
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
-      if (user) {
-        token.role = user?.role ?? 'Unknown'
-      }
+    providers: [
+        CredentialsProvider({
+            // The name to display on the sign in form (e.g. "Sign in with...")
+            name: "credentials",
+            // The credentials is used to generate a suitable form on the sign in page.
+            // You can specify whatever fields you are expecting to be submitted.
+            // e.g. domain, username, password, 2FA token, etc.
+            // You can pass any HTML attribute to the <input> tag through the object.
+            credentials: {
+                username: { label: "username", type: "text" },
+            },
+            async authorize(credentials, req) {
+                if (!credentials) {
+                    return null
+                }
 
-      return token
-    },
-  },
-  providers: [
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. "Sign in with...")
-      name: 'credentials',
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      credentials: {
-        username: { label: 'username', type: 'text' },
-      },
-      async authorize(credentials, req) {
-        if (!credentials) {
-          return null
-        }
+                const pass = await checkSignature(credentials)
+                if (!pass) {
+                    return null
+                }
 
-        const pass = await checkSignature(credentials)
-        if (!pass) {
-          return null
-        }
+                const user = await findOrCreateUser(credentials)
+                // If you return null then an error will be displayed advising the user to check their details.
+                if (!user) {
+                    return null
+                }
 
-        const user = await findOrCreateUser(credentials)
-        // If you return null then an error will be displayed advising the user to check their details.
-        if (!user) {
-          return null
-        }
-
-        // Any object returned will be saved in `user` property of the JWT
-        return {
-          id: user.id,
-          name: user.name,
-          image: user.image,
-          role: user.role,
-        };
-      },
-    }),
-  ],
-  // events: {
-  //   async signIn(message) {
-  //     /* on successful sign in */
-  //     console.log('event:signin', message);
-  //   },
-  //   async signOut(message) {
-  //     /* on signout */
-  //     console.log('event:signout', message);
-  //   },
-  //   async createUser(message) {
-  //     /* user created */
-  //     console.log('event:createUser', message);
-  //   },
-  //   async updateUser(message) {
-  //     /* user updated - e.g. their email was verified */
-  //     console.log('event:updateUser', message);
-  //   },
-  //   async linkAccount(message) {
-  //     /* account (e.g. Twitter) linked to a user */
-  //     console.log('event:linkAccount', message);
-  //   },
-  //   async session(message) {
-  //     /* session is active */
-  //     console.log('event:session', message);
-  //   },
-  //   async error(message) {
-  //     console.log('event:error', message);
-  //   },
-  // }
-});
+                // Any object returned will be saved in `user` property of the JWT
+                return {
+                    id: user.id,
+                    name: user.name,
+                    image: user.image,
+                    role: user.role,
+                }
+            },
+        }),
+    ],
+    // events: {
+    //   async signIn(message) {
+    //     /* on successful sign in */
+    //     console.log('event:signin', message);
+    //   },
+    //   async signOut(message) {
+    //     /* on signout */
+    //     console.log('event:signout', message);
+    //   },
+    //   async createUser(message) {
+    //     /* user created */
+    //     console.log('event:createUser', message);
+    //   },
+    //   async updateUser(message) {
+    //     /* user updated - e.g. their email was verified */
+    //     console.log('event:updateUser', message);
+    //   },
+    //   async linkAccount(message) {
+    //     /* account (e.g. Twitter) linked to a user */
+    //     console.log('event:linkAccount', message);
+    //   },
+    //   async session(message) {
+    //     /* session is active */
+    //     console.log('event:session', message);
+    //   },
+    //   async error(message) {
+    //     console.log('event:error', message);
+    //   },
+    // }
+})

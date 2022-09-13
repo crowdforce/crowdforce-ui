@@ -1,10 +1,10 @@
-import useSWR from 'swr'
-import { Source } from 'react-map-gl'
+import useSWR from "swr"
+import { Source } from "react-map-gl"
 
 export type SchemaSourceProps = {
     id: string
     projectId: string
-    type: 'Point' | 'Polygon'
+    type: "Point" | "Polygon"
     children?: React.ReactNode
 }
 
