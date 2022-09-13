@@ -123,16 +123,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const projectId = ctx.params?.projectId as string
     const project = await getProject(projectId)
     const tasks = await getTasks(projectId)
-    const adminProject = await getAdminProject(projectId)
-    const features = await getFeatures(projectId)
 
     return {
         props: {
             fallback: {
                 [`/api/projects/${projectId}`]: project,
                 [`/api/projects/${projectId}/tasks`]: tasks,
-                [`/api/admin/projects/${projectId}`]: adminProject,
-                [`/api/admin/projects/${projectId}/features`]: features,
             },
         },
     }
