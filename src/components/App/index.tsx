@@ -59,7 +59,7 @@ export const App: React.FC<AppProps> = ({ children }) => {
                     >
                         <AppMenu vertical />
                         <div style={{
-                            width: " fit-content",
+                            width: "fit-content",
                             margin: "0 20px",
                             bottom: 0,
                         }}>
