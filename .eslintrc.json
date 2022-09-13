@@ -24,6 +24,17 @@
     "no-debugger": "error",
     "no-var": "error",
     "no-unused-vars": "warn",
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": "./src/components",
+            "from": "./src/server"
+          }
+        ]
+      }
+    ],
     "eol-last": [
       "error",
       "always"
