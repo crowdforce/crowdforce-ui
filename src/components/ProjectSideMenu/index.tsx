@@ -1,8 +1,8 @@
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
-import { ActionIcon, Button, createStyles } from "@mantine/core"
+import { ActionIcon, Box, Button, createStyles } from "@mantine/core"
 import { IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSelector, IconSettings, IconTools } from "@tabler/icons"
 import React, { useCallback, useContext } from "react"
-import { ProjectSideMenuLayout } from "./ProjectSideMenuLayout"
+import { SideMenu } from "@/components/SideMenu"
 
 type ProjectSideMenuProps = {
 
@@ -83,75 +83,82 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
     }, [open, openId])
 
     return (
-        <ProjectSideMenuLayout
-            topButtons={buttons
-                .filter((x, i) => {
-                    if (isAdmin) { // reqested by admin
-                        return true
-                    } else {  // requested by NOT admin
-                        return ["aside", "info", "tasks"].includes(x.id)
-                    }
-                })
-                .map((x, i) => wide ? (
-                    <Button
-                        key={x.id}
-                        size='md'
-                        fullWidth
-                        radius='md'
-                        variant={openId === x.id ? "light" : "outline"}
-                        className={cx(s.icon, openId === x.id && s.iconSelected, x.id == "aside" && open && s.asideId)}
-                        leftIcon={x.icon}
-                        onClick={() => onAction(x.id)}
-                        styles={{
-                            inner: {
-                                justifyContent: "flex-start",
-                                fontWeight: "normal",
-                            },
-                        }}
-                    >
-                        {x.id == "aside" ? (open ? "Закрыть панель" : "Открыть панель") : (x.text)}
-                    </Button>
-                ) : (
-                    <ActionIcon
-                        key={x.id}
-                        size='xl'
-                        radius='md'
-                        variant={openId === x.id ? "light" : "outline"}
-                        className={cx(
-                            s.icon,
-                            openId === x.id && s.iconSelected,
-                            x.id == "aside" && open && s.asideId,
-                            x.id == "edit" && s.mobileHidden,
-                        )}
-                        onClick={() => onAction(x.id)}
-                    >
-                        {x.icon}
-                    </ActionIcon>
-                ))}
-            bottomButtons={(
-                <>
-                    <ActionIcon
-                        size='xl'
-                        radius='md'
-                        variant='outline'
-                        className={cx(s.icon, s.mobileHidden)}
-                        onClick={() => setWide(!wide)}
-                        style={{
-                            transform: "rotate(90deg)",
-                        }}
-                    >
-                        <IconSelector />
-                    </ActionIcon>
-                    <ActionIcon
-                        size='xl'
-                        radius='md'
-                        variant='outline'
-                        className={s.icon}
-                    >
-                        <IconSettings />
-                    </ActionIcon>
-                </>
-            )}
-        />
+        <Box
+            sx={{
+                width: wide ? 260 : 48,
+            }}
+        >
+            <SideMenu
+                extra={(
+                    <>
+                        <ActionIcon
+                            size="xl"
+                            radius="md"
+                            variant="outline"
+                            className={cx(s.icon, s.mobileHidden)}
+                            onClick={() => setWide(!wide)}
+                            style={{
+                                transform: "rotate(90deg)",
+                            }}
+                        >
+                            <IconSelector />
+                        </ActionIcon>
+                        <ActionIcon
+                            size="xl"
+                            radius="md"
+                            variant="outline"
+                            className={s.icon}
+                        >
+                            <IconSettings />
+                        </ActionIcon>
+                    </>
+                )}
+            >
+                {buttons
+                    .filter(x => {
+                        if (isAdmin) {
+                            return true
+                        } else {
+                            return ["aside", "info", "tasks"].includes(x.id)
+                        }
+                    })
+                    .map(x => wide ? (
+                        <Button
+                            key={x.id}
+                            size="md"
+                            fullWidth
+                            radius="md"
+                            variant={openId === x.id ? "light" : "outline"}
+                            className={cx(s.icon, openId === x.id && s.iconSelected, x.id == "aside" && open && s.asideId)}
+                            leftIcon={x.icon}
+                            onClick={() => onAction(x.id)}
+                            styles={{
+                                inner: {
+                                    justifyContent: "flex-start",
+                                    fontWeight: "normal",
+                                },
+                            }}
+                        >
+                            {x.id == "aside" ? (open ? "Закрыть панель" : "Открыть панель") : (x.text)}
+                        </Button>
+                    ) : (
+                        <ActionIcon
+                            key={x.id}
+                            size="xl"
+                            radius="md"
+                            variant={openId === x.id ? "light" : "outline"}
+                            className={cx(
+                                s.icon,
+                                openId === x.id && s.iconSelected,
+                                x.id == "aside" && open && s.asideId,
+                                x.id == "edit" && s.mobileHidden,
+                            )}
+                            onClick={() => onAction(x.id)}
+                        >
+                            {x.icon}
+                        </ActionIcon>
+                    ))}
+            </SideMenu>
+        </Box>
     )
 }
