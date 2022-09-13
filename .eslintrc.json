@@ -2,7 +2,7 @@
   "extends": "next/core-web-vitals",
   "rules": {
     "indent": [
-      "error",
+      "warn",
       4,
       {
         "SwitchCase": 1
