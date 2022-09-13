@@ -35,6 +35,15 @@
         ]
       }
     ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "** /*.test.js",
+          "mocks/**/*.js"
+        ]
+      }
+    ],
     "eol-last": [
       "error",
       "always"
