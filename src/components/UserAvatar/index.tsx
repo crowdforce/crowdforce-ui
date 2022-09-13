@@ -1,4 +1,4 @@
-import { Avatar } from '@mantine/core'
+import { Avatar } from "@mantine/core"
 
 export type UserAvatarProps = {
   alt?: string
@@ -6,9 +6,9 @@ export type UserAvatarProps = {
 }
 
 export const UserAvatar = (props: UserAvatarProps) => (
-  <Avatar
-    radius="xl"
-    alt={props.alt}
-    src={props.src}
-  />
+    <Avatar
+        radius="xl"
+        alt={props.alt}
+        src={props.src}
+    />
 )

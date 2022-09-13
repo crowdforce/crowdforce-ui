@@ -1,10 +1,10 @@
-import { useCallback, useEffect } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/react';
-import { Avatar, Group, Menu, UnstyledButton, Text, createStyles, Loader } from '@mantine/core';
-import { IconChevronDown, IconLogout, IconPlus, IconUser } from '@tabler/icons';
-import { useRouter } from 'next/router';
-import { NewProjectDto } from '@/common/types';
-import Link from 'next/link';
+import { useCallback, useEffect } from "react"
+import { signIn, signOut, useSession } from "next-auth/react"
+import { Avatar, Group, Menu, UnstyledButton, Text, createStyles, Loader } from "@mantine/core"
+import { IconChevronDown, IconLogout, IconPlus, IconUser } from "@tabler/icons"
+import { useRouter } from "next/router"
+import { NewProjectDto } from "@/common/types"
+import Link from "next/link"
 
 const useStyles = createStyles((theme) => ({
     user: {
@@ -12,14 +12,14 @@ const useStyles = createStyles((theme) => ({
         borderRadius: theme.radius.md,
         paddingRight: theme.spacing.sm,
 
-        '&:hover': {
+        "&:hover": {
             backgroundColor: theme.colors.gray[0],
         },
     },
     mobileHidden: {
-        [theme.fn.smallerThan('sm')]: {
-            display: 'none',
-        }
+        [theme.fn.smallerThan("sm")]: {
+            display: "none",
+        },
     },
 }))
 
@@ -28,49 +28,49 @@ export type UserButtonProps = {}
 export const UserButton: React.FC<UserButtonProps> = () => {
     const botId = process.env.NEXT_PUBLIC_TELEGRAM_BOT_ID
     const session = useSession()
-    const isLoading = session.status === 'loading'
-    const isAuthenticated = session.status === 'authenticated'
+    const isLoading = session.status === "loading"
+    const isAuthenticated = session.status === "authenticated"
 
-    const { classes: s, cx } = useStyles();
+    const { classes: s } = useStyles()
 
     useEffect(() => {
-        const loginController = new AbortController();
+        const loginController = new AbortController()
 
-        window.addEventListener('message', async ({ data }) => {
-            if (data.type === 'login' && data.id) {
-                const query = new URLSearchParams();
-                const cred = {};
+        window.addEventListener("message", async ({ data }) => {
+            if (data.type === "login" && data.id) {
+                const query = new URLSearchParams()
+                const cred = {}
                 Object.keys(data).forEach((key) => {
-                    if (key !== 'type') {
-                        query.set(key, data[key]);
+                    if (key !== "type") {
+                        query.set(key, data[key])
                         // @ts-ignore
-                        cred[key] = data[key];
+                        cred[key] = data[key]
                     }
-                });
+                })
 
-                signIn('credentials', {
+                signIn("credentials", {
                     // @ts-ignore
-                    redirect: '/',
+                    redirect: "/",
                     ...cred,
-                });
+                })
             }
         }, {
             signal: loginController.signal,
-        });
+        })
 
         return () => {
-            loginController.abort();
-        };
-    }, []);
+            loginController.abort()
+        }
+    }, [])
 
 
     const router = useRouter()
     const onNewProject = useCallback(() => {
         // its fetch() until swr2.0 useSWRMutation // https://github.com/vercel/swr/releases/tag/2.0.0-beta.0
         fetch(
-            '/api/admin/projects/create',
+            "/api/admin/projects/create",
             {
-                method: 'POST',
+                method: "POST",
             },
         )
             .then(async res => {
@@ -84,7 +84,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                 router.push(`/project/${res.id}/edit`)
             })
             .catch(e => {
-                console.log('API error: ', e)
+                console.log("API error: ", e)
             })
     }, [router])
 
@@ -94,7 +94,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                 width={200}
                 position="bottom-end"
                 transition="pop-top-right"
-                shadow={'lg'}
+                shadow={"lg"}
             >
                 <Menu.Target>
                     <UnstyledButton

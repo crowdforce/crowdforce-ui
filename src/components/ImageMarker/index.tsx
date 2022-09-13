@@ -1,6 +1,6 @@
-import s from './marker.module.css'
+import s from "./marker.module.css"
 
-import { memo } from 'react'
+import { memo } from "react"
 
 export type ImageMarkerProps = {
     src: string
@@ -19,3 +19,5 @@ export const ImageMarker: React.FC<ImageMarkerProps> = memo(props => (
         }}
     />
 ))
+
+ImageMarker.displayName = "ImageMarker"

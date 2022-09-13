@@ -1,23 +1,22 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import { TextField } from '@mui/material';
-import formClasses from './Form.module.css';
-import { useFormContext } from './Form';
+import { TextField } from "@mui/material"
+import formClasses from "./Form.module.css"
+import { useFormContext } from "./Form"
 
 const FormInput = (props) => {
-  const { name } = props;
-  const { handleInputChange, formData } = useFormContext();
+    const { name } = props
+    const { handleInputChange, formData } = useFormContext()
 
-  return (
-    <div className={formClasses.field}>
-      <TextField
-        variant="outlined"
-        fullWidth
-        value={formData[name] || ''}
-        onChange={handleInputChange}
-        {...props}
-      />
-    </div>
-  );
-};
+    return (
+        <div className={formClasses.field}>
+            <TextField
+                variant="outlined"
+                fullWidth
+                value={formData[name] || ""}
+                onChange={handleInputChange}
+                {...props}
+            />
+        </div>
+    )
+}
 
-export default FormInput;
+export default FormInput

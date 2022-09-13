@@ -1,8 +1,8 @@
-import s from './popup.module.css'
+import s from "./popup.module.css"
 
-import { Card, Stack, Text, Title, Image, Button } from '@mantine/core'
-import Link from 'next/link'
-import { Popup } from 'react-map-gl'
+import { Card, Stack, Text, Title, Image, Button } from "@mantine/core"
+import Link from "next/link"
+import { Popup } from "react-map-gl"
 
 export type ProjectPopupProps = {
     lng: number
@@ -27,7 +27,7 @@ export const ProjectPopup: React.FC<ProjectPopupProps> = props => {
             <Card withBorder>
                 <Card.Section>
                     <Image
-                        src={props.src ?? '/wip.png'}
+                        src={props.src ?? "/wip.png"}
                         height={150}
                     />
                 </Card.Section>

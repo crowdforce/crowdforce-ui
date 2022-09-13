@@ -1,5 +1,5 @@
-import { AdminFeatureDto } from '@/common/types'
-import { feature, featureCollection } from '@turf/helpers'
+import { AdminFeatureDto } from "@/common/types"
+import { feature, featureCollection } from "@turf/helpers"
 
 export function dataToGeojson(data: AdminFeatureDto[]): GeoJSON.FeatureCollection {
     const xs = data.map(x => {

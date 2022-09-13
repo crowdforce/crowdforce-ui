@@ -1,18 +1,18 @@
-import 'mapbox-gl/dist/mapbox-gl.css'
+import "mapbox-gl/dist/mapbox-gl.css"
 
-import dynamic from 'next/dynamic'
-import { useState } from 'react'
-import { NavigationControl, Marker } from 'react-map-gl'
-import { ProjectPopup } from './ProjectPopup'
-import { PublicProjectDto } from '@/common/types'
-import { ImageMarker } from '../ImageMarker'
+import dynamic from "next/dynamic"
+import { useState } from "react"
+import { NavigationControl, Marker } from "react-map-gl"
+import { ProjectPopup } from "./ProjectPopup"
+import { PublicProjectDto } from "@/common/types"
+import { ImageMarker } from "../ImageMarker"
 
 const MapGl = dynamic(
-    () => import('react-map-gl'),
+    () => import("react-map-gl"),
     { ssr: false },
-);
+)
 
-const defaultImageUrl = '/project-pin.png'
+const defaultImageUrl = "/project-pin.png"
 
 export type PublicMapProps = {
     data?: PublicProjectDto[]
@@ -25,12 +25,12 @@ export type PublicMapProps = {
 
 export const PublicMap: React.FC<PublicMapProps> = ({ data, ...props }) => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
-    const [currentProject, setCurrentProject] = useState<PublicProjectDto>();
+    const [currentProject, setCurrentProject] = useState<PublicProjectDto>()
 
     return (
         <MapGl
             id="map"
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: "100%", height: "100%" }}
             mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
             mapboxAccessToken={token}
             initialViewState={props.initialViewState}
@@ -60,7 +60,7 @@ export const PublicMap: React.FC<PublicMapProps> = ({ data, ...props }) => {
                         size={48}
                         src={item.imageUrl ?? defaultImageUrl}
                         style={{
-                            cursor: 'pointer',
+                            cursor: "pointer",
                         }}
                     />
                 </Marker>
