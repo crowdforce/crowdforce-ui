@@ -23,7 +23,7 @@
     "no-alert": "error",
     "no-debugger": "error",
     "no-var": "error",
-    "no-unused-vars": "error",
+    "no-unused-vars": "warn",
     "eol-last": [
       "error",
       "always"
