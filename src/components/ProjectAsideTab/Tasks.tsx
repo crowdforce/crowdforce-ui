@@ -1,7 +1,7 @@
-import { Aside, createStyles, Group, ScrollArea, Title } from '@mantine/core'
-import { IconCheck, IconToolsKitchen } from '@tabler/icons'
-import React from 'react'
-import { ProjectTasksList } from '../ProjectTasksList'
+import { Aside, createStyles, Group, ScrollArea, Title } from "@mantine/core"
+import { IconCheck, IconToolsKitchen } from "@tabler/icons"
+import React from "react"
+import { ProjectTasksList } from "../ProjectTasksList"
 
 type ProjectTasksProps = {
 

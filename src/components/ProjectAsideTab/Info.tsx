@@ -1,11 +1,11 @@
-import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack, Loader } from '@mantine/core'
-import { IconMapPin } from '@tabler/icons'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { ProjectData } from 'pages/project/[projectId]'
-import React from 'react'
-import useSWR from 'swr'
-import { FollowProjectButton } from '../FollowProjectButton'
+import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack, Loader } from "@mantine/core"
+import { IconMapPin } from "@tabler/icons"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { ProjectData } from "pages/project/[projectId]"
+import React from "react"
+import useSWR from "swr"
+import { FollowProjectButton } from "../FollowProjectButton"
 
 type ProjectInfoProps = {
 
@@ -13,15 +13,15 @@ type ProjectInfoProps = {
 
 const useStyles = createStyles((theme) => ({
     icon: {
-        flex: '0 0 auto',
+        flex: "0 0 auto",
         color: theme.colors.gray[6], // dimmed color
     },
     ownerAndLink: {
-        [theme.fn.smallerThan('sm')]: {
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-        }
-    }
+        [theme.fn.smallerThan("sm")]: {
+            flexDirection: "column",
+            alignItems: "flex-start",
+        },
+    },
 }))
 
 export const Info: React.FC<ProjectInfoProps> = () => {
@@ -43,7 +43,7 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                 <Stack>
                     <AspectRatio ratio={16 / 9}>
                         <Image
-                            src={data?.imageUrl ?? '/wip.png'}
+                            src={data?.imageUrl ?? "/wip.png"}
                             radius='lg'
                         />
                     </AspectRatio>
@@ -106,7 +106,7 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                     size='xl'
                     fullWidth
                     status={data?.isFollowed ?? null}
-                    projectId={data?.id ?? ''}
+                    projectId={data?.id ?? ""}
                 />
             </Aside.Section>
         </>

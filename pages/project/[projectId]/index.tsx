@@ -1,20 +1,20 @@
-import { useRouter } from 'next/router'
-import Page from '@/components/Page'
-import useSWR, { SWRConfig } from 'swr'
-import { Center, Loader } from '@mantine/core'
-import { MapProvider } from 'react-map-gl'
-import type { GetServerSideProps, NextPage } from 'next'
-import SchemaMap from '@/components/SchemaMap'
-import { getProject } from 'pages/api/projects/[projectId]'
-import { ProjectSideMenu, ProjectSideMenuIds } from '@/components/ProjectSideMenu'
-import { useEffect, useState } from 'react'
-import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { ProjectAside } from '@/components/ProjectAside'
-import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
-import { useMediaQuery } from '@mantine/hooks'
-import { getTasks } from 'pages/api/projects/[projectId]/tasks'
-import { getFeatures } from 'pages/api/admin/projects/[projectId]/features'
-import { User } from '@prisma/client'
+import { useRouter } from "next/router"
+import Page from "@/components/Page"
+import useSWR, { SWRConfig } from "swr"
+import { Center, Loader } from "@mantine/core"
+import { MapProvider } from "react-map-gl"
+import type { GetServerSideProps, NextPage } from "next"
+import SchemaMap from "@/components/SchemaMap"
+import { getProject } from "pages/api/projects/[projectId]"
+import { ProjectSideMenu, ProjectSideMenuIds } from "@/components/ProjectSideMenu"
+import { useEffect, useState } from "react"
+import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
+import { ProjectAside } from "@/components/ProjectAside"
+import { getAdminProject } from "pages/api/admin/projects/[projectId]"
+import { useMediaQuery } from "@mantine/hooks"
+import { getTasks } from "pages/api/projects/[projectId]/tasks"
+import { getFeatures } from "pages/api/admin/projects/[projectId]/features"
+import { User } from "@prisma/client"
 
 type Props = {
     fallback: Record<string, any>
@@ -49,11 +49,11 @@ const Container: React.FC = () => {
     const { data, error } = useSWR<ProjectData>(`/api/projects/${projectId}`)
     const { data: adminData, error: adminError } = useSWR<AdminProjectData>(`/api/admin/projects/${projectId}`)
     const isAdmin = Boolean(adminData && !(adminData as any)?.error)
-    const isInit = isAdmin && adminData?.status == 'Init'
+    const isInit = isAdmin && adminData?.status == "Init"
 
     const [open, setOpen] = useState(true)
-    const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, 'aside'>>('info')
-    const smallerThanSm = useMediaQuery('(max-width: 800px)', false)
+    const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>("info")
+    const smallerThanSm = useMediaQuery("(max-width: 800px)", false)
     const [wide, setWide] = useState(!smallerThanSm)
     useEffect(() => {
         setWide(!smallerThanSm)
@@ -63,7 +63,7 @@ const Container: React.FC = () => {
         return (
             <Center
                 sx={{
-                    height: '100%',
+                    height: "100%",
                 }}
             >
                 <Loader />
@@ -74,14 +74,14 @@ const Container: React.FC = () => {
     return (
         <Page>
             <div style={{
-                position: 'relative',
-                display: 'flex',
+                position: "relative",
+                display: "flex",
             }}>
                 <ProjectSideMenuContext.Provider
                     value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit }}
                 >
                     <div style={{
-                        position: 'relative',
+                        position: "relative",
                     }}>
                         <ProjectSideMenu />
                         <ProjectAside
@@ -91,15 +91,15 @@ const Container: React.FC = () => {
 
                     <div
                         style={{
-                            flex: '1 1 100%',
-                            position: 'relative',
-                            height: 'calc(100vh - 60px)',
-                            display: 'flex',
+                            flex: "1 1 100%",
+                            position: "relative",
+                            height: "calc(100vh - 60px)",
+                            display: "flex",
                         }}
                     >
                         <MapProvider>
                             <SchemaMap
-                                id={'schema'}
+                                id={"schema"}
                                 projectId={projectId}
                             />
                         </MapProvider>
@@ -131,7 +131,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
                 [`/api/admin/projects/${projectId}`]: adminProject,
                 [`/api/admin/projects/${projectId}/features`]: features,
             },
-        }
+        },
     }
 }
 

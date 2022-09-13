@@ -1,7 +1,7 @@
-import prisma from "@/server/prisma";
-import { ProjectDto } from "@/common/types";
-import { Project, ProjectStatus, UserFollows } from "@prisma/client";
-import { withOptionalUser } from "@/server/middlewares/withOptionalUser";
+import prisma from "@/server/prisma"
+import { ProjectDto } from "@/common/types"
+import { Project, ProjectStatus, UserFollows } from "@prisma/client"
+import { withOptionalUser } from "@/server/middlewares/withOptionalUser"
 
 type ProjectAndFollow = {
     project: Project
@@ -9,12 +9,12 @@ type ProjectAndFollow = {
 }
 
 const placeholderData = {
-    address: 'Санкт-Петербург, наб. р. Карповки, 26/4',
-    link: 'www.redisYdorogi.ru',
+    address: "Санкт-Петербург, наб. р. Карповки, 26/4",
+    link: "www.redisYdorogi.ru",
     admin: {
-        name: 'Товарищ Админ',
-        image: '',
-    }
+        name: "Товарищ Админ",
+        image: "",
+    },
 }
 
 function mapResponse(item: ProjectAndFollow): ProjectDto {
@@ -62,9 +62,9 @@ export async function getProject(projectId: string, userId?: string) {
 }
 
 export default withOptionalUser<ProjectDto>(async (req, res) => {
-    if (req.method !== 'GET') {
+    if (req.method !== "GET") {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 
@@ -73,7 +73,7 @@ export default withOptionalUser<ProjectDto>(async (req, res) => {
     const project = await getProject(projectId, req.user?.id)
     if (!project) {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 

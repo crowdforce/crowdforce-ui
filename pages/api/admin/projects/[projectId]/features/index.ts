@@ -1,15 +1,15 @@
-import prisma from "@/server/prisma";
-import { AdminFeatureDto } from "@/common/types";
-import { withUser } from "@/server/middlewares/withUser";
-import { Feature, FeatureStatus } from "@prisma/client";
+import prisma from "@/server/prisma"
+import { AdminFeatureDto } from "@/common/types"
+import { withUser } from "@/server/middlewares/withUser"
+import { Feature, FeatureStatus } from "@prisma/client"
 
 const placeholderData = {
-    type: 'Куст',
+    type: "Куст",
 }
 
 function mapResponse(item: Feature): AdminFeatureDto {
     const geom = item.geometry ?? {} as any
-    const geometryType = geom.type ?? 'Point'
+    const geometryType = geom.type ?? "Point"
     const coordinates = geom.coordinates ?? [0, 0]
 
     return {
@@ -27,7 +27,7 @@ export async function getFeatures(projectId: string) {
         where: {
             projectId,
             status: FeatureStatus.Active,
-        }
+        },
     })
 
     if (!features) {
@@ -38,9 +38,9 @@ export async function getFeatures(projectId: string) {
 }
 
 export default withUser<AdminFeatureDto[]>(async (req, res) => {
-    if (req.method !== 'GET') {
+    if (req.method !== "GET") {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 
@@ -49,7 +49,7 @@ export default withUser<AdminFeatureDto[]>(async (req, res) => {
         where: {
             projectId,
             status: FeatureStatus.Active,
-        }
+        },
     })
 
     return res.json(features.map(mapResponse))

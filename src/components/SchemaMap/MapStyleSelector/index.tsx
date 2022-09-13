@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction } from 'react'
-import { Button } from '@mantine/core'
+import { Dispatch, SetStateAction } from "react"
+import { Button } from "@mantine/core"
 
 
 export type MapStyleSelectorProps = {
     mapStyle: string
     setMapStyle: Dispatch<SetStateAction<string>>
-    mapStyles: Record<'satellite' | 'vector', {
+    mapStyles: Record<"satellite" | "vector", {
         style: string
         title: string
     }>
@@ -15,7 +15,7 @@ export const MapStyleSelector: React.FC<MapStyleSelectorProps> = ({ mapStyle, se
     return (
         <Button.Group
             sx={{
-                position: 'absolute',
+                position: "absolute",
                 zIndex: 2,
                 bottom: 16,
                 right: 16,
@@ -29,11 +29,11 @@ export const MapStyleSelector: React.FC<MapStyleSelectorProps> = ({ mapStyle, se
                     variant='filled'
                     onClick={() => setMapStyle(x.style)}
                     sx={theme => ({
-                        background: 'white',
+                        background: "white",
                         color: mapStyle === x.style ? theme.colors.lime : theme.colors.gray,
-                        ':hover': {
-                            background: 'white',
-                        }
+                        ":hover": {
+                            background: "white",
+                        },
                     })}
                 >
                     {x.title}

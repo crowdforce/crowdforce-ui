@@ -1,6 +1,6 @@
-import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { createStyles, Stack } from '@mantine/core'
-import React, { useContext } from 'react'
+import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
+import { createStyles, Stack } from "@mantine/core"
+import React, { useContext } from "react"
 
 type ProjectSideMenuLayoutProps = {
     topButtons: React.ReactNode
@@ -9,8 +9,8 @@ type ProjectSideMenuLayoutProps = {
 
 const useStyles = createStyles((theme) => ({
     container: {
-        position: 'relative',
-        height: 'calc(100vh - 60px)',
+        position: "relative",
+        height: "calc(100vh - 60px)",
         background: theme.colors.dark[7],
         left: 0,
         top: 0,
@@ -30,7 +30,7 @@ export const ProjectSideMenuLayout: React.FC<ProjectSideMenuLayoutProps> = ({ to
             justify='space-between'
             sx={{
                 width: wide ? 260 : 48,
-                overflow: 'hidden',
+                overflow: "hidden",
             }}
         >
             <Stack
@@ -43,7 +43,7 @@ export const ProjectSideMenuLayout: React.FC<ProjectSideMenuLayoutProps> = ({ to
             <Stack
                 spacing={2}
                 sx={{
-                    position: 'sticky',
+                    position: "sticky",
                     bottom: 2,
                 }}
             >

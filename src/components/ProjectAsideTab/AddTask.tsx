@@ -40,7 +40,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
         (formData: any) => {
             setSaved(false)
             setFormError(false)
-            console.log('submitted form:', JSON.stringify(formData, null, 3))
+            console.log("submitted form:", JSON.stringify(formData, null, 3))
             return
 
             // below not relevant, change on backend upd

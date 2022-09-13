@@ -1,12 +1,12 @@
 import "mapbox-gl/dist/mapbox-gl.css"
 
-import { memo, useContext, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
-import useSWR from 'swr'
-import { MapViewportDto } from '@/common/types'
-import { GeolocateControl, Layer, NavigationControl, useMap } from 'react-map-gl'
-import { ProjectSideMenuContext } from '@/contexts/projectSideMenu'
-import { MapStyleSelector } from './MapStyleSelector'
+import { memo, useContext, useEffect, useState } from "react"
+import dynamic from "next/dynamic"
+import useSWR from "swr"
+import { MapViewportDto } from "@/common/types"
+import { GeolocateControl, Layer, NavigationControl, useMap } from "react-map-gl"
+import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
+import { MapStyleSelector } from "./MapStyleSelector"
 import { SchemaSource } from "./SchemaSource"
 
 const MapGl = dynamic(
@@ -21,13 +21,13 @@ export type SchemaMapProps = {
 
 const mapStyles = {
     satellite: {
-        style: 'mapbox://styles/mapbox/satellite-streets-v11',
-        title: 'Спутник',
+        style: "mapbox://styles/mapbox/satellite-streets-v11",
+        title: "Спутник",
     },
     vector: {
-        style: 'mapbox://styles/mapbox/streets-v11',
-        title: 'Вектор',
-    }
+        style: "mapbox://styles/mapbox/streets-v11",
+        title: "Вектор",
+    },
 }
 
 export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
@@ -60,12 +60,12 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
             <NavigationControl
                 showCompass={false}
                 style={{
-                    borderRadius: '16px',
+                    borderRadius: "16px",
                 }}
             />
             <GeolocateControl
                 style={{
-                    borderRadius: '16px',
+                    borderRadius: "16px",
                 }}
             />
 

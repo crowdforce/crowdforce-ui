@@ -1,6 +1,6 @@
-import { ErrorDto } from "@/common/types";
-import { User } from '@prisma/client';
-import { NextApiRequest, NextApiResponse } from "next";
+import { ErrorDto } from "@/common/types"
+import { User } from "@prisma/client"
+import { NextApiRequest, NextApiResponse } from "next"
 
 export type ProjectTask = {
     id: string
@@ -14,133 +14,133 @@ export type ProjectTask = {
 }
 
 type Follower = Partial<User> & {
-    status: 'leader' | 'follower'
+    status: "leader" | "follower"
 }
 
 const dataPlaceholder: ProjectTask[] = [
     {
-        id: 'one',
-        title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
-        description: 'Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.',
-        dateStart: '06.06.2022',
-        timeStart: '10:00',
-        dateEnd: '07.06.2022',
-        timeEnd: '13:00',
+        id: "one",
+        title: "Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки",
+        description: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.",
+        dateStart: "06.06.2022",
+        timeStart: "10:00",
+        dateEnd: "07.06.2022",
+        timeEnd: "13:00",
         followers: [
             {
-                name: 'Арагорн, сын Агронома',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Арагорн, сын Агронома",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
             {
-                name: 'Фродо Беггинс',
-                image: '/ms-icon-150x150.png',
-                status: 'leader',
+                name: "Фродо Беггинс",
+                image: "/ms-icon-150x150.png",
+                status: "leader",
             },
             {
-                name: 'Шмыга',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Шмыга",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
             {
-                name: 'Пендальф Серый',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Пендальф Серый",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
-        ]
+        ],
     },
     {
-        id: 'two',
-        title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
-        description: 'Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.',
-        dateStart: '06.06.2022',
-        timeStart: '11:00',
-        dateEnd: '06.07.2022',
-        timeEnd: '13:00',
+        id: "two",
+        title: "Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки",
+        description: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.",
+        dateStart: "06.06.2022",
+        timeStart: "11:00",
+        dateEnd: "06.07.2022",
+        timeEnd: "13:00",
         followers: [
             {
-                name: 'Арагорн, сын Агронома',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Арагорн, сын Агронома",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
             {
-                name: 'Фродо Беггинс',
-                image: '/ms-icon-150x150.png',
-                status: 'leader',
+                name: "Фродо Беггинс",
+                image: "/ms-icon-150x150.png",
+                status: "leader",
             },
             {
-                name: 'Шмыга',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Шмыга",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
             {
-                name: 'Сильмариллион Варфолломилович',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Сильмариллион Варфолломилович",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
-        ]
+        ],
     },
     {
-        id: 'tree',
-        title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
-        description: 'Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.',
-        dateStart: '06.06.2022',
-        timeStart: '10:00',
-        dateEnd: '06.06.2022',
-        timeEnd: '13:00',
+        id: "tree",
+        title: "Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки",
+        description: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.",
+        dateStart: "06.06.2022",
+        timeStart: "10:00",
+        dateEnd: "06.06.2022",
+        timeEnd: "13:00",
         followers: [
             {
-                name: 'Арагорн, сын Агронома',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Арагорн, сын Агронома",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
             {
-                name: 'Фродо Беггинс',
-                image: '/ms-icon-150x150.png',
-                status: 'leader',
+                name: "Фродо Беггинс",
+                image: "/ms-icon-150x150.png",
+                status: "leader",
             },
             {
-                name: 'Шмыга',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Шмыга",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
             {
-                name: 'Пендальф Серый',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Пендальф Серый",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
-        ]
+        ],
     },
     {
-        id: 'four',
-        title: 'Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки',
-        description: 'Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.',
-        dateStart: '06.06.2022',
-        timeStart: '10:00',
-        dateEnd: '06.06.2022',
-        timeEnd: '13:00',
+        id: "four",
+        title: "Вскопать грядки для редиса длииинная надпись для переноса можно это сделать в 2 строки",
+        description: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта: выбранный нами инновационный путь способствует подготовке и реализации приоретизации разума над эмоциями. А также сторонники тоталитаризма в науке ограничены исключительно образом мышления.",
+        dateStart: "06.06.2022",
+        timeStart: "10:00",
+        dateEnd: "06.06.2022",
+        timeEnd: "13:00",
         followers: [
             {
-                name: 'Арагорн, сын Агронома',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Арагорн, сын Агронома",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
             {
-                name: 'Фродо Беггинс',
-                image: '/ms-icon-150x150.png',
-                status: 'leader',
+                name: "Фродо Беггинс",
+                image: "/ms-icon-150x150.png",
+                status: "leader",
             },
             {
-                name: 'Шмыга',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Шмыга",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
             {
-                name: 'Пендальф Серый',
-                image: '/ms-icon-150x150.png',
-                status: 'follower',
+                name: "Пендальф Серый",
+                image: "/ms-icon-150x150.png",
+                status: "follower",
             },
-        ]
+        ],
     },
 ]
 
@@ -153,9 +153,9 @@ export async function getTasks(projectId: string) {
 
 
 export default async (req: NextApiRequest, res: NextApiResponse<ProjectTask[] | ErrorDto>) => {
-    if (req.method !== 'GET') {
+    if (req.method !== "GET") {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 
@@ -164,7 +164,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<ProjectTask[] | 
     const tasks = await getTasks(projectId)
     if (!tasks) {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 
