@@ -1,15 +1,15 @@
-import { createStyles, Card, ScrollArea, Paper, Group, Text, Menu, ActionIcon, Button } from '@mantine/core'
-import ProjectMap from '@/components/ProjectMap'
-import { ProjectMapLegend } from '@/components/ProjectMapLegend'
-import { IconDots, IconEye, IconFileZip, IconLocation, IconMap, IconTrash } from '@tabler/icons'
-import { useCallback } from 'react'
-import { useMap } from 'react-map-gl'
+import { createStyles, Card, ScrollArea, Paper, Group, Text, Menu, ActionIcon } from "@mantine/core"
+import ProjectMap from "@/components/ProjectMap"
+import { ProjectMapLegend } from "@/components/ProjectMapLegend"
+import { IconDots, IconMap } from "@tabler/icons"
+import { useCallback } from "react"
+import { useMap } from "react-map-gl"
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     card: {
-        minHeight: '400px',
-        maxHeight: '100vh',
-    }
+        minHeight: "400px",
+        maxHeight: "100vh",
+    },
 }))
 
 export type ProjectMapEditorProps = {
@@ -17,8 +17,8 @@ export type ProjectMapEditorProps = {
 }
 
 export const ProjectMapEditor: React.FC<ProjectMapEditorProps> = ({ projectId }) => {
-    const { classes: s, cx } = useStyles()
-    const id = 'project'
+    const { classes: s } = useStyles()
+    const id = "project"
     const { [id]: map } = useMap()
 
     const onSaveViewport = useCallback(async () => {
@@ -35,9 +35,9 @@ export const ProjectMapEditor: React.FC<ProjectMapEditorProps> = ({ projectId })
             zoom,
         }
         await fetch(`/api/admin/projects/${projectId}/update-viewport`, {
-            method: 'PUT',
+            method: "PUT",
             headers: {
-                'content-type': 'application/json',
+                "content-type": "application/json",
             },
             body: JSON.stringify(payload),
         })
@@ -80,13 +80,13 @@ export const ProjectMapEditor: React.FC<ProjectMapEditorProps> = ({ projectId })
             </Card.Section>
 
             <Card.Section sx={{
-                position: 'relative',
+                position: "relative",
             }}>
                 <div style={{
-                    position: 'relative',
-                    width: '100%',
-                    height: '600px',
-                    minHeight: 'min(100vh, 400px)',
+                    position: "relative",
+                    width: "100%",
+                    height: "600px",
+                    minHeight: "min(100vh, 400px)",
                 }}>
                     <ProjectMap
                         id={id}
@@ -96,9 +96,9 @@ export const ProjectMapEditor: React.FC<ProjectMapEditorProps> = ({ projectId })
                 <div style={{
                     top: 10,
                     right: 10,
-                    position: 'absolute',
+                    position: "absolute",
                 }}>
-                    <Paper p={'sm'}>
+                    <Paper p={"sm"}>
                         <ScrollArea>
                             <ProjectMapLegend
                                 projectId={projectId}

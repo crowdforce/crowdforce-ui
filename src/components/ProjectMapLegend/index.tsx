@@ -1,14 +1,14 @@
-import { List, Stack } from '@mantine/core'
-import useSWR from 'swr'
-import { AdminFeatureDto } from '@/common/types'
-import { GeometryIcon } from './GeometryIcon'
+import { List, Stack } from "@mantine/core"
+import useSWR from "swr"
+import { AdminFeatureDto } from "@/common/types"
+import { GeometryIcon } from "./GeometryIcon"
 
 export type ProjectMapLegendProps = {
     projectId: string
 }
 
 export const ProjectMapLegend: React.FC<ProjectMapLegendProps> = ({ projectId }) => {
-    const { data, error } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
+    const { data } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
 
     return (
         <Stack>

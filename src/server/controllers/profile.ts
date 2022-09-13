@@ -12,14 +12,14 @@ export async function getProjects(userId: string): Promise<ProfileResponseDto>  
             ownerId: userId,
         },
         orderBy: {
-            updatedAt: 'desc',
-        }
+            updatedAt: "desc",
+        },
     })
 
     const projectFollows = await prisma.userFollows.findMany({
         where: {
             userId,
-            active: true
+            active: true,
         },
         include: {
             project: true,
@@ -41,6 +41,6 @@ export async function getProjects(userId: string): Promise<ProfileResponseDto>  
             description: x.description,
             imageUrl: x.imageUrl,
             isFollowed: true,
-        }))
+        })),
     }
 }
