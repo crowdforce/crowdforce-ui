@@ -1,11 +1,11 @@
-import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from '@mantine/core'
-import { IconCalendarEvent, IconClock } from '@tabler/icons'
-import React, { useCallback, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import useSWR, { useSWRConfig } from 'swr'
-import { DatePicker, TimeInput } from '@mantine/dates'
-import { useRouter } from 'next/router'
-import 'dayjs/locale/ru'
+import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
+import { IconCalendarEvent, IconClock } from "@tabler/icons"
+import React, { useCallback, useState } from "react"
+import { useForm } from "react-hook-form"
+import useSWR, { useSWRConfig } from "swr"
+import { DatePicker, TimeInput } from "@mantine/dates"
+import { useRouter } from "next/router"
+import "dayjs/locale/ru"
 
 type ProjectAddTaskProps = {
 
@@ -22,11 +22,11 @@ type FeaturesData = {
 
 const useStyles = createStyles((theme) => ({
     form: {
-        height: '100%',
-        '& span': {
-            fontWeight: 'bold',
-        }
-    }
+        height: "100%",
+        "& span": {
+            fontWeight: "bold",
+        },
+    },
 }))
 
 export const AddTask: React.FC<ProjectAddTaskProps> = () => {
@@ -40,7 +40,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
         (formData: any) => {
             setSaved(false)
             setFormError(false)
-            alert(JSON.stringify(formData, null, 3))
+            console.log('submitted form:', JSON.stringify(formData, null, 3))
             return
 
             // below not relevant, change on backend upd
@@ -85,10 +85,10 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
             px='xs'
             styles={{
                 viewport: {
-                    '& > div': {
-                        height: '100%',
-                    }
-                }
+                    "& > div": {
+                        height: "100%",
+                    },
+                },
             }}
         >
             <form
@@ -98,14 +98,14 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                 <Stack
                     pb='xs'
                     sx={{
-                        height: '100%',
+                        height: "100%",
                     }}
                 >
                     <TextInput
                         {...register(
-                            'title',
+                            "title",
                             {
-                                required: 'Добавьте название',
+                                required: "Добавьте название",
                             },
                         )}
                         label='Название задачи'
@@ -115,9 +115,9 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
 
                     <Textarea
                         {...register(
-                            'description',
+                            "description",
                             {
-                                required: 'Добавьте описание',
+                                required: "Добавьте описание",
                             },
                         )}
                         label='Описание задачи'
@@ -131,12 +131,12 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                     >
                         <DatePicker
                             {...register(
-                                'dateStart',
+                                "dateStart",
                                 {
-                                    required: 'Добавьте дату начала',
+                                    required: "Добавьте дату начала",
                                 },
                             )}
-                            onChange={value => setValue('dateStart', value)}
+                            onChange={value => setValue("dateStart", value)}
                             label='Дата начала выполнения'
                             placeholder='Когда начинаем?'
                             icon={<IconCalendarEvent />}
@@ -144,12 +144,12 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                         />
                         <TimeInput
                             {...register(
-                                'timeStart',
+                                "timeStart",
                                 {
-                                    required: 'Добавьте время начала',
+                                    required: "Добавьте время начала",
                                 },
                             )}
-                            onChange={value => setValue('timeStart', value)}
+                            onChange={value => setValue("timeStart", value)}
                             label='Время начала выполнения'
                             placeholder='Во сколько начинаем?'
                             icon={<IconClock />}
@@ -162,12 +162,12 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                     >
                         <DatePicker
                             {...register(
-                                'dateEnd',
+                                "dateEnd",
                                 {
-                                    required: 'Добавьте дату конца',
+                                    required: "Добавьте дату конца",
                                 },
                             )}
-                            onChange={value => setValue('dateEnd', value)}
+                            onChange={value => setValue("dateEnd", value)}
                             label='Дата завершения выполнения'
                             placeholder='Когда заканчиваем?'
                             icon={<IconCalendarEvent />}
@@ -175,12 +175,12 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                         />
                         <TimeInput
                             {...register(
-                                'timeEnd',
+                                "timeEnd",
                                 {
-                                    required: 'Добавьте времяначала',
+                                    required: "Добавьте времяначала",
                                 },
                             )}
-                            onChange={value => setValue('timeEnd', value)}
+                            onChange={value => setValue("timeEnd", value)}
                             label='Время завершения выполнения'
                             icon={<IconClock />}
                             withAsterisk
@@ -188,8 +188,8 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                     </Group>
 
                     <MultiSelect
-                        {...register('features')}
-                        onChange={value => setValue('features', value)}
+                        {...register("features")}
+                        onChange={value => setValue("features", value)}
                         label='Элементы учавствующие в задаче'
                         placeholder='Какие элементы относятся к задаче?'
                         data={!data ? [] : data.map((x, i) => ({
@@ -201,15 +201,15 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
 
                     <Center
                         sx={{
-                            marginTop: 'auto',
+                            marginTop: "auto",
                         }}
                     >
                         <Button
                             type='submit'
                             styles={{
                                 label: {
-                                    fontWeight: 'normal !important' as 'normal',
-                                }
+                                    fontWeight: "normal !important" as "normal",
+                                },
                             }}
                         >
                             Добавить задачу
