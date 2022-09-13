@@ -15,6 +15,7 @@ import { useMediaQuery } from "@mantine/hooks"
 import { getTasks } from "pages/api/projects/[projectId]/tasks"
 import { getFeatures } from "pages/api/admin/projects/[projectId]/features"
 import { User } from "@prisma/client"
+import { useSession } from 'next-auth/react'
 
 type Props = {
     fallback: Record<string, any>
@@ -47,10 +48,8 @@ const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data, error } = useSWR<ProjectData>(`/api/projects/${projectId}`)
-    const { data: adminData, error: adminError } = useSWR<AdminProjectData>(`/api/admin/projects/${projectId}`)
-    const isAdmin = Boolean(adminData && !(adminData as any)?.error)
-    const isInit = isAdmin && adminData?.status == "Init"
-
+    const session = useSession()
+    const isAdmin = session.data?.user?.role == "Admin"
     const [open, setOpen] = useState(true)
     const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>("info")
     const smallerThanSm = useMediaQuery("(max-width: 800px)", false)
@@ -78,7 +77,7 @@ const Container: React.FC = () => {
                 display: "flex",
             }}>
                 <ProjectSideMenuContext.Provider
-                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit }}
+                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin }}
                 >
                     <div style={{
                         position: "relative",

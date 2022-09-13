@@ -14,6 +14,7 @@ const placeholderData = {
     admin: {
         name: "Товарищ Админ",
         image: "",
+        id: "placeholder-admin-user-id",
     },
 }
 
@@ -24,7 +25,7 @@ function mapResponse(item: ProjectAndFollow): ProjectDto {
         description: item.project.description,
         imageUrl: item.project.imageUrl,
         isFollowed: !item.follow ? null : item.follow.active,
-        ...placeholderData, 
+        ...placeholderData,
     }
 }
 

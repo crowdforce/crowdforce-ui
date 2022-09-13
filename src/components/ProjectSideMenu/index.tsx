@@ -70,7 +70,7 @@ const useStyles = createStyles((theme) => ({
 export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
     const { classes: s, cx } = useStyles()
 
-    const { open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit } = useContext(ProjectSideMenuContext)
+    const { open, setOpen, openId, setOpenId, wide, setWide, isAdmin } = useContext(ProjectSideMenuContext)
 
     const onAction = useCallback<(id: ProjectSideMenuIds) => void>(id => {
         if (id == "aside") {
@@ -86,9 +86,6 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
         <ProjectSideMenuLayout
             topButtons={buttons
                 .filter((x, i) => {
-                    if (isInit) { // project just created
-                        return ["aside", "edit"].includes(x.id)
-                    }
                     if (isAdmin) { // reqested by admin
                         return true
                     } else {  // requested by NOT admin
