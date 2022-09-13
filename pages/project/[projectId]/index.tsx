@@ -10,12 +10,10 @@ import { ProjectSideMenu, ProjectSideMenuIds } from "@/components/ProjectSideMen
 import { useEffect, useState } from "react"
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ProjectAside } from "@/components/ProjectAside"
-import { getAdminProject } from "pages/api/admin/projects/[projectId]"
 import { useMediaQuery } from "@mantine/hooks"
 import { getTasks } from "pages/api/projects/[projectId]/tasks"
-import { getFeatures } from "pages/api/admin/projects/[projectId]/features"
 import { User } from "@prisma/client"
-import { useSession } from 'next-auth/react'
+import { useSession } from "next-auth/react"
 
 type Props = {
     fallback: Record<string, any>
@@ -47,7 +45,7 @@ export type AdminProjectData = {
 const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
-    const { data, error } = useSWR<ProjectData>(`/api/projects/${projectId}`)
+    const { data } = useSWR<ProjectData>(`/api/projects/${projectId}`)
     const session = useSession()
     const isAdmin = session.data?.user?.role == "Admin"
     const [open, setOpen] = useState(true)
