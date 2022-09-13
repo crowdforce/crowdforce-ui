@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import Page from "@/components/Page"
 import useSWR, { SWRConfig } from "swr"
-import { Center, Loader } from "@mantine/core"
+import { Box, Center, Loader } from "@mantine/core"
 import { MapProvider } from "react-map-gl"
 import type { GetServerSideProps, NextPage } from "next"
 import SchemaMap from "@/components/SchemaMap"
@@ -72,24 +72,28 @@ const Container: React.FC = () => {
 
     return (
         <Page>
-            <div style={{
-                position: "relative",
-                display: "flex",
-            }}>
+            <Box
+                sx={{
+                    position: "relative",
+                    display: "flex",
+                }}
+            >
                 <ProjectSideMenuContext.Provider
                     value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin }}
                 >
-                    <div style={{
-                        position: "relative",
-                    }}>
+                    <Box
+                        sx={{
+                            position: "relative",
+                        }}
+                    >
                         <ProjectSideMenu />
                         <ProjectAside
                             data={data}
                         />
-                    </div>
+                    </Box>
 
-                    <div
-                        style={{
+                    <Box
+                        sx={{
                             flex: "1 1 100%",
                             position: "relative",
                             height: "calc(100vh - 60px)",
@@ -102,9 +106,9 @@ const Container: React.FC = () => {
                                 projectId={projectId}
                             />
                         </MapProvider>
-                    </div>
+                    </Box>
                 </ProjectSideMenuContext.Provider>
-            </div>
+            </Box>
         </Page>
     )
 }
