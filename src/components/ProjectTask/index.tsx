@@ -1,0 +1,194 @@
+import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
+import { createStyles, Group, Text, Stack, Button, Accordion, Avatar, Center, Space, Loader } from "@mantine/core"
+import { useRouter } from "next/router"
+import { ProjectTask as ProjectTaskType } from "pages/api/projects/[projectId]/tasks"
+import { useContext } from "react"
+import useSWR from "swr"
+import { FollowTaskButton } from "@/components/FollowTaskButton"
+
+const useStyles = createStyles((theme) => ({
+    control: {
+        "& > div:nth-child(1)": { // select chevron
+            marginRight: 0,
+        },
+    },
+    item: {
+        "&:hover": {
+            background: theme.colors.lime[1],
+        },
+        "&[data-active]": {
+            background: theme.colors.lime[1],
+        },
+    },
+    groupHead: {
+        [theme.fn.smallerThan("sm")]: {
+            flexDirection: "column",
+        },
+    },
+    completed: {
+        opacity: .5,
+    },
+}))
+
+export type ProjectTaskProps = {
+    task: ProjectTaskType
+    color?: string | undefined
+    variant?: "default" | "completed"
+}
+
+export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant = "default" }) => {
+    const { classes: s, cx } = useStyles()
+    const { isAdmin } = useContext(ProjectSideMenuContext)
+    const isDefault = variant === "default"
+    const isCompleted = variant === "completed"
+    const router = useRouter()
+    const { data } = useSWR<ProjectTaskType[]>(`/api/projects/${router.query.projectId}/tasks`)
+
+    if (!data) {
+        return <Loader />
+    }
+
+    return (
+        <Accordion.Item
+            value={task.id}
+            className={cx(s.item, isCompleted && s.completed)}
+            sx={{
+                background: color,
+            }}
+        >
+            <Accordion.Control
+                className={s.control}
+            >
+                <Group
+                    noWrap
+                    position='apart'
+                    align='flex-start'
+                    className={s.groupHead}
+                >
+                    <Text>
+                        {task.title}
+                    </Text>
+                    <Group
+                        noWrap
+                        spacing={"xs"}
+                    >
+                        <Stack
+                            spacing={0}
+                        >
+                            <Text
+                                weight={700}
+                            >
+                                {task.dateStart}
+                            </Text>
+
+                            {task.dateStart !== task.dateEnd && (
+                                <Text
+                                    weight={700}
+                                >
+                                    {task.dateEnd}
+                                </Text>
+                            )}
+                        </Stack>
+                        <Stack
+                            spacing={0}
+                        >
+                            <Text>
+                                {task.timeStart}
+                            </Text>
+                            <Text>
+                                {task.timeEnd}
+                            </Text>
+                        </Stack>
+                    </Group>
+                </Group>
+            </Accordion.Control>
+            <Accordion.Panel>
+                <Stack
+                    spacing='xs'
+                >
+                    <Text>
+                        {task.description}
+                    </Text>
+
+                    <Space />
+                    {isDefault && (
+                        <>
+                            <Center>
+                                <FollowTaskButton
+                                    projectId={router.query.projectId as string}
+                                    taskId={"task-id"}
+                                    status={null}
+                                />
+                            </Center>
+                            <Space />
+                        </>
+                    )}
+                    {task.followers
+                        .sort((a, b) => {
+                            if (a.status == "leader") return -1
+                            if (b.status == "leader") return 1
+                            return 0
+                        })
+                        .map((y => (
+                            <Group
+                                key={y.name}
+                                noWrap
+                                position='apart'
+                            >
+                                <Group
+                                    noWrap
+                                    sx={{
+                                        flex: "1 1 auto",
+                                    }}
+                                >
+                                    <Avatar
+                                        size='sm'
+                                        src={y.image}
+                                    />
+                                    <Text
+                                        sx={{
+                                            flex: "1 1 auto",
+                                        }}
+                                    >
+                                        {y.name}
+                                    </Text>
+                                </Group>
+                                {y.status == "leader" ? (
+                                    <Center>
+                                        <Text
+                                            weight={700}
+                                            transform='uppercase'
+                                            sx={{
+                                                fontSize: 13,
+                                                whiteSpace: "nowrap",
+                                            }}
+                                        >
+                                            ответственый
+                                        </Text>
+                                    </Center>
+                                ) : isDefault && isAdmin && (
+                                    <Button
+                                        size='xs'
+                                        compact
+                                        px='xs'
+                                        py={4}
+                                        styles={{
+                                            root: {
+                                                height: " auto",
+                                                fontSize: 10,
+                                            },
+                                            label: {
+                                                textAlign: "center",
+                                            },
+                                        }}
+                                    >
+                                        назначить<br />ответственым
+                                    </Button>
+                                )}
+                            </Group>
+                        )))}
+                </Stack>
+            </Accordion.Panel>
+        </Accordion.Item>
+    )
+}
