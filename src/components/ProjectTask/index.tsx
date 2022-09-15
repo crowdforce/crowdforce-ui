@@ -6,6 +6,7 @@ import { useContext } from "react"
 import useSWR from "swr"
 import { FollowTaskButton } from "@/components/FollowTaskButton"
 import { SetAsLeaderButton } from "@/components/SetAsLeaderButton"
+import { CopyAsNewTaskButton } from "@/components/CopyAsNewTaskButton"
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -112,18 +113,25 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                     </Text>
 
                     <Space />
-                    {isDefault && (
-                        <>
-                            <Center>
+
+                    <Center>
+                        <Group>
+                            {isAdmin && (
+                                <CopyAsNewTaskButton
+                                    task={task}
+                                />
+                            )}
+                            {isDefault && (
                                 <FollowTaskButton
                                     projectId={router.query.projectId as string}
-                                    taskId={"task-id"}
+                                    taskId={task.id}
                                     status={null}
                                 />
-                            </Center>
-                            <Space />
-                        </>
-                    )}
+                            )}
+                        </Group>
+                    </Center>
+                    <Space />
+
                     {task.followers
                         .sort((a, b) => {
                             if (a.status == "leader") return -1

@@ -1,10 +1,11 @@
 import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
 import { IconCalendarEvent, IconClock } from "@tabler/icons"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 import { DatePicker, TimeInput } from "@mantine/dates"
 import { useRouter } from "next/router"
+import { ProjectTaskContext } from "@/contexts/projectTask"
 import "dayjs/locale/ru"
 
 type ProjectAddTaskProps = {
@@ -33,7 +34,11 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { classes: s, cx } = useStyles()
     const router = useRouter()
     const { data, error } = useSWR<FeaturesData[]>(`/api/admin/projects/${router.query.projectId}/features`)
-    const { handleSubmit, register, setValue } = useForm()
+    const { task, setTask } = useContext(ProjectTaskContext)
+    const { handleSubmit, register, setValue } = useForm({
+        defaultValues: task ? task : {},
+    })
+    setTask(null)
     const { mutate } = useSWRConfig()
 
     const onSubmit = useCallback(
