@@ -1,10 +1,11 @@
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
-import { createStyles, Group, Text, Stack, Button, Accordion, Avatar, Center, Space, Loader } from "@mantine/core"
+import { createStyles, Group, Text, Stack, Accordion, Avatar, Center, Space, Loader } from "@mantine/core"
 import { useRouter } from "next/router"
 import { ProjectTask as ProjectTaskType } from "pages/api/projects/[projectId]/tasks"
 import { useContext } from "react"
 import useSWR from "swr"
 import { FollowTaskButton } from "@/components/FollowTaskButton"
+import { SetAsLeaderButton } from "@/components/SetAsLeaderButton"
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -167,23 +168,12 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                                         </Text>
                                     </Center>
                                 ) : isDefault && isAdmin && (
-                                    <Button
-                                        size='xs'
-                                        compact
-                                        px='xs'
-                                        py={4}
-                                        styles={{
-                                            root: {
-                                                height: " auto",
-                                                fontSize: 10,
-                                            },
-                                            label: {
-                                                textAlign: "center",
-                                            },
-                                        }}
-                                    >
-                                        назначить<br />ответственым
-                                    </Button>
+                                    <SetAsLeaderButton
+                                        projectId={router.query.projectId as string}
+                                        taskId={task.id}
+                                        userId={y.id as string}
+                                        status={y.status}
+                                    />
                                 )}
                             </Group>
                         )))}

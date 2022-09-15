@@ -14,7 +14,7 @@ export type ProjectTask = {
 }
 
 type Follower = Partial<User> & {
-    status: "leader" | "follower"
+    status: "leader" | "follower",
 }
 
 const dataPlaceholder: ProjectTask[] = [
@@ -31,21 +31,25 @@ const dataPlaceholder: ProjectTask[] = [
                 name: "Арагорн, сын Агронома",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-1",
             },
             {
                 name: "Фродо Беггинс",
                 image: "/ms-icon-150x150.png",
                 status: "leader",
+                id: "follower-id-2",
             },
             {
                 name: "Шмыга",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-3",
             },
             {
                 name: "Пендальф Серый",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-4",
             },
         ],
     },
@@ -62,21 +66,25 @@ const dataPlaceholder: ProjectTask[] = [
                 name: "Арагорн, сын Агронома",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-1",
             },
             {
                 name: "Фродо Беггинс",
                 image: "/ms-icon-150x150.png",
                 status: "leader",
+                id: "follower-id-2",
             },
             {
                 name: "Шмыга",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-3",
             },
             {
-                name: "Сильмариллион Варфолломилович",
+                name: "Пендальф Серый",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-4",
             },
         ],
     },
@@ -93,21 +101,25 @@ const dataPlaceholder: ProjectTask[] = [
                 name: "Арагорн, сын Агронома",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-1",
             },
             {
                 name: "Фродо Беггинс",
                 image: "/ms-icon-150x150.png",
                 status: "leader",
+                id: "follower-id-2",
             },
             {
                 name: "Шмыга",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-3",
             },
             {
                 name: "Пендальф Серый",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-4",
             },
         ],
     },
@@ -124,21 +136,25 @@ const dataPlaceholder: ProjectTask[] = [
                 name: "Арагорн, сын Агронома",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-1",
             },
             {
                 name: "Фродо Беггинс",
                 image: "/ms-icon-150x150.png",
                 status: "leader",
+                id: "follower-id-2",
             },
             {
                 name: "Шмыга",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-3",
             },
             {
                 name: "Пендальф Серый",
                 image: "/ms-icon-150x150.png",
                 status: "follower",
+                id: "follower-id-4",
             },
         ],
     },

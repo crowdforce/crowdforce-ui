@@ -14,7 +14,7 @@ export type ProjectTasksListProps = {
 
 export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = "default" }) => {
     const router = useRouter()
-    const { data, error } = useSWR<ProjectTaskType[]>(`/api/projects/${router.query.projectId}/tasks`)
+    const { data } = useSWR<ProjectTaskType[]>(`/api/projects/${router.query.projectId}/tasks`)
 
     if (!data) {
         return <Loader />
