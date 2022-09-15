@@ -1,13 +1,13 @@
 import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
 import { IconCalendarEvent, IconClock } from "@tabler/icons"
-import React, { useCallback, useContext, useState } from "react"
+import React, { useCallback, useContext, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 import { DatePicker, TimeInput } from "@mantine/dates"
 import { useRouter } from "next/router"
 import { ProjectTaskContext } from "@/contexts/projectTask"
 import "dayjs/locale/ru"
-import { ProjectTask } from 'pages/api/projects/[projectId]/tasks'
+import { ProjectTask } from "pages/api/projects/[projectId]/tasks"
 
 type ProjectAddTaskProps = {
 
@@ -39,7 +39,9 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { handleSubmit, register, setValue } = useForm<Partial<ProjectTask>>({
         defaultValues: task ? task : {},
     })
-    setTask(null)
+    useEffect(() => {
+        setTask(null)
+    })
     const { mutate } = useSWRConfig()
 
     const onSubmit = useCallback(
@@ -198,7 +200,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                         onChange={value => setValue("features", value)}
                         label='Элементы учавствующие в задаче'
                         placeholder='Какие элементы относятся к задаче?'
-                        data={!data ? [] : data.map((x, i) => ({
+                        data={!data ? [] : data.map((x) => ({
                             value: x.id,
                             label: x.title,
                             group: x.type,
