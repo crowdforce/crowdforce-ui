@@ -7,6 +7,7 @@ import { DatePicker, TimeInput } from "@mantine/dates"
 import { useRouter } from "next/router"
 import { ProjectTaskContext } from "@/contexts/projectTask"
 import "dayjs/locale/ru"
+import { ProjectTask } from 'pages/api/projects/[projectId]/tasks'
 
 type ProjectAddTaskProps = {
 
@@ -31,11 +32,11 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export const AddTask: React.FC<ProjectAddTaskProps> = () => {
-    const { classes: s, cx } = useStyles()
+    const { classes: s } = useStyles()
     const router = useRouter()
-    const { data, error } = useSWR<FeaturesData[]>(`/api/admin/projects/${router.query.projectId}/features`)
+    const { data } = useSWR<FeaturesData[]>(`/api/admin/projects/${router.query.projectId}/features`)
     const { task, setTask } = useContext(ProjectTaskContext)
-    const { handleSubmit, register, setValue } = useForm({
+    const { handleSubmit, register, setValue } = useForm<Partial<ProjectTask>>({
         defaultValues: task ? task : {},
     })
     setTask(null)
@@ -141,7 +142,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                                     required: "Добавьте дату начала",
                                 },
                             )}
-                            onChange={value => setValue("dateStart", value)}
+                            onChange={value => value && setValue("dateStart", value)}
                             label='Дата начала выполнения'
                             placeholder='Когда начинаем?'
                             icon={<IconCalendarEvent />}
@@ -154,7 +155,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                                     required: "Добавьте время начала",
                                 },
                             )}
-                            onChange={value => setValue("timeStart", value)}
+                            onChange={value => value && setValue("timeStart", value)}
                             label='Время начала выполнения'
                             placeholder='Во сколько начинаем?'
                             icon={<IconClock />}
@@ -172,7 +173,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                                     required: "Добавьте дату конца",
                                 },
                             )}
-                            onChange={value => setValue("dateEnd", value)}
+                            onChange={value => value && setValue("dateEnd", value)}
                             label='Дата завершения выполнения'
                             placeholder='Когда заканчиваем?'
                             icon={<IconCalendarEvent />}
@@ -185,7 +186,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                                     required: "Добавьте времяначала",
                                 },
                             )}
-                            onChange={value => setValue("timeEnd", value)}
+                            onChange={value => value && setValue("timeEnd", value)}
                             label='Время завершения выполнения'
                             icon={<IconClock />}
                             withAsterisk

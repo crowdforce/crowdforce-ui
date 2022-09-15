@@ -80,14 +80,14 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                             <Text
                                 weight={700}
                             >
-                                {task.dateStart}
+                                {task.dateStart as string}
                             </Text>
 
                             {task.dateStart !== task.dateEnd && (
                                 <Text
                                     weight={700}
                                 >
-                                    {task.dateEnd}
+                                    {task.dateEnd as string}
                                 </Text>
                             )}
                         </Stack>
@@ -95,10 +95,10 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                             spacing={0}
                         >
                             <Text>
-                                {task.timeStart}
+                                {task.timeStart as string}
                             </Text>
                             <Text>
-                                {task.timeEnd}
+                                {task.timeEnd as string}
                             </Text>
                         </Stack>
                     </Group>

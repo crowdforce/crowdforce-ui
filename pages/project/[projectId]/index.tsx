@@ -14,7 +14,7 @@ import { useMediaQuery } from "@mantine/hooks"
 import { getTasks, ProjectTask } from "pages/api/projects/[projectId]/tasks"
 import { User } from "@prisma/client"
 import { useSession } from "next-auth/react"
-import { ProjectTaskContext } from '@/contexts/projectTask'
+import { ProjectTaskContext } from "@/contexts/projectTask"
 
 type Props = {
     fallback: Record<string, any>
@@ -48,7 +48,7 @@ const Container: React.FC = () => {
     const projectId = router.query.projectId as string
     const { data } = useSWR<ProjectData>(`/api/projects/${projectId}`)
     const session = useSession()
-    const isAdmin = true // session.data?.user?.role == "Admin"
+    const isAdmin = session.data?.user?.role == "Admin"
     const [open, setOpen] = useState(true)
     const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>("info")
     const [task, setTask] = useState<Partial<ProjectTask> | null>(null)

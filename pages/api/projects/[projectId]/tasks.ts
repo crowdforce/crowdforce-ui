@@ -6,11 +6,12 @@ export type ProjectTask = {
     id: string
     title: string
     description: string
-    dateStart: string
-    timeStart: string
-    dateEnd: string
-    timeEnd: string
+    dateStart: string | Date
+    timeStart: string | Date
+    dateEnd: string | Date
+    timeEnd: string | Date
     followers: Follower[]
+    features?: any[]
 }
 
 type Follower = Partial<User> & {

@@ -20,12 +20,10 @@ export const CopyAsNewTaskButton: React.FC<FollowProjectProps> = ({ task }) => {
                 width: "fit-content",
             }}
             onClick={async () => {
-                const { title, description, timeEnd, timeStart } = task
+                const { title, description } = task
                 setTask({
                     title,
                     description,
-                    timeEnd,
-                    timeStart,
                 })
                 setOpenId("add-task")
             }}
