@@ -1,13 +1,13 @@
 import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
 import { IconCalendarEvent, IconClock } from "@tabler/icons"
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 import { DatePicker, TimeInput } from "@mantine/dates"
 import { useRouter } from "next/router"
 import { ProjectTaskContext } from "@/contexts/projectTask"
-import "dayjs/locale/ru"
 import { ProjectTask } from "pages/api/projects/[projectId]/tasks"
+import "dayjs/locale/ru"
 
 type ProjectAddTaskProps = {
 
@@ -36,7 +36,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const router = useRouter()
     const { data } = useSWR<FeaturesData[]>(`/api/admin/projects/${router.query.projectId}/features`)
     const { task, setTask } = useContext(ProjectTaskContext)
-    const { handleSubmit, register, setValue } = useForm<Partial<ProjectTask>>({
+    const { handleSubmit, register, setValue, control } = useForm<Partial<ProjectTask>>({
         defaultValues: task ? task : {},
     })
     useEffect(() => {
@@ -137,18 +137,19 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                     <Group
                         grow
                     >
-                        <DatePicker
-                            {...register(
-                                "dateStart",
-                                {
-                                    required: "Добавьте дату начала",
-                                },
+                        <Controller
+                            control={control}
+                            name="dateStart"
+                            render={({ field: { value, ...field } }) => (
+                                <DatePicker
+                                    {...field}
+                                    value={value ? new Date(value) : undefined}
+                                    label='Дата начала выполнения'
+                                    placeholder='Когда начинаем?'
+                                    icon={<IconCalendarEvent />}
+                                    withAsterisk
+                                />
                             )}
-                            onChange={value => value && setValue("dateStart", value)}
-                            label='Дата начала выполнения'
-                            placeholder='Когда начинаем?'
-                            icon={<IconCalendarEvent />}
-                            withAsterisk
                         />
                         <TimeInput
                             {...register(
@@ -157,29 +158,29 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                                     required: "Добавьте время начала",
                                 },
                             )}
-                            onChange={value => value && setValue("timeStart", value)}
+                            onChange={value => value && setValue("timeStart", value.toString())}
                             label='Время начала выполнения'
                             placeholder='Во сколько начинаем?'
                             icon={<IconClock />}
                             withAsterisk
                         />
                     </Group>
-
                     <Group
                         grow
                     >
-                        <DatePicker
-                            {...register(
-                                "dateEnd",
-                                {
-                                    required: "Добавьте дату конца",
-                                },
+                        <Controller
+                            control={control}
+                            name="dateEnd"
+                            render={({ field: { value, ...field } }) => (
+                                <DatePicker
+                                    {...field}
+                                    value={value ? new Date(value) : undefined}
+                                    label='Дата завершения выполнения'
+                                    placeholder='Когда заканчиваем?'
+                                    icon={<IconCalendarEvent />}
+                                    withAsterisk
+                                />
                             )}
-                            onChange={value => value && setValue("dateEnd", value)}
-                            label='Дата завершения выполнения'
-                            placeholder='Когда заканчиваем?'
-                            icon={<IconCalendarEvent />}
-                            withAsterisk
                         />
                         <TimeInput
                             {...register(
@@ -188,7 +189,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                                     required: "Добавьте времяначала",
                                 },
                             )}
-                            onChange={value => value && setValue("timeEnd", value)}
+                            onChange={value => value && setValue("timeEnd", value.toString())}
                             label='Время завершения выполнения'
                             icon={<IconClock />}
                             withAsterisk

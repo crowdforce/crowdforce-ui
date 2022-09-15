@@ -7,6 +7,7 @@ import useSWR from "swr"
 import { FollowTaskButton } from "@/components/FollowTaskButton"
 import { SetAsLeaderButton } from "@/components/SetAsLeaderButton"
 import { CopyAsNewTaskButton } from "@/components/CopyAsNewTaskButton"
+import dayjs from "dayjs"
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -80,14 +81,14 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                             <Text
                                 weight={700}
                             >
-                                {task.dateStart as string}
+                                {dayjs(task.dateStart).format("DD.MM.YYYY")}
                             </Text>
 
                             {task.dateStart !== task.dateEnd && (
                                 <Text
                                     weight={700}
                                 >
-                                    {task.dateEnd as string}
+                                    {dayjs(task.dateEnd).format("DD.MM.YYYY")}
                                 </Text>
                             )}
                         </Stack>
@@ -95,10 +96,10 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                             spacing={0}
                         >
                             <Text>
-                                {task.timeStart as string}
+                                {dayjs(task.timeStart).format("HH:MM")}
                             </Text>
                             <Text>
-                                {task.timeEnd as string}
+                                {dayjs(task.timeEnd).format("HH:MM")}
                             </Text>
                         </Stack>
                     </Group>
