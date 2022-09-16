@@ -1,5 +1,6 @@
 import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack, Loader } from "@mantine/core"
 import { IconMapPin } from "@tabler/icons"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { ProjectData } from "pages/project/[projectId]"
@@ -28,6 +29,8 @@ export const Info: React.FC<ProjectInfoProps> = () => {
     const { classes: s, cx } = useStyles()
     const router = useRouter()
     const { data, error } = useSWR<ProjectData>(`/api/projects/${router.query.projectId}`)
+    const session = useSession()
+    const isUnauthenticated = session.status == "unauthenticated"
 
     if (!data) {
         return (<Loader />)
@@ -45,6 +48,7 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                         <Image
                             src={data?.imageUrl ?? "/wip.png"}
                             radius='lg'
+                            alt="project image"
                         />
                     </AspectRatio>
 
@@ -96,19 +100,21 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                 </Stack>
             </Aside.Section>
 
-            <Aside.Section
-                p='xl'
-                sx={{
-                    bottom: 0,
-                }}
-            >
-                <FollowProjectButton
-                    size='xl'
-                    fullWidth
-                    status={data?.isFollowed ?? null}
-                    projectId={data?.id ?? ""}
-                />
-            </Aside.Section>
+            {isUnauthenticated ? null : (
+                <Aside.Section
+                    p='xl'
+                    sx={{
+                        bottom: 0,
+                    }}
+                >
+                    <FollowProjectButton
+                        size='xl'
+                        fullWidth
+                        status={data?.isFollowed ?? null}
+                        projectId={data?.id ?? ""}
+                    />
+                </Aside.Section>
+            )}
         </>
     )
 }

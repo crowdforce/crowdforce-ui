@@ -80,7 +80,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
 
         setOpenId(id)
         setOpen(true)
-    }, [open, openId])
+    }, [open])
 
     return (
         <Box
@@ -122,6 +122,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
                         if (isAdmin) {
                             return true
                         }
+
                         return ["aside", "info", "tasks"].includes(x.id)
                     })
                     .map(x => wide ? (

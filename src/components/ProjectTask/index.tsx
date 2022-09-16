@@ -8,6 +8,7 @@ import { FollowTaskButton } from "@/components/FollowTaskButton"
 import { SetAsLeaderButton } from "@/components/SetAsLeaderButton"
 import { CopyAsNewTaskButton } from "@/components/CopyAsNewTaskButton"
 import dayjs from "dayjs"
+import { useSession } from "next-auth/react"
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -46,6 +47,8 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
     const isCompleted = variant === "completed"
     const router = useRouter()
     const { data } = useSWR<ProjectTaskType[]>(`/api/projects/${router.query.projectId}/tasks`)
+    const session = useSession()
+    const isUnauthenticated = session.status == "unauthenticated"
 
     if (!data) {
         return <Loader />
@@ -112,27 +115,29 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                     <Text>
                         {task.description}
                     </Text>
-
                     <Space />
 
-                    <Center>
-                        <Group>
-                            {isAdmin && (
-                                <CopyAsNewTaskButton
-                                    task={task}
-                                />
-                            )}
-                            {isDefault && (
-                                <FollowTaskButton
-                                    projectId={router.query.projectId as string}
-                                    taskId={task.id}
-                                    status={null}
-                                />
-                            )}
-                        </Group>
-                    </Center>
-                    <Space />
-
+                    {isUnauthenticated ? null : (isAdmin || isDefault) && (
+                        <>
+                            <Center>
+                                <Group>
+                                    {isAdmin && (
+                                        <CopyAsNewTaskButton
+                                            task={task}
+                                        />
+                                    )}
+                                    {isDefault && (
+                                        <FollowTaskButton
+                                            projectId={router.query.projectId as string}
+                                            taskId={task.id}
+                                            status={null}
+                                        />
+                                    )}
+                                </Group>
+                            </Center>
+                            <Space />
+                        </>
+                    )}
                     {task.followers
                         .sort((a, b) => {
                             if (a.status == "leader") return -1
