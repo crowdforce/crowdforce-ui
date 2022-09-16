@@ -49,8 +49,9 @@ const Container: React.FC = () => {
     const { data } = useSWR<ProjectData>(`/api/projects/${projectId}`)
     const session = useSession()
     const isAdmin = session.data?.user?.role == "Admin"
+    const isInit = isAdmin && Boolean(router.query.init)
     const [open, setOpen] = useState(true)
-    const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>("info")
+    const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>(isInit ? "edit" : "info")
     const [task, setTask] = useState<Partial<ProjectTask> | null>(null)
     const smallerThanSm = useMediaQuery("(max-width: 800px)", false)
     const [wide, setWide] = useState(!smallerThanSm)
@@ -79,7 +80,7 @@ const Container: React.FC = () => {
                 }}
             >
                 <ProjectSideMenuContext.Provider
-                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin }}
+                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit }}
                 >
                     <ProjectTaskContext.Provider
                         value={{ task, setTask }}

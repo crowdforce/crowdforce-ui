@@ -9,6 +9,7 @@ type ProjectSideMenuContextProps = {
     wide: boolean
     setWide: React.Dispatch<React.SetStateAction<boolean>>
     isAdmin: boolean
+    isInit: boolean
 }
 
 export const ProjectSideMenuContext = React.createContext<ProjectSideMenuContextProps>({
@@ -19,4 +20,5 @@ export const ProjectSideMenuContext = React.createContext<ProjectSideMenuContext
     wide: true,
     setWide: () => null,
     isAdmin: false,
+    isInit: false,
 })
