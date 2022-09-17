@@ -34,6 +34,7 @@ export async function getProjects(userId: string): Promise<ProfileResponseDto>  
             description: x.description,
             imageUrl: x.imageUrl,
             isFollowed: null,
+            followers: 0,
         })),
         following: following.map(x => ({
             id: x.id,
@@ -41,6 +42,7 @@ export async function getProjects(userId: string): Promise<ProfileResponseDto>  
             description: x.description,
             imageUrl: x.imageUrl,
             isFollowed: true,
+            followers: 0,
         })),
     }
 }

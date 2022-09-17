@@ -15,8 +15,8 @@ type AsideTabComponents = Record<Exclude<ProjectSideMenuIds, "aside">, React.Rea
 const useStyles = createStyles((theme) => ({
     aside: {
         position: "absolute",
-        top: 8,
-        right: -8,
+        top: theme.spacing.xs,
+        right: -theme.spacing.xs,
         borderRadius: theme.radius.lg,
     },
 }))
@@ -46,8 +46,7 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ title, followers }) 
             className={s.aside}
         >
             <Aside.Section
-                p='xs'
-                py='md'
+                p='md'
             >
                 <Group
                     position='apart'
