@@ -1,12 +1,8 @@
-import { createStyles, Accordion, Loader } from "@mantine/core"
+import { Accordion, Loader } from "@mantine/core"
 import { useRouter } from "next/router"
-import { ProjectTask as ProjectTaskType } from "pages/api/projects/[projectId]/tasks"
 import useSWR from "swr"
 import { ProjectTask } from "@/components/ProjectTask"
-
-const useStyles = createStyles((theme) => ({
-
-}))
+import { ProjectTaskDto } from "@/common/types"
 
 export type ProjectTasksListProps = {
     variant?: "default" | "completed"
@@ -14,7 +10,7 @@ export type ProjectTasksListProps = {
 
 export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = "default" }) => {
     const router = useRouter()
-    const { data } = useSWR<ProjectTaskType[]>(`/api/projects/${router.query.projectId}/tasks`)
+    const { data } = useSWR<ProjectTaskDto[]>(`/api/projects/${router.query.projectId}/tasks`)
 
     if (!data) {
         return <Loader />

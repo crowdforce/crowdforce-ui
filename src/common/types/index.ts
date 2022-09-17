@@ -39,6 +39,28 @@ export type AdminProjectDto = {
   }
 }
 
+export type FollowerStatus = "leader" | "follower"
+
+export type FollowerDto = {
+  id: string
+  name: string
+  image: string
+
+  status: FollowerStatus
+}
+
+export type ProjectTaskDto = {
+  id: string
+  title: string
+  description: string
+  dateStart: string
+  timeStart: string
+  dateEnd: string
+  timeEnd: string
+  followers: FollowerDto[]
+  features?: any[]
+}
+
 export type NewFeatureDto = {
   id: string
 }
