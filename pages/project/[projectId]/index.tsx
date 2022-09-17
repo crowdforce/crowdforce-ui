@@ -11,10 +11,10 @@ import { useEffect, useState } from "react"
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ProjectAside } from "@/components/ProjectAside"
 import { useMediaQuery } from "@mantine/hooks"
-import { getTasks, ProjectTask } from "pages/api/projects/[projectId]/tasks"
+import { getTasks } from "pages/api/projects/[projectId]/tasks"
 import { useSession } from "next-auth/react"
 import { ProjectTaskContext } from "@/contexts/projectTask"
-import { ProjectDto } from "@/common/types"
+import { ProjectDto, ProjectTaskDto } from "@/common/types"
 
 type Props = {
     fallback: Record<string, any>
@@ -41,7 +41,7 @@ const Container: React.FC = () => {
     const isInit = isAdmin && Boolean(router.query.init)
     const [open, setOpen] = useState(true)
     const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>(isInit ? "edit" : "info")
-    const [task, setTask] = useState<Partial<ProjectTask> | null>(null)
+    const [task, setTask] = useState<Partial<ProjectTaskDto> | null>(null)
     const smallerThanSm = useMediaQuery("(max-width: 800px)", false)
     const [wide, setWide] = useState(!smallerThanSm)
     useEffect(() => {
