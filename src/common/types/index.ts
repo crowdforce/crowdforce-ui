@@ -21,7 +21,7 @@ export type PublicProjectDto = {
   title: string
   description: string
   imageUrl: string | null
-  followers: number
+  followers?: number
   lng: number
   lat: number
 }

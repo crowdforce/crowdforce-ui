@@ -23,7 +23,7 @@ export type ProjectCardProps = {
     description: string
     href: string
     coverSrc: string | null
-    followers: number
+    followers?: number
 }
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, coverSrc, href, followers }) => {
@@ -77,16 +77,18 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, co
                         </Button>
                     </Link>
 
-                    <Group
-                        noWrap
-                        grow
-                        spacing='xs'
-                    >
-                        <IconUsers />
-                        <div>
-                            {followers}
-                        </div>
-                    </Group>
+                    {!followers ? null : (
+                        <Group
+                            noWrap
+                            grow
+                            spacing='xs'
+                        >
+                            <IconUsers />
+                            <div>
+                                {followers}
+                            </div>
+                        </Group>
+                    )}
                 </Group>
             </Stack>
         </Card>

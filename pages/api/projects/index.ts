@@ -13,7 +13,6 @@ function mapResponse(item: ProjectWithViewport): PublicProjectDto {
         title: item.title,
         description: item.description,
         imageUrl: item.imageUrl,
-        followers: Math.floor(Math.random() * 100),
         lng: item.viewport.lng,
         lat: item.viewport.lat,
     }
