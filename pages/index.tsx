@@ -416,7 +416,7 @@ const MainPageContainer: React.FC = () => {
                             { maxWidth: "xs", cols: 1 },
                         ]}
                     >
-                        {projects.map((x, i) => (
+                        {projects.map((x) => (
                             <ProjectCard
                                 key={x.id}
                                 title={x.title}
