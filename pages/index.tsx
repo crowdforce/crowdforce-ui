@@ -423,7 +423,7 @@ const MainPageContainer: React.FC = () => {
                                 description={x.description}
                                 href={`/project/${x.id}`}
                                 coverSrc={x.imageUrl}
-                                followers={69}
+                                followers={x.followers}
                             />
                         ))}
                     </SimpleGrid>
