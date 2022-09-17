@@ -1,6 +1,5 @@
 import "./style.css"
 
-/* eslint-disable react/jsx-props-no-spreading */
 import Head from "next/head"
 import { MapProvider } from "react-map-gl"
 import { SessionProvider } from "next-auth/react"
