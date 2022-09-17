@@ -10,11 +10,11 @@ import { AppProps } from "next/app"
 import { Session } from "next-auth"
 import { App } from "@/components/App"
 
-type Props = AppProps & {
+type Props = {
     session: Session
 }
 
-export default function MyApp({ Component, pageProps }: Props) {
+export default function MyApp({ Component, pageProps }: AppProps<Props>) {
     return (
         <>
             <Head>
