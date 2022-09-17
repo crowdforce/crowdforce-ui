@@ -1,5 +1,4 @@
 import { createStyles, Stack } from "@mantine/core"
-import React from "react"
 
 type ProjectSideMenuLayoutProps = {
     children: React.ReactNode
