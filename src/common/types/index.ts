@@ -14,6 +14,7 @@ export type ProjectDto = {
   description: string
   imageUrl: string | null
   isFollowed: boolean | null
+  followers: number
 }
 
 export type PublicProjectDto = {

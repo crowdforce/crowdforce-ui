@@ -12,23 +12,12 @@ import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ProjectAside } from "@/components/ProjectAside"
 import { useMediaQuery } from "@mantine/hooks"
 import { getTasks, ProjectTask } from "pages/api/projects/[projectId]/tasks"
-import { User } from "@prisma/client"
 import { useSession } from "next-auth/react"
 import { ProjectTaskContext } from "@/contexts/projectTask"
+import { ProjectDto } from "@/common/types"
 
 type Props = {
     fallback: Record<string, any>
-}
-
-export type ProjectData = {
-    id: string
-    title: string
-    description: string
-    imageUrl: string | null
-    isFollowed: boolean | null
-    address: string
-    link: string
-    admin: Partial<User>
 }
 
 export type AdminProjectData = {
@@ -46,7 +35,7 @@ export type AdminProjectData = {
 const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
-    const { data } = useSWR<ProjectData>(`/api/projects/${projectId}`)
+    const { data } = useSWR<ProjectDto>(`/api/projects/${projectId}`)
     const session = useSession()
     const isAdmin = session.data?.user?.role == "Admin"
     const isInit = isAdmin && Boolean(router.query.init)
@@ -92,7 +81,8 @@ const Container: React.FC = () => {
                         >
                             <ProjectSideMenu />
                             <ProjectAside
-                                data={data}
+                                title={data.title}
+                                followers={data.followers}
                             />
                         </Box>
 

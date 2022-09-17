@@ -6,6 +6,7 @@ import { withOptionalUser } from "@/server/middlewares/withOptionalUser"
 type ProjectAndFollow = {
     project: Project
     follow: UserFollows | null
+    followers: number
 }
 
 const placeholderData = {
@@ -25,6 +26,7 @@ function mapResponse(item: ProjectAndFollow): ProjectDto {
         description: item.project.description,
         imageUrl: item.project.imageUrl,
         isFollowed: !item.follow ? null : item.follow.active,
+        followers: item.followers,
         ...placeholderData,
     }
 }
@@ -40,10 +42,17 @@ export async function getProject(projectId: string, userId?: string) {
         return null
     }
 
+    const followers = await prisma.userFollows.count({
+        where: {
+            projectId,
+        },
+    })
+
     if (!userId) {
         return mapResponse({
             project,
             follow: null,
+            followers,
         })
     }
 
@@ -59,6 +68,7 @@ export async function getProject(projectId: string, userId?: string) {
     return mapResponse({
         project,
         follow,
+        followers,
     })
 }
 

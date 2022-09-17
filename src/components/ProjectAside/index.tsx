@@ -1,13 +1,13 @@
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { Aside, createStyles, Group, Title } from "@mantine/core"
 import { IconUsers } from "@tabler/icons"
-import { ProjectData } from "pages/project/[projectId]"
-import React, { useContext } from "react"
+import { cloneElement, useContext } from "react"
 import ProjectAsideTab from "../ProjectAsideTab"
 import { ProjectSideMenuIds } from "../ProjectSideMenu"
 
-type ProjectAsideProps = {
-    data: ProjectData
+export type ProjectAsideProps = {
+    title: string
+    followers: number
 }
 
 type AsideTabComponents = Record<Exclude<ProjectSideMenuIds, "aside">, React.ReactElement>
@@ -28,8 +28,8 @@ const asideTabComponents: AsideTabComponents = {
     "edit": <ProjectAsideTab.Edit />,
 }
 
-export const ProjectAside: React.FC<ProjectAsideProps> = ({ data }) => {
-    const { classes: s, cx } = useStyles()
+export const ProjectAside: React.FC<ProjectAsideProps> = ({ title, followers }) => {
+    const { classes: s } = useStyles()
     const { open, openId } = useContext(ProjectSideMenuContext)
 
     return (
@@ -55,7 +55,7 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ data }) => {
                     noWrap
                 >
                     <Title order={4}>
-                        {data.title}
+                        {title}
                     </Title>
                     <Group
                         noWrap
@@ -67,12 +67,13 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ data }) => {
                     >
                         <IconUsers />
                         <div>
-                            69
+                            {followers}
                         </div>
                     </Group>
                 </Group>
             </Aside.Section>
-            {React.cloneElement(asideTabComponents[openId])}
+
+            {cloneElement(asideTabComponents[openId])}
         </Aside>
     )
 }
