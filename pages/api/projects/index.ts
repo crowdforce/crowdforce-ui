@@ -35,7 +35,7 @@ export async function getProjects() {
     return projects.map(mapResponse)
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse<PublicProjectDto[] | ErrorDto>) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse<PublicProjectDto[] | ErrorDto>) => {
     if (req.method !== "GET") {
         return res.status(404).json({
             error: "Not found",
@@ -53,3 +53,5 @@ export default async (req: NextApiRequest, res: NextApiResponse<PublicProjectDto
 
     return res.json(projects.map(mapResponse))
 }
+
+export default handler
