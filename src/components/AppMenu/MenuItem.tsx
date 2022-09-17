@@ -1,17 +1,17 @@
-import { UnstyledButton, createStyles } from '@mantine/core';
-import Link from 'next/link';
+import { UnstyledButton, createStyles } from "@mantine/core"
+import Link from "next/link"
 
 const useStyles = createStyles((theme) => ({
     user: {
         color: theme.black,
         borderRadius: theme.radius.md,
-        padding: `8px 2px`,
+        padding: "8px 2px",
         height: 36,
 
-        '&:hover': {
+        "&:hover": {
             backgroundColor: theme.colors.gray[0],
         },
-    }
+    },
 }))
 
 export type MenuItemProps = {
@@ -20,7 +20,7 @@ export type MenuItemProps = {
 }
 
 export const MenuItem: React.FC<MenuItemProps> = props => {
-    const { classes: s, cx } = useStyles();
+    const { classes: s, cx } = useStyles()
 
     return (
         <UnstyledButton

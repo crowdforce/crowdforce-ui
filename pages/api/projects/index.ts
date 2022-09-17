@@ -1,7 +1,7 @@
-import prisma from "@/server/prisma";
-import { ErrorDto, PublicProjectDto } from "@/common/types";
-import { MapViewport, Project, ProjectStatus } from "@prisma/client";
-import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "@/server/prisma"
+import { ErrorDto, PublicProjectDto } from "@/common/types"
+import { MapViewport, Project, ProjectStatus } from "@prisma/client"
+import { NextApiRequest, NextApiResponse } from "next"
 
 type ProjectWithViewport = Project & {
     viewport: MapViewport
@@ -36,9 +36,9 @@ export async function getProjects() {
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse<PublicProjectDto[] | ErrorDto>) => {
-    if (req.method !== 'GET') {
+    if (req.method !== "GET") {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 

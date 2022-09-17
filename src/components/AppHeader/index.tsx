@@ -1,11 +1,11 @@
-import dynamic from 'next/dynamic'
-import { createStyles, Group, Header, MediaQuery } from '@mantine/core'
-import { Logo } from './Logo'
-import { AppMenu } from '../AppMenu'
-import { UserButtonProps } from '@/components/UserButton'
+import dynamic from "next/dynamic"
+import { createStyles, Group, Header, MediaQuery } from "@mantine/core"
+import { Logo } from "./Logo"
+import { AppMenu } from "../AppMenu"
+import { UserButtonProps } from "@/components/UserButton"
 
 const UserButton = dynamic<UserButtonProps>(
-    () => import('@/components/UserButton').then(x => x.UserButton),
+    () => import("@/components/UserButton").then(x => x.UserButton),
     {
         ssr: false,
     }
@@ -17,19 +17,19 @@ type AppHeaderProps = {
 
 const useStyles = createStyles((theme) => ({
     header: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'baseline',
-        position: 'sticky',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "baseline",
+        position: "sticky",
         top: 0,
     },
     root: {
         flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
         maxWidth: 1160,
-    }
+    },
 }))
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
@@ -38,13 +38,13 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
         <Header
             withBorder={false}
             height={60}
-            p={'sm'}
+            p={"sm"}
             className={s.header}
         >
             <div className={s.root}>
                 <Logo />
 
-                <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
                     <Group
                         noWrap
                     >
@@ -53,7 +53,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
                     </Group>
                 </MediaQuery>
 
-                <MediaQuery largerThan='xs' styles={{ display: 'none' }}>
+                <MediaQuery largerThan='xs' styles={{ display: "none" }}>
                     {burger}
                 </MediaQuery>
             </div>

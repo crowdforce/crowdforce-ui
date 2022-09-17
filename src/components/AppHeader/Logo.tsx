@@ -1,22 +1,22 @@
-import Link from 'next/link'
-import { Badge, Group } from '@mantine/core'
-import logo from '@/../public/logo.svg'
-import Image from 'next/image'
+import Link from "next/link"
+import { Badge, Group } from "@mantine/core"
+import logo from "@/../public/logo.svg"
+import Image from "next/image"
 
 export const Logo = () => (
-    <Link href={'/'} passHref>
+    <Link href={"/"} passHref>
         <Group
             noWrap
             sx={{
-                userSelect: 'none',
-                cursor: 'pointer',
+                userSelect: "none",
+                cursor: "pointer",
                 gap: 0,
             }}
         >
             <div style={{
-                position: 'relative',
+                position: "relative",
                 height: 40,
-                display: 'flex',
+                display: "flex",
                 maxWidth: 150,
             }}>
                 <Image

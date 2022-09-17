@@ -1,31 +1,31 @@
-import { createStyles, Footer, Group } from '@mantine/core'
-import { MenuItem } from '../AppMenu/MenuItem'
+import { createStyles, Footer, Group } from "@mantine/core"
+import { MenuItem } from "../AppMenu/MenuItem"
 
 const useStyles = createStyles((theme) => ({
     footer: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'baseline',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "baseline",
     },
     root: {
         flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
         maxWidth: 1160,
-        '& a': {
-            color: '#362034',
-            textDecoration: 'none',
-            fontSize: '15px',
-            margin: '0 20px',
+        "& a": {
+            color: "#362034",
+            textDecoration: "none",
+            fontSize: "15px",
+            margin: "0 20px",
         },
     },
     mobileCol: {
-        display: 'flex',
-        [theme.fn.smallerThan('md')]: {
-            flexDirection: 'column',
-        }
-    }
+        display: "flex",
+        [theme.fn.smallerThan("md")]: {
+            flexDirection: "column",
+        },
+    },
 }))
 
 export const AppFooter: React.FC = () => {
@@ -33,7 +33,7 @@ export const AppFooter: React.FC = () => {
     return (
         <Footer
             height={60}
-            p={'sm'}
+            p={"sm"}
             className={s.footer}
         >
             <Group

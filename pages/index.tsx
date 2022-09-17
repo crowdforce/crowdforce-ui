@@ -1,159 +1,159 @@
-import { Button, Center, Container, createStyles, Group, keyframes, Loader, MediaQuery, SimpleGrid, Stack, Text, Title } from '@mantine/core'
-import { IconCornerLeftDownDouble, IconMouse } from '@tabler/icons'
-import Image from 'next/image'
-import Page from '@/components/Page'
-import heroLine from '@/../public/index/heroLine.svg'
-import bigLine from '@/../public/index/bigLine.svg'
-import blueLine from '@/../public/index/blueLine.svg'
-import phone from '@/../public/index/phone.png'
-import list from '@/../public/index/list.png'
-import planet from '@/../public/index/planet.png'
-import target from '@/../public/index/target.png'
-import { GetStaticProps, NextPage } from 'next'
-import { getProjects } from './api/projects'
-import { ProjectCard } from '@/components/ProjectCard'
-import React from 'react'
-import { PublicProjectDto } from '@/common/types'
-import useSWR, { SWRConfig } from 'swr'
+import { Button, Center, Container, createStyles, Group, keyframes, Loader, MediaQuery, SimpleGrid, Stack, Text, Title } from "@mantine/core"
+import { IconCornerLeftDownDouble, IconMouse } from "@tabler/icons"
+import Image from "next/image"
+import Page from "@/components/Page"
+import heroLine from "@/../public/index/heroLine.svg"
+import bigLine from "@/../public/index/bigLine.svg"
+import blueLine from "@/../public/index/blueLine.svg"
+import phone from "@/../public/index/phone.png"
+import list from "@/../public/index/list.png"
+import planet from "@/../public/index/planet.png"
+import target from "@/../public/index/target.png"
+import { GetStaticProps, NextPage } from "next"
+import { getProjects } from "./api/projects"
+import { ProjectCard } from "@/components/ProjectCard"
+import React from "react"
+import { PublicProjectDto } from "@/common/types"
+import useSWR, { SWRConfig } from "swr"
 
 type Props = {
     fallback: Record<string, any>
 }
 
 export const mouseAnimation = keyframes({
-    '0%': { transform: 'translateY(0)' },
-    '50%': { transform: 'translateY(10px)' },
-    '100%': { transform: 'translateY(0)' },
+    "0%": { transform: "translateY(0)" },
+    "50%": { transform: "translateY(10px)" },
+    "100%": { transform: "translateY(0)" },
 })
 
 const useStyles = createStyles((theme) => ({
     container: {
-        position: 'relative',
+        position: "relative",
         maxWidth: 1160,
-        overflow: 'visible !important',
-        [theme.fn.smallerThan('sm')]: {
-            paddingLeft: 'unset',
-            paddingRight: 'unset',
-        }
+        overflow: "visible !important",
+        [theme.fn.smallerThan("sm")]: {
+            paddingLeft: "unset",
+            paddingRight: "unset",
+        },
     },
     containerHero: {
-        [theme.fn.smallerThan('xs')]: {
-            display: 'flex',
-            flexDirection: 'column-reverse',
+        [theme.fn.smallerThan("xs")]: {
+            display: "flex",
+            flexDirection: "column-reverse",
             gap: theme.spacing.xl,
-        }
+        },
     },
     stackHero: {
-        minHeight: 'min(min(100vh, 100vw) - 60px * 2 - 10vh, 925px)',
-        position: 'relative',
-        gap: '4rem',
-        overflow: 'visible',
-        [theme.fn.smallerThan('sm')]: {
-            gap: '2rem',
+        minHeight: "min(min(100vh, 100vw) - 60px * 2 - 10vh, 925px)",
+        position: "relative",
+        gap: "4rem",
+        overflow: "visible",
+        [theme.fn.smallerThan("sm")]: {
+            gap: "2rem",
         },
-        [theme.fn.smallerThan('xs')]: {
-            textAlign: 'center',
-            justifyContent: 'space-evenly',
-            minHeight: 'unset',
-            paddingTop: '2rem',
-        }
+        [theme.fn.smallerThan("xs")]: {
+            textAlign: "center",
+            justifyContent: "space-evenly",
+            minHeight: "unset",
+            paddingTop: "2rem",
+        },
 
     },
     imageHero: {
-        position: 'absolute',
-        width: '100% ',
+        position: "absolute",
+        width: "100% ",
         height: 0,
         paddingTop: `${727 / 1047 * 100}%`,
-        right: '-25%',
-        [theme.fn.smallerThan('xs')]: {
-            position: 'relative',
-            right: 'unset',
-            transform: 'scale(1.4)',
-        }
+        right: "-25%",
+        [theme.fn.smallerThan("xs")]: {
+            position: "relative",
+            right: "unset",
+            transform: "scale(1.4)",
+        },
     },
     buttonHero: {
-        position: 'absolute',
+        position: "absolute",
         bottom: 0,
         zIndex: 1,
-        [theme.fn.smallerThan('xs')]: {
-            width: '100%',
-            position: 'relative',
-        }
+        [theme.fn.smallerThan("xs")]: {
+            width: "100%",
+            position: "relative",
+        },
     },
     subtitleHero: {
         fontSize: 30,
         zIndex: 1,
-        [theme.fn.smallerThan('sm')]: {
+        [theme.fn.smallerThan("sm")]: {
             fontSize: 24,
-        }
+        },
     },
     buttonShadow: {
-        position: 'absolute',
+        position: "absolute",
         bottom: -10,
         opacity: .5,
-        filter: 'blur(28px)',
+        filter: "blur(28px)",
         width: 250,
         height: 60,
         background: theme.colors.lime[6],
         borderRadius: theme.radius.lg,
-        [theme.fn.smallerThan('xs')]: {
-            width: ' 100%',
+        [theme.fn.smallerThan("xs")]: {
+            width: " 100%",
         },
     },
     lineHero: {
-        position: 'absolute',
+        position: "absolute",
         bottom: 0,
-        transform: 'translate(-40%, 25%)',
-        [theme.fn.smallerThan('xs')]: {
-            display: 'none',
-        }
+        transform: "translate(-40%, 25%)",
+        [theme.fn.smallerThan("xs")]: {
+            display: "none",
+        },
     },
     bigLineStack: {
-        position: 'absolute',
+        position: "absolute",
         zIndex: 1,
         top: 250,
-        width: 'min(100%, calc(642px * 1.25))',
-        height: '100%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        gap: '145px !important',
-        [theme.fn.smallerThan('xs')]: {
-            position: 'relative',
+        width: "min(100%, calc(642px * 1.25))",
+        height: "100%",
+        left: "50%",
+        transform: "translateX(-50%)",
+        gap: "145px !important",
+        [theme.fn.smallerThan("xs")]: {
+            position: "relative",
             top: 0,
-            width: '100%',
-            gap: 'unset !important',
-            backgroundImage: 'url(/index/bigLaneMobile.svg)',
-            backgroundPosition: 'center top',
-            backgroundRepeat: 'no-repeat',
-        }
+            width: "100%",
+            gap: "unset !important",
+            backgroundImage: "url(/index/bigLaneMobile.svg)",
+            backgroundPosition: "center top",
+            backgroundRepeat: "no-repeat",
+        },
     },
     bigLineGroup: {
-        flexWrap: 'nowrap',
-        '& > *': {
-            flex: '1 0 auto',
+        flexWrap: "nowrap",
+        "& > *": {
+            flex: "1 0 auto",
         },
-        '& > span': {
-            [theme.fn.smallerThan('xs')]: {
+        "& > span": {
+            [theme.fn.smallerThan("xs")]: {
                 flexBasis: 160,
             },
         },
-        [theme.fn.smallerThan('xs')]: {
-            flexDirection: 'column-reverse',
-            '& > div': {
-                width: '100%',
-            }
-        }
+        [theme.fn.smallerThan("xs")]: {
+            flexDirection: "column-reverse",
+            "& > div": {
+                width: "100%",
+            },
+        },
     },
     bigLineOdd: {
-        flexDirection: 'row-reverse',
+        flexDirection: "row-reverse",
     },
     blueLine: {
-        position: 'absolute',
-        bottom: '12%',
+        position: "absolute",
+        bottom: "12%",
         right: 0,
-        transform: 'translate(40%)',
-        [theme.fn.smallerThan('xs')]: {
-            display: 'none',
+        transform: "translate(40%)",
+        [theme.fn.smallerThan("xs")]: {
+            display: "none",
         },
     },
     iconMouse: {
@@ -171,7 +171,7 @@ const bigLineData = [
         text: (<>
             Зарегистрируйтесь на сайте через <br />
             ваш акканут в Телеграм
-        </>)
+        </>),
     },
     {
         src: list,
@@ -185,7 +185,7 @@ const bigLineData = [
         text: (<>
             Создайте свой проект и запланируйте задачи  <br />
             по садовому уходу
-        </>)
+        </>),
     },
     {
         src: planet,
@@ -199,7 +199,7 @@ const bigLineData = [
         text: (<>
             Выберите проект, которому вы хотите помочь <br />
             процветать и подпишитесь на его
-        </>)
+        </>),
     },
     {
         src: target,
@@ -211,12 +211,12 @@ const bigLineData = [
             Телеграмм бот оповестит вас и ваших <br />
             помощников о задачах в саду, которые можно <br />
             взять на себя и к которым можно присоединиться.
-        </>)
+        </>),
     },
 ]
 
 const MainPageContainer: React.FC = () => {
-    const { data: projects, error } = useSWR<PublicProjectDto[]>(`/api/projects`)
+    const { data: projects, error } = useSWR<PublicProjectDto[]>("/api/projects")
     const { classes: s, cx } = useStyles()
 
     return (
@@ -228,7 +228,7 @@ const MainPageContainer: React.FC = () => {
                     className={s.imageHero}
                 >
                     <Image
-                        src={'/index/hero.png'}
+                        src={"/index/hero.png"}
                         layout='fill'
                         quality={100}
                     />
@@ -240,7 +240,7 @@ const MainPageContainer: React.FC = () => {
                     <Title
                         order={1}
                         sx={{
-                            textTransform: 'uppercase',
+                            textTransform: "uppercase",
                         }}
                     >
                         Помогаем <br />
@@ -272,19 +272,19 @@ const MainPageContainer: React.FC = () => {
                         component='a'
                         href='#projects'
                         className={s.buttonHero}
-                        radius={'lg'}
+                        radius={"lg"}
                     >
                         Галерея проектов
                     </Button>
                 </Stack>
             </Container>
 
-            <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+            <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
                 <Center
                     sx={{
-                        paddingTop: '4rem',
-                        transform: 'scale(1.5)',
-                        color: 'rgba(39, 39, 46, 0.6)',
+                        paddingTop: "4rem",
+                        transform: "scale(1.5)",
+                        color: "rgba(39, 39, 46, 0.6)",
                     }}
                 >
                     <IconMouse
@@ -296,18 +296,18 @@ const MainPageContainer: React.FC = () => {
             <Container
                 className={s.container}
                 sx={{
-                    paddingTop: '8rem',
+                    paddingTop: "8rem",
                 }}
             >
                 <Title order={2}>
                     <Text inherit align='center'>
-                        <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                        <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
                             <span>
                                 Начни системный уход за своим садом <br />
                                 или присоединяйся к проектам сообществ!
                             </span>
                         </MediaQuery>
-                        <MediaQuery largerThan='xs' styles={{ display: 'none' }}>
+                        <MediaQuery largerThan='xs' styles={{ display: "none" }}>
                             <span>
                                 Преимущества
                             </span>
@@ -318,12 +318,12 @@ const MainPageContainer: React.FC = () => {
             <Container
                 className={s.container}
                 sx={{
-                    marginTop: '2rem',
-                    overflow: 'hidden',
+                    marginTop: "2rem",
+                    overflow: "hidden",
                 }}
             >
                 <Center>
-                    <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                    <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
                         <div>
                             <Image
                                 src={bigLine}
@@ -343,11 +343,11 @@ const MainPageContainer: React.FC = () => {
                         >
                             <Stack
                                 sx={{
-                                    gap: '1rem',
+                                    gap: "1rem",
                                 }}
                             >
                                 {x.subtitle && (
-                                    <MediaQuery smallerThan='xs' styles={{ display: 'none' }}>
+                                    <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
                                         <Title order={5}>
                                             {x.subtitle}
                                         </Title>
@@ -382,7 +382,7 @@ const MainPageContainer: React.FC = () => {
             <Container
                 className={s.container}
                 sx={{
-                    paddingTop: '8rem',
+                    paddingTop: "8rem",
                 }}
             >
                 <Title order={2}>
@@ -396,13 +396,13 @@ const MainPageContainer: React.FC = () => {
             <Container
                 className={s.container}
                 sx={{
-                    paddingTop: '8rem',
+                    paddingTop: "8rem",
                 }}
             >
                 {(!projects) ? (
                     <Center
                         sx={{
-                            height: '100%',
+                            height: "100%",
                         }}
                     >
                         <Loader />
@@ -411,9 +411,9 @@ const MainPageContainer: React.FC = () => {
                     <SimpleGrid
                         cols={3}
                         breakpoints={[
-                            { maxWidth: 'xl', cols: 3, },
-                            { maxWidth: 'md', cols: 2, },
-                            { maxWidth: 'xs', cols: 1, },
+                            { maxWidth: "xl", cols: 3 },
+                            { maxWidth: "md", cols: 2 },
+                            { maxWidth: "xs", cols: 1 },
                         ]}
                     >
                         {projects.map((x, i) => (
@@ -430,7 +430,7 @@ const MainPageContainer: React.FC = () => {
                 )}
             </Container>
             <div style={{
-                height: '8rem'
+                height: "8rem",
             }} />
         </Page >
     )
@@ -447,9 +447,9 @@ export const getStaticProps: GetStaticProps = async ctx => {
     return {
         props: {
             fallback: {
-                '/api/projects': projects
-            }
-        }
+                "/api/projects": projects,
+            },
+        },
     }
 }
 

@@ -1,7 +1,7 @@
-import prisma from "@/server/prisma";
-import { NewProjectDto } from "@/common/types";
-import { withUser } from "@/server/middlewares/withUser";
-import { Project } from "@prisma/client";
+import prisma from "@/server/prisma"
+import { NewProjectDto } from "@/common/types"
+import { withUser } from "@/server/middlewares/withUser"
+import { Project } from "@prisma/client"
 
 type Payload = {
     lng: number
@@ -16,9 +16,9 @@ function mapResponse<T extends { id: string } = Project>(project: T): NewProject
 }
 
 export default withUser<NewProjectDto>(async (req, res) => {
-    if (req.method !== 'PUT') {
+    if (req.method !== "PUT") {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 
@@ -34,7 +34,7 @@ export default withUser<NewProjectDto>(async (req, res) => {
     const payload = req.body as Payload
     if (!payload) {
         return res.status(400).json({
-            error: 'Body is empty',
+            error: "Body is empty",
         })
     }
 
@@ -50,8 +50,8 @@ export default withUser<NewProjectDto>(async (req, res) => {
                     lat: payload.lat,
                     zoom: payload.zoom,
                     updatedAt: new Date(),
-                }
-            }
+                },
+            },
         },
     })
 

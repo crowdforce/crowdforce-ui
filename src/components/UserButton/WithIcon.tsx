@@ -18,7 +18,7 @@ const useStyles = createStyles((theme) => ({
     mobileHidden: {
         [theme.fn.smallerThan("sm")]: {
             display: "none",
-        }
+        },
     },
 }))
 
@@ -30,37 +30,37 @@ export const UserButtonWithIcon: React.FC<UserButtonWithIconProps> = () => {
     const isLoading = session.status === "loading"
     const isAuthenticated = session.status === "authenticated"
 
-    const { classes: s, cx } = useStyles();
+    const { classes: s, cx } = useStyles()
 
     useEffect(() => {
-        const loginController = new AbortController();
+        const loginController = new AbortController()
 
         window.addEventListener("message", async ({ data }) => {
             if (data.type === "login" && data.id) {
-                const query = new URLSearchParams();
-                const cred = {};
+                const query = new URLSearchParams()
+                const cred = {}
                 Object.keys(data).forEach((key) => {
                     if (key !== "type") {
-                        query.set(key, data[key]);
+                        query.set(key, data[key])
                         // @ts-ignore
-                        cred[key] = data[key];
+                        cred[key] = data[key]
                     }
-                });
+                })
 
                 signIn("credentials", {
                     // @ts-ignore
                     redirect: "/",
                     ...cred,
-                });
+                })
             }
         }, {
             signal: loginController.signal,
-        });
+        })
 
         return () => {
-            loginController.abort();
-        };
-    }, []);
+            loginController.abort()
+        }
+    }, [])
 
 
     const router = useRouter()

@@ -1,29 +1,29 @@
-import { useSession } from 'next-auth/react';
-import Page from '@/components/Page';
-import { Avatar, Card, createStyles, Group, Stack, Text, Title, Image, Button } from '@mantine/core';
-import { GetServerSideProps, NextPage } from 'next';
-import { getUserId } from '@/server/lib';
-import { getProjects, ProfileResponseDto } from '@/server/controllers/profile';
-import Link from 'next/link';
+import { useSession } from "next-auth/react"
+import Page from "@/components/Page"
+import { Avatar, Card, createStyles, Group, Stack, Text, Title, Image, Button } from "@mantine/core"
+import { GetServerSideProps, NextPage } from "next"
+import { getUserId } from "@/server/lib"
+import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
+import Link from "next/link"
 
 const useStyles = createStyles((theme) => ({
     bigGroup: {
-        alignItems: 'flex-start',
-        [theme.fn.smallerThan('sm')]: {
-            flexDirection: 'column',
-            alignItems: 'stretch',
-            '& div': {
-                maxWidth: 'unset',
-            }
-        }
+        alignItems: "flex-start",
+        [theme.fn.smallerThan("sm")]: {
+            flexDirection: "column",
+            alignItems: "stretch",
+            "& div": {
+                maxWidth: "unset",
+            },
+        },
     },
     generalInfo: {
-        flexGrow: 'initial',
-        marginRight: 'auto',
-        [theme.fn.smallerThan('sm')]: {
-            marginRight: 'unset',
-        }
-    }
+        flexGrow: "initial",
+        marginRight: "auto",
+        [theme.fn.smallerThan("sm")]: {
+            marginRight: "unset",
+        },
+    },
 }))
 
 type Props = {
@@ -48,7 +48,7 @@ const ProfilePage: NextPage<Props> = props => {
                 >
                     <Group position='center'>
                         <Stack>
-                            <Avatar src={session.data?.user?.image!} size={256} radius={'50%' as any} />
+                            <Avatar src={session.data?.user?.image!} size={256} radius={"50%" as any} />
                             <Title order={1}>
                                 {session.data?.user?.name!}
                             </Title>
@@ -72,7 +72,7 @@ const ProfilePage: NextPage<Props> = props => {
                             <Card withBorder key={id}>
                                 <Card.Section>
                                     <Image
-                                        src={imageUrl ?? '/wip.png'}
+                                        src={imageUrl ?? "/wip.png"}
                                         height={200}
                                     />
                                 </Card.Section>
@@ -151,15 +151,15 @@ const ProfilePage: NextPage<Props> = props => {
                 </Card>
             </Group>
         </Page>
-    );
-};
+    )
+}
 
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const userId = await getUserId(ctx)
     if (!userId) {
         return {
             redirect: {
-                destination: '/',
+                destination: "/",
                 permanent: false,
             },
         }

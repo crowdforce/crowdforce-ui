@@ -1,8 +1,8 @@
-import prisma from "@/server/prisma";
-import { withUser } from "@/server/middlewares/withUser";
-import { Feature, FeatureStatus } from "@prisma/client";
-import { switchProjectToActiveStatus } from "@/server/app/project";
-import type { Geometry, NewFeatureDto } from "@/common/types";
+import prisma from "@/server/prisma"
+import { withUser } from "@/server/middlewares/withUser"
+import { Feature, FeatureStatus } from "@prisma/client"
+import { switchProjectToActiveStatus } from "@/server/app/project"
+import type { Geometry, NewFeatureDto } from "@/common/types"
 
 function mapResponse<T extends { id: string } = Feature>(project: T): NewFeatureDto {
     return {
@@ -15,15 +15,15 @@ type Payload = {
 }
 
 export default withUser<NewFeatureDto>(async (req, res) => {
-    if (req.method !== 'POST') {
+    if (req.method !== "POST") {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
     const payload = req.body as Payload
     if (!payload) {
         return res.status(400).json({
-            error: 'Body is empty',
+            error: "Body is empty",
         })
     }
 
@@ -33,7 +33,7 @@ export default withUser<NewFeatureDto>(async (req, res) => {
     const feature = await prisma.feature.create({
         data: {
             title,
-            description: '',
+            description: "",
             status: FeatureStatus.Active,
             geometry: {
                 type: payload.geometry.type,
@@ -42,8 +42,8 @@ export default withUser<NewFeatureDto>(async (req, res) => {
             project: {
                 connect: {
                     id: projectId,
-                }
-            }
+                },
+            },
         },
     })
 

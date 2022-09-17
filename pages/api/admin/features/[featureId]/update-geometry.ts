@@ -14,9 +14,9 @@ function mapResponse<T extends { id: string } = Feature>(feature: T): NewFeature
 }
 
 export default withUser<NewProjectDto>(async (req, res) => {
-    if (req.method !== 'PUT') {
+    if (req.method !== "PUT") {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 
@@ -25,7 +25,7 @@ export default withUser<NewProjectDto>(async (req, res) => {
     const hasPermissionsToUpdate = true
     if (!hasPermissionsToUpdate) {
         return res.status(403).json({
-            error: 'Forbidden',
+            error: "Forbidden",
         })
     }
 
@@ -33,7 +33,7 @@ export default withUser<NewProjectDto>(async (req, res) => {
     const geometry = payload.geometry
     if (!geometry) {
         return res.status(400).json({
-            error: 'Geometry is not set',
+            error: "Geometry is not set",
         })
     }
 
@@ -47,7 +47,7 @@ export default withUser<NewProjectDto>(async (req, res) => {
         },
         select: {
             id: true,
-        }
+        },
     })
 
     return res.json(mapResponse(feature))

@@ -14,9 +14,9 @@ async function isFeatureInUse(featureId: string): Promise<boolean> {
 }
 
 export default withUser<NewProjectDto>(async (req, res) => {
-    if (req.method !== 'DELETE') {
+    if (req.method !== "DELETE") {
         return res.status(404).json({
-            error: 'Not found',
+            error: "Not found",
         })
     }
 
@@ -25,14 +25,14 @@ export default withUser<NewProjectDto>(async (req, res) => {
     const hasPermissionsToUpdate = true
     if (!hasPermissionsToUpdate) {
         return res.status(403).json({
-            error: 'Forbidden',
+            error: "Forbidden",
         })
     }
 
     const inUse = await isFeatureInUse(featureId)
     if (inUse) {
         return res.status(400).json({
-            error: 'Feature in use',
+            error: "Feature in use",
         })
     }
 
@@ -46,7 +46,7 @@ export default withUser<NewProjectDto>(async (req, res) => {
         },
         select: {
             id: true,
-        }
+        },
     })
 
     return res.json(mapResponse(feature))
