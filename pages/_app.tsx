@@ -41,13 +41,7 @@ export default function MyApp({ Component, pageProps }: Props) {
             <MantineProvider withGlobalStyles withNormalizeCSS
                 theme={{
                     fontFamily: 'Raleway',
-                    fontSizes: {
-                        // xs: 16,
-                        // sm: 16,
-                        // md: 16,
-                        // lg: 16,
-                        xl: 16,
-                    },
+                    lineHeight: 1.2,
                     shadows: {
                         lg: '0 4px 8px 2px rgba(10, 60, 30, 0.05), 0px 8px 16px -4px rgba(0, 0, 0, 0.1), 8px 24px 24px 0px rgba(0, 0, 0, 0)',
                     },
@@ -85,6 +79,16 @@ export default function MyApp({ Component, pageProps }: Props) {
                     defaultRadius: 'md',
                     white: '#ECF2F6',
                     defaultGradient: { deg: 112, from: 'cyan', to: 'lime', },
+                    datesLocale: 'ru',
+                    components: {
+                        Button: {
+                            styles: {
+                                label: {
+                                    fontWeight: 400,
+                                }
+                            }
+                        }
+                    }
                 }}
             >
                 <SessionProvider session={pageProps.session}>

@@ -1,4 +1,4 @@
-import classes from './Page.module.css'
+import classes from "./Page.module.css"
 
 const Page: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
