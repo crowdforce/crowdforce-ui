@@ -11,6 +11,8 @@
     "format": "npm run lint -- --fix"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.171.0",
+    "@aws-sdk/s3-request-presigner": "^3.173.0",
     "@emotion/react": "^11.9.3",
     "@emotion/server": "^11.10.0",
     "@emotion/styled": "^11.6.0",

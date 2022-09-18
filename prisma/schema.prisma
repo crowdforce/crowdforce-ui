@@ -54,6 +54,7 @@ model User {
   projects Project[]
   follows  UserFollows[]
   tasks    UserResponse[]
+  assets    Asset[]
 
   @@map("users")
 }
@@ -136,6 +137,26 @@ model Project {
   tasks    Task[]
 
   @@map(name: "projects")
+}
+
+model Asset {
+  id        String  @id @default(cuid())
+  mimeType  String
+  filename  String
+  src       String
+  size      Int
+  sha256    String
+  thumbnail String?
+
+  ownerId String @map(name: "owner_id")
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  width  Int?
+  height Int?
+
+  @@map(name: "assets")
 }
 
 model Feature {
