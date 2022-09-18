@@ -53,6 +53,10 @@
           {
             "target": "./src/components",
             "from": "./src/server"
+          },
+          {
+            "target": "./src/components",
+            "from": "./pages"
           }
         ]
       }
