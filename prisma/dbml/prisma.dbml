@@ -59,6 +59,7 @@ Table projects {
   viewport viewports [not null]
   features features [not null]
   follows user_follows [not null]
+  tasks tasks [not null]
 }
 
 Table features {
@@ -73,6 +74,32 @@ Table features {
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
   deletedAt DateTime
+  tasks feature_tasks [not null]
+}
+
+Table tasks {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  status TaskStatus [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  startAt DateTime [default: `now()`, not null]
+  endAt DateTime [default: `now()`, not null]
+  projectId String [not null]
+  project projects [not null]
+  features feature_tasks [not null]
+}
+
+Table feature_tasks {
+  featureId String [not null]
+  feature features [not null]
+  taskId String [not null]
+  task tasks [not null]
+
+  indexes {
+    (featureId, taskId) [pk]
+  }
 }
 
 Table user_follows {
@@ -104,6 +131,10 @@ Enum FeatureStatus {
   Deleted
 }
 
+Enum TaskStatus {
+  Open
+}
+
 Ref: users.telegramId > telegram_accounts.id [delete: Cascade]
 
 Ref: projects.ownerId > users.id
@@ -111,6 +142,12 @@ Ref: projects.ownerId > users.id
 Ref: projects.viewportId > viewports.id
 
 Ref: features.projectId > projects.id
+
+Ref: tasks.projectId > projects.id
+
+Ref: feature_tasks.featureId > features.id
+
+Ref: feature_tasks.taskId > tasks.id
 
 Ref: user_follows.userId > users.id
 
