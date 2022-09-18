@@ -60,6 +60,16 @@ export type FollowerDto = {
   status: FollowerStatus
 }
 
+export type AdminNewProjectTaskDto = {
+    title: string
+    description: string
+    features: string[]
+    timeStart: string
+    timeEnd: string
+    dateStart: string
+    dateEnd: string
+}
+
 export type ProjectTaskDto = {
   id: string
   title: string

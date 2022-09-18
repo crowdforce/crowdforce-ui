@@ -1,12 +1,12 @@
 import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
 import { IconCalendarEvent, IconClock } from "@tabler/icons"
 import React, { useCallback, useContext, useEffect, useState } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 import { DatePicker, TimeInput } from "@mantine/dates"
 import { useRouter } from "next/router"
 import { ProjectTaskContext } from "@/contexts/projectTask"
-import { ProjectTaskDto } from "@/common/types"
+import { AdminNewProjectTaskDto } from "@/common/types"
 import "dayjs/locale/ru"
 
 type ProjectAddTaskProps = {
@@ -34,57 +34,37 @@ const useStyles = createStyles((theme) => ({
 export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { classes: s } = useStyles()
     const router = useRouter()
-    const { data } = useSWR<FeaturesData[]>(`/api/admin/projects/${router.query.projectId}/features`)
+    const projectId = router.query.projectId as string
+    const { data } = useSWR<FeaturesData[]>(`/api/admin/projects/${projectId}/features`)
+    const { mutate } = useSWRConfig()
     const { task, setTask } = useContext(ProjectTaskContext)
-    const { handleSubmit, register, setValue, control } = useForm<Partial<ProjectTaskDto>>({
+    const { handleSubmit, register, setValue, control } = useForm<AdminNewProjectTaskDto>({
         defaultValues: task ? task : {},
     })
+    const [saved, setSaved] = useState(false)
+    const [formError, setFormError] = useState(false)
+
     useEffect(() => {
         setTask(null)
     })
-    const { mutate } = useSWRConfig()
 
-    const onSubmit = useCallback(
-        (formData: any) => {
-            setSaved(false)
-            setFormError(false)
-            console.log("submitted form:", JSON.stringify(formData, null, 3))
+    const onSubmit = useCallback<SubmitHandler<AdminNewProjectTaskDto>>(async formData => {
+        setSaved(false)
+        setFormError(false)
+
+        const res = await fetch(`/api/admin/projects/${projectId}/tasks/create`, {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        if (!res.ok) {
             return
+        }
 
-            // below not relevant, change on backend upd
-
-            // fetch(
-            //     `/api/admin/projects/${data.id}/update`,
-            //     {
-            //         method: 'PUT',
-            //         body: JSON.stringify(formData),
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
-            //     }
-            // )
-            //     .then(async res => {
-            //         if (res.ok && res.status == 200) {
-            //             return await res.json()
-            //         } else {
-            //             throw Error(res.statusText)
-            //         }
-            //     })
-            //     .then((res) => {
-            //         setSaved(true)
-            //         setError(false)
-            //         // mutate()
-            //     })
-            //     .catch(e => {
-            //         setError(true)
-            //         console.log('API error: ', e)
-            //     })
-        },
-        []
-    )
-
-    const [saved, setSaved] = useState(false)
-    const [formError, setFormError] = useState(false)
+        mutate(`/api/projects/${projectId}/tasks`)
+    }, [mutate, projectId])
 
     return (
         <Aside.Section

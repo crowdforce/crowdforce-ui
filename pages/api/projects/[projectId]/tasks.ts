@@ -1,5 +1,23 @@
+import prisma from "@/server/prisma"
+import { withUser } from "@/server/middlewares/withUser"
+import { Feature, TaskStatus } from "@prisma/client"
+import type { NewFeatureDto } from "@/common/types"
 import { ErrorDto, ProjectTaskDto } from "@/common/types"
 import { NextApiRequest, NextApiResponse } from "next"
+
+function splitDateAndTime(date: Date): [Date, Date] {
+    const d = new Date()
+    d.setDate(date.getDate())
+    d.setMonth(date.getMonth())
+    d.setFullYear(date.getFullYear())
+
+    const t = new Date()
+    t.setHours(date.getHours())
+    t.setMinutes(date.getMinutes())
+    t.setMilliseconds(date.getMilliseconds())
+
+    return [d, t]
+}
 
 const dataPlaceholder: ProjectTaskDto[] = [
     {
@@ -145,8 +163,51 @@ const dataPlaceholder: ProjectTaskDto[] = [
 ]
 
 export async function getTasks(projectId: string) {
-    // await setTimeout(() => null, 1000)
-    return dataPlaceholder
+    const tasks = await prisma.task.findMany({
+        where: {
+            projectId,
+        },
+    })
+
+    return tasks.map(task => {
+        const [dateStart, timeStart] = splitDateAndTime(task.startAt)
+        const [dateEnd, timeEnd] = splitDateAndTime(task.startAt)
+        return ({
+            id: task.id,
+            title: task.title,
+            description: task.description,
+            dateStart: dateStart.toDateString(),
+            timeStart: timeStart.toDateString(),
+            dateEnd: dateEnd.toDateString(),
+            timeEnd: timeEnd.toDateString(),
+            followers: [
+                // {
+                //     name: "Арагорн, сын Агронома",
+                //     image: "/ms-icon-150x150.png",
+                //     status: "follower",
+                //     id: "follower-id-1",
+                // },
+                // {
+                //     name: "Фродо Беггинс",
+                //     image: "/ms-icon-150x150.png",
+                //     status: "leader",
+                //     id: "follower-id-2",
+                // },
+                // {
+                //     name: "Шмыга",
+                //     image: "/ms-icon-150x150.png",
+                //     status: "follower",
+                //     id: "follower-id-3",
+                // },
+                // {
+                //     name: "Пендальф Серый",
+                //     image: "/ms-icon-150x150.png",
+                //     status: "follower",
+                //     id: "follower-id-4",
+                // },
+            ],
+        })
+    })
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<ProjectTaskDto[] | ErrorDto>) => {

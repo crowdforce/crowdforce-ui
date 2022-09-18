@@ -35,7 +35,7 @@ export const Tasks: React.FC<ProjectTasksProps> = () => {
 
             <ProjectTasksList />
 
-            <Group
+            {/* <Group
                 p='xs'
                 spacing='xs'
             >
@@ -47,11 +47,11 @@ export const Tasks: React.FC<ProjectTasksProps> = () => {
                 >
                     Выполненные задачи
                 </Title>
-            </Group>
+            </Group> */}
 
-            <ProjectTasksList
+            {/* <ProjectTasksList
                 variant='completed'
-            />
+            /> */}
         </Aside.Section>
     )
 }
