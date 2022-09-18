@@ -1,12 +1,12 @@
-import { ProjectTask } from "pages/api/projects/[projectId]/tasks"
-import React from "react"
+import { ProjectTaskDto } from "@/common/types"
+import { createContext } from "react"
 
 type ProjectTaskContextProps = {
-    task: Partial<ProjectTask> | null
-    setTask: React.Dispatch<React.SetStateAction<Partial<ProjectTask> | null>>
+    task: Partial<ProjectTaskDto> | null
+    setTask: React.Dispatch<React.SetStateAction<Partial<ProjectTaskDto> | null>>
 }
 
-export const ProjectTaskContext = React.createContext<ProjectTaskContextProps>({
+export const ProjectTaskContext = createContext<ProjectTaskContextProps>({
     task: null,
     setTask: () => null,
 })
