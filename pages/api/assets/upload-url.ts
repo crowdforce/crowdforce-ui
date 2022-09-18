@@ -14,7 +14,6 @@ const handler = withUser<any>(async (req, res) => {
     const filename = req.query.filename as string
     const sha256 = req.query.hash as string
     const size = req.query.size as string
-    // const ext =
 
     const asset = await prisma.asset.create({
         data: {
@@ -27,23 +26,19 @@ const handler = withUser<any>(async (req, res) => {
         },
     })
 
+    const storage = new FileStorage(s3Client)
     const key = `assets/${asset.id}.jpg`
+    const src = storage.getFileUrl(key)
     await prisma.asset.update({
         where: {
             id: asset.id,
         },
         data: {
-            src: `https://crowdforcecdn.tmshv.com/${key}`,
+            src,
         },
     })
 
-    const storage = new FileStorage(s3Client)
-    const result = await storage.getUploadUrl({
-        Bucket: "crowdforce",
-        Key: key,
-        ContentType: mimeType,
-        ACL: "public-read",
-    })
+    const result = await storage.getUploadUrl(key, mimeType)
     if (!result) {
         return res.status(500).json({
             error: "Failed to get upload url",
