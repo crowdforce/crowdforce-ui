@@ -37,6 +37,26 @@ const useStyles = createStyles((theme) => ({
 export const Edit: React.FC<ProjectEditProps> = () => {
     const { classes: s, cx } = useStyles()
 
+    // const [files, setFiles] = useState<FileWithPath[]>([]);
+
+    // const previews = files.map((file, index) => {
+    //     const imageUrl = URL.createObjectURL(file);
+    //     return (
+    //         <Image
+    //             key={index}
+    //             src={imageUrl}
+    //             imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
+    //         />
+    //     );
+    // });
+    // <SimpleGrid
+    //     cols={4}
+    //     breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
+    //     mt={previews.length > 0 ? 'xl' : 0}
+    // >
+    //     {previews}
+    // </SimpleGrid>
+
     return (
         <Aside.Section
             grow
@@ -46,8 +66,6 @@ export const Edit: React.FC<ProjectEditProps> = () => {
             <FileDrop
                 multiple={false}
                 onDrop={async files => {
-                    console.log("accepted files", files)
-
                     const file = files[0]
                     const query = new URLSearchParams({
                         filename: file.name,
@@ -60,10 +78,6 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                         method: "POST",
                     })
                     const upload = await res.json()
-
-                    // let data = new FormData()
-                    // data.append("file", file)
-                    // data.append('user', 'hubot')
 
                     await fetch(upload.uploadUrl, {
                         method: "PUT",

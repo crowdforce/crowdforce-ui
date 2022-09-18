@@ -8,26 +8,6 @@ export type FileDropProps = Omit<DropzoneProps, "children"> & {
 
 export const FileDrop: React.FC<FileDropProps> = props => {
     const theme = useMantineTheme()
-    // const [files, setFiles] = useState<FileWithPath[]>([]);
-
-    // const previews = files.map((file, index) => {
-    //     const imageUrl = URL.createObjectURL(file);
-    //     return (
-    //         <Image
-    //             key={index}
-    //             src={imageUrl}
-    //             imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-    //         />
-    //     );
-    // });
-    // <SimpleGrid
-    //     cols={4}
-    //     breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-    //     mt={previews.length > 0 ? 'xl' : 0}
-    // >
-    //     {previews}
-    // </SimpleGrid>
-
     return (
         <Dropzone {...props}>
             <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: "none" }}>
