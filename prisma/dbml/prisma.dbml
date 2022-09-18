@@ -26,6 +26,7 @@ Table users {
   telegram telegram_accounts [not null]
   projects projects [not null]
   follows user_follows [not null]
+  tasks user_responses [not null]
 }
 
 Table viewports {
@@ -89,6 +90,7 @@ Table tasks {
   projectId String [not null]
   project projects [not null]
   features feature_tasks [not null]
+  users user_responses [not null]
 }
 
 Table feature_tasks {
@@ -99,6 +101,19 @@ Table feature_tasks {
 
   indexes {
     (featureId, taskId) [pk]
+  }
+}
+
+Table user_responses {
+  userId String [not null]
+  user users [not null]
+  taskId String [not null]
+  task tasks [not null]
+  createAt DateTime
+  status UserResponseStatus [not null]
+
+  indexes {
+    (userId, taskId) [pk]
   }
 }
 
@@ -135,6 +150,11 @@ Enum TaskStatus {
   Open
 }
 
+Enum UserResponseStatus {
+  Participant
+  Leader
+}
+
 Ref: users.telegramId > telegram_accounts.id [delete: Cascade]
 
 Ref: projects.ownerId > users.id
@@ -148,6 +168,10 @@ Ref: tasks.projectId > projects.id
 Ref: feature_tasks.featureId > features.id
 
 Ref: feature_tasks.taskId > tasks.id
+
+Ref: user_responses.userId > users.id
+
+Ref: user_responses.taskId > tasks.id
 
 Ref: user_follows.userId > users.id
 
