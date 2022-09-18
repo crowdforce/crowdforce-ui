@@ -50,7 +50,7 @@ export type AdminProjectDto = {
   }
 }
 
-export type FollowerStatus = "leader" | "follower"
+export type FollowerStatus = "leader" | "participant"
 
 export type FollowerDto = {
   id: string
@@ -58,6 +58,11 @@ export type FollowerDto = {
   image: string
 
   status: FollowerStatus
+}
+
+export type ParticipateDto = {
+  userId: string
+  taskId: string
 }
 
 export type AdminNewProjectTaskDto = {

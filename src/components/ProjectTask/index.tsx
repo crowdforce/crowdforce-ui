@@ -1,14 +1,15 @@
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
-import { createStyles, Group, Text, Stack, Accordion, Avatar, Center, Space, Loader } from "@mantine/core"
+import { createStyles, Group, Text, Stack, Accordion, Avatar, Center, Space, Loader, Button } from "@mantine/core"
 import { useRouter } from "next/router"
 import { useContext } from "react"
-import useSWR from "swr"
+import useSWR, { mutate } from "swr"
 import { FollowTaskButton } from "@/components/FollowTaskButton"
 import { SetAsLeaderButton } from "@/components/SetAsLeaderButton"
 import { CopyAsNewTaskButton } from "@/components/CopyAsNewTaskButton"
 import dayjs from "dayjs"
 import { useSession } from "next-auth/react"
 import { ProjectTaskDto } from "@/common/types"
+import { ParticipantList } from "./ParticipantList"
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -117,6 +118,18 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                     </Text>
                     <Space />
 
+                    <Button
+                        onClick={async () => {
+                            const res = await fetch(`/api/tasks/${task.id}/participate`, {
+                                method: "POST",
+                            })
+
+                            // if (res.ok) {
+                            //     mutate(`/api/projects/${projectId}/tasks`)
+                            // }
+                        }}
+                    >Participate</Button>
+
                     {isUnauthenticated ? null : (isAdmin || isDefault) && (
                         <>
                             <Center>
@@ -138,59 +151,7 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                             <Space />
                         </>
                     )}
-                    {task.followers
-                        .sort((a, b) => {
-                            if (a.status == "leader") return -1
-                            if (b.status == "leader") return 1
-                            return 0
-                        })
-                        .map((y => (
-                            <Group
-                                key={y.name}
-                                noWrap
-                                position='apart'
-                            >
-                                <Group
-                                    noWrap
-                                    sx={{
-                                        flex: "1 1 auto",
-                                    }}
-                                >
-                                    <Avatar
-                                        size='sm'
-                                        src={y.image}
-                                    />
-                                    <Text
-                                        sx={{
-                                            flex: "1 1 auto",
-                                        }}
-                                    >
-                                        {y.name}
-                                    </Text>
-                                </Group>
-                                {y.status == "leader" ? (
-                                    <Center>
-                                        <Text
-                                            weight={700}
-                                            transform='uppercase'
-                                            sx={{
-                                                fontSize: 13,
-                                                whiteSpace: "nowrap",
-                                            }}
-                                        >
-                                            ответственый
-                                        </Text>
-                                    </Center>
-                                ) : isDefault && isAdmin && (
-                                    <SetAsLeaderButton
-                                        projectId={router.query.projectId as string}
-                                        taskId={task.id}
-                                        userId={y.id as string}
-                                        status={y.status}
-                                    />
-                                )}
-                            </Group>
-                        )))}
+                    <ParticipantList taskId={task.id} />
                 </Stack>
             </Accordion.Panel>
         </Accordion.Item>
