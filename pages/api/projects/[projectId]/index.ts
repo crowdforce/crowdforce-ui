@@ -1,5 +1,5 @@
 import prisma from "@/server/prisma"
-import { ProjectDto } from "@/common/types"
+import { Permission, ProjectDto, Dto } from "@/common/types"
 import { Project, ProjectStatus, UserFollows } from "@prisma/client"
 import { withOptionalUser } from "@/server/middlewares/withOptionalUser"
 
@@ -7,6 +7,7 @@ type ProjectAndFollow = {
     project: Project
     follow: UserFollows | null
     followers: number
+    permission: Permission
 }
 
 const placeholderData = {
@@ -19,15 +20,18 @@ const placeholderData = {
     },
 }
 
-function mapResponse(item: ProjectAndFollow): ProjectDto {
+function mapResponse(item: ProjectAndFollow): Dto<ProjectDto> {
     return {
-        id: item.project.id,
-        title: item.project.title,
-        description: item.project.description,
-        imageUrl: item.project.imageUrl,
-        isFollowed: !item.follow ? null : item.follow.active,
-        followers: item.followers,
-        ...placeholderData,
+        payload: {
+            id: item.project.id,
+            title: item.project.title,
+            description: item.project.description,
+            imageUrl: item.project.imageUrl,
+            isFollowed: !item.follow ? null : item.follow.active,
+            followers: item.followers,
+            ...placeholderData,
+        },
+        permission: item.permission,
     }
 }
 
@@ -53,6 +57,7 @@ export async function getProject(projectId: string, userId?: string) {
             project,
             follow: null,
             followers,
+            permission: Permission.view,
         })
     }
 
@@ -65,14 +70,19 @@ export async function getProject(projectId: string, userId?: string) {
         },
     })
 
+    const permission = userId === project.ownerId
+        ? Permission.edit
+        : Permission.view
+
     return mapResponse({
         project,
         follow,
         followers,
+        permission,
     })
 }
 
-export default withOptionalUser<ProjectDto>(async (req, res) => {
+export default withOptionalUser<Dto<ProjectDto>>(async (req, res) => {
     if (req.method !== "GET") {
         return res.status(404).json({
             error: "Not found",

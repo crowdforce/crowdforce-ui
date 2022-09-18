@@ -4,6 +4,17 @@ export type ErrorDto = {
 
 export type Geometry = GeoJSON.Point | GeoJSON.Polygon
 
+export type Dto<Payload> = {
+  permission: Permission
+  payload: Payload
+  error?: ErrorDto
+}
+
+export enum Permission {
+  view,
+  edit,
+}
+
 export type NewProjectDto = {
   id: string
 }

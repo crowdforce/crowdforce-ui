@@ -12,9 +12,9 @@ import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ProjectAside } from "@/components/ProjectAside"
 import { useMediaQuery } from "@mantine/hooks"
 import { getTasks } from "pages/api/projects/[projectId]/tasks"
-import { useSession } from "next-auth/react"
 import { ProjectTaskContext } from "@/contexts/projectTask"
-import { ProjectDto, ProjectTaskDto } from "@/common/types"
+import type { Dto, ProjectDto, ProjectTaskDto } from "@/common/types"
+import { Permission } from "@/common/types"
 
 type Props = {
     fallback: Record<string, any>
@@ -35,10 +35,9 @@ export type AdminProjectData = {
 const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
-    const { data } = useSWR<ProjectDto>(`/api/projects/${projectId}`)
-    const session = useSession()
-    const isAdmin = session.data?.user?.role == "Admin"
-    const isInit = isAdmin && Boolean(router.query.init)
+    const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${projectId}`)
+    const canEdit = data?.permission === Permission.edit
+    const isInit = canEdit && Boolean(router.query.init)
     const [open, setOpen] = useState(true)
     const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>(isInit ? "edit" : "info")
     const [task, setTask] = useState<Partial<ProjectTaskDto> | null>(null)
@@ -69,7 +68,7 @@ const Container: React.FC = () => {
                 }}
             >
                 <ProjectSideMenuContext.Provider
-                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit }}
+                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin: canEdit, isInit }}
                 >
                     <ProjectTaskContext.Provider
                         value={{ task, setTask }}
@@ -81,8 +80,8 @@ const Container: React.FC = () => {
                         >
                             <ProjectSideMenu />
                             <ProjectAside
-                                title={data.title}
-                                followers={data.followers}
+                                title={data.payload.title}
+                                followers={data.payload.followers}
                             />
                         </Box>
 

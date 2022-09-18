@@ -1,4 +1,4 @@
-import { ProjectDto } from "@/common/types"
+import { Dto, ProjectDto } from "@/common/types"
 import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack, Loader } from "@mantine/core"
 import { IconMapPin } from "@tabler/icons"
 import { useSession } from "next-auth/react"
@@ -28,7 +28,7 @@ const useStyles = createStyles((theme) => ({
 export const Info: React.FC<ProjectInfoProps> = () => {
     const { classes: s } = useStyles()
     const router = useRouter()
-    const { data } = useSWR<ProjectDto>(`/api/projects/${router.query.projectId}`)
+    const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${router.query.projectId}`)
     const session = useSession()
     const isUnauthenticated = session.status == "unauthenticated"
 
@@ -48,7 +48,7 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                 <Stack>
                     <AspectRatio ratio={16 / 9}>
                         <Image
-                            src={data?.imageUrl ?? "/wip.png"}
+                            src={data?.payload.imageUrl ?? "/wip.png"}
                             radius='lg'
                             alt="project image"
                         />
@@ -99,7 +99,7 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                     <Text
                     // p={"md" }
                     >
-                        {data?.description}
+                        {data?.payload.description}
                     </Text>
                 </Stack>
             </Aside.Section>
@@ -109,8 +109,8 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                     <FollowProjectButton
                         size='xl'
                         fullWidth
-                        status={data?.isFollowed ?? null}
-                        projectId={data?.id ?? ""}
+                        status={data?.payload.isFollowed ?? null}
+                        projectId={data?.payload.id ?? ""}
                     />
                 </Aside.Section>
             )}
