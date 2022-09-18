@@ -1,9 +1,9 @@
+import { ProjectDto } from "@/common/types"
 import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack, Loader } from "@mantine/core"
 import { IconMapPin } from "@tabler/icons"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { ProjectData } from "pages/project/[projectId]"
 import React from "react"
 import useSWR from "swr"
 import { FollowProjectButton } from "../FollowProjectButton"
@@ -26,14 +26,16 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export const Info: React.FC<ProjectInfoProps> = () => {
-    const { classes: s, cx } = useStyles()
+    const { classes: s } = useStyles()
     const router = useRouter()
-    const { data, error } = useSWR<ProjectData>(`/api/projects/${router.query.projectId}`)
+    const { data } = useSWR<ProjectDto>(`/api/projects/${router.query.projectId}`)
     const session = useSession()
     const isUnauthenticated = session.status == "unauthenticated"
 
     if (!data) {
-        return (<Loader />)
+        return (
+            <Loader />
+        )
     }
 
     return (
@@ -41,7 +43,7 @@ export const Info: React.FC<ProjectInfoProps> = () => {
             <Aside.Section
                 grow
                 component={ScrollArea}
-                px='xs'
+                px='md'
             >
                 <Stack>
                     <AspectRatio ratio={16 / 9}>
@@ -52,7 +54,7 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                         />
                     </AspectRatio>
 
-                    <Group
+                    {/* <Group
                         noWrap
                         py='sm'
                         px='sm'
@@ -93,20 +95,17 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                                 )}
                             </Group>
                         </Stack>
-                    </Group>
-                    <Text>
+                    </Group> */}
+                    <Text
+                    // p={"md" }
+                    >
                         {data?.description}
                     </Text>
                 </Stack>
             </Aside.Section>
 
             {isUnauthenticated ? null : (
-                <Aside.Section
-                    p='xl'
-                    sx={{
-                        bottom: 0,
-                    }}
-                >
+                <Aside.Section p='md' >
                     <FollowProjectButton
                         size='xl'
                         fullWidth

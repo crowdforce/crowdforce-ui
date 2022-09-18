@@ -1,1 +1,1 @@
-export { default } from './TrackableItemEditor';
+export { default } from "./TrackableItemEditor"

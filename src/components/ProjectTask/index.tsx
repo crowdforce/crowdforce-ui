@@ -1,7 +1,6 @@
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { createStyles, Group, Text, Stack, Accordion, Avatar, Center, Space, Loader } from "@mantine/core"
 import { useRouter } from "next/router"
-import { ProjectTask as ProjectTaskType } from "pages/api/projects/[projectId]/tasks"
 import { useContext } from "react"
 import useSWR from "swr"
 import { FollowTaskButton } from "@/components/FollowTaskButton"
@@ -9,6 +8,7 @@ import { SetAsLeaderButton } from "@/components/SetAsLeaderButton"
 import { CopyAsNewTaskButton } from "@/components/CopyAsNewTaskButton"
 import dayjs from "dayjs"
 import { useSession } from "next-auth/react"
+import { ProjectTaskDto } from "@/common/types"
 
 const useStyles = createStyles((theme) => ({
     control: {
@@ -35,7 +35,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export type ProjectTaskProps = {
-    task: ProjectTaskType
+    task: ProjectTaskDto
     color?: string | undefined
     variant?: "default" | "completed"
 }
@@ -46,7 +46,7 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
     const isDefault = variant === "default"
     const isCompleted = variant === "completed"
     const router = useRouter()
-    const { data } = useSWR<ProjectTaskType[]>(`/api/projects/${router.query.projectId}/tasks`)
+    const { data } = useSWR<ProjectTaskDto[]>(`/api/projects/${router.query.projectId}/tasks`)
     const session = useSession()
     const isUnauthenticated = session.status == "unauthenticated"
 

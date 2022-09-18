@@ -14,6 +14,7 @@ export type ProjectDto = {
   description: string
   imageUrl: string | null
   isFollowed: boolean | null
+  followers: number
 }
 
 export type PublicProjectDto = {
@@ -21,6 +22,7 @@ export type PublicProjectDto = {
   title: string
   description: string
   imageUrl: string | null
+  followers?: number
   lng: number
   lat: number
 }
@@ -35,6 +37,28 @@ export type AdminProjectDto = {
     lat: number
     zoom: number
   }
+}
+
+export type FollowerStatus = "leader" | "follower"
+
+export type FollowerDto = {
+  id: string
+  name: string
+  image: string
+
+  status: FollowerStatus
+}
+
+export type ProjectTaskDto = {
+  id: string
+  title: string
+  description: string
+  dateStart: string
+  timeStart: string
+  dateEnd: string
+  timeEnd: string
+  followers: FollowerDto[]
+  features?: any[]
 }
 
 export type NewFeatureDto = {

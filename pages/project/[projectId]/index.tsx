@@ -11,24 +11,13 @@ import { useEffect, useState } from "react"
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ProjectAside } from "@/components/ProjectAside"
 import { useMediaQuery } from "@mantine/hooks"
-import { getTasks, ProjectTask } from "pages/api/projects/[projectId]/tasks"
-import { User } from "@prisma/client"
+import { getTasks } from "pages/api/projects/[projectId]/tasks"
 import { useSession } from "next-auth/react"
 import { ProjectTaskContext } from "@/contexts/projectTask"
+import { ProjectDto, ProjectTaskDto } from "@/common/types"
 
 type Props = {
     fallback: Record<string, any>
-}
-
-export type ProjectData = {
-    id: string
-    title: string
-    description: string
-    imageUrl: string | null
-    isFollowed: boolean | null
-    address: string
-    link: string
-    admin: Partial<User>
 }
 
 export type AdminProjectData = {
@@ -46,13 +35,13 @@ export type AdminProjectData = {
 const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
-    const { data } = useSWR<ProjectData>(`/api/projects/${projectId}`)
+    const { data } = useSWR<ProjectDto>(`/api/projects/${projectId}`)
     const session = useSession()
     const isAdmin = session.data?.user?.role == "Admin"
     const isInit = isAdmin && Boolean(router.query.init)
     const [open, setOpen] = useState(true)
     const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>(isInit ? "edit" : "info")
-    const [task, setTask] = useState<Partial<ProjectTask> | null>(null)
+    const [task, setTask] = useState<Partial<ProjectTaskDto> | null>(null)
     const smallerThanSm = useMediaQuery("(max-width: 800px)", false)
     const [wide, setWide] = useState(!smallerThanSm)
     useEffect(() => {
@@ -92,7 +81,8 @@ const Container: React.FC = () => {
                         >
                             <ProjectSideMenu />
                             <ProjectAside
-                                data={data}
+                                title={data.title}
+                                followers={data.followers}
                             />
                         </Box>
 

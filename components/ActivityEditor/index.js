@@ -1,1 +1,1 @@
-export { default } from './ActivityEditor';
+export { default } from "./ActivityEditor"

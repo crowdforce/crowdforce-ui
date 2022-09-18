@@ -1,6 +1,6 @@
-import { createStyles } from '@mantine/core'
-import s from './AppMenu.module.css'
-import { MenuItem } from './MenuItem'
+import { createStyles } from "@mantine/core"
+import s from "./AppMenu.module.css"
+import { MenuItem } from "./MenuItem"
 
 const useStyles = createStyles((theme) => ({
 }))

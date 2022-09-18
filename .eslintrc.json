@@ -1,5 +1,8 @@
 {
   "extends": "next/core-web-vitals",
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "rules": {
     "indent": [
       "warn",
@@ -19,11 +22,30 @@
         "avoidEscape": true
       }
     ],
+    "no-multiple-empty-lines": [
+      "warn",
+      {
+        "max": 1
+      }
+    ],
+    "no-trailing-spaces": [
+      "error",
+      {
+        "skipBlankLines": true
+      }
+    ],
     "no-console": "warn",
     "no-alert": "error",
     "no-debugger": "error",
     "no-var": "error",
-    "no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "args": "none",
+        "ignoreRestSiblings": true,
+        "destructuredArrayIgnorePattern": "^_"
+      }
+    ],
     "import/no-restricted-paths": [
       "error",
       {
@@ -31,6 +53,10 @@
           {
             "target": "./src/components",
             "from": "./src/server"
+          },
+          {
+            "target": "./src/components",
+            "from": "./pages"
           }
         ]
       }

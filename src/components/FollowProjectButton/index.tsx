@@ -1,5 +1,5 @@
-import { Button, MantineSize } from '@mantine/core'
-import { useSWRConfig } from 'swr'
+import { Button, MantineSize } from "@mantine/core"
+import { useSWRConfig } from "swr"
 
 export type FollowProjectProps = {
     projectId: string
@@ -8,7 +8,7 @@ export type FollowProjectProps = {
     size?: MantineSize
 }
 
-export const FollowProjectButton: React.FC<FollowProjectProps> = ({ projectId, status, fullWidth = false, size = 'xs' }) => {
+export const FollowProjectButton: React.FC<FollowProjectProps> = ({ projectId, status, fullWidth = false, size = "xs" }) => {
     const { mutate } = useSWRConfig()
 
     if (status === null) {
@@ -28,15 +28,15 @@ export const FollowProjectButton: React.FC<FollowProjectProps> = ({ projectId, s
             component='a'
             size={size}
             fullWidth={fullWidth}
-            variant={status ? 'filled' : 'default'}
+            variant={status ? "filled" : "default"}
             onClick={async () => {
                 const payload = {
                     follow: !status,
                 }
                 await fetch(`/api/projects/${projectId}/follow`, {
-                    method: 'POST',
+                    method: "POST",
                     headers: {
-                        'content-type': 'application/json',
+                        "content-type": "application/json",
                     },
                     body: JSON.stringify(payload),
                 })

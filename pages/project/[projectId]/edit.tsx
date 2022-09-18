@@ -1,16 +1,16 @@
-import { useRouter } from 'next/router'
-import Page from '@/components/Page'
-import useSWR, { SWRConfig, useSWRConfig } from 'swr'
-import { Alert, Button, Card, Center, Grid, Loader, Stack, Text } from '@mantine/core'
-import { ProjectEditForm } from '@/components/ProjectEditForm'
-import { AdminFeatureDto, AdminProjectDto, NewProjectDto } from '@/common/types'
-import { useCallback } from 'react'
-import { useSession } from 'next-auth/react'
-import { ProjectMapEditor } from '@/components/ProjectMapEditor'
-import { MapProvider } from 'react-map-gl'
-import { getUserId } from '@/server/lib'
-import type { GetServerSideProps, NextPage } from 'next'
-import { getAdminProject } from 'pages/api/admin/projects/[projectId]'
+import { useRouter } from "next/router"
+import Page from "@/components/Page"
+import useSWR, { SWRConfig, useSWRConfig } from "swr"
+import { Alert, Button, Card, Center, Grid, Loader, Stack, Text } from "@mantine/core"
+import { ProjectEditForm } from "@/components/ProjectEditForm"
+import { AdminFeatureDto, AdminProjectDto, NewProjectDto } from "@/common/types"
+import { useCallback } from "react"
+import { useSession } from "next-auth/react"
+import { ProjectMapEditor } from "@/components/ProjectMapEditor"
+import { MapProvider } from "react-map-gl"
+import { getUserId } from "@/server/lib"
+import type { GetServerSideProps, NextPage } from "next"
+import { getAdminProject } from "pages/api/admin/projects/[projectId]"
 
 type Props = {
     fallback: Record<string, any>
@@ -21,8 +21,8 @@ const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { mutate } = useSWRConfig()
-    const isLoadingAuth = session.status === 'loading'
-    const isAuthenticated = session.status === 'authenticated'
+    const isLoadingAuth = session.status === "loading"
+    const isAuthenticated = session.status === "authenticated"
     const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
 
     const isReadyToPublish = false
@@ -87,7 +87,7 @@ const Container: React.FC = () => {
         return (
             <Center
                 sx={{
-                    height: '100%',
+                    height: "100%",
                 }}
             >
                 <Loader />
@@ -108,7 +108,7 @@ const Container: React.FC = () => {
                             />
                         </Card>
                         <Card withBorder>
-                            {data.status === 'Init' && (
+                            {data.status === "Init" && (
                                 <Button
                                     fullWidth
                                     onClick={onPublish}
@@ -144,8 +144,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
         return {
             redirect: {
                 permanent: false,
-                destination: '/',
-            }
+                destination: "/",
+            },
         }
     }
 
@@ -157,7 +157,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
             fallback: {
                 [`/api/admin/projects/${projectId}`]: project,
             },
-        }
+        },
     }
 }
 

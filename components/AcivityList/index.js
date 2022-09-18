@@ -1,1 +1,1 @@
-export { default } from './AcivityList';
+export { default } from "./AcivityList"

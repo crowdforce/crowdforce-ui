@@ -1,11 +1,11 @@
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ProjectTaskContext } from "@/contexts/projectTask"
 import { Button } from "@mantine/core"
-import { ProjectTask } from "pages/api/projects/[projectId]/tasks"
+import { ProjectTaskDto } from "@/common/types"
 import { useContext } from "react"
 
 export type FollowProjectProps = {
-    task: ProjectTask
+    task: ProjectTaskDto
 }
 
 export const CopyAsNewTaskButton: React.FC<FollowProjectProps> = ({ task }) => {

@@ -1,5 +1,4 @@
 import { createStyles, Stack } from "@mantine/core"
-import React from "react"
 
 type ProjectSideMenuLayoutProps = {
     children: React.ReactNode
@@ -13,7 +12,7 @@ const useStyles = createStyles((theme) => ({
         background: theme.colors.dark[7],
         left: 0,
         top: 0,
-        paddingTop: 2,
+        padding: theme.spacing.xs,
     },
 }))
 
@@ -23,7 +22,6 @@ export const SideMenu: React.FC<ProjectSideMenuLayoutProps> = ({ children, extra
     return (
         <Stack
             className={s.container}
-            px={2}
             justify="space-between"
             sx={{
                 overflow: "hidden",
@@ -31,7 +29,7 @@ export const SideMenu: React.FC<ProjectSideMenuLayoutProps> = ({ children, extra
         >
             <Stack
                 align="center"
-                spacing={2}
+                spacing={"xs"}
             >
                 {children}
             </Stack>
@@ -40,12 +38,10 @@ export const SideMenu: React.FC<ProjectSideMenuLayoutProps> = ({ children, extra
                 spacing={2}
                 sx={{
                     position: "sticky",
-                    bottom: 2,
                 }}
             >
                 {extra}
             </Stack>
         </Stack>
     )
-
 }

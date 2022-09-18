@@ -85,7 +85,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
     return (
         <Box
             sx={{
-                width: wide ? 260 : 48,
+                width: wide ? 260 : 64,
             }}
         >
             <SideMenu

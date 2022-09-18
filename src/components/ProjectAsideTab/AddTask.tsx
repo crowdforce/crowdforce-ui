@@ -6,7 +6,7 @@ import useSWR, { useSWRConfig } from "swr"
 import { DatePicker, TimeInput } from "@mantine/dates"
 import { useRouter } from "next/router"
 import { ProjectTaskContext } from "@/contexts/projectTask"
-import { ProjectTask } from "pages/api/projects/[projectId]/tasks"
+import { ProjectTaskDto } from "@/common/types"
 import "dayjs/locale/ru"
 
 type ProjectAddTaskProps = {
@@ -36,7 +36,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const router = useRouter()
     const { data } = useSWR<FeaturesData[]>(`/api/admin/projects/${router.query.projectId}/features`)
     const { task, setTask } = useContext(ProjectTaskContext)
-    const { handleSubmit, register, setValue, control } = useForm<Partial<ProjectTask>>({
+    const { handleSubmit, register, setValue, control } = useForm<Partial<ProjectTaskDto>>({
         defaultValues: task ? task : {},
     })
     useEffect(() => {
