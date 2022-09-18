@@ -53,6 +53,7 @@ model User {
 
   projects Project[]
   follows  UserFollows[]
+  tasks    UserResponse[]
 
   @@map("users")
 }
@@ -71,6 +72,26 @@ enum FeatureStatus {
   Deleted
 
   @@map("feature_status")
+}
+
+enum TaskStatus {
+  Open
+  // WaitActor
+  // ActorAssigned
+  // WaitSubmission
+  // Processing
+  // Submitted
+  // Declined
+  // Done
+
+  @@map("task_status")
+}
+
+enum UserResponseStatus {
+  Participant
+  Leader
+
+  @@map("user_response_status")
 }
 
 model MapViewport {
@@ -112,6 +133,7 @@ model Project {
 
   features Feature[]
   follows  UserFollows[]
+  tasks    Task[]
 
   @@map(name: "projects")
 }
@@ -136,7 +158,63 @@ model Feature {
   updatedAt DateTime  @default(now()) @map(name: "updated_at")
   deletedAt DateTime? @map(name: "deleted_at")
 
+  tasks FeaturesForTask[]
+
   @@map(name: "features")
+}
+
+model Task {
+  id          String @id @default(cuid())
+  title       String
+  description String
+
+  status TaskStatus
+
+  // eventId  Int   @map("eventId")
+  // schedule Event @relation(fields: [eventId], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  startAt DateTime @default(now()) @map(name: "start_at")
+  endAt   DateTime @default(now()) @map(name: "end_at")
+
+  // operationTypeId Int
+  // operationType   OperationType @relation(fields: [operationTypeId], references: [id])
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  features FeaturesForTask[]
+  users    UserResponse[]
+
+  @@map(name: "tasks")
+}
+
+model FeaturesForTask {
+  featureId String  @map("feature_id")
+  feature   Feature @relation(fields: [featureId], references: [id])
+
+  taskId String @map("task_id")
+  task   Task   @relation(fields: [taskId], references: [id])
+
+  @@id([featureId, taskId])
+  @@map(name: "feature_tasks")
+}
+
+model UserResponse {
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  taskId String @map("task_id")
+  task   Task   @relation(fields: [taskId], references: [id])
+
+  createAt DateTime? @map(name: "created_at")
+
+  status UserResponseStatus
+
+  @@id([userId, taskId])
+  @@map(name: "user_responses")
 }
 
 model UserFollows {
