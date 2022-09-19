@@ -36,7 +36,7 @@ export type ProjectTaskProps = {
     variant?: "default" | "completed"
 }
 
-export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant = "default" }) => {
+export const ProjectTask: React.FC<ProjectTaskProps> = ({ projectId, task, color, variant = "default" }) => {
     const { classes: s, cx } = useStyles()
     const { mutate } = useSWRConfig()
     const isCompleted = variant === "completed"
