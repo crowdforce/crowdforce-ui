@@ -3,13 +3,6 @@
     text-align: right;
 }
 
-.navLinks a {
-    color: #362034;
-    text-decoration: none;
-    font-size: 15px;
-    margin: 0 20px;
-}
-
 .vertical {
     display: flex;
     flex-direction: column;
