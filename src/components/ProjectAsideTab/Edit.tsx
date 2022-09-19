@@ -116,9 +116,11 @@ export const Edit: React.FC<ProjectEditProps> = () => {
 
             ></FileDrop>
 
-            <ProjectEditForm
-                data={data}
-            />
+            {!data ? null : (
+                <ProjectEditForm
+                    data={data}
+                />
+            )}
         </Aside.Section>
     )
 }
