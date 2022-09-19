@@ -5,7 +5,7 @@
   ],
   "rules": {
     "indent": [
-      "warn",
+      "error",
       4,
       {
         "SwitchCase": 1
@@ -16,14 +16,14 @@
       "unix"
     ],
     "quotes": [
-      "warn",
+      "error",
       "double",
       {
         "avoidEscape": true
       }
     ],
     "no-multiple-empty-lines": [
-      "warn",
+      "error",
       {
         "max": 1
       }
@@ -75,11 +75,11 @@
       "always"
     ],
     "comma-dangle": [
-      "warn",
+      "error",
       "always-multiline"
     ],
     "semi": [
-      "warn",
+      "error",
       "never"
     ]
   }
