@@ -128,9 +128,9 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                             //     mutate(`/api/projects/${projectId}/tasks`)
                             // }
                         }}
-                    >Participate</Button>
+                    >Взять задачу</Button>
 
-                    {isUnauthenticated ? null : (isAdmin || isDefault) && (
+                    {/* {isUnauthenticated ? null : (isAdmin || isDefault) && (
                         <>
                             <Center>
                                 <Group>
@@ -150,7 +150,8 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                             </Center>
                             <Space />
                         </>
-                    )}
+                    )} */}
+
                     <ParticipantList taskId={task.id} />
                 </Stack>
             </Accordion.Panel>

@@ -5,6 +5,7 @@ import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
 import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
 import Link from "next/link"
+import { ProjectCard } from "@/components/ProjectCard"
 
 const useStyles = createStyles((theme) => ({
     bigGroup: {
@@ -69,36 +70,13 @@ const ProfilePage: NextPage<Props> = props => {
                         py='inherit'
                     >
                         {props.profile.following.map(({ id, title, description, imageUrl }) => (
-                            <Card withBorder key={id}>
-                                <Card.Section>
-                                    <Image
-                                        src={imageUrl ?? "/wip.png"}
-                                        height={200}
-                                    />
-                                </Card.Section>
-                                <Stack>
-                                    <Title order={3}>
-                                        {title}
-                                    </Title>
-                                    <Text>
-                                        {description}
-                                    </Text>
-                                </Stack>
-                                <Card.Section
-                                    inheritPadding
-                                    p='xs'
-                                    mt='xs'
-                                >
-                                    <Link href={`/project/${id}`} passHref>
-                                        <Button
-                                            fullWidth
-                                            component='a'
-                                        >
-                                            Посмотреть проект
-                                        </Button>
-                                    </Link>
-                                </Card.Section>
-                            </Card>
+                            <ProjectCard
+                                key={id}
+                                coverSrc={imageUrl}
+                                title={title}
+                                description={description}
+                                href={`/project/${id}`}
+                            />
                         ))}
                     </Stack>
                 </Card>
@@ -116,36 +94,13 @@ const ProfilePage: NextPage<Props> = props => {
                         py='inherit'
                     >
                         {props.profile.owned.map(({ id, title, description, imageUrl }) => (
-                            <Card withBorder key={id}>
-                                <Card.Section>
-                                    <Image
-                                        src={imageUrl!}
-                                        height={200}
-                                    />
-                                </Card.Section>
-                                <Stack>
-                                    <Title order={3}>
-                                        {title}
-                                    </Title>
-                                    <Text>
-                                        {description}
-                                    </Text>
-                                </Stack>
-                                <Card.Section
-                                    inheritPadding
-                                    p='xs'
-                                    mt='xs'
-                                >
-                                    <Link href={`/project/${id}/edit`} passHref>
-                                        <Button
-                                            fullWidth
-                                            component='a'
-                                        >
-                                            Посмотреть проект
-                                        </Button>
-                                    </Link>
-                                </Card.Section>
-                            </Card>
+                            <ProjectCard
+                                key={id}
+                                coverSrc={imageUrl}
+                                title={title}
+                                description={description}
+                                href={`/project/${id}`}
+                            />
                         ))}
                     </Stack>
                 </Card>
