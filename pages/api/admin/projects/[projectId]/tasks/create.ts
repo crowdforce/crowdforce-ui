@@ -1,7 +1,7 @@
 import prisma from "@/server/prisma"
 import { withUser } from "@/server/middlewares/withUser"
-import { Feature, TaskStatus } from "@prisma/client"
-import type { AdminNewProjectTaskDto, NewFeatureDto } from "@/common/types"
+import { TaskStatus } from "@prisma/client"
+import type { AdminNewProjectTaskDto } from "@/common/types"
 
 function joinDateAndTime(date: Date, time: Date): Date {
     const merged = new Date()
@@ -13,12 +13,6 @@ function joinDateAndTime(date: Date, time: Date): Date {
     merged.setMilliseconds(time.getMilliseconds())
 
     return merged
-}
-
-function mapResponse<T extends { id: string } = Feature>(project: T): NewFeatureDto {
-    return {
-        id: project.id,
-    }
 }
 
 export default withUser<any>(async (req, res) => {

@@ -1,6 +1,5 @@
-import { Group, Text, Stack, Avatar, Center, Loader } from "@mantine/core"
+import { Group, Text, Stack, Avatar, Loader } from "@mantine/core"
 import useSWR from "swr"
-import { SetAsLeaderButton } from "@/components/SetAsLeaderButton"
 import { FollowerDto } from "@/common/types"
 
 export type ParticipantListProps = {
