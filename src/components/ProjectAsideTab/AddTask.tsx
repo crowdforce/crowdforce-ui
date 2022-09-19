@@ -65,7 +65,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
         <Aside.Section
             grow
             component={ScrollArea}
-            px='xs'
+            px='md'
             styles={{
                 viewport: {
                     "& > div": {

@@ -69,7 +69,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
         <Aside.Section
             grow
             component={ScrollArea}
-            px='xs'
+            px='md'
         >
             <FileDrop
                 multiple={false}
