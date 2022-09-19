@@ -39,7 +39,7 @@
     "no-debugger": "error",
     "no-var": "error",
     "@typescript-eslint/no-unused-vars": [
-      "warn",
+      "error",
       {
         "args": "none",
         "ignoreRestSiblings": true,
