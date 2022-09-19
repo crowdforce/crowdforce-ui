@@ -22,6 +22,7 @@ export const Logo = () => (
                 <Image
                     src={logo}
                     quality={100}
+                    alt='crowdforce logo'
                 />
             </div>
             <Badge>Beta</Badge>

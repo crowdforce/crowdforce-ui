@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction } from "react"
 import { Button } from "@mantine/core"
 
-
 export type MapStyleSelectorProps = {
     mapStyle: string
     setMapStyle: Dispatch<SetStateAction<string>>

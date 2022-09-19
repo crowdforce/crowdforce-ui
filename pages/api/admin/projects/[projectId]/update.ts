@@ -1,8 +1,7 @@
 import prisma from "@/server/prisma"
 import { NewProjectDto } from "@/common/types"
 import { withUser } from "@/server/middlewares/withUser"
-import { Project, ProjectStatus } from "@prisma/client"
-import { single } from "@/common/lib/array"
+import { Project } from "@prisma/client"
 import { switchProjectToActiveStatus } from "@/server/app/project"
 
 type Payload = {

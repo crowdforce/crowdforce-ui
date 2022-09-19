@@ -20,7 +20,7 @@ export type MenuItemProps = {
 }
 
 export const MenuItem: React.FC<MenuItemProps> = props => {
-    const { classes: s, cx } = useStyles()
+    const { classes: s } = useStyles()
 
     return (
         <UnstyledButton

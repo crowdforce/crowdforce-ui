@@ -1,6 +1,6 @@
 import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
 import { IconCalendarEvent, IconClock } from "@tabler/icons"
-import React, { useCallback, useContext, useEffect, useState } from "react"
+import React, { useCallback, useContext, useEffect } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 import { DatePicker, TimeInput } from "@mantine/dates"
@@ -41,17 +41,12 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { handleSubmit, register, setValue, control } = useForm<AdminNewProjectTaskDto>({
         defaultValues: task ? task : {},
     })
-    const [saved, setSaved] = useState(false)
-    const [formError, setFormError] = useState(false)
 
     useEffect(() => {
         setTask(null)
     })
 
     const onSubmit = useCallback<SubmitHandler<AdminNewProjectTaskDto>>(async formData => {
-        setSaved(false)
-        setFormError(false)
-
         const res = await fetch(`/api/admin/projects/${projectId}/tasks/create`, {
             method: "POST",
             body: JSON.stringify(formData),

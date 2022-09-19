@@ -5,6 +5,8 @@ import Link from "next/link"
 
 const useStyles = createStyles((theme) => ({
     card: {
+        display: "flex",
+        flexDirection: "column",
         // boxShadow: '0 4px 8px 2px rgba(10, 60, 30, 0.05), 0px 8px 16px -4px rgba(0, 0, 0, 0.1), 8px 24px 24px 0px rgba(0, 0, 0, 0)',
     },
     cardSection: {
@@ -50,18 +52,22 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, co
                 </div>
             </Card.Section>
             <Stack sx={theme => ({
+                flex: "1 0 auto",
                 paddingTop: theme.spacing.sm,
             })}>
                 <Title order={4}>
                     {title}
                 </Title>
-                <Text>
+                <Text
+                    lineClamp={8}
+                >
                     {description}
                 </Text>
                 <Group
                     grow
                     position='apart'
                     noWrap
+                    mt='auto'
                 >
                     <Link href={href} passHref>
                         <Button

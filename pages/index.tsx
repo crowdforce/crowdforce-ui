@@ -216,9 +216,8 @@ const bigLineData = [
 ]
 
 const MainPageContainer: React.FC = () => {
-    const { data: projects, error } = useSWR<PublicProjectDto[]>("/api/projects")
+    const { data: projects } = useSWR<PublicProjectDto[]>("/api/projects")
     const { classes: s, cx } = useStyles()
-
     return (
         <Page>
             <Container
@@ -231,6 +230,7 @@ const MainPageContainer: React.FC = () => {
                         src={"/index/hero.png"}
                         layout='fill'
                         quality={100}
+                        alt=''
                     />
                 </div>
                 <Stack
@@ -260,6 +260,7 @@ const MainPageContainer: React.FC = () => {
                         <Image
                             src={heroLine}
                             quality={100}
+                            alt=''
                         />
                     </div>
                     <div
@@ -328,6 +329,7 @@ const MainPageContainer: React.FC = () => {
                             <Image
                                 src={bigLine}
                                 quality={100}
+                                alt=''
                             />
                         </div>
                     </MediaQuery>
@@ -366,6 +368,7 @@ const MainPageContainer: React.FC = () => {
                                 src={x.src}
                                 quality={100}
                                 objectFit='contain'
+                                alt=''
                             />
                         </Group>
                     ))}
@@ -376,6 +379,7 @@ const MainPageContainer: React.FC = () => {
                     <Image
                         src={blueLine}
                         quality={100}
+                        alt=''
                     />
                 </div>
             </Container>

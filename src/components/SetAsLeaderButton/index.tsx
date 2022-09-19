@@ -1,5 +1,4 @@
 import { Button, Loader } from "@mantine/core"
-import { useSWRConfig } from "swr"
 
 export type SetAsLeaderButtonProps = {
     projectId: string
@@ -9,8 +8,6 @@ export type SetAsLeaderButtonProps = {
 }
 
 export const SetAsLeaderButton: React.FC<SetAsLeaderButtonProps> = ({ projectId, taskId, userId, status }) => {
-    const { mutate } = useSWRConfig()
-
     if (status === null) {
         return (
             <Button

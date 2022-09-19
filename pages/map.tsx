@@ -6,7 +6,7 @@ import { PublicProjectDto } from "@/common/types"
 import { Box } from "@mantine/core"
 
 const Index: NextPage = () => {
-    const { data, error } = useSWR<PublicProjectDto[]>("/api/projects")
+    const { data } = useSWR<PublicProjectDto[]>("/api/projects")
 
     return (
         <Page>

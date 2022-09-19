@@ -1,5 +1,5 @@
 import prisma from "@/server/prisma"
-import { NewFeatureDto, NewProjectDto, Geometry } from "@/common/types"
+import { NewFeatureDto, NewProjectDto } from "@/common/types"
 import { withUser } from "@/server/middlewares/withUser"
 import { Feature, FeatureStatus } from "@prisma/client"
 

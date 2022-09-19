@@ -1,16 +1,10 @@
-import { createStyles, Textarea, TextInput, Button, Stack, Tooltip } from "@mantine/core"
+import { Textarea, TextInput, Button, Stack, Tooltip } from "@mantine/core"
 import { useForm } from "react-hook-form"
 import { AdminProjectDto, NewProjectDto } from "@/common/types"
 import React, { useCallback, useState } from "react"
 import { useSWRConfig } from "swr"
 
-const useStyles = createStyles((theme) => ({
-
-}))
-
 export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) => {
-    const { classes: s, cx } = useStyles()
-
     const { handleSubmit, register } = useForm({
         defaultValues: data,
     })
@@ -49,10 +43,11 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
                 })
                 .catch(e => {
                     setError(true)
+                    // eslint-disable-next-line no-console
                     console.log("API error: ", e)
                 })
         },
-        [data?.id]
+        [data?.id, mutate]
     )
 
     const [saved, setSaved] = useState(false)

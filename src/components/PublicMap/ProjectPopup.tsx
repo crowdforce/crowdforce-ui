@@ -29,6 +29,7 @@ export const ProjectPopup: React.FC<ProjectPopupProps> = props => {
                     <Image
                         src={props.src ?? "/wip.png"}
                         height={150}
+                        alt=''
                     />
                 </Card.Section>
                 <Stack>
