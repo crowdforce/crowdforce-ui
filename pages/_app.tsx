@@ -44,6 +44,13 @@ export default function MyApp({ Component, pageProps }: AppProps<Props>) {
                     shadows: {
                         lg: "0 4px 8px 2px rgba(10, 60, 30, 0.05), 0px 8px 16px -4px rgba(0, 0, 0, 0.1), 8px 24px 24px 0px rgba(0, 0, 0, 0)",
                     },
+                    spacing: {
+                        xs: 8,
+                        sm: 10,
+                        md: 16,
+                        lg: 20,
+                        xl: 24,
+                    },
                     headings: {
                         fontFamily: "Raleway",
                         sizes: {
@@ -86,6 +93,13 @@ export default function MyApp({ Component, pageProps }: AppProps<Props>) {
                                     fontWeight: 400,
                                 },
                             },
+                        },
+                        InputWrapper: {
+                            styles: (theme) => ({
+                                label: {
+                                    paddingBottom: theme.spacing.xs,
+                                },
+                            }),
                         },
                     },
                 }}
