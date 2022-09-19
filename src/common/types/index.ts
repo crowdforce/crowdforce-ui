@@ -19,6 +19,19 @@ export type NewProjectDto = {
   id: string
 }
 
+export type NewAssetDto = {
+  id: string
+  uploadUrl: string,
+}
+
+export type IdDto = {
+  id: string
+}
+
+export type ProjectCoverPayloadDto = {
+  assetId: string
+}
+
 export type ProjectDto = {
   id: string
   title: string

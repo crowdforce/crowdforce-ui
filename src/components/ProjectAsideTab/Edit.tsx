@@ -1,5 +1,7 @@
+import { NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
 import { Aside, createStyles, ScrollArea } from "@mantine/core"
 import { MIME_TYPES } from "@mantine/dropzone"
+import { useRouter } from "next/router"
 import React from "react"
 import { FileDrop } from "../FileDrop"
 
@@ -36,6 +38,8 @@ const useStyles = createStyles((theme) => ({
 
 export const Edit: React.FC<ProjectEditProps> = () => {
     const { classes: s, cx } = useStyles()
+    const router = useRouter()
+    const projectId = router.query.projectId as string
 
     // const [files, setFiles] = useState<FileWithPath[]>([]);
 
@@ -77,14 +81,25 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                     const res = await fetch(url, {
                         method: "POST",
                     })
-                    const upload = await res.json()
+                    const asset = await res.json() as NewAssetDto
 
-                    await fetch(upload.uploadUrl, {
+                    await fetch(asset.uploadUrl, {
                         method: "PUT",
                         body: file,
                         headers: {
                             "Content-type": file.type,
                             "x-amz-acl": "public-read",
+                        },
+                    })
+
+                    const updateCoverPayload: ProjectCoverPayloadDto = {
+                        assetId: asset.id,
+                    }
+                    await fetch(`/api/admin/projects/${projectId}/update-cover`, {
+                        method: "PUT",
+                        body: JSON.stringify(updateCoverPayload),
+                        headers: {
+                            "Content-type": "application/json",
                         },
                     })
                 }}

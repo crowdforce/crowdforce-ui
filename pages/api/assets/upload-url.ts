@@ -2,8 +2,9 @@ import prisma from "@/server/prisma"
 import { withUser } from "@/server/middlewares/withUser"
 import { FileStorage } from "@/server/storage/files"
 import { s3Client } from "@/server/s3"
+import { NewAssetDto } from "@/common/types"
 
-const handler = withUser<any>(async (req, res) => {
+const handler = withUser<NewAssetDto>(async (req, res) => {
     if (req.method !== "POST") {
         return res.status(404).json({
             error: "Not found",
@@ -47,6 +48,7 @@ const handler = withUser<any>(async (req, res) => {
 
     return res.json({
         uploadUrl: result,
+        id: asset.id,
     })
 })
 
