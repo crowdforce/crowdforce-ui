@@ -63,7 +63,6 @@ export const UserButton: React.FC<UserButtonProps> = () => {
         }
     }, [])
 
-
     const router = useRouter()
     const onNewProject = useCallback(() => {
         // its fetch() until swr2.0 useSWRMutation // https://github.com/vercel/swr/releases/tag/2.0.0-beta.0
@@ -84,6 +83,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                 router.push(`/project/${res.id}/edit`)
             })
             .catch(e => {
+                // eslint-disable-next-line no-console
                 console.log("API error: ", e)
             })
     }, [router])

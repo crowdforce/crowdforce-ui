@@ -3,9 +3,11 @@ import { Edit } from "./Edit"
 import { Tasks } from "./Tasks"
 import { AddTask } from "./AddTask"
 
-export default {
+const exports = {
     Info,
     Edit,
     Tasks,
     AddTask,
 }
+
+export default exports

@@ -1,9 +1,9 @@
 import { useRouter } from "next/router"
 import Page from "@/components/Page"
-import useSWR, { SWRConfig, useSWRConfig } from "swr"
-import { Alert, Button, Card, Center, Grid, Loader, Stack, Text } from "@mantine/core"
+import useSWR, { SWRConfig } from "swr"
+import { Alert, Button, Card, Center, Grid, Loader, Stack } from "@mantine/core"
 import { ProjectEditForm } from "@/components/ProjectEditForm"
-import { AdminFeatureDto, AdminProjectDto, NewProjectDto } from "@/common/types"
+import { AdminProjectDto } from "@/common/types"
 import { useCallback } from "react"
 import { useSession } from "next-auth/react"
 import { ProjectMapEditor } from "@/components/ProjectMapEditor"
@@ -20,9 +20,8 @@ const Container: React.FC = () => {
     const session = useSession()
     const router = useRouter()
     const projectId = router.query.projectId as string
-    const { mutate } = useSWRConfig()
+
     const isLoadingAuth = session.status === "loading"
-    const isAuthenticated = session.status === "authenticated"
     const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
 
     const isReadyToPublish = false
@@ -59,7 +58,7 @@ const Container: React.FC = () => {
             //         console.log('API error: ', e)
             //     })
         },
-        [data]
+        [] // [data]
     )
 
     if (error) {

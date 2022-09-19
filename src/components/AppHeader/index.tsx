@@ -33,7 +33,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
-    const { classes: s, cx } = useStyles()
+    const { classes: s } = useStyles()
     return (
         <Header
             withBorder={false}

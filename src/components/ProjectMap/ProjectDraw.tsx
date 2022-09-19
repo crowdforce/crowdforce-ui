@@ -38,6 +38,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                         mutate(`/api/admin/projects/${projectId}/features`)
                     })
                     .catch(e => {
+                        // eslint-disable-next-line no-console
                         console.log("API error: ", e)
                         draw.delete(ids)
                     })
@@ -69,11 +70,12 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
             }
 
             default: {
+                // eslint-disable-next-line no-console
                 console.log(event.type, event.features)
                 break
             }
         }
-    }, [projectId])
+    }, [projectId, mutate])
 
     const draw = useDrawControl({
         onChange,

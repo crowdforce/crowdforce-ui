@@ -1,5 +1,5 @@
-import { Aside, createStyles, Group, ScrollArea, Title } from "@mantine/core"
-import { IconCheck, IconToolsKitchen } from "@tabler/icons"
+import { Aside, Group, ScrollArea, Title } from "@mantine/core"
+import { IconToolsKitchen } from "@tabler/icons"
 import React from "react"
 import { ProjectTasksList } from "../ProjectTasksList"
 
@@ -7,11 +7,7 @@ type ProjectTasksProps = {
 
 }
 
-const useStyles = createStyles((theme) => ({
-}))
-
 export const Tasks: React.FC<ProjectTasksProps> = () => {
-    const { classes: s, cx } = useStyles()
 
     return (
         <Aside.Section

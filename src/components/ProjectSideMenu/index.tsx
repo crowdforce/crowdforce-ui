@@ -80,7 +80,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
 
         setOpenId(id)
         setOpen(true)
-    }, [open])
+    }, [open, setOpen, setOpenId])
 
     return (
         <Box

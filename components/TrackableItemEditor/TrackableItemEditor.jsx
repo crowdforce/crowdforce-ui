@@ -2,7 +2,7 @@ import {
     Button,
     Dialog, DialogContent, DialogTitle, Typography,
 } from "@mui/material"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { observer } from "mobx-react-lite"
 import ajax from "../../utils/ajax"
 import classes from "./TrackableItemEditor.module.css"
