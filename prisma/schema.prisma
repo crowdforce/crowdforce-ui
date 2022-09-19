@@ -123,6 +123,9 @@ model Project {
   imageUrl    String?       @map(name: "image_url")
   status      ProjectStatus
 
+  coverId String? @map(name: "cover_id")
+  cover   Asset?   @relation(fields: [coverId], references: [id])
+
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
 
@@ -153,8 +156,10 @@ model Asset {
 
   createdAt DateTime @default(now()) @map(name: "created_at")
 
-  width  Int?
-  height Int?
+  width   Int?
+  height  Int?
+
+  projects Project[]
 
   @@map(name: "assets")
 }
