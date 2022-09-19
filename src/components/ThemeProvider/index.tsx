@@ -19,6 +19,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider withGlobalStyles withNormalizeCSS
                 theme={{
+                    colorScheme,
                     fontFamily: "Raleway",
                     lineHeight: 1.2,
                     shadows: {
