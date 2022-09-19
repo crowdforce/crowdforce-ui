@@ -1,9 +1,12 @@
-import { NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
+import { AdminProjectDto, NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
 import { Aside, createStyles, ScrollArea } from "@mantine/core"
 import { MIME_TYPES } from "@mantine/dropzone"
 import { useRouter } from "next/router"
 import React from "react"
+import useSWR from "swr"
 import { FileDrop } from "../FileDrop"
+import { ProjectEditForm } from "../ProjectEditForm"
+import { ProjectMapEditor } from "../ProjectMapEditor"
 
 async function sha() {
     // var filesize = fileInput.files[0].size;
@@ -40,6 +43,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
     const { classes: s, cx } = useStyles()
     const router = useRouter()
     const projectId = router.query.projectId as string
+    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
 
     // const [files, setFiles] = useState<FileWithPath[]>([]);
 
@@ -111,6 +115,10 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                 ]}
 
             ></FileDrop>
+
+            <ProjectEditForm
+                data={data}
+            />
         </Aside.Section>
     )
 }
