@@ -29,12 +29,14 @@ function mapResponse(item: ProjectAndFollow): Dto<ProjectDto> {
 
     let followingStatus: ProjectFollowingStatus = "unavailable"
     if (item.userId) {
-        if (item.project.ownerId !== item.userId) {
-            if (item.follow) {
-                followingStatus = item.follow.active
-                    ? "following"
-                    : "not-following"
-            }
+        if (item.follow) {
+            followingStatus = item.follow.active
+                ? "following"
+                : "not-following"
+        }
+
+        if (item.project.ownerId === item.userId) {
+            followingStatus = "unavailable"
         }
     }
 
