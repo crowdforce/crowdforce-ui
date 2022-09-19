@@ -6,7 +6,6 @@ import React from "react"
 import useSWR from "swr"
 import { FileDrop } from "../FileDrop"
 import { ProjectEditForm } from "../ProjectEditForm"
-import { ProjectMapEditor } from "../ProjectMapEditor"
 
 async function sha() {
     // var filesize = fileInput.files[0].size;
