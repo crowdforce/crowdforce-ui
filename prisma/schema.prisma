@@ -54,7 +54,7 @@ model User {
   projects Project[]
   follows  UserFollows[]
   tasks    UserResponse[]
-  assets    Asset[]
+  assets   Asset[]
 
   @@map("users")
 }
