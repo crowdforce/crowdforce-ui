@@ -1,9 +1,10 @@
 import prisma from "@/server/prisma"
-import { Permission, ProjectDto, Dto } from "@/common/types"
+import { Permission, ProjectDto, Dto, ProjectFollowingStatus } from "@/common/types"
 import { Asset, Project, ProjectStatus, UserFollows } from "@prisma/client"
 import { withOptionalUser } from "@/server/middlewares/withOptionalUser"
 
 type ProjectAndFollow = {
+    userId?: string
     project: Project & { cover: Asset | null }
     follow: UserFollows | null
     followers: number
@@ -26,13 +27,24 @@ function mapResponse(item: ProjectAndFollow): Dto<ProjectDto> {
         imageUrl = item.project.cover.src
     }
 
+    let followingStatus: ProjectFollowingStatus = "unavailable"
+    if (item.userId) {
+        if (item.project.ownerId !== item.userId) {
+            if (item.follow) {
+                followingStatus = item.follow.active
+                    ? "following"
+                    : "not-following"
+            }
+        }
+    }
+
     return {
         payload: {
             id: item.project.id,
             title: item.project.title,
             description: item.project.description,
             imageUrl,
-            isFollowed: !item.follow ? null : item.follow.active,
+            followingStatus,
             followers: item.followers,
             ...placeholderData,
         },
@@ -48,7 +60,7 @@ export async function getProject(projectId: string, userId?: string) {
         },
         include: {
             cover: true,
-        }
+        },
     })
     if (!project) {
         return null
@@ -83,6 +95,7 @@ export async function getProject(projectId: string, userId?: string) {
         : Permission.view
 
     return mapResponse({
+        userId,
         project,
         follow,
         followers,

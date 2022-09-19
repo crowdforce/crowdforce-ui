@@ -1,6 +1,6 @@
 import { Dto, ProjectDto } from "@/common/types"
 import { Aside, createStyles, ScrollArea, Text, Stack, Loader } from "@mantine/core"
-import { useSession } from "next-auth/react"
+import { useAuthenticated } from "@/hooks/useAuthenticated"
 import Image from "next/image"
 import { useRouter } from "next/router"
 import React from "react"
@@ -31,8 +31,7 @@ export const Info: React.FC<ProjectInfoProps> = () => {
     const { classes: s } = useStyles()
     const router = useRouter()
     const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${router.query.projectId}`)
-    const session = useSession()
-    const isUnauthenticated = session.status == "unauthenticated"
+    const isUnauthenticated = useAuthenticated()
 
     if (!data) {
         return (
@@ -107,16 +106,15 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                 </Stack>
             </Aside.Section>
 
-            {isUnauthenticated ? null : (
-                <Aside.Section p='md' >
-                    <FollowProjectButton
-                        size='xl'
-                        fullWidth
-                        status={data?.payload.isFollowed ?? null}
-                        projectId={data?.payload.id ?? ""}
-                    />
-                </Aside.Section>
-            )}
+            <Aside.Section p='md' >
+                <FollowProjectButton
+                    disabled={!data || data.payload.followingStatus === "unavailable" || isUnauthenticated}
+                    size='xl'
+                    fullWidth
+                    status={data?.payload.followingStatus === "following" ? true : false}
+                    projectId={data?.payload.id ?? ""}
+                />
+            </Aside.Section>
         </>
     )
 }
