@@ -40,6 +40,7 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
                     }, 2000)
                     setError(false)
                     mutate(`/api/admin/projects/${data.id}`)
+                    mutate(`/api/projects/${data.id}`)
                 })
                 .catch(e => {
                     setError(true)
