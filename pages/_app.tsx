@@ -1,4 +1,4 @@
-import "./style.css"
+import "@/style.css"
 
 import Head from "next/head"
 import { MapProvider } from "react-map-gl"
