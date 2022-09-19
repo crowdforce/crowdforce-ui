@@ -53,6 +53,8 @@ Table projects {
   description String [not null]
   imageUrl String
   status ProjectStatus [not null]
+  coverId String
+  cover assets
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
   ownerId String [not null]
@@ -77,6 +79,7 @@ Table assets {
   createdAt DateTime [default: `now()`, not null]
   width Int
   height Int
+  projects projects [not null]
 }
 
 Table features {
@@ -172,6 +175,8 @@ Enum UserResponseStatus {
 }
 
 Ref: users.telegramId > telegram_accounts.id [delete: Cascade]
+
+Ref: projects.coverId > assets.id
 
 Ref: projects.ownerId > users.id
 
