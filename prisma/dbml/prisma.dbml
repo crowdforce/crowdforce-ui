@@ -27,6 +27,7 @@ Table users {
   projects projects [not null]
   follows user_follows [not null]
   tasks user_responses [not null]
+  assets assets [not null]
 }
 
 Table viewports {
@@ -52,6 +53,8 @@ Table projects {
   description String [not null]
   imageUrl String
   status ProjectStatus [not null]
+  coverId String
+  cover assets
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
   ownerId String [not null]
@@ -61,6 +64,22 @@ Table projects {
   features features [not null]
   follows user_follows [not null]
   tasks tasks [not null]
+}
+
+Table assets {
+  id String [pk]
+  mimeType String [not null]
+  filename String [not null]
+  src String [not null]
+  size Int [not null]
+  sha256 String [not null]
+  thumbnail String
+  ownerId String [not null]
+  owner users [not null]
+  createdAt DateTime [default: `now()`, not null]
+  width Int
+  height Int
+  projects projects [not null]
 }
 
 Table features {
@@ -157,9 +176,13 @@ Enum UserResponseStatus {
 
 Ref: users.telegramId > telegram_accounts.id [delete: Cascade]
 
+Ref: projects.coverId > assets.id
+
 Ref: projects.ownerId > users.id
 
 Ref: projects.viewportId > viewports.id
+
+Ref: assets.ownerId > users.id
 
 Ref: features.projectId > projects.id
 

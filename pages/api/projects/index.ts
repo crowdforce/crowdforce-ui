@@ -1,18 +1,24 @@
 import prisma from "@/server/prisma"
 import { ErrorDto, PublicProjectDto } from "@/common/types"
-import { MapViewport, Project, ProjectStatus } from "@prisma/client"
+import { Asset, MapViewport, Project, ProjectStatus } from "@prisma/client"
 import { NextApiRequest, NextApiResponse } from "next"
 
-type ProjectWithViewport = Project & {
+type ProjectWithOthers = Project & {
     viewport: MapViewport
+    cover: Asset | null
 }
 
-function mapResponse(item: ProjectWithViewport): PublicProjectDto {
+function mapResponse(item: ProjectWithOthers): PublicProjectDto {
+    let imageUrl = item.imageUrl
+    if (item.cover) {
+        imageUrl = item.cover.src
+    }
+
     return {
         id: item.id,
         title: item.title,
         description: item.description,
-        imageUrl: item.imageUrl,
+        imageUrl,
         lng: item.viewport.lng,
         lat: item.viewport.lat,
     }
@@ -25,6 +31,7 @@ export async function getProjects() {
         },
         include: {
             viewport: true,
+            cover: true,
         },
     })
     if (!projects) {
@@ -47,6 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<PublicProjectDt
         },
         include: {
             viewport: true,
+            cover: true,
         },
     })
 
