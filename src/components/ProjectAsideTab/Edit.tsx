@@ -1,45 +1,39 @@
-import { NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
-import { Aside, createStyles, ScrollArea } from "@mantine/core"
+import { AdminProjectDto, NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
+import { Aside, ScrollArea } from "@mantine/core"
 import { MIME_TYPES } from "@mantine/dropzone"
 import { useRouter } from "next/router"
 import React from "react"
+import useSWR from "swr"
 import { FileDrop } from "../FileDrop"
+import { ProjectEditForm } from "../ProjectEditForm"
 
-async function sha() {
-    // var filesize = fileInput.files[0].size;
-    // var reader = new FileReader();
-    // reader.onload = function (ev) {
-    //     console.log("File", filename, ":");
-    //     //
-    //     crypto.subtle.digest('SHA-256', ev.target.result).then(hashBuffer => {
-    //         // Convert hex to hash, see https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest#converting_a_digest_to_a_hex_string
-    //         const hashArray = Array.from(new Uint8Array(hashBuffer));
-    //         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
-    //         console.log(hashHex);
-    //     }).catch(ex => console.error(ex));
-    // };
-    // reader.onerror = function (err) {
-    //     console.error("Failed to read file", err);
-    // }
-    // reader.readAsArrayBuffer(fileInput.files[0]);
-}
+// async function sha() {
+// var filesize = fileInput.files[0].size;
+// var reader = new FileReader();
+// reader.onload = function (ev) {
+//     console.log("File", filename, ":");
+//     //
+//     crypto.subtle.digest('SHA-256', ev.target.result).then(hashBuffer => {
+//         // Convert hex to hash, see https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest#converting_a_digest_to_a_hex_string
+//         const hashArray = Array.from(new Uint8Array(hashBuffer));
+//         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); // convert bytes to hex string
+//         console.log(hashHex);
+//     }).catch(ex => console.error(ex));
+// };
+// reader.onerror = function (err) {
+//     console.error("Failed to read file", err);
+// }
+// reader.readAsArrayBuffer(fileInput.files[0]);
+// }
 
 type ProjectEditProps = {
 
 }
 
-const useStyles = createStyles((theme) => ({
-    aside: {
-        position: "sticky",
-        borderRadius: theme.radius.lg,
-        margin: theme.spacing.xs,
-    },
-}))
-
 export const Edit: React.FC<ProjectEditProps> = () => {
-    const { classes: s, cx } = useStyles()
     const router = useRouter()
     const projectId = router.query.projectId as string
+    const { data } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
 
     // const [files, setFiles] = useState<FileWithPath[]>([]);
 
@@ -65,7 +59,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
         <Aside.Section
             grow
             component={ScrollArea}
-            px='xs'
+            px='md'
         >
             <FileDrop
                 multiple={false}
@@ -103,7 +97,10 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                         },
                     })
                 }}
-                onReject={(files) => console.log("rejected files", files)}
+                onReject={(files) => {
+                    // eslint-disable-next-line no-console
+                    console.log("rejected files", files)
+                }}
                 maxSize={3 * 1024 ** 2}
                 accept={[
                     MIME_TYPES.jpeg,
@@ -111,6 +108,12 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                 ]}
 
             ></FileDrop>
+
+            {!data ? null : (
+                <ProjectEditForm
+                    data={data}
+                />
+            )}
         </Aside.Section>
     )
 }

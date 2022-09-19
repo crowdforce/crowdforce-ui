@@ -1,5 +1,6 @@
 import { Aside, Group, ScrollArea, Title } from "@mantine/core"
 import { IconToolsKitchen } from "@tabler/icons"
+import { useRouter } from "next/router"
 import React from "react"
 import { ProjectTasksList } from "../ProjectTasksList"
 
@@ -8,12 +9,14 @@ type ProjectTasksProps = {
 }
 
 export const Tasks: React.FC<ProjectTasksProps> = () => {
+    const router = useRouter()
+    const projectId = router.query.projectId as string
 
     return (
         <Aside.Section
             grow
             component={ScrollArea}
-            px='xs'
+            px='md'
         >
             <Group
                 p='xs'
@@ -29,7 +32,9 @@ export const Tasks: React.FC<ProjectTasksProps> = () => {
                 </Title>
             </Group>
 
-            <ProjectTasksList />
+            <ProjectTasksList
+                projectId={projectId}
+            />
 
             {/* <Group
                 p='xs'

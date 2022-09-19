@@ -1,13 +1,7 @@
-import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
-import { createStyles, Group, Text, Stack, Accordion, Avatar, Center, Space, Loader, Button } from "@mantine/core"
+import { createStyles, Group, Text, Stack, Accordion, Space, Loader, Button } from "@mantine/core"
 import { useRouter } from "next/router"
-import { useContext } from "react"
-import useSWR, { mutate } from "swr"
-import { FollowTaskButton } from "@/components/FollowTaskButton"
-import { SetAsLeaderButton } from "@/components/SetAsLeaderButton"
-import { CopyAsNewTaskButton } from "@/components/CopyAsNewTaskButton"
+import useSWR, { useSWRConfig } from "swr"
 import dayjs from "dayjs"
-import { useSession } from "next-auth/react"
 import { ProjectTaskDto } from "@/common/types"
 import { ParticipantList } from "./ParticipantList"
 
@@ -36,20 +30,18 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export type ProjectTaskProps = {
+    projectId: string
     task: ProjectTaskDto
     color?: string | undefined
     variant?: "default" | "completed"
 }
 
-export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant = "default" }) => {
+export const ProjectTask: React.FC<ProjectTaskProps> = ({ projectId, task, color, variant = "default" }) => {
     const { classes: s, cx } = useStyles()
-    const { isAdmin } = useContext(ProjectSideMenuContext)
-    const isDefault = variant === "default"
+    const { mutate } = useSWRConfig()
     const isCompleted = variant === "completed"
     const router = useRouter()
     const { data } = useSWR<ProjectTaskDto[]>(`/api/projects/${router.query.projectId}/tasks`)
-    const session = useSession()
-    const isUnauthenticated = session.status == "unauthenticated"
 
     if (!data) {
         return <Loader />
@@ -124,9 +116,9 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ task, color, variant =
                                 method: "POST",
                             })
 
-                            // if (res.ok) {
-                            //     mutate(`/api/projects/${projectId}/tasks`)
-                            // }
+                            if (res.ok) {
+                                mutate(`/api/projects/${projectId}/tasks`)
+                            }
                         }}
                     >Взять задачу</Button>
 

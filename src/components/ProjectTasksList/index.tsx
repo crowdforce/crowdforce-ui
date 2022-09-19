@@ -5,10 +5,11 @@ import { ProjectTask } from "@/components/ProjectTask"
 import { ProjectTaskDto } from "@/common/types"
 
 export type ProjectTasksListProps = {
+    projectId: string
     variant?: "default" | "completed"
 }
 
-export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = "default" }) => {
+export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ projectId, variant = "default" }) => {
     const router = useRouter()
     const { data } = useSWR<ProjectTaskDto[]>(`/api/projects/${router.query.projectId}/tasks`)
 
@@ -33,6 +34,7 @@ export const ProjectTasksList: React.FC<ProjectTasksListProps> = ({ variant = "d
         >
             {data.map((x, i) => (
                 <ProjectTask
+                    projectId={projectId}
                     key={x.id}
                     task={x}
                     color={i % 2 === 0 ? "#F4FAFD" : undefined}

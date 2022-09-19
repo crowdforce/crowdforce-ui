@@ -12,7 +12,7 @@ const useStyles = createStyles((theme) => ({
         background: theme.colors.dark[7],
         left: 0,
         top: 0,
-        padding: theme.spacing.xs,
+        padding: theme.spacing.sm,
     },
 }))
 
@@ -29,7 +29,7 @@ export const SideMenu: React.FC<ProjectSideMenuLayoutProps> = ({ children, extra
         >
             <Stack
                 align="center"
-                spacing={"xs"}
+                spacing={"sm"}
             >
                 {children}
             </Stack>
