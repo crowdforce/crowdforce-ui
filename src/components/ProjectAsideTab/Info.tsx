@@ -1,8 +1,7 @@
 import { Dto, ProjectDto } from "@/common/types"
-import { Aside, createStyles, Group, ScrollArea, Text, Image, AspectRatio, Stack, Loader } from "@mantine/core"
-import { IconMapPin } from "@tabler/icons"
+import { Aside, createStyles, ScrollArea, Text, Stack, Loader } from "@mantine/core"
 import { useSession } from "next-auth/react"
-import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/router"
 import React from "react"
 import useSWR from "swr"
@@ -13,6 +12,9 @@ type ProjectInfoProps = {
 }
 
 const useStyles = createStyles((theme) => ({
+    cover: {
+        borderRadius: theme.radius.md,
+    },
     icon: {
         flex: "0 0 auto",
         color: theme.colors.gray[6], // dimmed color
@@ -46,13 +48,14 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                 px='md'
             >
                 <Stack>
-                    <AspectRatio ratio={16 / 9}>
-                        <Image
-                            src={data?.payload.imageUrl ?? "/wip.png"}
-                            radius='lg'
-                            alt="project image"
-                        />
-                    </AspectRatio>
+                    <Image
+                        src={data?.payload.imageUrl ?? "/wip.png"}
+                        className={s.cover}
+                        alt={data.payload.title}
+                        layout={"responsive"}
+                        width={16}
+                        height={10}
+                    />
 
                     {/* <Group
                         noWrap
