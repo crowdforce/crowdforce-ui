@@ -5,10 +5,8 @@ import { useControl, useMap } from "react-map-gl"
 import type { ControlPosition } from "react-map-gl"
 import { useCallback, useEffect } from "react"
 
-// eslint-disable-next-line no-unused-vars
 type Handler = (ev: any) => void
 
-// eslint-disable-next-line no-unused-vars
 export type OnChangeDraw = (event: { features: GeoJSON.Feature[]; type: string }, draw: MapboxDraw) => void
 
 export type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {

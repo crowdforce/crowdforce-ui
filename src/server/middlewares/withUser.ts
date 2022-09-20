@@ -8,7 +8,6 @@ export type NextApiRequestWithUser = NextApiRequest & {
   user: User
 }
 
-// eslint-disable-next-line no-unused-vars
 export type WithUserHandler<T = any> = (req: NextApiRequestWithUser, res: NextApiResponse<T>) => Promise<NextApiResponse<T> | void>
 
 export function withUser<T = any>(handler: WithUserHandler<T | ErrorDto>) {

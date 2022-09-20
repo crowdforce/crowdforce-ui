@@ -40,8 +40,7 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
         if (map) {
             map.resize()
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [wide])
+    }, [map, wide])
 
     if (!viewport) {
         return null
