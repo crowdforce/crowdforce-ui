@@ -1,6 +1,7 @@
 import { AdminProjectDto, NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
 import { Aside, ScrollArea } from "@mantine/core"
 import { MIME_TYPES } from "@mantine/dropzone"
+import { showNotification } from "@mantine/notifications"
 import { useRouter } from "next/router"
 import React from "react"
 import useSWR from "swr"
@@ -96,10 +97,23 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                             "Content-type": "application/json",
                         },
                     })
+
+                    showNotification({
+                        title: "Успех!",
+                        message: "Обложка обновилась",
+                    })
                 }}
-                onReject={(files) => {
-                    // eslint-disable-next-line no-console
-                    console.log("rejected files", files)
+                onReject={(rejects) => {
+                    const reject = rejects[0]
+                    // const t = 'file-too-large'
+
+                    for (const e of reject.errors) {
+                        showNotification({
+                            title: reject.file.name,
+                            message: e.message,
+                            color: "red",
+                        })
+                    }
                 }}
                 maxSize={5 * 1024 ** 2}
                 accept={[
