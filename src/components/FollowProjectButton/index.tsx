@@ -14,7 +14,7 @@ export const FollowProjectButton: React.FC<FollowProjectProps> = ({ projectId, s
         <Button
             {...props}
             component='a'
-            variant={status ? "filled" : "default"}
+            variant={!status ? "filled" : "default"}
             onClick={async () => {
                 const payload = {
                     follow: !status,
@@ -29,7 +29,10 @@ export const FollowProjectButton: React.FC<FollowProjectProps> = ({ projectId, s
                 mutate(`/api/projects/${projectId}`)
             }}
         >
-            Следить за проектом
+            {!status
+                ? "Следить за проектом"
+                : "Отписаться от проекта"
+            }
         </Button>
     )
 }
