@@ -18,21 +18,17 @@ export const Tasks: React.FC<ProjectTasksProps> = () => {
             component={ScrollArea}
             px='md'
         >
-            <Group
-                p='xs'
-                spacing='xs'
-            >
-                <IconToolsKitchen strokeWidth={1.2} />
-                <Title order={5}
-                    sx={{
-                        fontSize: 18,
-                    }}
-                >
-                    Актуальные задачи
-                </Title>
-            </Group>
-
             <ProjectTasksList
+                header={(
+                    <Group
+                        mb='xs'
+                    >
+                        <IconToolsKitchen />
+                        <Title order={2} >
+                            Актуальные задачи
+                        </Title>
+                    </Group>
+                )}
                 projectId={projectId}
             />
 

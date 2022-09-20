@@ -47,13 +47,14 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ title, followers }) 
         >
             <Aside.Section
                 p='md'
+                pt='sm'
             >
                 <Group
                     position='apart'
-                    align='start'
+                    align='center'
                     noWrap
                 >
-                    <Title order={4}>
+                    <Title order={1}>
                         {title}
                     </Title>
                     <Group
