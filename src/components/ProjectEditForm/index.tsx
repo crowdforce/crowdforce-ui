@@ -1,58 +1,54 @@
-import { Textarea, TextInput, Button, Stack, Tooltip } from "@mantine/core"
+import { Textarea, TextInput, Button, Stack } from "@mantine/core"
 import { useForm } from "react-hook-form"
-import { AdminProjectDto, NewProjectDto } from "@/common/types"
-import React, { useCallback, useState } from "react"
+import { AdminProjectDto } from "@/common/types"
+import React, { useCallback } from "react"
 import { useSWRConfig } from "swr"
+import { showNotification } from "@mantine/notifications"
 
-export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) => {
+export type ProjectEditFormProps = {
+    data: AdminProjectDto
+}
+
+export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
     const { handleSubmit, register } = useForm({
         defaultValues: data,
     })
-
     const { mutate } = useSWRConfig()
 
     const onSubmit = useCallback(
-        (formData: any) => {
-            setSaved(false)
-            setError(false)
-
-            fetch(
-                `/api/admin/projects/${data.id}/update`,
-                {
+        async (formData: any) => {
+            try {
+                const res = await fetch(`/api/admin/projects/${data.id}/update`, {
                     method: "PUT",
                     body: JSON.stringify(formData),
                     headers: {
                         "Content-Type": "application/json",
                     },
+                })
+                if (!res.ok) {
+                    showNotification({
+                        title: "Ошибка!",
+                        message: "!",
+                        color: "red",
+                    })
                 }
-            )
-                .then(async res => {
-                    if (res.ok && res.status == 200) {
-                        return await res.json()
-                    } else {
-                        throw Error(res.statusText)
-                    }
+                mutate(`/api/admin/projects/${data.id}`)
+                mutate(`/api/projects/${data.id}`)
+
+                showNotification({
+                    title: "Успех!",
+                    message: "Сохранено!",
                 })
-                .then((res: NewProjectDto) => {
-                    setSaved(true)
-                    setTimeout(() => {
-                        setSaved(false)
-                    }, 2000)
-                    setError(false)
-                    mutate(`/api/admin/projects/${data.id}`)
-                    mutate(`/api/projects/${data.id}`)
+            } catch (error) {
+                showNotification({
+                    title: "Ошибка!",
+                    message: "!",
+                    color: "red",
                 })
-                .catch(e => {
-                    setError(true)
-                    // eslint-disable-next-line no-console
-                    console.log("API error: ", e)
-                })
+            }
         },
         [data?.id, mutate]
     )
-
-    const [saved, setSaved] = useState(false)
-    const [error, setError] = useState(false)
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -79,21 +75,12 @@ export const ProjectEditForm: React.FC<{ data: AdminProjectDto }> = ({ data }) =
                     minRows={4}
                 />
 
-                <Tooltip
-                    label={error ? "Ошибка" : "Сохранено"}
-                    position='top'
-                    radius='xl'
-                    transition='slide-up'
-                    color={error && "red" as any}
-                    opened={saved || error}
+                <Button
+                    fullWidth
+                    type='submit'
                 >
-                    <Button
-                        fullWidth
-                        type='submit'
-                    >
-                        Сохранить
-                    </Button>
-                </Tooltip>
+                    Сохранить
+                </Button>
             </Stack>
         </form>
     )
