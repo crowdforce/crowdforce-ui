@@ -20,7 +20,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                 const payload = {
                     geometry: feature.geometry,
                 }
-                await fetch(`/api/admin/projects/${projectId}/features/create`, {
+                fetch(`/api/admin/projects/${projectId}/features/create`, {
                     method: "POST",
                     headers: {
                         "content-type": "application/json",
@@ -49,7 +49,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                 const payload = {
                     geometry: feature.geometry,
                 }
-                await fetch(`/api/admin/features/${featureId}/update-geometry`, {
+                fetch(`/api/admin/features/${featureId}/update-geometry`, {
                     method: "PUT",
                     headers: {
                         "content-type": "application/json",
@@ -60,7 +60,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
             }
 
             case "draw.delete": {
-                await fetch(`/api/admin/features/${featureId}/delete`, {
+                fetch(`/api/admin/features/${featureId}/delete`, {
                     method: "DELETE",
                 })
                     .then(() => {
