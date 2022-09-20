@@ -4,7 +4,8 @@ import { Avatar, Group, Menu, UnstyledButton, Text, createStyles, Loader } from 
 import { IconChevronDown, IconLogout, IconPlus, IconUser } from "@tabler/icons"
 import { useRouter } from "next/router"
 import { NewProjectDto } from "@/common/types"
-import Link from "next/link"
+import { NextLink } from "@mantine/next"
+import { ColorThemeSwitch } from "../ColorThemeSwitch"
 
 const useStyles = createStyles((theme) => ({
     user: {
@@ -122,16 +123,15 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                 </Menu.Target>
 
                 <Menu.Dropdown>
-                    <Link href='/profile' passHref>
-                        <Menu.Item
-                            component='a'
-                            icon={(
-                                <IconUser size={16} />
-                            )}
-                        >
-                            Профиль
-                        </Menu.Item>
-                    </Link>
+                    <Menu.Item
+                        component={NextLink}
+                        href='/profile'
+                        icon={(
+                            <IconUser size={16} />
+                        )}
+                    >
+                        Профиль
+                    </Menu.Item>
                     <Menu.Item
                         icon={(
                             <IconPlus size={16} />
@@ -140,6 +140,10 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                     >
                         Новый проект
                     </Menu.Item>
+                    <Menu.Item
+                        closeMenuOnClick={false}
+                        component={ColorThemeSwitch}
+                    />
                     <Menu.Item
                         icon={(
                             <IconLogout size={16} />
