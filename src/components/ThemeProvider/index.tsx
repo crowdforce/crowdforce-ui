@@ -1,5 +1,5 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core"
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router"
 import { useState } from "react"
 
 export type ThemeProviderProps = {
