@@ -8,6 +8,7 @@ export type FileDropProps = Omit<DropzoneProps, "children"> & {
 
 export const FileDrop: React.FC<FileDropProps> = props => {
     const theme = useMantineTheme()
+
     return (
         <Dropzone {...props}>
             <Group position="center" spacing="xl" style={{ minHeight: 220, pointerEvents: "none" }}>

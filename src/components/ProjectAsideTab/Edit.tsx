@@ -3,7 +3,7 @@ import { Aside, ScrollArea } from "@mantine/core"
 import { MIME_TYPES } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
 import { useRouter } from "next/router"
-import React from "react"
+import React, { useState } from "react"
 import useSWR from "swr"
 import { FileDrop } from "../FileDrop"
 import { ProjectEditForm } from "../ProjectEditForm"
@@ -32,6 +32,7 @@ type ProjectEditProps = {
 }
 
 export const Edit: React.FC<ProjectEditProps> = () => {
+    const [coverLoading, setCoverLoading] = useState(false)
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
@@ -64,7 +65,9 @@ export const Edit: React.FC<ProjectEditProps> = () => {
         >
             <FileDrop
                 multiple={false}
+                loading={coverLoading}
                 onDrop={async files => {
+                    setCoverLoading(true)
                     const file = files[0]
                     const query = new URLSearchParams({
                         filename: file.name,
@@ -102,6 +105,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                         title: "Успех!",
                         message: "Обложка обновилась",
                     })
+                    setCoverLoading(false)
                 }}
                 onReject={(rejects) => {
                     const reject = rejects[0]
@@ -114,6 +118,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                             color: "red",
                         })
                     }
+                    setCoverLoading(false)
                 }}
                 maxSize={5 * 1024 ** 2}
                 accept={[
