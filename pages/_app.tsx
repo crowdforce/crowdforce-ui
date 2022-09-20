@@ -8,6 +8,7 @@ import { AppProps } from "next/app"
 import { Session } from "next-auth"
 import { App } from "@/components/App"
 import { ThemeProvider } from "@/components/ThemeProvider"
+import { NotificationsProvider } from "@mantine/notifications"
 
 type Props = {
     session: Session
@@ -43,9 +44,11 @@ export default function MyApp({ Component, pageProps }: AppProps<Props>) {
                         <SWRConfig value={{
                             fetcher: (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json()),
                         }}>
-                            <App>
-                                <Component {...pageProps} />
-                            </App>
+                            <NotificationsProvider position="top-center">
+                                <App>
+                                    <Component {...pageProps} />
+                                </App>
+                            </NotificationsProvider>
                         </SWRConfig>
                     </MapProvider>
                 </SessionProvider>
