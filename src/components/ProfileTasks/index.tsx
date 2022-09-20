@@ -1,39 +1,89 @@
-import { createStyles, ScrollArea, Table } from "@mantine/core"
-import { Task } from "@prisma/client"
+import { createStyles, Group, ScrollArea, Stack, Table, Text } from "@mantine/core"
+import dayjs from "dayjs"
+import { FollowedTask } from "types/task"
 
 const useStyles = createStyles((theme) => ({
-    card: {
-        display: "flex",
-        flexDirection: "column",
-        cursor: "pointer",
-    },
-    cardSection: {
-        position: "relative",
-        height: 220,
-    },
+
 }))
 
 export type ProfileTasksProps = {
-    data: Partial<Task>[]
+    data: FollowedTask[]
+}
+
+const roleText = {
+    leader: "ответственный",
+    follower: "волонтер",
 }
 
 export const ProfileTasks: React.FC<ProfileTasksProps> = ({ data }) => {
+    // eslint-disable-next-line
     const { classes: s } = useStyles()
 
     return (
         <ScrollArea>
-            <Table>
+            <Table
+                verticalSpacing="lg"
+            >
                 <tbody>
                     {data.map((x) => (
                         <tr key={x.id}>
                             <td>
-                                one
+                                <Stack
+                                    spacing={0}
+                                >
+                                    <Text
+                                        size="xl"
+                                    >
+                                        {x.title}
+                                    </Text>
+                                    <Text>
+                                        {"related project name"}
+                                    </Text>
+                                </Stack>
                             </td>
                             <td>
-                                two
+                                <Text
+                                    weight="bold"
+                                >
+                                    {roleText[x.role]}
+                                </Text>
                             </td>
                             <td>
-                                tree
+                                <Group
+                                    noWrap
+                                    spacing={"xs"}
+                                >
+                                    <Stack
+                                        spacing={0}
+                                    >
+                                        <Text
+                                            weight={700}
+                                        >
+                                            {dayjs(x.dateStart).format("DD.MM.YYYY")}
+                                        </Text>
+
+                                        {x.dateStart !== x.dateEnd && (
+                                            <Text
+                                                weight={700}
+                                            >
+                                                {dayjs(x.dateEnd).format("DD.MM.YYYY")}
+                                            </Text>
+                                        )}
+                                    </Stack>
+                                    <Stack
+                                        spacing={0}
+                                    >
+                                        <Text>
+                                            {dayjs(x.timeStart).format("HH:MM")}
+                                        </Text>
+                                        <Text>
+                                            {dayjs(x.timeEnd).format("HH:MM")}
+                                        </Text>
+                                    </Stack>
+                                </Group>
+                            </td>
+                            <td>
+                                some buttons placeholder
                             </td>
                         </tr>
                     ))}

@@ -1,13 +1,13 @@
 import { signOut, useSession } from "next-auth/react"
 import Page from "@/components/Page"
-import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid } from "@mantine/core"
+import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Divider } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
 import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
 import { ProjectCard } from "@/components/ProjectCard"
 import { ProjectAddCard } from "@/components/ProjectAddCard"
 import { ProfileTasks } from "@/components/ProfileTasks"
-import { Task } from "@prisma/client"
+import { FollowedTask } from 'types/task'
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -17,15 +17,15 @@ const useStyles = createStyles((theme) => ({
     logoutButton: {
         width: "fit-content",
         minWidth: "min(100%, 200px)",
-    }
+    },
 }))
 
 type Props = {
     profile: ProfileResponseDto
-    tasks: Partial<Task>[]
+    tasks: FollowedTask[]
 }
 
-const ProfilePage: NextPage<Props> = ({ profile }) => {
+const ProfilePage: NextPage<Props> = ({ profile, tasks }) => {
     const session = useSession()
     const { classes: s } = useStyles()
 
@@ -33,6 +33,7 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
         <Page>
             <Stack
                 align="center"
+                spacing="xl"
             >
                 <Group
                     noWrap
@@ -60,6 +61,7 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
 
                 <Title
                     className={s.section}
+                    mt="xl"
                 >
                     Мои проекты
                 </Title>
@@ -86,16 +88,24 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
 
                 <Title
                     className={s.section}
+                    mt="xl"
                 >
                     Мои задачи
                 </Title>
 
-                <ProfileTasks
-                    data={[]}
-                />
+                <Box
+                    className={s.section}
+                >
+                    <Divider sx={{ opacity: .5 }} />
+                    <ProfileTasks
+                        data={tasks}
+                    />
+                    <Divider sx={{ opacity: .5 }} />
+                </Box>
 
                 <Title
                     className={s.section}
+                    mt="xl"
                 >
                     Интересные проекты
                 </Title>
@@ -146,6 +156,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
             "timeStart": "Tue Sep 20 2022",
             "dateEnd": "Thu Sep 15 2022",
             "timeEnd": "Tue Sep 20 2022",
+            "role": "follower",
             "followers": [
                 {
                     "id": "cl787cvnz0012jb3kcg23zg4w",
@@ -163,6 +174,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
             "timeStart": "Tue Sep 20 2022",
             "dateEnd": "Thu Sep 15 2022",
             "timeEnd": "Tue Sep 20 2022",
+            "role": "leader",
             "followers": [],
         },
     ]
