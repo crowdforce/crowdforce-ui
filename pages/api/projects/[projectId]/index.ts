@@ -72,6 +72,7 @@ export async function getProject(projectId: string, userId?: string) {
     const followers = await prisma.userFollows.count({
         where: {
             projectId,
+            active: true,
         },
     })
 

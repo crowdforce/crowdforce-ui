@@ -255,6 +255,7 @@ model UserFollows {
   followedAt   DateTime? @map(name: "followed_at")
   unfollowedAt DateTime? @map(name: "unfollowed_at")
 
+  @@index([active])
   @@id([userId, projectId])
   @@map(name: "user_follows")
 }
