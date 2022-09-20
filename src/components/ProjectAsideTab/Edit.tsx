@@ -101,7 +101,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                     // eslint-disable-next-line no-console
                     console.log("rejected files", files)
                 }}
-                maxSize={3 * 1024 ** 2}
+                maxSize={5 * 1024 ** 2}
                 accept={[
                     MIME_TYPES.jpeg,
                     MIME_TYPES.png,
