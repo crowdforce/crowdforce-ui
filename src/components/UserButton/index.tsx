@@ -4,16 +4,21 @@ import { Avatar, Group, Menu, UnstyledButton, Text, createStyles, Loader } from 
 import { IconChevronDown, IconLogout, IconPlus, IconUser } from "@tabler/icons"
 import { useRouter } from "next/router"
 import { NewProjectDto } from "@/common/types"
-import Link from "next/link"
+import { NextLink } from "@mantine/next"
+import { ColorThemeSwitch } from "../ColorThemeSwitch"
 
 const useStyles = createStyles((theme) => ({
     user: {
-        color: theme.black,
+        color: theme.colorScheme === "dark"
+            ? theme.white
+            : theme.black,
         borderRadius: theme.radius.md,
         paddingRight: theme.spacing.sm,
 
         "&:hover": {
-            backgroundColor: theme.colors.gray[0],
+            backgroundColor: theme.colorScheme === "dark"
+                ? theme.colors.gray[8]
+                : theme.colors.gray[0],
         },
     },
     mobileHidden: {
@@ -118,16 +123,15 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                 </Menu.Target>
 
                 <Menu.Dropdown>
-                    <Link href='/profile' passHref>
-                        <Menu.Item
-                            component='a'
-                            icon={(
-                                <IconUser size={16} />
-                            )}
-                        >
-                            Профиль
-                        </Menu.Item>
-                    </Link>
+                    <Menu.Item
+                        component={NextLink}
+                        href='/profile'
+                        icon={(
+                            <IconUser size={16} />
+                        )}
+                    >
+                        Профиль
+                    </Menu.Item>
                     <Menu.Item
                         icon={(
                             <IconPlus size={16} />
@@ -136,6 +140,10 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                     >
                         Новый проект
                     </Menu.Item>
+                    <Menu.Item
+                        closeMenuOnClick={false}
+                        component={ColorThemeSwitch}
+                    />
                     <Menu.Item
                         icon={(
                             <IconLogout size={16} />

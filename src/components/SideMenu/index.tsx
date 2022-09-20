@@ -9,7 +9,9 @@ const useStyles = createStyles((theme) => ({
     container: {
         position: "relative",
         height: "calc(100vh - 60px)",
-        background: theme.colors.dark[7],
+        background: theme.colorScheme === "dark"
+            ? theme.colors.dark[8]
+            : theme.colors.dark[7],
         left: 0,
         top: 0,
         padding: theme.spacing.sm,
