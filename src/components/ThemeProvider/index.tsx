@@ -33,33 +33,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
                     },
                     headings: {
                         fontFamily: "Raleway",
-                        sizes: {
-                            // h1: {
-                            //     fontSize: 73,
-                            //     fontWeight: 900,
-                            //     lineHeight: "100%",
-                            // },
-                            // h2: {
-                            //     fontSize: 47,
-                            //     fontWeight: 800,
-                            //     lineHeight: "100%",
-                            // },
-                            // h3: {
-                            //     fontSize: 53,
-                            //     fontWeight: 800,
-                            //     lineHeight: "110%",
-                            // },
-                            // h4: {
-                            //     fontSize: 24,
-                            //     fontWeight: 600,
-                            //     lineHeight: "110%",
-                            // },
-                            // h5: {
-                            //     fontSize: 30,
-                            //     fontWeight: 400,
-                            //     lineHeight: "100%",
-                            // },
-                        },
                     },
                     primaryColor: "lime",
                     defaultRadius: "md",

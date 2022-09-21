@@ -159,6 +159,31 @@ const useStyles = createStyles((theme) => ({
     iconMouse: {
         animation: `${mouseAnimation} 3s ease-out infinite`,
     },
+    h1: {
+        fontSize: 73,
+        fontWeight: 900,
+        lineHeight: "100%",
+    },
+    h2: {
+        fontSize: 47,
+        fontWeight: 800,
+        lineHeight: "100%",
+    },
+    h3: {
+        fontSize: 53,
+        fontWeight: 800,
+        lineHeight: "110%",
+    },
+    h4: {
+        fontSize: 24,
+        fontWeight: 600,
+        lineHeight: "110%",
+    },
+    h5: {
+        fontSize: 30,
+        fontWeight: 400,
+        lineHeight: "100%",
+    },
 }))
 
 const bigLineData = [
@@ -239,6 +264,7 @@ const MainPageContainer: React.FC = () => {
                 >
                     <Title
                         order={1}
+                        className={s.h1}
                         sx={{
                             textTransform: "uppercase",
                         }}
@@ -300,7 +326,10 @@ const MainPageContainer: React.FC = () => {
                     paddingTop: "8rem",
                 }}
             >
-                <Title order={2}>
+                <Title
+                    order={2}
+                    className={s.h2}
+                >
                     <Text inherit align='center'>
                         <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
                             <span>
@@ -350,12 +379,18 @@ const MainPageContainer: React.FC = () => {
                             >
                                 {x.subtitle && (
                                     <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
-                                        <Title order={5}>
+                                        <Title
+                                            order={5}
+                                            className={s.h5}
+                                        >
                                             {x.subtitle}
                                         </Title>
                                     </MediaQuery>
                                 )}
-                                <Title order={3}>
+                                <Title
+                                    order={3}
+                                    className={s.h3}
+                                >
                                     {x.title}
                                 </Title>
                                 <Text
@@ -389,7 +424,10 @@ const MainPageContainer: React.FC = () => {
                     paddingTop: "8rem",
                 }}
             >
-                <Title order={2}>
+                <Title
+                    order={2}
+                    className={s.h2}
+                >
                     <Text inherit align='center'>
                         Галерея проектов
                     </Text>
@@ -436,7 +474,7 @@ const MainPageContainer: React.FC = () => {
             <div style={{
                 height: "8rem",
             }} />
-        </Page >
+        </Page>
     )
 }
 
