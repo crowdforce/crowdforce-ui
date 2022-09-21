@@ -1,5 +1,4 @@
 import { ColorScheme, ColorSchemeProvider, MantineProvider } from "@mantine/core"
-import { useRouter } from "next/router"
 import { useState } from "react"
 
 export type ThemeProviderProps = {
@@ -7,8 +6,6 @@ export type ThemeProviderProps = {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-    const router = useRouter()
-    const isIndexPage = router.asPath == "/"
     const [colorScheme, setColorScheme] = useState<ColorScheme>("light")
     const toggleColorScheme = (value?: ColorScheme) => {
         if (value) {
@@ -36,33 +33,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
                     },
                     headings: {
                         fontFamily: "Raleway",
-                        sizes: isIndexPage && {
-                            h1: {
-                                fontSize: 73,
-                                fontWeight: 900,
-                                lineHeight: "100%",
-                            },
-                            h2: {
-                                fontSize: 47,
-                                fontWeight: 800,
-                                lineHeight: "100%",
-                            },
-                            h3: {
-                                fontSize: 53,
-                                fontWeight: 800,
-                                lineHeight: "110%",
-                            },
-                            h4: {
-                                fontSize: 24,
-                                fontWeight: 600,
-                                lineHeight: "110%",
-                            },
-                            h5: {
-                                fontSize: 30,
-                                fontWeight: 400,
-                                lineHeight: "100%",
-                            },
-                        },
                     },
                     primaryColor: "lime",
                     defaultRadius: "md",

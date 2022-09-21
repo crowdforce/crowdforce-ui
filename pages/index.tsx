@@ -1,4 +1,4 @@
-import { Button, Center, Container, createStyles, Group, keyframes, Loader, MediaQuery, SimpleGrid, Stack, Text, Title } from "@mantine/core"
+import { Button, Center, Container, createStyles, Group, keyframes, Loader, MantineProvider, MediaQuery, SimpleGrid, Stack, Text, Title } from "@mantine/core"
 import { IconCornerLeftDownDouble, IconMouse } from "@tabler/icons"
 import Image from "next/image"
 import Page from "@/components/Page"
@@ -219,224 +219,259 @@ const MainPageContainer: React.FC = () => {
     const { data: projects } = useSWR<PublicProjectDto[]>("/api/projects")
     const { classes: s, cx } = useStyles()
     return (
-        <Page>
-            <Container
-                className={cx(s.container, s.containerHero)}
-            >
-                <div
-                    className={s.imageHero}
+        <MantineProvider
+            inherit
+            theme={{
+                headings: {
+                    sizes: {
+                        h1: {
+                            fontSize: 73,
+                            fontWeight: 900,
+                            lineHeight: "100%",
+                        },
+                        h2: {
+                            fontSize: 47,
+                            fontWeight: 800,
+                            lineHeight: "100%",
+                        },
+                        h3: {
+                            fontSize: 53,
+                            fontWeight: 800,
+                            lineHeight: "110%",
+                        },
+                        h4: {
+                            fontSize: 24,
+                            fontWeight: 600,
+                            lineHeight: "110%",
+                        },
+                        h5: {
+                            fontSize: 30,
+                            fontWeight: 400,
+                            lineHeight: "100%",
+                        },
+                    },
+                },
+            }}
+        >
+            <Page>
+                <Container
+                    className={cx(s.container, s.containerHero)}
                 >
-                    <Image
-                        src={"/index/hero.png"}
-                        layout='fill'
-                        quality={100}
-                        alt=''
-                    />
-                </div>
-                <Stack
-                    justify='center'
-                    className={s.stackHero}
-                >
-                    <Title
-                        order={1}
-                        sx={{
-                            textTransform: "uppercase",
-                        }}
-                    >
-                        Помогаем <br />
-                        навести порядок <br />
-                        в расписании <br />
-                    </Title>
-                    <Text
-                        className={s.subtitleHero}
-                    >
-                        садовых работ и найти помощников для <br />
-                        ухода за садами и огородами
-                    </Text>
-
                     <div
-                        className={s.lineHero}
+                        className={s.imageHero}
                     >
                         <Image
-                            src={heroLine}
+                            src={"/index/hero.png"}
+                            layout='fill'
                             quality={100}
                             alt=''
                         />
                     </div>
-                    <div
-                        className={s.buttonShadow}
-                    />
-                    <Button
-                        uppercase
-                        size='xl'
-                        leftIcon={<IconCornerLeftDownDouble />}
-                        component='a'
-                        href='#projects'
-                        className={s.buttonHero}
-                        radius={"lg"}
+                    <Stack
+                        justify='center'
+                        className={s.stackHero}
                     >
-                        Галерея проектов
-                    </Button>
-                </Stack>
-            </Container>
+                        <Title
+                            order={1}
+                            sx={{
+                                textTransform: "uppercase",
+                            }}
+                        >
+                            Помогаем <br />
+                            навести порядок <br />
+                            в расписании <br />
+                        </Title>
+                        <Text
+                            className={s.subtitleHero}
+                        >
+                            садовых работ и найти помощников для <br />
+                            ухода за садами и огородами
+                        </Text>
 
-            <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
-                <Center
-                    sx={{
-                        paddingTop: "4rem",
-                        transform: "scale(1.5)",
-                        color: "rgba(39, 39, 46, 0.6)",
-                    }}
-                >
-                    <IconMouse
-                        className={s.iconMouse}
-                    />
-                </Center>
-            </MediaQuery>
-
-            <Container
-                className={s.container}
-                sx={{
-                    paddingTop: "8rem",
-                }}
-            >
-                <Title order={2}>
-                    <Text inherit align='center'>
-                        <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
-                            <span>
-                                Начни системный уход за своим садом <br />
-                                или присоединяйся к проектам сообществ!
-                            </span>
-                        </MediaQuery>
-                        <MediaQuery largerThan='xs' styles={{ display: "none" }}>
-                            <span>
-                                Преимущества
-                            </span>
-                        </MediaQuery>
-                    </Text>
-                </Title>
-            </Container>
-            <Container
-                className={s.container}
-                sx={{
-                    marginTop: "2rem",
-                    overflow: "hidden",
-                }}
-            >
-                <Center>
-                    <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
-                        <div>
+                        <div
+                            className={s.lineHero}
+                        >
                             <Image
-                                src={bigLine}
+                                src={heroLine}
                                 quality={100}
                                 alt=''
                             />
                         </div>
-                    </MediaQuery>
-                </Center>
-                <Stack
-                    className={s.bigLineStack}
-                >
-                    {bigLineData.map((x, i) => (
-                        <Group
-                            key={i}
-                            position='apart'
-                            className={cx(s.bigLineGroup, i % 2 == 1 && s.bigLineOdd)}
+                        <div
+                            className={s.buttonShadow}
+                        />
+                        <Button
+                            uppercase
+                            size='xl'
+                            leftIcon={<IconCornerLeftDownDouble />}
+                            component='a'
+                            href='#projects'
+                            className={s.buttonHero}
+                            radius={"lg"}
                         >
-                            <Stack
-                                sx={{
-                                    gap: "1rem",
-                                }}
-                            >
-                                {x.subtitle && (
-                                    <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
-                                        <Title order={5}>
-                                            {x.subtitle}
-                                        </Title>
-                                    </MediaQuery>
-                                )}
-                                <Title order={3}>
-                                    {x.title}
-                                </Title>
-                                <Text
-                                    size='xl'
-                                >
-                                    {x.text}
-                                </Text>
-                            </Stack>
-                            <Image
-                                src={x.src}
-                                quality={100}
-                                objectFit='contain'
-                                alt=''
-                            />
-                        </Group>
-                    ))}
-                </Stack>
-                <div
-                    className={s.blueLine}
-                >
-                    <Image
-                        src={blueLine}
-                        quality={100}
-                        alt=''
-                    />
-                </div>
-            </Container>
-            <Container
-                className={s.container}
-                sx={{
-                    paddingTop: "8rem",
-                }}
-            >
-                <Title order={2}>
-                    <Text inherit align='center'>
-                        Галерея проектов
-                    </Text>
-                </Title>
-            </Container>
+                            Галерея проектов
+                        </Button>
+                    </Stack>
+                </Container>
 
-            <span id='projects' />
-            <Container
-                className={s.container}
-                sx={{
-                    paddingTop: "8rem",
-                }}
-            >
-                {(!projects) ? (
+                <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
                     <Center
                         sx={{
-                            height: "100%",
+                            paddingTop: "4rem",
+                            transform: "scale(1.5)",
+                            color: "rgba(39, 39, 46, 0.6)",
                         }}
                     >
-                        <Loader />
+                        <IconMouse
+                            className={s.iconMouse}
+                        />
                     </Center>
-                ) : (
-                    <SimpleGrid
-                        cols={3}
-                        breakpoints={[
-                            { maxWidth: "xl", cols: 3 },
-                            { maxWidth: "md", cols: 2 },
-                            { maxWidth: "xs", cols: 1 },
-                        ]}
+                </MediaQuery>
+
+                <Container
+                    className={s.container}
+                    sx={{
+                        paddingTop: "8rem",
+                    }}
+                >
+                    <Title order={2}>
+                        <Text inherit align='center'>
+                            <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
+                                <span>
+                                    Начни системный уход за своим садом <br />
+                                    или присоединяйся к проектам сообществ!
+                                </span>
+                            </MediaQuery>
+                            <MediaQuery largerThan='xs' styles={{ display: "none" }}>
+                                <span>
+                                    Преимущества
+                                </span>
+                            </MediaQuery>
+                        </Text>
+                    </Title>
+                </Container>
+                <Container
+                    className={s.container}
+                    sx={{
+                        marginTop: "2rem",
+                        overflow: "hidden",
+                    }}
+                >
+                    <Center>
+                        <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
+                            <div>
+                                <Image
+                                    src={bigLine}
+                                    quality={100}
+                                    alt=''
+                                />
+                            </div>
+                        </MediaQuery>
+                    </Center>
+                    <Stack
+                        className={s.bigLineStack}
                     >
-                        {projects.map((x) => (
-                            <ProjectCard
-                                key={x.id}
-                                title={x.title}
-                                description={x.description}
-                                href={`/project/${x.id}`}
-                                coverSrc={x.imageUrl}
-                                followers={x.followers}
-                            />
+                        {bigLineData.map((x, i) => (
+                            <Group
+                                key={i}
+                                position='apart'
+                                className={cx(s.bigLineGroup, i % 2 == 1 && s.bigLineOdd)}
+                            >
+                                <Stack
+                                    sx={{
+                                        gap: "1rem",
+                                    }}
+                                >
+                                    {x.subtitle && (
+                                        <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
+                                            <Title order={5}>
+                                                {x.subtitle}
+                                            </Title>
+                                        </MediaQuery>
+                                    )}
+                                    <Title order={3}>
+                                        {x.title}
+                                    </Title>
+                                    <Text
+                                        size='xl'
+                                    >
+                                        {x.text}
+                                    </Text>
+                                </Stack>
+                                <Image
+                                    src={x.src}
+                                    quality={100}
+                                    objectFit='contain'
+                                    alt=''
+                                />
+                            </Group>
                         ))}
-                    </SimpleGrid>
-                )}
-            </Container>
-            <div style={{
-                height: "8rem",
-            }} />
-        </Page >
+                    </Stack>
+                    <div
+                        className={s.blueLine}
+                    >
+                        <Image
+                            src={blueLine}
+                            quality={100}
+                            alt=''
+                        />
+                    </div>
+                </Container>
+                <Container
+                    className={s.container}
+                    sx={{
+                        paddingTop: "8rem",
+                    }}
+                >
+                    <Title order={2}>
+                        <Text inherit align='center'>
+                            Галерея проектов
+                        </Text>
+                    </Title>
+                </Container>
+
+                <span id='projects' />
+                <Container
+                    className={s.container}
+                    sx={{
+                        paddingTop: "8rem",
+                    }}
+                >
+                    {(!projects) ? (
+                        <Center
+                            sx={{
+                                height: "100%",
+                            }}
+                        >
+                            <Loader />
+                        </Center>
+                    ) : (
+                        <SimpleGrid
+                            cols={3}
+                            breakpoints={[
+                                { maxWidth: "xl", cols: 3 },
+                                { maxWidth: "md", cols: 2 },
+                                { maxWidth: "xs", cols: 1 },
+                            ]}
+                        >
+                            {projects.map((x) => (
+                                <ProjectCard
+                                    key={x.id}
+                                    title={x.title}
+                                    description={x.description}
+                                    href={`/project/${x.id}`}
+                                    coverSrc={x.imageUrl}
+                                    followers={x.followers}
+                                />
+                            ))}
+                        </SimpleGrid>
+                    )}
+                </Container>
+                <div style={{
+                    height: "8rem",
+                }} />
+            </Page>
+        </MantineProvider>
     )
 }
 
