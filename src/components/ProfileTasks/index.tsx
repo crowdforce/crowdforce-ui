@@ -5,13 +5,13 @@ import dayjs from "dayjs"
 import Link from "next/link"
 import useSWR from "swr"
 
-export type ProfileTasksProps = {
-
-}
-
 const roleText = {
     leader: "ответственный",
     participant: "волонтер",
+}
+
+export type ProfileTasksProps = {
+
 }
 
 export const ProfileTasks: React.FC<ProfileTasksProps> = ({ }) => {
