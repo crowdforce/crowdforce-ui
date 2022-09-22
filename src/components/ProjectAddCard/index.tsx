@@ -10,6 +10,7 @@ const useStyles = createStyles((theme) => ({
         flexDirection: "column",
         backgroundColor: theme.colorScheme == "light" ? "white" : undefined,
         cursor: "pointer",
+        minHeight: 320,
     },
     cardSection: {
         position: "relative",

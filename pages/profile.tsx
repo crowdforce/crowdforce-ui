@@ -7,15 +7,37 @@ import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
 import { ProjectCard } from "@/components/ProjectCard"
 import { ProjectAddCard } from "@/components/ProjectAddCard"
 import { ProfileTasks } from "@/components/ProfileTasks"
+import greenLine from "@/../public/index/heroLine.svg"
+import blueLine from "@/../public/index/blueLine.svg"
+import Image from "next/image"
 
 const useStyles = createStyles((theme) => ({
     section: {
+        position: "relative",
         width: "100%",
         maxWidth: 1160,
     },
     logoutButton: {
         width: "fit-content",
-        minWidth: "min(100%, 200px)",
+        minWidth: "min(100%, 150px)",
+    },
+    line: {
+        position: "absolute",
+        transform: "translate(40%)",
+        zIndex: -1,
+        [theme.fn.smallerThan("xs")]: {
+            display: "none",
+        },
+    },
+    blueLine: {
+        bottom: "-25%",
+        right: 0,
+        transform: "translate(40%)",
+    },
+    greenLine: {
+        top: "-30px",
+        left: 0,
+        transform: "translate(-40%)",
     },
 }))
 
@@ -25,7 +47,7 @@ type Props = {
 
 const ProfilePage: NextPage<Props> = ({ profile }) => {
     const session = useSession()
-    const { classes: s } = useStyles()
+    const { classes: s, cx } = useStyles()
 
     return (
         <Page>
@@ -82,6 +104,25 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
                         />
                     ))}
                     <ProjectAddCard />
+
+                    <div
+                        className={cx(s.line, s.blueLine)}
+                    >
+                        <Image
+                            src={blueLine}
+                            quality={100}
+                            alt=''
+                        />
+                    </div>
+                    <div
+                        className={cx(s.line, s.greenLine)}
+                    >
+                        <Image
+                            src={greenLine}
+                            quality={100}
+                            alt=''
+                        />
+                    </div>
                 </SimpleGrid>
 
                 <Title
