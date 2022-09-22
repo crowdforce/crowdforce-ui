@@ -7,7 +7,7 @@ import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
 import { ProjectCard } from "@/components/ProjectCard"
 import { ProjectAddCard } from "@/components/ProjectAddCard"
 import { ProfileTasks } from "@/components/ProfileTasks"
-import { FollowedTask } from 'types/task'
+import { FollowedTask } from "types/task"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -156,13 +156,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
             "timeStart": "Tue Sep 20 2022",
             "dateEnd": "Thu Sep 15 2022",
             "timeEnd": "Tue Sep 20 2022",
-            "role": "follower",
+            "role": "follower" as any,
             "followers": [
                 {
                     "id": "cl787cvnz0012jb3kcg23zg4w",
                     "name": "Roman Timashev",
                     "image": "https://t.me/i/userpic/320/pyFRk5ueqLuVIiYhmRzZrpv8KOD6n1wqAWgudLRb6Sg.jpg",
-                    "status": "participant",
+                    "status": "participant" as any,
                 },
             ],
         },
@@ -174,7 +174,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
             "timeStart": "Tue Sep 20 2022",
             "dateEnd": "Thu Sep 15 2022",
             "timeEnd": "Tue Sep 20 2022",
-            "role": "leader",
+            "role": "leader" as any,
             "followers": [],
         },
     ]

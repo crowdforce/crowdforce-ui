@@ -1,10 +1,8 @@
-import { createStyles, Group, ScrollArea, Stack, Table, Text } from "@mantine/core"
+import { ActionIcon, Group, Menu, ScrollArea, Stack, Table, Text } from "@mantine/core"
+import { IconDots, IconPacman, IconTools } from "@tabler/icons"
 import dayjs from "dayjs"
+import Link from 'next/link'
 import { FollowedTask } from "types/task"
-
-const useStyles = createStyles((theme) => ({
-
-}))
 
 export type ProfileTasksProps = {
     data: FollowedTask[]
@@ -16,9 +14,6 @@ const roleText = {
 }
 
 export const ProfileTasks: React.FC<ProfileTasksProps> = ({ data }) => {
-    // eslint-disable-next-line
-    const { classes: s } = useStyles()
-
     return (
         <ScrollArea>
             <Table
@@ -83,7 +78,25 @@ export const ProfileTasks: React.FC<ProfileTasksProps> = ({ data }) => {
                                 </Group>
                             </td>
                             <td>
-                                some buttons placeholder
+                                <Menu
+                                    shadow="lg"
+                                >
+                                    <Menu.Target>
+                                        <ActionIcon size={"xl"}>
+                                            <IconDots />
+                                        </ActionIcon>
+                                    </Menu.Target>
+                                    <Menu.Dropdown>
+                                        <Link href={"/project/projectId?editTask=taskId"} passHref>
+                                            <Menu.Item
+                                                icon={<IconTools />}
+                                                component="a"
+                                            >
+                                                {"Редактировать"}
+                                            </Menu.Item>
+                                        </Link>
+                                    </Menu.Dropdown>
+                                </Menu>
                             </td>
                         </tr>
                     ))}

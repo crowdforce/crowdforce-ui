@@ -8,6 +8,7 @@ const useStyles = createStyles((theme) => ({
     card: {
         display: "flex",
         flexDirection: "column",
+        backgroundColor: theme.colorScheme == "light" ? "white" : undefined,
         cursor: "pointer",
     },
     cardSection: {
@@ -82,7 +83,13 @@ export const ProjectAddCard: React.FC<ProjectAddCardProps> = () => {
                 align="center"
                 justify="center"
             >
-                <Text>
+                <Text
+                    align="center"
+                    weight="bold"
+                    sx={{
+                        whiteSpace: "pre-line",
+                    }}
+                >
                     {"Добавить\nновый проект"}
                 </Text>
                 <div className={s.circle}>

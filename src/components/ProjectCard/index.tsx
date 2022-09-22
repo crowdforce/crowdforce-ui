@@ -7,6 +7,7 @@ const useStyles = createStyles((theme) => ({
     card: {
         display: "flex",
         flexDirection: "column",
+        backgroundColor: theme.colorScheme == "light" ? "white" : undefined,
         // boxShadow: '0 4px 8px 2px rgba(10, 60, 30, 0.05), 0px 8px 16px -4px rgba(0, 0, 0, 0.1), 8px 24px 24px 0px rgba(0, 0, 0, 0)',
     },
     cardSection: {
