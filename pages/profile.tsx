@@ -94,7 +94,7 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
                         { maxWidth: "xs", cols: 1 },
                     ]}
                 >
-                    {profile.following.map(({ id, title, description, imageUrl }) => (
+                    {profile.owned.map(({ id, title, description, imageUrl }) => (
                         <ProjectCard
                             key={id}
                             coverSrc={imageUrl}
