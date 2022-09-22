@@ -1,13 +1,12 @@
 import { signOut, useSession } from "next-auth/react"
 import Page from "@/components/Page"
-import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Divider } from "@mantine/core"
+import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
 import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
 import { ProjectCard } from "@/components/ProjectCard"
 import { ProjectAddCard } from "@/components/ProjectAddCard"
 import { ProfileTasks } from "@/components/ProfileTasks"
-import { FollowedTask } from "@/common/types"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -22,10 +21,9 @@ const useStyles = createStyles((theme) => ({
 
 type Props = {
     profile: ProfileResponseDto
-    tasks: FollowedTask[]
 }
 
-const ProfilePage: NextPage<Props> = ({ profile, tasks }) => {
+const ProfilePage: NextPage<Props> = ({ profile }) => {
     const session = useSession()
     const { classes: s } = useStyles()
 
@@ -96,11 +94,7 @@ const ProfilePage: NextPage<Props> = ({ profile, tasks }) => {
                 <Box
                     className={s.section}
                 >
-                    <Divider sx={{ opacity: .5 }} />
-                    <ProfileTasks
-                        data={tasks}
-                    />
-                    <Divider sx={{ opacity: .5 }} />
+                    <ProfileTasks />
                 </Box>
 
                 <Title
@@ -147,46 +141,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     }
 
     const profile = await getProjects(userId)
-    const tasks = [ // no path in backend
-        {
-            "id": "cl86ovzbb0044pb3krupkrdpz",
-            "title": "Обоссать",
-            "description": "Просим обоссать каждое дерево в парке.",
-            "dateStart": "Thu Sep 15 2022",
-            "timeStart": "Tue Sep 20 2022",
-            "dateEnd": "Thu Sep 15 2022",
-            "timeEnd": "Tue Sep 20 2022",
-            "role": "participant" as any,
-            "projectId": "placeholderProjectId",
-            "projectTitle": "placeholderProjectTitle",
-            "followers": [
-                {
-                    "id": "cl787cvnz0012jb3kcg23zg4w",
-                    "name": "Roman Timashev",
-                    "image": "https://t.me/i/userpic/320/pyFRk5ueqLuVIiYhmRzZrpv8KOD6n1wqAWgudLRb6Sg.jpg",
-                    "status": "participant" as any,
-                },
-            ],
-        },
-        {
-            "id": "cl86psi2a0316pb3kngazt098",
-            "title": "Добавить навозия",
-            "description": "Навозия очень мало, давайте добавим",
-            "dateStart": "Thu Sep 15 2022",
-            "timeStart": "Tue Sep 20 2022",
-            "dateEnd": "Thu Sep 15 2022",
-            "timeEnd": "Tue Sep 20 2022",
-            "role": "leader" as any,
-            "projectId": "placeholderProjectId",
-            "projectTitle": "placeholderProjectTitle",
-            "followers": [],
-        },
-    ]
 
     return {
         props: {
             profile,
-            tasks,
         },
     }
 }

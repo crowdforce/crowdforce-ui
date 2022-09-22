@@ -1,11 +1,12 @@
 import { FollowedTask } from "@/common/types"
-import { ActionIcon, Group, Menu, ScrollArea, Stack, Table, Text } from "@mantine/core"
+import { ActionIcon, Center, Divider, Group, Loader, Menu, ScrollArea, Stack, Table, Text } from "@mantine/core"
 import { IconDots, IconTools } from "@tabler/icons"
 import dayjs from "dayjs"
 import Link from "next/link"
+import useSWR from "swr"
 
 export type ProfileTasksProps = {
-    data: FollowedTask[]
+
 }
 
 const roleText = {
@@ -13,9 +14,54 @@ const roleText = {
     participant: "волонтер",
 }
 
-export const ProfileTasks: React.FC<ProfileTasksProps> = ({ data }) => {
+export const ProfileTasks: React.FC<ProfileTasksProps> = ({ }) => {
+    const { data } = useSWR<FollowedTask[]>("/api/admin/tasks", () => ([ // placeholder path and data
+        {
+            "id": "cl86ovzbb0044pb3krupkrdpz",
+            "title": "Обоссать",
+            "description": "Просим обоссать каждое дерево в парке.",
+            "dateStart": "Thu Sep 15 2022",
+            "timeStart": "Tue Sep 20 2022",
+            "dateEnd": "Thu Sep 15 2022",
+            "timeEnd": "Tue Sep 20 2022",
+            "role": "participant" as any,
+            "projectId": "placeholderProjectId",
+            "projectTitle": "placeholderProjectTitle",
+            "followers": [
+                {
+                    "id": "cl787cvnz0012jb3kcg23zg4w",
+                    "name": "Roman Timashev",
+                    "image": "https://t.me/i/userpic/320/pyFRk5ueqLuVIiYhmRzZrpv8KOD6n1wqAWgudLRb6Sg.jpg",
+                    "status": "participant" as any,
+                },
+            ],
+        },
+        {
+            "id": "cl86psi2a0316pb3kngazt098",
+            "title": "Добавить навозия",
+            "description": "Навозия очень мало, давайте добавим",
+            "dateStart": "Thu Sep 15 2022",
+            "timeStart": "Tue Sep 20 2022",
+            "dateEnd": "Thu Sep 15 2022",
+            "timeEnd": "Tue Sep 20 2022",
+            "role": "leader" as any,
+            "projectId": "placeholderProjectId",
+            "projectTitle": "placeholderProjectTitle",
+            "followers": [],
+        },
+    ]))
+
+    if (!data) {
+        return (
+            <Center>
+                <Loader />
+            </Center>
+        )
+    }
+
     return (
         <ScrollArea>
+            <Divider sx={{ opacity: .5 }} />
             <Table
                 verticalSpacing="lg"
             >
@@ -102,6 +148,7 @@ export const ProfileTasks: React.FC<ProfileTasksProps> = ({ data }) => {
                     ))}
                 </tbody>
             </Table>
+            <Divider sx={{ opacity: .5 }} />
         </ScrollArea>
     )
 }
