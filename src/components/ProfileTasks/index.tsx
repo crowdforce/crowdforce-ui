@@ -1,8 +1,8 @@
+import { FollowedTask } from "@/common/types"
 import { ActionIcon, Group, Menu, ScrollArea, Stack, Table, Text } from "@mantine/core"
 import { IconDots, IconTools } from "@tabler/icons"
 import dayjs from "dayjs"
 import Link from "next/link"
-import { FollowedTask } from "types/task"
 
 export type ProfileTasksProps = {
     data: FollowedTask[]

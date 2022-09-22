@@ -7,7 +7,7 @@ import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
 import { ProjectCard } from "@/components/ProjectCard"
 import { ProjectAddCard } from "@/components/ProjectAddCard"
 import { ProfileTasks } from "@/components/ProfileTasks"
-import { FollowedTask } from "types/task"
+import { FollowedTask } from "@/common/types"
 
 const useStyles = createStyles((theme) => ({
     section: {

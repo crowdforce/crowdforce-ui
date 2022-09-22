@@ -123,3 +123,9 @@ export type MapViewportDto = {
   lat: number
   zoom: number
 }
+
+export type FollowedTask = Partial<ProjectTaskDto> & {
+    role: FollowerStatus
+    projectId: string
+    projectTitle: string
+}
