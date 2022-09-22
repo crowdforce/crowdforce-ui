@@ -10,7 +10,7 @@ export type ProfileTasksProps = {
 
 const roleText = {
     leader: "ответственный",
-    follower: "волонтер",
+    participant: "волонтер",
 }
 
 export const ProfileTasks: React.FC<ProfileTasksProps> = ({ data }) => {
@@ -32,7 +32,7 @@ export const ProfileTasks: React.FC<ProfileTasksProps> = ({ data }) => {
                                         {x.title}
                                     </Text>
                                     <Text>
-                                        {"related project name"}
+                                        {x.projectTitle}
                                     </Text>
                                 </Stack>
                             </td>

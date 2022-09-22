@@ -1,5 +1,7 @@
-import { ProjectTaskDto } from "@/common/types"
+import { FollowerStatus, ProjectTaskDto } from "@/common/types"
 
 export type FollowedTask = Partial<ProjectTaskDto> & {
-    role: "leader" | "follower"
+    role: FollowerStatus
+    projectId: string
+    projectTitle: string
 }

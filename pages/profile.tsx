@@ -156,7 +156,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
             "timeStart": "Tue Sep 20 2022",
             "dateEnd": "Thu Sep 15 2022",
             "timeEnd": "Tue Sep 20 2022",
-            "role": "follower" as any,
+            "role": "participant" as any,
+            "projectId": "placeholderProjectId",
+            "projectTitle": "placeholderProjectTitle",
             "followers": [
                 {
                     "id": "cl787cvnz0012jb3kcg23zg4w",
@@ -175,6 +177,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
             "dateEnd": "Thu Sep 15 2022",
             "timeEnd": "Tue Sep 20 2022",
             "role": "leader" as any,
+            "projectId": "placeholderProjectId",
+            "projectTitle": "placeholderProjectTitle",
             "followers": [],
         },
     ]
