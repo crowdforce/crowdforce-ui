@@ -11,7 +11,7 @@ import greenLine from "@/../public/index/heroLine.svg"
 import blueLine from "@/../public/index/blueLine.svg"
 import Image from "next/image"
 import { IconAlertCircle } from "@tabler/icons"
-import { getUserTasks } from "./api/tasks"
+import { getUserTasks } from "@/server/controllers/profile/tasks"
 
 const useStyles = createStyles((theme) => ({
     section: {
