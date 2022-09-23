@@ -1,7 +1,6 @@
 import { Dto, ProjectDto } from "@/common/types"
-import { Aside, createStyles, ScrollArea, Text, Stack, Loader } from "@mantine/core"
+import { Aside, ScrollArea, Text, Stack, Loader, Image } from "@mantine/core"
 import { useAuthenticated } from "@/hooks/useAuthenticated"
-import Image from "next/image"
 import { useRouter } from "next/router"
 import React from "react"
 import useSWR from "swr"
@@ -11,24 +10,7 @@ type ProjectInfoProps = {
 
 }
 
-const useStyles = createStyles((theme) => ({
-    cover: {
-        borderRadius: theme.radius.md,
-    },
-    icon: {
-        flex: "0 0 auto",
-        color: theme.colors.gray[6], // dimmed color
-    },
-    ownerAndLink: {
-        [theme.fn.smallerThan("sm")]: {
-            flexDirection: "column",
-            alignItems: "flex-start",
-        },
-    },
-}))
-
 export const Info: React.FC<ProjectInfoProps> = () => {
-    const { classes: s } = useStyles()
     const router = useRouter()
     const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${router.query.projectId}`)
     const isUnauthenticated = useAuthenticated()
@@ -49,11 +31,8 @@ export const Info: React.FC<ProjectInfoProps> = () => {
                 <Stack>
                     <Image
                         src={data?.payload.imageUrl ?? "/wip.png"}
-                        className={s.cover}
                         alt={data.payload.title}
-                        layout={"responsive"}
-                        width={16}
-                        height={10}
+                        radius="md"
                     />
 
                     {/* <Group
