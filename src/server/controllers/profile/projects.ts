@@ -2,11 +2,6 @@ import { ProjectDto } from "@/common/types"
 import prisma from "@/server/prisma"
 import { Asset, Project } from "@prisma/client"
 
-export type ProfileResponseDto = {
-    owned: ProjectDto[]
-    following: ProjectDto[]
-}
-
 type Item = Project & { cover: Asset | null }
 
 function mapResponse(item: Item): any {
@@ -23,7 +18,7 @@ function mapResponse(item: Item): any {
     }
 }
 
-export async function getProjects(userId: string): Promise<ProfileResponseDto> {
+export async function getOwnProjects(userId: string): Promise<ProjectDto[]> {
     const owned = await prisma.project.findMany({
         where: {
             ownerId: userId,
@@ -36,6 +31,14 @@ export async function getProjects(userId: string): Promise<ProfileResponseDto> {
         },
     })
 
+    return owned.map(x => ({
+        ...mapResponse(x),
+        isFollowed: null,
+        followers: 0,
+    }))
+}
+
+export async function getFollowingProjects(userId: string): Promise<ProjectDto[]> {
     const projectFollows = await prisma.userFollows.findMany({
         where: {
             userId,
@@ -51,16 +54,9 @@ export async function getProjects(userId: string): Promise<ProfileResponseDto> {
     })
     const following = projectFollows.map(x => x.project)
 
-    return {
-        owned: owned.map(x => ({
-            ...mapResponse(x),
-            isFollowed: null,
-            followers: 0,
-        })),
-        following: following.map(x => ({
-            ...mapResponse(x),
-            isFollowed: true,
-            followers: 0,
-        })),
-    }
+    return following.map(x => ({
+        ...mapResponse(x),
+        isFollowed: true,
+        followers: 0,
+    }))
 }

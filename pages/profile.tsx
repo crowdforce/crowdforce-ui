@@ -1,17 +1,19 @@
 import { signOut, useSession } from "next-auth/react"
 import Page from "@/components/Page"
-import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Alert, Divider } from "@mantine/core"
+import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Divider } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
-import { getProjects, ProfileResponseDto } from "@/server/controllers/profile/projects"
+import { getFollowingProjects, getOwnProjects } from "@/server/controllers/profile/projects"
 import { ProjectCard } from "@/components/ProjectCard"
 import { ProjectAddCard } from "@/components/ProjectAddCard"
 import { ProfileTasks } from "@/components/ProfileTasks"
 import greenLine from "@/../public/index/heroLine.svg"
 import blueLine from "@/../public/index/blueLine.svg"
 import Image from "next/image"
-import { IconAlertCircle } from "@tabler/icons"
 import { getUserTasks } from "@/server/controllers/profile/tasks"
+import useSWR from "swr"
+import { ProjectDto } from "@/common/types"
+import { FollowingProjects } from "@/components/FollowingProjects"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -44,12 +46,12 @@ const useStyles = createStyles((theme) => ({
 }))
 
 type Props = {
-    profile: ProfileResponseDto
 }
 
-const ProfilePage: NextPage<Props> = ({ profile }) => {
+const ProfilePage: NextPage<Props> = () => {
     const session = useSession()
     const { classes: s, cx } = useStyles()
+    const { data: own } = useSWR<ProjectDto[]>("/api/profile/projects")
 
     return (
         <Page>
@@ -96,7 +98,7 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
                         { maxWidth: "xs", cols: 1 },
                     ]}
                 >
-                    {profile.owned.map(({ id, title, description, imageUrl }) => (
+                    {!own ? null : own.map(({ id, title, description, imageUrl }) => (
                         <ProjectCard
                             key={id}
                             coverSrc={imageUrl}
@@ -149,46 +151,7 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
                     Интересные проекты
                 </Title>
 
-                {(profile.following.length === 0) ? (
-                    <Box
-                        className={s.section}
-                    >
-                        <Alert
-                            icon={(
-                                <IconAlertCircle size={16} />
-                            )}
-                            variant="filled"
-                            title="Проектов нет"
-                            color="teal"
-                            radius="md"
-                            sx={{
-                                maxWidth: 520,
-                            }}
-                        >
-                            Вы не подписаны ни на один проект. Найдите для себя что-то интересное на главной странице или карте
-                        </Alert>
-                    </Box>
-                ) : (
-                    <SimpleGrid
-                        className={s.section}
-                        cols={3}
-                        breakpoints={[
-                            { maxWidth: "xl", cols: 3 },
-                            { maxWidth: "md", cols: 2 },
-                            { maxWidth: "xs", cols: 1 },
-                        ]}
-                    >
-                        {profile.following.map(({ id, title, description, imageUrl }) => (
-                            <ProjectCard
-                                key={id}
-                                coverSrc={imageUrl}
-                                title={title}
-                                description={description}
-                                href={`/project/${id}`}
-                            />
-                        ))}
-                    </SimpleGrid>
-                )}
+                <FollowingProjects />
             </Stack>
         </Page >
     )
@@ -205,15 +168,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
         }
     }
 
-    const profile = await getProjects(userId)
+    const projects = await getOwnProjects(userId)
+    const followingProjects = await getFollowingProjects(userId)
     const tasks = await getUserTasks(userId)
 
     return {
         props: {
             fallback: {
+                "/api/profile/projects": projects,
+                "/api/profile/projects/follow": followingProjects,
                 "/api/tasks": tasks,
             },
-            profile,
         },
     }
 }
