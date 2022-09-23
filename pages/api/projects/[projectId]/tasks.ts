@@ -33,15 +33,15 @@ export async function getTasks(projectId: string): Promise<ProjectTaskDto[]> {
 
     return tasks.map(task => {
         const [dateStart, timeStart] = splitDateAndTime(task.startAt)
-        const [dateEnd, timeEnd] = splitDateAndTime(task.startAt)
+        const [dateEnd, timeEnd] = splitDateAndTime(task.endAt)
         return ({
             id: task.id,
             title: task.title,
             description: task.description,
             dateStart: dateStart.toDateString(),
-            timeStart: timeStart.toDateString(),
+            timeStart: timeStart.toString(),
             dateEnd: dateEnd.toDateString(),
-            timeEnd: timeEnd.toDateString(),
+            timeEnd: timeEnd.toString(),
             followers: task.users.map(x => ({
                 id: x.user.id,
                 name: x.user.name!,
