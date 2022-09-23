@@ -1,6 +1,6 @@
 import { FollowedTask } from "@/common/types"
-import { ActionIcon, Center, Divider, Group, Loader, Menu, ScrollArea, Stack, Table, Text } from "@mantine/core"
-import { IconDots, IconTools } from "@tabler/icons"
+import { ActionIcon, Alert, Center, Divider, Group, Loader, Menu, ScrollArea, Stack, Table, Text } from "@mantine/core"
+import { IconAlertCircle, IconDots, IconTools } from "@tabler/icons"
 import dayjs from "dayjs"
 import Link from "next/link"
 import useSWR from "swr"
@@ -15,7 +15,7 @@ export type ProfileTasksProps = {
 }
 
 export const ProfileTasks: React.FC<ProfileTasksProps> = ({ }) => {
-    const { data } = useSWR<FollowedTask[]>("/api/admin/tasks", () => ([ // placeholder path and data
+    const { data } = useSWR<FollowedTask[]>("/api/admin/tasks", () => (false ? [] : [ // placeholder path and data
         {
             "id": "cl86ovzbb0044pb3krupkrdpz",
             "title": "Обоссать",
@@ -56,6 +56,25 @@ export const ProfileTasks: React.FC<ProfileTasksProps> = ({ }) => {
             <Center>
                 <Loader />
             </Center>
+        )
+    }
+
+    if (data.length === 0) {
+        return (
+            <Alert
+                icon={(
+                    <IconAlertCircle size={16} />
+                )}
+                variant="filled"
+                title="Задач нет"
+                color="teal"
+                radius="md"
+                sx={{
+                    maxWidth: 520,
+                }}
+            >
+                У вас пока нет задач. Вы можете найти для себя новый проект или добавить задачу в свой.
+            </Alert>
         )
     }
 

@@ -1,6 +1,6 @@
 import { signOut, useSession } from "next-auth/react"
 import Page from "@/components/Page"
-import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box } from "@mantine/core"
+import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Alert } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
 import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
@@ -10,6 +10,7 @@ import { ProfileTasks } from "@/components/ProfileTasks"
 import greenLine from "@/../public/index/heroLine.svg"
 import blueLine from "@/../public/index/blueLine.svg"
 import Image from "next/image"
+import { IconAlertCircle } from "@tabler/icons"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -111,7 +112,7 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
                         <Image
                             src={blueLine}
                             quality={100}
-                            alt=''
+                            alt=""
                         />
                     </div>
                     <div
@@ -120,7 +121,7 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
                         <Image
                             src={greenLine}
                             quality={100}
-                            alt=''
+                            alt=""
                         />
                     </div>
                 </SimpleGrid>
@@ -145,26 +146,46 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
                     Интересные проекты
                 </Title>
 
-                <SimpleGrid
-                    className={s.section}
-                    cols={3}
-                    breakpoints={[
-                        { maxWidth: "xl", cols: 3 },
-                        { maxWidth: "md", cols: 2 },
-                        { maxWidth: "xs", cols: 1 },
-                    ]}
-                >
-                    {/* wrong projects data */}
-                    {profile.following.map(({ id, title, description, imageUrl }) => (
-                        <ProjectCard
-                            key={id}
-                            coverSrc={imageUrl}
-                            title={title}
-                            description={description}
-                            href={`/project/${id}`}
-                        />
-                    ))}
-                </SimpleGrid>
+                {(profile.following.length === 0) ? (
+                    <Box
+                        className={s.section}
+                    >
+                        <Alert
+                            icon={(
+                                <IconAlertCircle size={16} />
+                            )}
+                            variant="filled"
+                            title="Проектов нет"
+                            color="teal"
+                            radius="md"
+                            sx={{
+                                maxWidth: 520,
+                            }}
+                        >
+                            Вы не подписаны ни на один проект. Найдите для себя что-то интересное на главной странице или карте
+                        </Alert>
+                    </Box>
+                ) : (
+                    <SimpleGrid
+                        className={s.section}
+                        cols={3}
+                        breakpoints={[
+                            { maxWidth: "xl", cols: 3 },
+                            { maxWidth: "md", cols: 2 },
+                            { maxWidth: "xs", cols: 1 },
+                        ]}
+                    >
+                        {profile.following.map(({ id, title, description, imageUrl }) => (
+                            <ProjectCard
+                                key={id}
+                                coverSrc={imageUrl}
+                                title={title}
+                                description={description}
+                                href={`/project/${id}`}
+                            />
+                        ))}
+                    </SimpleGrid>
+                )}
             </Stack>
         </Page >
     )
