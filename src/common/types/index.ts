@@ -1,3 +1,5 @@
+import { TaskStatus } from "@prisma/client"
+
 export type ErrorDto = {
   error: string
 }
@@ -90,6 +92,17 @@ export type AdminNewProjectTaskDto = {
     dateEnd: string
 }
 
+export type ProjectTaskSummaryDto = {
+  id: string
+  projectId: string
+  projectTitle: string
+  title: string
+  status: TaskStatus,
+  userRole: FollowerStatus,
+  dateStart: string
+  dateEnd: string
+}
+
 export type ProjectTaskDto = {
   id: string
   title: string
@@ -122,10 +135,4 @@ export type MapViewportDto = {
   lng: number
   lat: number
   zoom: number
-}
-
-export type FollowedTask = Partial<ProjectTaskDto> & {
-    role: FollowerStatus
-    projectId: string
-    projectTitle: string
 }

@@ -1,6 +1,6 @@
 import { signOut, useSession } from "next-auth/react"
 import Page from "@/components/Page"
-import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Alert } from "@mantine/core"
+import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Alert, Divider } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
 import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
@@ -11,6 +11,7 @@ import greenLine from "@/../public/index/heroLine.svg"
 import blueLine from "@/../public/index/blueLine.svg"
 import Image from "next/image"
 import { IconAlertCircle } from "@tabler/icons"
+import { getUserTasks } from "./api/tasks"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -136,7 +137,9 @@ const ProfilePage: NextPage<Props> = ({ profile }) => {
                 <Box
                     className={s.section}
                 >
+                    <Divider sx={{ opacity: .5 }} />
                     <ProfileTasks />
+                    <Divider sx={{ opacity: .5 }} />
                 </Box>
 
                 <Title
@@ -203,9 +206,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     }
 
     const profile = await getProjects(userId)
+    const tasks = await getUserTasks(userId)
 
     return {
         props: {
+            fallback: {
+                "/api/tasks": tasks,
+            },
             profile,
         },
     }
