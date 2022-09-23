@@ -1,3 +1,5 @@
+import { TaskStatus } from "@prisma/client"
+
 export type ErrorDto = {
   error: string
 }
@@ -88,6 +90,17 @@ export type AdminNewProjectTaskDto = {
     timeEnd: string
     dateStart: string
     dateEnd: string
+}
+
+export type ProjectTaskSummaryDto = {
+  id: string
+  projectId: string
+  projectTitle: string
+  title: string
+  status: TaskStatus,
+  userRole: FollowerStatus,
+  dateStart: string
+  dateEnd: string
 }
 
 export type ProjectTaskDto = {

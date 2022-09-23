@@ -1,110 +1,159 @@
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import Page from "@/components/Page"
-import { Avatar, Card, createStyles, Group, Stack, Title } from "@mantine/core"
+import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Divider } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
-import { getProjects, ProfileResponseDto } from "@/server/controllers/profile"
+import { getFollowingProjects, getOwnProjects } from "@/server/controllers/profile/projects"
 import { ProjectCard } from "@/components/ProjectCard"
+import { ProjectAddCard } from "@/components/ProjectAddCard"
+import { ProfileTasks } from "@/components/ProfileTasks"
+import greenLine from "@/../public/index/heroLine.svg"
+import blueLine from "@/../public/index/blueLine.svg"
+import Image from "next/image"
+import { getUserTasks } from "@/server/controllers/profile/tasks"
+import useSWR from "swr"
+import { ProjectDto } from "@/common/types"
+import { FollowingProjects } from "@/components/FollowingProjects"
 
 const useStyles = createStyles((theme) => ({
-    bigGroup: {
-        alignItems: "flex-start",
-        [theme.fn.smallerThan("sm")]: {
-            flexDirection: "column",
-            alignItems: "stretch",
-            "& div": {
-                maxWidth: "unset",
-            },
+    section: {
+        position: "relative",
+        width: "100%",
+        maxWidth: 1160,
+    },
+    logoutButton: {
+        width: "fit-content",
+        minWidth: "min(100%, 150px)",
+    },
+    line: {
+        position: "absolute",
+        transform: "translate(40%)",
+        zIndex: -1,
+        [theme.fn.smallerThan("xs")]: {
+            display: "none",
         },
     },
-    generalInfo: {
-        flexGrow: "initial",
-        marginRight: "auto",
-        [theme.fn.smallerThan("sm")]: {
-            marginRight: "unset",
-        },
+    blueLine: {
+        bottom: "-25%",
+        right: 0,
+        transform: "translate(40%)",
+    },
+    greenLine: {
+        top: "-30px",
+        left: 0,
+        transform: "translate(-40%)",
     },
 }))
 
 type Props = {
-    profile: ProfileResponseDto
 }
 
-const ProfilePage: NextPage<Props> = props => {
+const ProfilePage: NextPage<Props> = () => {
     const session = useSession()
-    const { classes: s } = useStyles()
+    const { classes: s, cx } = useStyles()
+    const { data: own } = useSWR<ProjectDto[]>("/api/profile/projects")
 
     return (
         <Page>
-            <Group
-                noWrap
-                grow
-                className={s.bigGroup}
+            <Stack
+                align="center"
+                spacing="xl"
             >
-                <Card
-                    withBorder
-                    p='lg'
-                    className={s.generalInfo}
+                <Group
+                    noWrap
+                    position="apart"
+                    className={s.section}
                 >
-                    <Group position='center'>
-                        <Stack>
-                            <Avatar src={session.data?.user?.image!} size={256} radius={"50%" as any} />
-                            <Title order={1}>
-                                {session.data?.user?.name!}
-                            </Title>
-                        </Stack>
+                    <Group>
+                        <Avatar
+                            src={session.data?.user?.image!}
+                            size={32}
+                        />
+                        <Text size="sm" sx={{ lineHeight: 1 }}
+
+                        >
+                            {session.data?.user?.name!}
+                        </Text>
                     </Group>
-                </Card>
-                <Card withBorder>
-                    <Card.Section
-                        withBorder
-                        inheritPadding
-                        py='inherit'
+                    <Button
+                        className={s.logoutButton}
+                        onClick={() => signOut()}
                     >
-                        <Title order={2}>
-                            Проекты за которыми вы следите
-                        </Title>
-                    </Card.Section>
-                    <Stack
-                        py='inherit'
+                        Выйти
+                    </Button>
+                </Group>
+
+                <Title
+                    className={s.section}
+                    mt="xl"
+                >
+                    Мои проекты
+                </Title>
+                <SimpleGrid
+                    className={s.section}
+                    cols={3}
+                    breakpoints={[
+                        { maxWidth: "xl", cols: 3 },
+                        { maxWidth: "md", cols: 2 },
+                        { maxWidth: "xs", cols: 1 },
+                    ]}
+                >
+                    {!own ? null : own.map(({ id, title, description, imageUrl }) => (
+                        <ProjectCard
+                            key={id}
+                            coverSrc={imageUrl}
+                            title={title}
+                            description={description}
+                            href={`/project/${id}`}
+                        />
+                    ))}
+                    <ProjectAddCard />
+
+                    <div
+                        className={cx(s.line, s.blueLine)}
                     >
-                        {props.profile.following.map(({ id, title, description, imageUrl }) => (
-                            <ProjectCard
-                                key={id}
-                                coverSrc={imageUrl}
-                                title={title}
-                                description={description}
-                                href={`/project/${id}`}
-                            />
-                        ))}
-                    </Stack>
-                </Card>
-                <Card withBorder>
-                    <Card.Section
-                        withBorder
-                        inheritPadding
-                        py='inherit'
+                        <Image
+                            src={blueLine}
+                            quality={100}
+                            alt=""
+                        />
+                    </div>
+                    <div
+                        className={cx(s.line, s.greenLine)}
                     >
-                        <Title order={2}>
-                            Проекты которые вы курируете
-                        </Title>
-                    </Card.Section>
-                    <Stack
-                        py='inherit'
-                    >
-                        {props.profile.owned.map(({ id, title, description, imageUrl }) => (
-                            <ProjectCard
-                                key={id}
-                                coverSrc={imageUrl}
-                                title={title}
-                                description={description}
-                                href={`/project/${id}`}
-                            />
-                        ))}
-                    </Stack>
-                </Card>
-            </Group>
-        </Page>
+                        <Image
+                            src={greenLine}
+                            quality={100}
+                            alt=""
+                        />
+                    </div>
+                </SimpleGrid>
+
+                <Title
+                    className={s.section}
+                    mt="xl"
+                >
+                    Мои задачи
+                </Title>
+
+                <Box
+                    className={s.section}
+                >
+                    <Divider sx={{ opacity: .5 }} />
+                    <ProfileTasks />
+                    <Divider sx={{ opacity: .5 }} />
+                </Box>
+
+                <Title
+                    className={s.section}
+                    mt="xl"
+                >
+                    Интересные проекты
+                </Title>
+
+                <FollowingProjects />
+            </Stack>
+        </Page >
     )
 }
 
@@ -119,11 +168,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
         }
     }
 
-    const profile = await getProjects(userId)
+    const projects = await getOwnProjects(userId)
+    const followingProjects = await getFollowingProjects(userId)
+    const tasks = await getUserTasks(userId)
 
     return {
         props: {
-            profile,
+            fallback: {
+                "/api/profile/projects": projects,
+                "/api/profile/projects/follow": followingProjects,
+                "/api/tasks": tasks,
+            },
         },
     }
 }
