@@ -92,10 +92,10 @@ export const ProjectTask: React.FC<ProjectTaskProps> = ({ projectId, task, color
                             spacing={0}
                         >
                             <Text>
-                                {dayjs(task.timeStart).format("HH:MM")}
+                                {dayjs(task.timeStart).format("HH:mm")}
                             </Text>
                             <Text>
-                                {dayjs(task.timeEnd).format("HH:MM")}
+                                {dayjs(task.timeEnd).format("HH:mm")}
                             </Text>
                         </Stack>
                     </Group>
