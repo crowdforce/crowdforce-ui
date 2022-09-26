@@ -1,4 +1,4 @@
-import { Aside, Button, Center, createStyles, Group, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
+import { Aside, Button, Center, createStyles, Group, Loader, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
 import { IconCalendarEvent, IconClock } from "@tabler/icons"
 import React, { useCallback, useContext, useEffect } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
@@ -38,8 +38,10 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { data } = useSWR<FeaturesData[]>(`/api/admin/projects/${projectId}/features`)
     const { mutate } = useSWRConfig()
     const { task, setTask } = useContext(ProjectTaskContext)
-    const { handleSubmit, register, setValue, control } = useForm<AdminNewProjectTaskDto>({
-        defaultValues: task ? task : {},
+    const { handleSubmit, register, setValue, control, reset, formState: { isSubmitting } } = useForm<AdminNewProjectTaskDto>({
+        defaultValues: task
+            ? task
+            : { features: [] },
     })
 
     useEffect(() => {
@@ -58,8 +60,9 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
             return
         }
 
+        reset()
         mutate(`/api/projects/${projectId}/tasks`)
-    }, [mutate, projectId])
+    }, [mutate, projectId, reset])
 
     return (
         <Aside.Section
@@ -190,13 +193,14 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
                     >
                         <Button
                             type='submit'
+                            disabled={isSubmitting}
                             styles={{
                                 label: {
                                     fontWeight: "normal !important" as "normal",
                                 },
                             }}
                         >
-                            Добавить задачу
+                            {isSubmitting ? <Loader /> : "Добавить задачу"}
                         </Button>
                     </Center>
                 </Stack>
