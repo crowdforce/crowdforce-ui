@@ -1,6 +1,6 @@
 import { signOut, useSession } from "next-auth/react"
 import Page from "@/components/Page"
-import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Divider } from "@mantine/core"
+import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
 import { getFollowingProjects, getOwnProjects } from "@/server/controllers/profile/projects"
@@ -139,9 +139,7 @@ const ProfilePage: NextPage<Props> = () => {
                 <Box
                     className={s.section}
                 >
-                    <Divider sx={{ opacity: .5 }} />
                     <ProfileTasks />
-                    <Divider sx={{ opacity: .5 }} />
                 </Box>
 
                 <Title

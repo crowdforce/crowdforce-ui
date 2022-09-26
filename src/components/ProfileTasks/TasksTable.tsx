@@ -78,10 +78,10 @@ export const TasksTable: React.FC<TasksTableProps> = ({ data }) => {
                                     spacing={0}
                                 >
                                     <Text>
-                                        {dayjs(x.dateStart).format("HH:MM")}
+                                        {dayjs(x.dateStart).format("HH:mm")}
                                     </Text>
                                     <Text>
-                                        {dayjs(x.dateEnd).format("HH:MM")}
+                                        {dayjs(x.dateEnd).format("HH:mm")}
                                     </Text>
                                 </Stack>
                             </Group>
