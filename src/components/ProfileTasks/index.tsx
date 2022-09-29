@@ -1,5 +1,5 @@
 import { ProjectTaskSummaryDto } from "@/common/types"
-import { Alert, Center, Divider, Loader } from "@mantine/core"
+import { Alert, Center, Loader } from "@mantine/core"
 import { IconAlertCircle } from "@tabler/icons"
 import useSWR from "swr"
 import { TasksTable } from "./TasksTable"
@@ -40,7 +40,6 @@ export const ProfileTasks: React.FC<ProfileTasksProps> = ({ }) => {
 
     return (
         <>
-            <Divider sx={{ opacity: .5 }} />
             <TasksTable
                 data={data.map(x => ({
                     id: x.id,
@@ -52,7 +51,6 @@ export const ProfileTasks: React.FC<ProfileTasksProps> = ({ }) => {
                     role: x.userRole,
                 }))}
             />
-            <Divider sx={{ opacity: .5 }} />
         </>
     )
 }
