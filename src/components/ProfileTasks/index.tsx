@@ -39,18 +39,16 @@ export const ProfileTasks: React.FC<ProfileTasksProps> = ({ }) => {
     }
 
     return (
-        <>
-            <TasksTable
-                data={data.map(x => ({
-                    id: x.id,
-                    title: x.title,
-                    projectTitle: x.projectTitle,
-                    href: `/project/${x.projectId}`,
-                    dateStart: new Date(x.dateStart),
-                    dateEnd: new Date(x.dateEnd),
-                    role: x.userRole,
-                }))}
-            />
-        </>
+        <TasksTable
+            data={data.map(x => ({
+                id: x.id,
+                title: x.title,
+                projectTitle: x.projectTitle,
+                href: `/project/${x.projectId}`,
+                dateStart: new Date(x.dateStart),
+                dateEnd: new Date(x.dateEnd),
+                role: x.userRole,
+            }))}
+        />
     )
 }
