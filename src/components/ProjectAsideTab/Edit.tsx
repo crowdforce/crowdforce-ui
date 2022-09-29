@@ -1,5 +1,5 @@
 import { AdminProjectDto, NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
-import { Aside, ScrollArea } from "@mantine/core"
+import { Aside, ScrollArea, Text, Group, Image, Space } from "@mantine/core"
 import { MIME_TYPES } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
 import { useRouter } from "next/router"
@@ -7,6 +7,7 @@ import React, { useState } from "react"
 import useSWR from "swr"
 import { FileDrop } from "../FileDrop"
 import { ProjectEditForm } from "../ProjectEditForm"
+import { IconPhoto } from "@tabler/icons"
 
 // async function sha() {
 // var filesize = fileInput.files[0].size;
@@ -36,27 +37,9 @@ export const Edit: React.FC<ProjectEditProps> = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
+    const { data: { imageUrl } } = useSWR(`/api/projects/${router.query.projectId}`)
 
-    // const [files, setFiles] = useState<FileWithPath[]>([]);
-
-    // const previews = files.map((file, index) => {
-    //     const imageUrl = URL.createObjectURL(file);
-    //     return (
-    //         <Image
-    //             key={index}
-    //             src={imageUrl}
-    //             imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-    //         />
-    //     );
-    // });
-    // <SimpleGrid
-    //     cols={4}
-    //     breakpoints={[{ maxWidth: 'sm', cols: 1 }]}
-    //     mt={previews.length > 0 ? 'xl' : 0}
-    // >
-    //     {previews}
-    // </SimpleGrid>
-
+    const [preview, setPreview] = useState<string | null>(imageUrl ?? null)
     return (
         <Aside.Section
             grow
@@ -66,6 +49,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
             <FileDrop
                 multiple={false}
                 loading={coverLoading}
+                p="md"
                 onDrop={async files => {
                     setCoverLoading(true)
                     const file = files[0]
@@ -101,6 +85,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                         },
                     })
 
+                    setPreview(URL.createObjectURL(file))
                     showNotification({
                         title: "Успех!",
                         message: "Обложка обновилась",
@@ -126,7 +111,36 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                     MIME_TYPES.png,
                 ]}
 
-            ></FileDrop>
+            >
+                {preview ? (
+                    <div style={{
+                        position: "relative",
+                        flex: 1,
+                    }}>
+                        <Image
+                            src={preview}
+                            alt={""}
+                            radius="md"
+                        />
+                    </div>
+                ) : (
+                    <Group
+                        noWrap
+                    >
+                        <IconPhoto size={50} stroke={1.5} />
+                        <div>
+                            <Text size="xl" inline>
+                                Перетащите картинку сюда<br />или кликните
+                            </Text>
+                            <Text size="sm" color="dimmed" inline mt={7}>
+                                Размер не более 5мб
+                            </Text>
+                        </div>
+                    </Group>
+                )}
+            </FileDrop>
+
+            <Space h="lg" />
 
             {!data ? null : (
                 <ProjectEditForm
