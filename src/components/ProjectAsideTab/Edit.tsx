@@ -39,7 +39,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
     const { data } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
     const { data: { imageUrl } } = useSWR(`/api/projects/${router.query.projectId}`)
 
-    const [preview, setPreview] = useState<string>(imageUrl ?? null)
+    const [preview, setPreview] = useState<string | null>(imageUrl ?? null)
     return (
         <Aside.Section
             grow
