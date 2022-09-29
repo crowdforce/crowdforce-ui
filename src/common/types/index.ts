@@ -60,6 +60,7 @@ export type AdminProjectDto = {
   title: string
   description: string
   status: string
+  imageUrl: string | null
   viewport: {
     lng: number
     lat: number

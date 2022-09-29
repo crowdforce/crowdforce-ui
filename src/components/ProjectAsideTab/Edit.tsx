@@ -4,7 +4,7 @@ import { MIME_TYPES } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
 import { useRouter } from "next/router"
 import React, { useState } from "react"
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 import { FileDrop } from "../FileDrop"
 import { ProjectEditForm } from "../ProjectEditForm"
 import { IconPhoto } from "@tabler/icons"
@@ -36,10 +36,10 @@ export const Edit: React.FC<ProjectEditProps> = () => {
     const [coverLoading, setCoverLoading] = useState(false)
     const router = useRouter()
     const projectId = router.query.projectId as string
+    const { mutate } = useSWRConfig()
     const { data } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
-    const { data: { imageUrl } } = useSWR(`/api/projects/${router.query.projectId}`)
+    const preview = data?.imageUrl ?? null
 
-    const [preview, setPreview] = useState<string | null>(imageUrl ?? null)
     return (
         <Aside.Section
             grow
@@ -85,11 +85,12 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                         },
                     })
 
-                    setPreview(URL.createObjectURL(file))
                     showNotification({
                         title: "Успех!",
                         message: "Обложка обновилась",
                     })
+                    mutate(`/api/admin/projects/${projectId}`)
+                    mutate(`/api/projects/${projectId}`)
                     setCoverLoading(false)
                 }}
                 onReject={(rejects) => {

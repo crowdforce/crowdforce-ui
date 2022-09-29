@@ -1,10 +1,11 @@
 import prisma from "@/server/prisma"
 import { AdminProjectDto } from "@/common/types"
 import { withUser } from "@/server/middlewares/withUser"
-import { MapViewport, Project } from "@prisma/client"
+import { Asset, MapViewport, Project } from "@prisma/client"
 
 type ProjectWithViewport = Project & {
   viewport: MapViewport
+  cover: Asset | null,
 }
 
 function mapResponse(project: ProjectWithViewport): AdminProjectDto {
@@ -13,6 +14,7 @@ function mapResponse(project: ProjectWithViewport): AdminProjectDto {
         title: project.title,
         description: project.description,
         status: project.status,
+        imageUrl: project.cover?.src ?? null,
         viewport: {
             lng: project.viewport.lng,
             lat: project.viewport.lat,
@@ -28,6 +30,7 @@ export async function getAdminProject(projectId: string) {
         },
         include: {
             viewport: true,
+            cover: true,
         },
     })
     if (!project) {
