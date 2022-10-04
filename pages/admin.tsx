@@ -1,15 +1,14 @@
 import Page from "@/components/Page"
-import { createStyles, Stack, Title, SimpleGrid } from "@mantine/core"
+import { createStyles, Stack, Title, ActionIcon, Menu, Table, Text, Badge, Loader } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { getUserId } from "@/server/lib"
 import { getOwnProjects } from "@/server/controllers/profile/projects"
-import { ProjectAddCard } from "@/components/ProjectAddCard"
-import greenLine from "@/../public/index/heroLine.svg"
-import blueLine from "@/../public/index/blueLine.svg"
-import Image from "next/image"
 import useSWR from "swr"
 import { ProjectDto } from "@/common/types"
-import { AdminProjectCard } from "@/components/AdminProjectCard"
+import { IconBan, IconDots, IconEyeOff, IconTrash } from "@tabler/icons"
+import Link from "next/link"
+import { ProjectStatus } from "@prisma/client"
+import { useCallback } from "react"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -17,36 +16,40 @@ const useStyles = createStyles((theme) => ({
         width: "100%",
         maxWidth: 1160,
     },
-    logoutButton: {
-        width: "fit-content",
-        minWidth: "min(100%, 150px)",
-    },
-    line: {
-        position: "absolute",
-        transform: "translate(40%)",
-        zIndex: -1,
-        [theme.fn.smallerThan("xs")]: {
-            display: "none",
-        },
-    },
-    blueLine: {
-        bottom: "-25%",
-        right: 0,
-        transform: "translate(40%)",
-    },
-    greenLine: {
-        top: "-30px",
-        left: 0,
-        transform: "translate(-40%)",
-    },
 }))
 
 type Props = {
 }
 
+const statusComponents = {
+    "Active": (
+        <Badge>
+            Нормальный
+        </Badge>
+    ),
+    "Init": (
+        <Badge color="gray">
+            Новый
+        </Badge>
+    ),
+    "Banned": (
+        <Badge color="red">
+            В бане
+        </Badge>
+    ),
+}
+// placeholder, should be like SomethingDto
+type ProjectType = ProjectDto & {
+    status: ProjectStatus
+}
+
 const ProfilePage: NextPage<Props> = () => {
-    const { classes: s, cx } = useStyles()
-    const { data: own } = useSWR<ProjectDto[]>("/api/profile/projects")
+    const { classes: s } = useStyles()
+    const { data: own } = useSWR<ProjectType[]>("/api/profile/projects")
+
+    const onDelete = useCallback((id: string) => null, [])
+    const onBan = useCallback((id: string) => null, [])
+    const onHide = useCallback((id: string) => null, [])
 
     return (
         <Page>
@@ -58,47 +61,67 @@ const ProfilePage: NextPage<Props> = () => {
                     className={s.section}
                     mt="xl"
                 >
-                    Мои проекты
+                    Админская панель
                 </Title>
-                <SimpleGrid
+                <Table
                     className={s.section}
-                    cols={3}
-                    breakpoints={[
-                        { maxWidth: "xl", cols: 3 },
-                        { maxWidth: "md", cols: 2 },
-                        { maxWidth: "xs", cols: 1 },
-                    ]}
+                    verticalSpacing="lg"
                 >
-                    {!own ? null : own.map(({ id, title, description, imageUrl }) => (
-                        <AdminProjectCard
-                            key={id}
-                            coverSrc={imageUrl}
-                            title={title}
-                            description={description}
-                            href={`/project/${id}`}
-                        />
-                    ))}
-                    <ProjectAddCard />
-
-                    <div
-                        className={cx(s.line, s.blueLine)}
-                    >
-                        <Image
-                            src={blueLine}
-                            quality={100}
-                            alt=""
-                        />
-                    </div>
-                    <div
-                        className={cx(s.line, s.greenLine)}
-                    >
-                        <Image
-                            src={greenLine}
-                            quality={100}
-                            alt=""
-                        />
-                    </div>
-                </SimpleGrid>
+                    <tbody>
+                        {!own ? <Loader /> : own.map(({ id, title, status }) => (
+                            <tr key={id}>
+                                <td>
+                                    <Link href={`/project/${id}`} passHref>
+                                        <Text
+                                            component='a'
+                                            inherit
+                                        >
+                                            {title}
+                                        </Text>
+                                    </Link>
+                                </td>
+                                <td>
+                                    <Text
+                                        weight="bold"
+                                    >
+                                        {statusComponents[status] ?? null}
+                                    </Text>
+                                </td>
+                                <td>
+                                    <Menu
+                                        shadow="lg"
+                                    >
+                                        <Menu.Target>
+                                            <ActionIcon size={"xl"}>
+                                                <IconDots />
+                                            </ActionIcon>
+                                        </Menu.Target>
+                                        <Menu.Dropdown>
+                                            <Menu.Item
+                                                icon={<IconTrash />}
+                                                onClick={() => onDelete(id)}
+                                            >
+                                                {"Удалить"}
+                                            </Menu.Item>
+                                            <Menu.Item
+                                                icon={<IconBan />}
+                                                onClick={() => onBan(id)}
+                                            >
+                                                {"Забанить"}
+                                            </Menu.Item>
+                                            <Menu.Item
+                                                icon={<IconEyeOff />}
+                                                onClick={() => onHide(id)}
+                                            >
+                                                {"Скрыть с главной"}
+                                            </Menu.Item>
+                                        </Menu.Dropdown>
+                                    </Menu>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
             </Stack>
         </Page >
     )
@@ -106,7 +129,10 @@ const ProfilePage: NextPage<Props> = () => {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const userId = await getUserId(ctx)
-    if (!userId) {
+
+    // placeholder user role
+    const isGlobalAdmin = true
+    if (!userId || !isGlobalAdmin) {
         return {
             redirect: {
                 destination: "/",
