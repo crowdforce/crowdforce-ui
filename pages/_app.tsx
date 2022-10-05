@@ -9,6 +9,7 @@ import { Session } from "next-auth"
 import { App } from "@/components/App"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { NotificationsProvider } from "@mantine/notifications"
+import { RouterTransition } from "@/components/RouterTransition"
 
 type Props = {
     session: Session
@@ -46,6 +47,7 @@ export default function MyApp({ Component, pageProps }: AppProps<Props>) {
                         }}>
                             <NotificationsProvider position="top-center">
                                 <App>
+                                    <RouterTransition />
                                     <Component {...pageProps} />
                                 </App>
                             </NotificationsProvider>
