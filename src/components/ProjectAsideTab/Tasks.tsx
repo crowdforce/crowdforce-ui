@@ -22,8 +22,10 @@ export const Tasks: React.FC<ProjectTasksProps> = () => {
                 header={(
                     <Group
                         mb='xs'
+                        noWrap
+                        align="baseline"
                     >
-                        <IconToolsKitchen />
+                        <IconToolsKitchen style={{flex: "0 0 auto"}} />
                         <Title order={2} >
                             Актуальные задачи
                         </Title>

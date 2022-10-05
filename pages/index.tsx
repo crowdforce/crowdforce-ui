@@ -471,9 +471,6 @@ const MainPageContainer: React.FC = () => {
                     </SimpleGrid>
                 )}
             </Container>
-            <div style={{
-                height: "8rem",
-            }} />
         </Page>
     )
 }

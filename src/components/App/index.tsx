@@ -69,7 +69,12 @@ export const App: React.FC<AppProps> = ({ children }) => {
                 </MediaQuery>
             )}
             footer={noFooter ? undefined : (
-                <AppFooter />
+                <>
+                    <div style={{
+                        height: "8rem",
+                    }} />
+                    <AppFooter />
+                </>
             )}
         >
             {children}

@@ -40,7 +40,7 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ title, followers }) 
             }}
             height='calc(100% - 8px * 2)'
             width={{
-                base: "calc(100vw - 48px - 8px * 2)",
+                base: "calc(100vw - 48px - 8px * 4)",
                 xs: 520,
             }}
             className={s.aside}
@@ -54,7 +54,11 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ title, followers }) 
                     align='center'
                     noWrap
                 >
-                    <Title order={1}>
+                    <Title order={1}
+                        sx={{
+                            overflow: "hidden",
+                        }}
+                    >
                         {title}
                     </Title>
                     <Group
