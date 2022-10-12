@@ -1,10 +1,10 @@
-import { SystemProjectDto } from "@/common/types"
+import { AdminProjectDto } from "@/common/types"
 import prisma from "@/server/prisma"
 import { Asset, Project } from "@prisma/client"
 
 type Item = Project & { cover: Asset | null }
 
-function mapResponse(item: Item): SystemProjectDto {
+function mapResponse(item: Item, top: Set<string>): AdminProjectDto {
     let imageUrl = item.imageUrl
     if (item.cover) {
         imageUrl = item.cover.src
@@ -20,10 +20,11 @@ function mapResponse(item: Item): SystemProjectDto {
         imageUrl,
         status: item.status,
         href: `/project/${item.id}`,
+        isTop: top.has(item.id),
     }
 }
 
-export async function getAllProjects(): Promise<SystemProjectDto[]> {
+export async function getAllProjects(): Promise<AdminProjectDto[]> {
     const items = await prisma.project.findMany({
         where: {},
         include: {
@@ -33,8 +34,15 @@ export async function getAllProjects(): Promise<SystemProjectDto[]> {
             updatedAt: "desc",
         },
     })
+    const topItems = await prisma.topProjects.findMany({
+        where: {},
+        select: {
+            projectId: true,
+        },
+    })
+    const top = new Set(topItems.map(x => x.projectId))
 
-    return items.map(x => mapResponse(x))
+    return items.map(x => mapResponse(x, top))
 }
 
 export async function addToTop(projectId: string): Promise<boolean> {

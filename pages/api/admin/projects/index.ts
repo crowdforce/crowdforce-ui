@@ -1,5 +1,5 @@
 import { withUser } from "@/server/middlewares/withUser"
-import { SystemProjectDto as AdminProjectDto } from "@/common/types"
+import { AdminProjectDto as AdminProjectDto } from "@/common/types"
 import { hasAdminRole } from "@/server/lib"
 import { getAllProjects } from "@/server/controllers/admin/projects"
 

@@ -3,7 +3,7 @@ import { createStyles, Stack, Title, Loader, Breadcrumbs, Anchor, Group } from "
 import { GetServerSideProps, NextPage } from "next"
 import { hasAdminRole } from "@/server/lib"
 import useSWR from "swr"
-import { SystemProjectDto } from "@/common/types"
+import { AdminProjectDto } from "@/common/types"
 import { AdminProjectsTable } from "@/components/AdminProjectsTable"
 import { getAllProjects } from "@/server/controllers/admin/projects"
 import Link from "next/link"
@@ -21,7 +21,7 @@ type Props = {
 
 const Index: NextPage<Props> = () => {
     const { classes: s } = useStyles()
-    const { data: items } = useSWR<SystemProjectDto[]>("/api/admin/projects", null, {
+    const { data: items } = useSWR<AdminProjectDto[]>("/api/admin/projects", null, {
         fallback: [],
     })
 

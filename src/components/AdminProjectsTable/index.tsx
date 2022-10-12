@@ -1,9 +1,10 @@
-import { createStyles, ActionIcon, Menu, Table, Text, Badge } from "@mantine/core"
-import { SystemProjectDto } from "@/common/types"
-import { IconBan, IconDots, IconEyeOff, IconTrash } from "@tabler/icons"
+import { createStyles, ActionIcon, Menu, Table, Text, Badge, Checkbox } from "@mantine/core"
+import { AdminProjectDto } from "@/common/types"
+import { IconBan, IconBugOff, IconBulb, IconBulbOff, IconDots, IconEyeOff, IconTrash } from "@tabler/icons"
 import Link from "next/link"
 import { useCallback } from "react"
 import Image from "next/future/image"
+import { useSWRConfig } from "swr"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -15,10 +16,14 @@ const useStyles = createStyles((theme) => ({
     image: {
         borderRadius: theme.radius.sm,
     },
+
+    action: {
+        minWidth: 180,
+    },
 }))
 
 type Props = {
-    items: SystemProjectDto[]
+    items: AdminProjectDto[]
 }
 
 const statusColors = new Map([
@@ -29,10 +34,23 @@ const statusColors = new Map([
 
 export const AdminProjectsTable: React.FC<Props> = ({ items }) => {
     const { classes: s } = useStyles()
+    const { mutate } = useSWRConfig()
 
-    const onDelete = useCallback((id: string) => null, [])
-    const onBan = useCallback((id: string) => null, [])
-    const onHide = useCallback((id: string) => null, [])
+    // const onDelete = useCallback((id: string) => {
+
+    // }, [])
+    // const onBan = useCallback((id: string) => {
+
+    // }, [])
+    const onSetTopStatus = useCallback(async (id: string, status: boolean) => {
+        const method = status ? "PUT" : "DELETE"
+        const res = await fetch(`/api/admin/projects/${id}/top`, {
+            method,
+        })
+        if (res.ok) {
+            mutate("/api/admin/projects")
+        }
+    }, [mutate])
 
     return (
         <Table
@@ -43,12 +61,13 @@ export const AdminProjectsTable: React.FC<Props> = ({ items }) => {
                 <tr>
                     <th></th>
                     <th>Название</th>
+                    <th>Галерея</th>
                     <th>Статус</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                {items.map(({ id, title, imageUrl, status, href }) => (
+                {items.map(({ id, title, imageUrl, status, isTop, href }) => (
                     <tr key={id}>
                         <td>
                             {!imageUrl ? null : (
@@ -74,6 +93,13 @@ export const AdminProjectsTable: React.FC<Props> = ({ items }) => {
                             </Link>
                         </td>
                         <td>
+                            {isTop ? (
+                                <IconBulb />
+                            ) : (
+                                <IconBulbOff />
+                            )}
+                        </td>
+                        <td>
                             <Badge color={statusColors.get(status)}>
                                 {status}
                             </Badge>
@@ -87,25 +113,39 @@ export const AdminProjectsTable: React.FC<Props> = ({ items }) => {
                                         <IconDots />
                                     </ActionIcon>
                                 </Menu.Target>
-                                <Menu.Dropdown>
-                                    <Menu.Item
+                                <Menu.Dropdown style={{
+                                    width: 200,
+                                }}>
+                                    {/* <Menu.Item
                                         icon={<IconTrash />}
                                         onClick={() => onDelete(id)}
                                     >
                                         {"Удалить"}
-                                    </Menu.Item>
-                                    <Menu.Item
+                                    </Menu.Item> */}
+                                    {/* <Menu.Item
                                         icon={<IconBan />}
                                         onClick={() => onBan(id)}
                                     >
                                         {"Забанить"}
-                                    </Menu.Item>
-                                    <Menu.Item
-                                        icon={<IconEyeOff />}
-                                        onClick={() => onHide(id)}
-                                    >
-                                        {"Скрыть с главной"}
-                                    </Menu.Item>
+                                    </Menu.Item> */}
+                                    {isTop ? null : (
+                                        <Menu.Item
+                                            className={s.action}
+                                            icon={<IconBulb />}
+                                            onClick={() => onSetTopStatus(id, true)}
+                                        >
+                                            {"Добавить на главную"}
+                                        </Menu.Item>
+                                    )}
+                                    {!isTop ? null : (
+                                        <Menu.Item
+                                            className={s.action}
+                                            icon={<IconBulbOff />}
+                                            onClick={() => onSetTopStatus(id, false)}
+                                        >
+                                            {"Скрыть с главной"}
+                                        </Menu.Item>
+                                    )}
                                 </Menu.Dropdown>
                             </Menu>
                         </td>

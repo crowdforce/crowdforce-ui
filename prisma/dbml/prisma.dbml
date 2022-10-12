@@ -64,10 +64,10 @@ Table projects {
   features features [not null]
   follows user_follows [not null]
   tasks tasks [not null]
-  topProjects TopProjects [not null]
+  topProjects top_projects [not null]
 }
 
-Table TopProjects {
+Table top_projects {
   projectId String [pk]
   project projects [not null]
   createdAt DateTime [default: `now()`, not null]
@@ -189,7 +189,7 @@ Ref: projects.ownerId > users.id
 
 Ref: projects.viewportId > viewports.id
 
-Ref: TopProjects.projectId > projects.id
+Ref: top_projects.projectId > projects.id
 
 Ref: assets.ownerId > users.id
 
