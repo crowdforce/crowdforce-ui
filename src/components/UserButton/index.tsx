@@ -72,7 +72,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
     const onNewProject = useCallback(() => {
         // its fetch() until swr2.0 useSWRMutation // https://github.com/vercel/swr/releases/tag/2.0.0-beta.0
         fetch(
-            "/api/admin/projects/create",
+            "/api/edit/projects/create",
             {
                 method: "POST",
             },

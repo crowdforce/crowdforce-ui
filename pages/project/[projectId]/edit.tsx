@@ -10,7 +10,7 @@ import { ProjectMapEditor } from "@/components/ProjectMapEditor"
 import { MapProvider } from "react-map-gl"
 import { getUserId } from "@/server/lib"
 import type { GetServerSideProps, NextPage } from "next"
-import { getAdminProject } from "pages/api/admin/projects/[projectId]"
+import { getAdminProject } from "pages/api/edit/projects/[projectId]"
 
 type Props = {
     fallback: Record<string, any>
@@ -22,7 +22,7 @@ const Container: React.FC = () => {
     const projectId = router.query.projectId as string
 
     const isLoadingAuth = session.status === "loading"
-    const { data, error } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
+    const { data, error } = useSWR<AdminProjectDto>(`/api/edit/projects/${projectId}`)
 
     const isReadyToPublish = false
     // [
@@ -35,7 +35,7 @@ const Container: React.FC = () => {
     const onPublish = useCallback(
         () => {
             // fetch(
-            //     `/api/admin/projects/${projectId}/update`,
+            //     `/api/edit/projects/${projectId}/update`,
             //     {
             //         method: 'PUT',
             //         body: JSON.stringify(data),
@@ -52,7 +52,7 @@ const Container: React.FC = () => {
             //         }
             //     })
             //     .then((res: NewProjectDto) => {
-            //         mutate(`/api/admin/projects/${data.id}`)
+            //         mutate(`/api/edit/projects/${data.id}`)
             //     })
             //     .catch(e => {
             //         console.log('API error: ', e)
@@ -154,7 +154,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     return {
         props: {
             fallback: {
-                [`/api/admin/projects/${projectId}`]: project,
+                [`/api/edit/projects/${projectId}`]: project,
             },
         },
     }

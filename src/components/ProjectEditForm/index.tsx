@@ -18,7 +18,7 @@ export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
     const onSubmit = useCallback(
         async (formData: any) => {
             try {
-                const res = await fetch(`/api/admin/projects/${data.id}/update`, {
+                const res = await fetch(`/api/edit/projects/${data.id}/update`, {
                     method: "PUT",
                     body: JSON.stringify(formData),
                     headers: {
@@ -32,7 +32,7 @@ export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
                         color: "red",
                     })
                 }
-                mutate(`/api/admin/projects/${data.id}`)
+                mutate(`/api/edit/projects/${data.id}`)
                 mutate(`/api/projects/${data.id}`)
 
                 showNotification({

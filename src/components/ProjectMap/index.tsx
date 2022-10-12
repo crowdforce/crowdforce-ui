@@ -19,8 +19,8 @@ export type ProjectMapProps = {
 
 const ProjectMap: React.FC<ProjectMapProps> = ({ id, projectId }) => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
-    const { data: project } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
-    const { data: features } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
+    const { data: project } = useSWR<AdminProjectDto>(`/api/edit/projects/${projectId}`)
+    const { data: features } = useSWR<AdminFeatureDto[]>(`/api/edit/projects/${projectId}/features`)
 
     if (!project) {
         return null

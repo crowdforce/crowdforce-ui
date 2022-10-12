@@ -49,7 +49,7 @@ export const ProjectAddCard: React.FC<ProjectAddCardProps> = () => {
     const router = useRouter()
     const onNewProject = useCallback(() => {
         fetch(
-            "/api/admin/projects/create",
+            "/api/edit/projects/create",
             {
                 method: "POST",
             },

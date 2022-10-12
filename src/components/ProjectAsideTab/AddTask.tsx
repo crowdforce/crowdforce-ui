@@ -35,7 +35,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { classes: s } = useStyles()
     const router = useRouter()
     const projectId = router.query.projectId as string
-    const { data } = useSWR<FeaturesData[]>(`/api/admin/projects/${projectId}/features`)
+    const { data } = useSWR<FeaturesData[]>(`/api/edit/projects/${projectId}/features`)
     const { mutate } = useSWRConfig()
     const { task, setTask } = useContext(ProjectTaskContext)
     const { handleSubmit, register, setValue, control, reset, formState: { isSubmitting } } = useForm<AdminNewProjectTaskDto>({
@@ -49,7 +49,7 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     })
 
     const onSubmit = useCallback<SubmitHandler<AdminNewProjectTaskDto>>(async formData => {
-        const res = await fetch(`/api/admin/projects/${projectId}/tasks/create`, {
+        const res = await fetch(`/api/edit/projects/${projectId}/tasks/create`, {
             method: "POST",
             body: JSON.stringify(formData),
             headers: {

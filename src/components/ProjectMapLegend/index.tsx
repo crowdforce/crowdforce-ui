@@ -8,7 +8,7 @@ export type ProjectMapLegendProps = {
 }
 
 export const ProjectMapLegend: React.FC<ProjectMapLegendProps> = ({ projectId }) => {
-    const { data } = useSWR<AdminFeatureDto[]>(`/api/admin/projects/${projectId}/features`)
+    const { data } = useSWR<AdminFeatureDto[]>(`/api/edit/projects/${projectId}/features`)
 
     return (
         <Stack>
