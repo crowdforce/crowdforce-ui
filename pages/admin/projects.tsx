@@ -1,5 +1,5 @@
 import Page from "@/components/Page"
-import { createStyles, Stack, Title, Loader, Breadcrumbs, Anchor, Group } from "@mantine/core"
+import { createStyles, Stack, Title, Loader, Breadcrumbs, Group } from "@mantine/core"
 import { GetServerSideProps, NextPage } from "next"
 import { hasAdminRole } from "@/server/lib"
 import useSWR from "swr"

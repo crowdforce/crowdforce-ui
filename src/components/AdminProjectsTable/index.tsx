@@ -1,6 +1,6 @@
-import { createStyles, ActionIcon, Menu, Table, Text, Badge, Checkbox, Group } from "@mantine/core"
+import { createStyles, ActionIcon, Menu, Table, Text, Badge, Group } from "@mantine/core"
 import { AdminProjectDto } from "@/common/types"
-import { IconBan, IconBugOff, IconBulb, IconBulbOff, IconDots, IconEyeOff, IconTrash } from "@tabler/icons"
+import { IconBulb, IconBulbOff, IconDots } from "@tabler/icons"
 import Link from "next/link"
 import { useCallback } from "react"
 import Image from "next/future/image"
@@ -44,12 +44,6 @@ export const AdminProjectsTable: React.FC<Props> = ({ items }) => {
     const { classes: s } = useStyles()
     const { mutate } = useSWRConfig()
 
-    // const onDelete = useCallback((id: string) => {
-
-    // }, [])
-    // const onBan = useCallback((id: string) => {
-
-    // }, [])
     const onSetTopStatus = useCallback(async (id: string, status: boolean) => {
         const method = status ? "PUT" : "DELETE"
         const res = await fetch(`/api/admin/projects/${id}/top`, {
