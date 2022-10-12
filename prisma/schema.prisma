@@ -124,7 +124,7 @@ model Project {
   status      ProjectStatus
 
   coverId String? @map(name: "cover_id")
-  cover   Asset?   @relation(fields: [coverId], references: [id])
+  cover   Asset?  @relation(fields: [coverId], references: [id])
 
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
@@ -135,9 +135,9 @@ model Project {
   viewportId String      @map(name: "viewport_id")
   viewport   MapViewport @relation(fields: [viewportId], references: [id])
 
-  features         Feature[]
-  follows          UserFollows[]
-  tasks            Task[]
+  features    Feature[]
+  follows     UserFollows[]
+  tasks       Task[]
   topProjects TopProjects[]
 
   @@map(name: "projects")
@@ -166,8 +166,8 @@ model Asset {
 
   createdAt DateTime @default(now()) @map(name: "created_at")
 
-  width   Int?
-  height  Int?
+  width  Int?
+  height Int?
 
   projects Project[]
 
@@ -265,8 +265,8 @@ model UserFollows {
   followedAt   DateTime? @map(name: "followed_at")
   unfollowedAt DateTime? @map(name: "unfollowed_at")
 
-  @@index([active])
   @@id([userId, projectId])
+  @@index([active])
   @@map(name: "user_follows")
 }
 // }
