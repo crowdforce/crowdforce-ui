@@ -1,7 +1,7 @@
 import prisma from "@/server/prisma"
 import { withUser } from "@/server/middlewares/withUser"
 import { TaskStatus } from "@prisma/client"
-import type { AdminNewProjectTaskDto } from "@/common/types"
+import type { EditNewProjectTaskDto } from "@/common/types"
 
 function joinDateAndTime(date: Date, time: Date): Date {
     const merged = new Date()
@@ -21,7 +21,7 @@ export default withUser<any>(async (req, res) => {
             error: "Not found",
         })
     }
-    const payload = req.body as AdminNewProjectTaskDto
+    const payload = req.body as EditNewProjectTaskDto
     if (!payload) {
         return res.status(400).json({
             error: "Body is empty",

@@ -97,7 +97,7 @@ export type ParticipateDto = {
   taskId: string
 }
 
-export type AdminNewProjectTaskDto = {
+export type EditNewProjectTaskDto = {
     title: string
     description: string
     features: string[]
