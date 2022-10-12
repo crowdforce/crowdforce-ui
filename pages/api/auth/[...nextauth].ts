@@ -131,7 +131,8 @@ export const authOptions: NextAuthOptions = {
         },
         async jwt({ token, user, account, profile, isNewUser }) {
             if (user) {
-                token.role = user?.role ?? "Unknown"
+                // todo: no any here
+                token.role = (user as any).role ?? "Unknown"
             }
 
             return token
