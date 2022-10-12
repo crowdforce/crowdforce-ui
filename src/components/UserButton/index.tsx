@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react"
 import { signIn, signOut, useSession } from "next-auth/react"
-import { Avatar, Group, Menu, UnstyledButton, Text, createStyles, Loader, Button } from "@mantine/core"
+import { Avatar, Group, Menu, UnstyledButton, Text, createStyles, Loader } from "@mantine/core"
 import { IconChevronDown, IconHandRock, IconLogout, IconPlus, IconUser } from "@tabler/icons"
 import { useRouter } from "next/router"
 import { NewProjectDto } from "@/common/types"
