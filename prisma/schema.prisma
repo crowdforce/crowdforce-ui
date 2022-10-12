@@ -148,6 +148,8 @@ model TopProjects {
   project   Project @relation(fields: [projectId], references: [id])
 
   createdAt DateTime @default(now()) @map(name: "created_at")
+
+  @@map(name: "top_projects")
 }
 
 model Asset {
