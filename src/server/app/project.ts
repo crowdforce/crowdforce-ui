@@ -49,3 +49,18 @@ export async function switchProjectToActiveStatus(projectId: string): Promise<vo
         },
     })
 }
+
+export async function isProjectInStatus(projectId: string, statuses: Set<ProjectStatus>): Promise<boolean> {
+    const x = await prisma.project.findUnique({
+        where: {
+            id: projectId,
+        },
+        select: {
+            status: true,
+        },
+    })
+    if (!x) {
+        return false
+    }
+    return statuses.has(x.status)
+}

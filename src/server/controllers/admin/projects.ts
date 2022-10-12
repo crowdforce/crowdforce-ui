@@ -1,6 +1,7 @@
 import { AdminProjectDto } from "@/common/types"
+import { isProjectInStatus } from "@/server/app/project"
 import prisma from "@/server/prisma"
-import { Asset, Project, User } from "@prisma/client"
+import { Asset, Project, ProjectStatus, User } from "@prisma/client"
 
 type Item = Project & {
     cover: Asset | null
@@ -53,6 +54,11 @@ export async function getAllProjects(): Promise<AdminProjectDto[]> {
 }
 
 export async function addToTop(projectId: string): Promise<boolean> {
+    const canAdd = await isProjectInStatus(projectId, new Set([ProjectStatus.Active]))
+    if (!canAdd) {
+        return false
+    }
+
     await prisma.topProjects.upsert({
         where: {
             projectId,
