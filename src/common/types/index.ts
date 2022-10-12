@@ -68,6 +68,20 @@ export type AdminProjectDto = {
   }
 }
 
+export type SystemProjectDto = {
+  id: string
+  title: string
+  description: string
+  status: string
+  imageUrl: string | null
+  href: string
+  // viewport: {
+  //   lng: number
+  //   lat: number
+  //   zoom: number
+  // }
+}
+
 export type FollowerStatus = "leader" | "participant"
 
 export type FollowerDto = {
