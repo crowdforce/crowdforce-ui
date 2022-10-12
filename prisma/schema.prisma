@@ -135,11 +135,21 @@ model Project {
   viewportId String      @map(name: "viewport_id")
   viewport   MapViewport @relation(fields: [viewportId], references: [id])
 
-  features Feature[]
-  follows  UserFollows[]
-  tasks    Task[]
+  features         Feature[]
+  follows          UserFollows[]
+  tasks            Task[]
+  topProjects TopProjects[]
 
   @@map(name: "projects")
+}
+
+model TopProjects {
+  projectId String  @id
+  project   Project @relation(fields: [projectId], references: [id])
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  @@map(name: "top_projects")
 }
 
 model Asset {

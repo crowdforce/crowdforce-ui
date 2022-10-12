@@ -20,7 +20,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                 const payload = {
                     geometry: feature.geometry,
                 }
-                fetch(`/api/admin/projects/${projectId}/features/create`, {
+                fetch(`/api/edit/projects/${projectId}/features/create`, {
                     method: "POST",
                     headers: {
                         "content-type": "application/json",
@@ -35,7 +35,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                         }
                     })
                     .then(() => {
-                        mutate(`/api/admin/projects/${projectId}/features`)
+                        mutate(`/api/edit/projects/${projectId}/features`)
                     })
                     .catch(e => {
                         // eslint-disable-next-line no-console
@@ -49,7 +49,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
                 const payload = {
                     geometry: feature.geometry,
                 }
-                fetch(`/api/admin/features/${featureId}/update-geometry`, {
+                fetch(`/api/edit/features/${featureId}/update-geometry`, {
                     method: "PUT",
                     headers: {
                         "content-type": "application/json",
@@ -60,11 +60,11 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
             }
 
             case "draw.delete": {
-                fetch(`/api/admin/features/${featureId}/delete`, {
+                fetch(`/api/edit/features/${featureId}/delete`, {
                     method: "DELETE",
                 })
                     .then(() => {
-                        mutate(`/api/admin/projects/${projectId}/features`)
+                        mutate(`/api/edit/projects/${projectId}/features`)
                     })
                 break
             }

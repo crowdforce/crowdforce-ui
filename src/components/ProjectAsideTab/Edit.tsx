@@ -1,4 +1,4 @@
-import { AdminProjectDto, NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
+import { EditProjectDto, NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
 import { Aside, ScrollArea, Text, Group, Image, Space } from "@mantine/core"
 import { MIME_TYPES } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
@@ -37,7 +37,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { mutate } = useSWRConfig()
-    const { data } = useSWR<AdminProjectDto>(`/api/admin/projects/${projectId}`)
+    const { data } = useSWR<EditProjectDto>(`/api/edit/projects/${projectId}`)
     const preview = data?.imageUrl ?? null
 
     return (
@@ -77,7 +77,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                     const updateCoverPayload: ProjectCoverPayloadDto = {
                         assetId: asset.id,
                     }
-                    await fetch(`/api/admin/projects/${projectId}/update-cover`, {
+                    await fetch(`/api/edit/projects/${projectId}/update-cover`, {
                         method: "PUT",
                         body: JSON.stringify(updateCoverPayload),
                         headers: {
@@ -89,7 +89,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
                         title: "Успех!",
                         message: "Обложка обновилась",
                     })
-                    mutate(`/api/admin/projects/${projectId}`)
+                    mutate(`/api/edit/projects/${projectId}`)
                     mutate(`/api/projects/${projectId}`)
                     setCoverLoading(false)
                 }}

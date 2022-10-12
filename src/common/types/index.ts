@@ -55,7 +55,7 @@ export type PublicProjectDto = {
   lat: number
 }
 
-export type AdminProjectDto = {
+export type EditProjectDto = {
   id: string
   title: string
   description: string
@@ -66,6 +66,24 @@ export type AdminProjectDto = {
     lat: number
     zoom: number
   }
+}
+
+export type AdminProjectDto = {
+  id: string
+  title: string
+  description: string
+  status: string
+  imageUrl: string | null
+  href: string
+  isTop: boolean
+  ownerId: string
+  ownerName: string
+  ownerAvatarSrc: string
+  // viewport: {
+  //   lng: number
+  //   lat: number
+  //   zoom: number
+  // }
 }
 
 export type FollowerStatus = "leader" | "participant"
@@ -83,7 +101,7 @@ export type ParticipateDto = {
   taskId: string
 }
 
-export type AdminNewProjectTaskDto = {
+export type EditNewProjectTaskDto = {
     title: string
     description: string
     features: string[]
@@ -120,7 +138,7 @@ export type NewFeatureDto = {
   id: string
 }
 
-export type AdminFeatureDto = {
+export type EditFeatureDto = {
   id: string
   title: string
   description: string

@@ -34,7 +34,7 @@ export const ProjectMapEditor: React.FC<ProjectMapEditorProps> = ({ projectId })
             lat,
             zoom,
         }
-        await fetch(`/api/admin/projects/${projectId}/update-viewport`, {
+        await fetch(`/api/edit/projects/${projectId}/update-viewport`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",

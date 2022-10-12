@@ -1,12 +1,12 @@
 import { Textarea, TextInput, Button, Stack } from "@mantine/core"
 import { useForm } from "react-hook-form"
-import { AdminProjectDto } from "@/common/types"
+import { EditProjectDto } from "@/common/types"
 import React, { useCallback } from "react"
 import { useSWRConfig } from "swr"
 import { showNotification } from "@mantine/notifications"
 
 export type ProjectEditFormProps = {
-    data: AdminProjectDto
+    data: EditProjectDto
 }
 
 export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
@@ -18,7 +18,7 @@ export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
     const onSubmit = useCallback(
         async (formData: any) => {
             try {
-                const res = await fetch(`/api/admin/projects/${data.id}/update`, {
+                const res = await fetch(`/api/edit/projects/${data.id}/update`, {
                     method: "PUT",
                     body: JSON.stringify(formData),
                     headers: {
@@ -32,7 +32,7 @@ export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
                         color: "red",
                     })
                 }
-                mutate(`/api/admin/projects/${data.id}`)
+                mutate(`/api/edit/projects/${data.id}`)
                 mutate(`/api/projects/${data.id}`)
 
                 showNotification({

@@ -1,5 +1,5 @@
 import { ErrorDto, PublicProjectDto } from "@/common/types"
-import { getPublicProjects } from "@/server/controllers/projects/public"
+import { getTopProjects } from "@/server/controllers/projects/public"
 import { NextApiRequest, NextApiResponse } from "next"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<PublicProjectDto[] | ErrorDto>) => {
@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<PublicProjectDt
         })
     }
 
-    const projects = await getPublicProjects()
+    const projects = await getTopProjects()
 
     return res.json(projects)
 }

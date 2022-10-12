@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react"
 import { signIn, signOut, useSession } from "next-auth/react"
 import { Avatar, Group, Menu, UnstyledButton, Text, createStyles, Loader } from "@mantine/core"
-import { IconChevronDown, IconLogout, IconPlus, IconUser } from "@tabler/icons"
+import { IconChevronDown, IconHandRock, IconLogout, IconPlus, IconUser } from "@tabler/icons"
 import { useRouter } from "next/router"
 import { NewProjectDto } from "@/common/types"
 import { NextLink } from "@mantine/next"
@@ -35,6 +35,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
     const session = useSession()
     const isLoading = session.status === "loading"
     const isAuthenticated = session.status === "authenticated"
+    const isAdmin = session.data?.user.role === "Admin"
 
     const { classes: s } = useStyles()
 
@@ -53,7 +54,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                     }
                 })
 
-                signIn("credentials", {
+                signIn("telegram", {
                     // @ts-ignore
                     redirect: "/",
                     ...cred,
@@ -72,7 +73,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
     const onNewProject = useCallback(() => {
         // its fetch() until swr2.0 useSWRMutation // https://github.com/vercel/swr/releases/tag/2.0.0-beta.0
         fetch(
-            "/api/admin/projects/create",
+            "/api/edit/projects/create",
             {
                 method: "POST",
             },
@@ -144,6 +145,17 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                         closeMenuOnClick={false}
                         component={ColorThemeSwitch}
                     />
+                    {!isAdmin ? null : (
+                        <Menu.Item
+                            component={NextLink}
+                            href='/admin'
+                            icon={(
+                                <IconHandRock size={16} />
+                            )}
+                        >
+                            Управлять
+                        </Menu.Item>
+                    )}
                     <Menu.Item
                         icon={(
                             <IconLogout size={16} />

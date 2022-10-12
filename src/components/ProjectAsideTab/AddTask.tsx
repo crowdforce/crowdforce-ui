@@ -6,7 +6,7 @@ import useSWR, { useSWRConfig } from "swr"
 import { DatePicker, TimeInput } from "@mantine/dates"
 import { useRouter } from "next/router"
 import { ProjectTaskContext } from "@/contexts/projectTask"
-import { AdminNewProjectTaskDto } from "@/common/types"
+import { EditNewProjectTaskDto } from "@/common/types"
 import "dayjs/locale/ru"
 
 type ProjectAddTaskProps = {
@@ -35,10 +35,10 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const { classes: s } = useStyles()
     const router = useRouter()
     const projectId = router.query.projectId as string
-    const { data } = useSWR<FeaturesData[]>(`/api/admin/projects/${projectId}/features`)
+    const { data } = useSWR<FeaturesData[]>(`/api/edit/projects/${projectId}/features`)
     const { mutate } = useSWRConfig()
     const { task, setTask } = useContext(ProjectTaskContext)
-    const { handleSubmit, register, setValue, control, reset, formState: { isSubmitting } } = useForm<AdminNewProjectTaskDto>({
+    const { handleSubmit, register, setValue, control, reset, formState: { isSubmitting } } = useForm<EditNewProjectTaskDto>({
         defaultValues: task
             ? task
             : { features: [] },
@@ -48,8 +48,8 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
         setTask(null)
     })
 
-    const onSubmit = useCallback<SubmitHandler<AdminNewProjectTaskDto>>(async formData => {
-        const res = await fetch(`/api/admin/projects/${projectId}/tasks/create`, {
+    const onSubmit = useCallback<SubmitHandler<EditNewProjectTaskDto>>(async formData => {
+        const res = await fetch(`/api/edit/projects/${projectId}/tasks/create`, {
             method: "POST",
             body: JSON.stringify(formData),
             headers: {
