@@ -5,7 +5,7 @@ import { ErrorDto } from "@/common/types"
 import { User } from "@prisma/client"
 
 export type NextApiRequestWithOptionalUser = NextApiRequest & {
-  user?: User
+    user?: User
 }
 
 export type WithOptionalUserHandler<T = any> = (req: NextApiRequestWithOptionalUser, res: NextApiResponse<T>) => Promise<NextApiResponse<T> | void>
