@@ -4,6 +4,18 @@ import { unstable_getServerSession } from "next-auth"
 import { getToken, GetTokenParams } from "next-auth/jwt"
 import { authOptions } from "pages/api/auth/[...nextauth]"
 
+export function isDeveleopment(): boolean {
+    if (process.env.VERCEL_ENV === "production") {
+        return false
+    }
+
+    if (process.env.NODE_ENV === "development") {
+        return true
+    }
+
+    return false
+}
+
 export async function getUserId(ctx: GetTokenParams): Promise<string | null> {
     const session = await getToken(ctx)
     if (!session) {

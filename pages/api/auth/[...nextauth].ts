@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import crypto from "crypto"
 
 import { PrismaClient, UserRole } from "@prisma/client"
+import { isDeveleopment } from "@/server/lib"
 
 const prisma = new PrismaClient()
 
@@ -203,6 +204,76 @@ export const authOptions: NextAuthOptions = {
     //     console.log('event:error', message);
     //   },
     // }
+}
+
+if (isDeveleopment()) {
+    async function findByTelegramUsername(username: string) {
+        const user = await prisma.user.findFirst({
+            where: {
+                telegram: {
+                    username,
+                },
+            },
+            include: {
+                telegram: true,
+            },
+        })
+        if (user && !user.enabled) {
+            return null
+        }
+        if (user) {
+            return user
+        }
+    }
+
+    authOptions.providers.push(
+        CredentialsProvider({
+            id: "dev",
+            // The name to display on the sign in form (e.g. "Sign in with...")
+            name: "Dev",
+            // The credentials is used to generate a suitable form on the sign in page.
+            // You can specify whatever fields you are expecting to be submitted.
+            // e.g. domain, username, password, 2FA token, etc.
+            // You can pass any HTML attribute to the <input> tag through the object.
+            credentials: {
+                username: { label: "username", type: "text" },
+                secret: { label: "secret", type: "password" },
+            },
+            async authorize(credentials, req) {
+                const SECRET = process.env.DEV_ACCESS_SECRET
+                if (!SECRET) {
+                    return null
+                }
+
+                if (!credentials) {
+                    return null
+                }
+
+                const secret = credentials.secret
+                if (secret !== SECRET) {
+                    return null
+                }
+
+                const username = credentials.username
+                if (!username) {
+                    return null
+                }
+
+                const user = await findByTelegramUsername(username)
+                if (!user) {
+                    return null
+                }
+
+                // Any object returned will be saved in `user` property of the JWT
+                return {
+                    id: user.id,
+                    name: user.name,
+                    image: user.image,
+                    role: user.role,
+                }
+            },
+        })
+    )
 }
 
 export default NextAuth(authOptions)
