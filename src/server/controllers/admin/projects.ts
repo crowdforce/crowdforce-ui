@@ -36,3 +36,29 @@ export async function getAllProjects(): Promise<SystemProjectDto[]> {
 
     return items.map(x => mapResponse(x))
 }
+
+export async function addToTop(projectId: string): Promise<boolean> {
+    await prisma.topProjects.upsert({
+        where: {
+            projectId,
+        },
+        create: {
+            projectId,
+        },
+        update: {
+            createdAt: new Date(),
+        },
+    })
+
+    return true
+}
+
+export async function deleteFromTop(projectId: string): Promise<boolean> {
+    await prisma.topProjects.delete({
+        where: {
+            projectId,
+        },
+    })
+
+    return true
+}
