@@ -53,7 +53,7 @@ export const UserButton: React.FC<UserButtonProps> = () => {
                     }
                 })
 
-                signIn("credentials", {
+                signIn("telegram", {
                     // @ts-ignore
                     redirect: "/",
                     ...cred,
