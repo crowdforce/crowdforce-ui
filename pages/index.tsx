@@ -240,7 +240,7 @@ const bigLineData = [
     },
 ]
 
-const MainPageContainer: React.FC = () => {
+const MainPageContainer: React.FC<Props> = () => {
     const { data: projects } = useSWR<PublicProjectDto[]>("/api/projects/top")
     const { classes: s, cx } = useStyles()
     return (
@@ -475,13 +475,13 @@ const MainPageContainer: React.FC = () => {
     )
 }
 
-const MainPage: NextPage<Props> = ({ fallback }) => (
-    <SWRConfig value={{ fallback }}>
-        <MainPageContainer />
+const MainPage: NextPage<Props> = (props) => (
+    <SWRConfig value={{ fallback: props.fallback }}>
+        <MainPageContainer {...props} />
     </SWRConfig>
 )
 
-export const getStaticProps: GetStaticProps = async ctx => {
+export const getStaticProps: GetStaticProps<Props> = async ctx => {
     const projects = await getTopProjects()
     return {
         props: {
