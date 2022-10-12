@@ -10,11 +10,11 @@ import list from "@/../public/index/list.png"
 import planet from "@/../public/index/planet.png"
 import target from "@/../public/index/target.png"
 import { GetStaticProps, NextPage } from "next"
-import { getProjects } from "./api/projects"
 import { ProjectCard } from "@/components/ProjectCard"
 import React from "react"
 import { PublicProjectDto } from "@/common/types"
 import useSWR, { SWRConfig } from "swr"
+import { getTopProjects } from "@/server/controllers/projects/public"
 
 type Props = {
     fallback: Record<string, any>
@@ -241,7 +241,7 @@ const bigLineData = [
 ]
 
 const MainPageContainer: React.FC = () => {
-    const { data: projects } = useSWR<PublicProjectDto[]>("/api/projects")
+    const { data: projects } = useSWR<PublicProjectDto[]>("/api/projects/top")
     const { classes: s, cx } = useStyles()
     return (
         <Page>
@@ -485,11 +485,11 @@ const MainPage: NextPage<Props> = ({ fallback }) => (
 )
 
 export const getStaticProps: GetStaticProps = async ctx => {
-    const projects = await getProjects()
+    const projects = await getTopProjects()
     return {
         props: {
             fallback: {
-                "/api/projects": projects,
+                "/api/projects/top": projects,
             },
         },
     }
