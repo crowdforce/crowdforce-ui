@@ -99,31 +99,31 @@ export const authOptions: NextAuthOptions = {
         strategy: "jwt",
     },
     jwt: {
-    // The maximum age of the NextAuth.js issued JWT in seconds.
-    // Defaults to `session.maxAge`.
+        // The maximum age of the NextAuth.js issued JWT in seconds.
+        // Defaults to `session.maxAge`.
         maxAge: 60 * 60 * 24 * 30,
     },
     callbacks: {
-    // async signIn({ user, account, profile, email, credentials }) {
-    //   console.log('signIn callback');
-    //   console.log(user);
-    //   console.log(account);
-    //   console.log(profile);
-    //   console.log(email);
-    //   console.log(credentials);
-    //   //   const isAllowedToSignIn = true
-    //   //   if (isAllowedToSignIn) {
-    //   //     return true
-    //   //   } else {
-    //   //     // Return false to display a default error message
-    //   //     return false
-    //   //     // Or you can return a URL to redirect to:
-    //   //     // return '/unauthorized'
-    //   //   }
-    // },
-    // async redirect({ url, baseUrl }) {
-    //   return baseUrl
-    // },
+        // async signIn({ user, account, profile, email, credentials }) {
+        //   console.log('signIn callback');
+        //   console.log(user);
+        //   console.log(account);
+        //   console.log(profile);
+        //   console.log(email);
+        //   console.log(credentials);
+        //   //   const isAllowedToSignIn = true
+        //   //   if (isAllowedToSignIn) {
+        //   //     return true
+        //   //   } else {
+        //   //     // Return false to display a default error message
+        //   //     return false
+        //   //     // Or you can return a URL to redirect to:
+        //   //     // return '/unauthorized'
+        //   //   }
+        // },
+        // async redirect({ url, baseUrl }) {
+        //   return baseUrl
+        // },
         async session({ session, user, token }) {
             (session.user as any).role = token.role
 
@@ -147,7 +147,7 @@ export const authOptions: NextAuthOptions = {
             // e.g. domain, username, password, 2FA token, etc.
             // You can pass any HTML attribute to the <input> tag through the object.
             credentials: {
-                username: { label: "username", type: "text" },
+                // username: { label: "username", type: "text" },
             },
             async authorize(credentials, req) {
                 if (!credentials) {
