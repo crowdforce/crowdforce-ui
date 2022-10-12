@@ -1,5 +1,5 @@
 import prisma from "@/server/prisma"
-import { AdminProjectDto } from "@/common/types"
+import { EditProjectDto } from "@/common/types"
 import { withUser } from "@/server/middlewares/withUser"
 import { Asset, MapViewport, Project } from "@prisma/client"
 
@@ -8,7 +8,7 @@ type ProjectWithViewport = Project & {
   cover: Asset | null,
 }
 
-function mapResponse(project: ProjectWithViewport): AdminProjectDto {
+function mapResponse(project: ProjectWithViewport): EditProjectDto {
     return {
         id: project.id,
         title: project.title,
@@ -40,7 +40,7 @@ export async function getAdminProject(projectId: string) {
     return mapResponse(project)
 }
 
-export default withUser<AdminProjectDto>(async (req, res) => {
+export default withUser<EditProjectDto>(async (req, res) => {
     if (req.method !== "GET") {
         return res.status(404).json({
             error: "Not found",

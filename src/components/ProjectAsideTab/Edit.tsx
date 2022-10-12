@@ -1,4 +1,4 @@
-import { AdminProjectDto, NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
+import { EditProjectDto, NewAssetDto, ProjectCoverPayloadDto } from "@/common/types"
 import { Aside, ScrollArea, Text, Group, Image, Space } from "@mantine/core"
 import { MIME_TYPES } from "@mantine/dropzone"
 import { showNotification } from "@mantine/notifications"
@@ -37,7 +37,7 @@ export const Edit: React.FC<ProjectEditProps> = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { mutate } = useSWRConfig()
-    const { data } = useSWR<AdminProjectDto>(`/api/edit/projects/${projectId}`)
+    const { data } = useSWR<EditProjectDto>(`/api/edit/projects/${projectId}`)
     const preview = data?.imageUrl ?? null
 
     return (

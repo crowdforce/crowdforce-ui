@@ -5,7 +5,7 @@ import dynamic from "next/dynamic"
 import useSWR from "swr"
 import { ProjectDraw } from "./ProjectDraw"
 import { dataToGeojson } from "./lib"
-import { AdminFeatureDto, AdminProjectDto } from "@/common/types"
+import { AdminFeatureDto, EditProjectDto } from "@/common/types"
 
 const MapGl = dynamic(
     () => import("react-map-gl"),
@@ -19,7 +19,7 @@ export type ProjectMapProps = {
 
 const ProjectMap: React.FC<ProjectMapProps> = ({ id, projectId }) => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
-    const { data: project } = useSWR<AdminProjectDto>(`/api/edit/projects/${projectId}`)
+    const { data: project } = useSWR<EditProjectDto>(`/api/edit/projects/${projectId}`)
     const { data: features } = useSWR<AdminFeatureDto[]>(`/api/edit/projects/${projectId}/features`)
 
     if (!project) {

@@ -3,7 +3,7 @@ import Page from "@/components/Page"
 import useSWR, { SWRConfig } from "swr"
 import { Alert, Button, Card, Center, Grid, Loader, Stack } from "@mantine/core"
 import { ProjectEditForm } from "@/components/ProjectEditForm"
-import { AdminProjectDto } from "@/common/types"
+import { EditProjectDto } from "@/common/types"
 import { useCallback } from "react"
 import { useSession } from "next-auth/react"
 import { ProjectMapEditor } from "@/components/ProjectMapEditor"
@@ -22,7 +22,7 @@ const Container: React.FC = () => {
     const projectId = router.query.projectId as string
 
     const isLoadingAuth = session.status === "loading"
-    const { data, error } = useSWR<AdminProjectDto>(`/api/edit/projects/${projectId}`)
+    const { data, error } = useSWR<EditProjectDto>(`/api/edit/projects/${projectId}`)
 
     const isReadyToPublish = false
     // [

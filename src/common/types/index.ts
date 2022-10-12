@@ -55,7 +55,7 @@ export type PublicProjectDto = {
   lat: number
 }
 
-export type AdminProjectDto = {
+export type EditProjectDto = {
   id: string
   title: string
   description: string

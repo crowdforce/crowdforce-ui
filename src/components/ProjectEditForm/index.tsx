@@ -1,12 +1,12 @@
 import { Textarea, TextInput, Button, Stack } from "@mantine/core"
 import { useForm } from "react-hook-form"
-import { AdminProjectDto } from "@/common/types"
+import { EditProjectDto } from "@/common/types"
 import React, { useCallback } from "react"
 import { useSWRConfig } from "swr"
 import { showNotification } from "@mantine/notifications"
 
 export type ProjectEditFormProps = {
-    data: AdminProjectDto
+    data: EditProjectDto
 }
 
 export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
