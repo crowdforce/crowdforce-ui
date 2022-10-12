@@ -68,13 +68,17 @@ export type EditProjectDto = {
   }
 }
 
-export type SystemProjectDto = {
+export type AdminProjectDto = {
   id: string
   title: string
   description: string
   status: string
   imageUrl: string | null
   href: string
+  isTop: boolean
+  ownerId: string
+  ownerName: string
+  ownerAvatarSrc: string
   // viewport: {
   //   lng: number
   //   lat: number

@@ -1,14 +1,23 @@
-import { Avatar } from "@mantine/core"
+import { Avatar, Group, Text } from "@mantine/core"
 
 export type UserAvatarProps = {
-  alt?: string
-  src: string
+    src: string
+    children?: string
 }
 
-export const UserAvatar = (props: UserAvatarProps) => (
-    <Avatar
-        radius="xl"
-        alt={props.alt}
-        src={props.src}
-    />
+export const UserAvatar: React.FC<UserAvatarProps> = ({ src, children }) => (
+    // <Avatar
+    //     radius="xl"
+    //     alt={props.alt}
+    //     src={props.src}
+    // />
+    <Group>
+        <Avatar
+            src={src}
+            size={32}
+        />
+        <Text size="sm" sx={{ lineHeight: 1 }}>
+            {children}
+        </Text>
+    </Group>
 )

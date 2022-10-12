@@ -1,8 +1,11 @@
 import { AdminProjectDto } from "@/common/types"
 import prisma from "@/server/prisma"
-import { Asset, Project } from "@prisma/client"
+import { Asset, Project, User } from "@prisma/client"
 
-type Item = Project & { cover: Asset | null }
+type Item = Project & {
+    cover: Asset | null
+    owner: User
+}
 
 function mapResponse(item: Item, top: Set<string>): AdminProjectDto {
     let imageUrl = item.imageUrl
@@ -21,6 +24,9 @@ function mapResponse(item: Item, top: Set<string>): AdminProjectDto {
         status: item.status,
         href: `/project/${item.id}`,
         isTop: top.has(item.id),
+        ownerId: item.ownerId,
+        ownerName: item.owner.name ?? "<unknown>",
+        ownerAvatarSrc: item.owner.image!,
     }
 }
 
@@ -29,6 +35,7 @@ export async function getAllProjects(): Promise<AdminProjectDto[]> {
         where: {},
         include: {
             cover: true,
+            owner: true,
         },
         orderBy: {
             updatedAt: "desc",
