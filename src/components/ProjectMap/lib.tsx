@@ -1,7 +1,7 @@
-import { AdminFeatureDto } from "@/common/types"
+import { EditFeatureDto } from "@/common/types"
 import { feature, featureCollection } from "@turf/helpers"
 
-export function dataToGeojson(data: AdminFeatureDto[]): GeoJSON.FeatureCollection {
+export function dataToGeojson(data: EditFeatureDto[]): GeoJSON.FeatureCollection {
     const xs = data.map(x => {
         const geometry = {
             coordinates: x.coordinates,

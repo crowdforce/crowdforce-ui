@@ -134,7 +134,7 @@ export type NewFeatureDto = {
   id: string
 }
 
-export type AdminFeatureDto = {
+export type EditFeatureDto = {
   id: string
   title: string
   description: string
