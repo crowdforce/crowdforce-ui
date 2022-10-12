@@ -21,7 +21,7 @@ type Props = {
 
 const Index: NextPage<Props> = () => {
     const { classes: s } = useStyles()
-    const { data: items } = useSWR<SystemProjectDto[]>("/api/system/projects", null, {
+    const { data: items } = useSWR<SystemProjectDto[]>("/api/admin/projects", null, {
         fallback: [],
     })
 
@@ -63,7 +63,7 @@ const Index: NextPage<Props> = () => {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
-    const isAdmin = await hasAdminRole(ctx)
+    const isAdmin = await hasAdminRole(ctx.req as any, ctx.res as any)
     if (!isAdmin) {
         return {
             redirect: {
@@ -78,7 +78,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     return {
         props: {
             fallback: {
-                "/api/system/projects": projects,
+                "/api/admin/projects": projects,
             },
         },
     }

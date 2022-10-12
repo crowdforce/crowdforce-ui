@@ -39,7 +39,7 @@ const Index: NextPage<Props> = () => {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
-    const isAdmin = await hasAdminRole(ctx)
+    const isAdmin = await hasAdminRole(ctx.req as any, ctx.res as any)
     if (!isAdmin) {
         return {
             redirect: {

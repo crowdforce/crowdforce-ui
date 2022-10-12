@@ -1,4 +1,4 @@
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 import crypto from "crypto"
@@ -93,7 +93,7 @@ async function findOrCreateUser(credentials: Record<string, any>) {
     return newUser
 }
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt",
     },
@@ -203,4 +203,6 @@ export default NextAuth({
     //     console.log('event:error', message);
     //   },
     // }
-})
+}
+
+export default NextAuth(authOptions)
