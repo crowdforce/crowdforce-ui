@@ -10,28 +10,17 @@ import type { Dto, ProjectDto } from "@/common/types"
 import { NextPageWithLayout } from "pages/_app"
 import { App } from "@/components/App"
 import { ProjectLayout } from "@/components/ProjectLayout"
-import { Info } from "@/components/ProjectAsideTab/Info"
+import { Tasks } from "@/components/ProjectAsideTab/Tasks"
 
 type Props = {
     fallback: Record<string, any>
-}
-
-export type AdminProjectData = {
-    id: string
-    title: string
-    description: string
-    status: string
-    viewport: {
-        lng: number
-        lat: number
-        zoom: number
-    }
 }
 
 const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${projectId}`)
+
     if (!data) {
         return (
             <Center
@@ -49,7 +38,7 @@ const Container: React.FC = () => {
             title={data.payload.title}
             followers={data.payload.followers}
         >
-            <Info />
+            <Tasks />
         </ProjectAside>
     )
 }

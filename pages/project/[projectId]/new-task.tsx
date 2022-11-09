@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import Page from "@/components/Page"
 import useSWR, { SWRConfig } from "swr"
 import { Center, Loader } from "@mantine/core"
 import { MapProvider } from "react-map-gl"
@@ -10,7 +11,7 @@ import type { Dto, ProjectDto } from "@/common/types"
 import { NextPageWithLayout } from "pages/_app"
 import { App } from "@/components/App"
 import { ProjectLayout } from "@/components/ProjectLayout"
-import { Info } from "@/components/ProjectAsideTab/Info"
+import { AddTask } from "@/components/ProjectAsideTab/AddTask"
 
 type Props = {
     fallback: Record<string, any>
@@ -32,6 +33,7 @@ const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${projectId}`)
+
     if (!data) {
         return (
             <Center
@@ -49,7 +51,7 @@ const Container: React.FC = () => {
             title={data.payload.title}
             followers={data.payload.followers}
         >
-            <Info />
+            <AddTask />
         </ProjectAside>
     )
 }
@@ -64,9 +66,11 @@ Index.getLayout = function getLayout(page) {
     return (
         <App showFooter={false}>
             <MapProvider>
-                <ProjectLayout>
-                    {page}
-                </ProjectLayout>
+                <Page>
+                    <ProjectLayout>
+                        {page}
+                    </ProjectLayout>
+                </Page>
             </MapProvider>
         </App>
     )

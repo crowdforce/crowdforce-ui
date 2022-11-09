@@ -1,11 +1,12 @@
 import { ActionIcon, Button, createStyles } from "@mantine/core"
 import type { ButtonProps } from "@mantine/core"
+import { NextLink } from "@mantine/next"
+import { useRouter } from "next/router"
 
 export type SideButtonOnClick = () => void
 
 export type SideButtonProps = Omit<ButtonProps, "leftIcon"> & {
     wide: boolean
-    active: boolean
     icon: React.ReactNode
     onClick?: SideButtonOnClick
     href?: string
@@ -25,8 +26,10 @@ const useStyles = createStyles((theme) => ({
     },
 }))
 
-export const SideButton: React.FC<SideButtonProps> = ({ active, wide, icon, href, onClick, ...props }) => {
+export const SideButton: React.FC<SideButtonProps> = ({ wide, icon, href, onClick, ...props }) => {
+    const router = useRouter()
     const { classes: s, cx } = useStyles()
+    const active = router.asPath === href
 
     if (wide) {
         return (
@@ -41,8 +44,8 @@ export const SideButton: React.FC<SideButtonProps> = ({ active, wide, icon, href
                 })}
                 leftIcon={icon}
                 onClick={onClick}
-                component={href ? "a" : "button"}
-                href={href}
+                component={(href ? NextLink : "button") as any}
+                href={href!}
                 styles={{
                     inner: {
                         justifyContent: "flex-start",
@@ -61,8 +64,8 @@ export const SideButton: React.FC<SideButtonProps> = ({ active, wide, icon, href
             radius="md"
             variant={active ? "light" : "outline"}
             className={cx(s.button, props.className)}
-            component={href ? "a" : "button"}
-            href={href}
+            component={(href ? NextLink : "button") as any}
+            href={href!}
             onClick={onClick}
         >
             {icon}

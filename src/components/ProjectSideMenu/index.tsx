@@ -5,6 +5,7 @@ import React, { useCallback, useContext } from "react"
 import { SideMenu } from "@/components/SideMenu"
 import { SideButton } from "../SideMenu/SideButton"
 import { ToggleSideButton } from "../SideMenu/ToggleSideButton"
+import { useRouter } from "next/router"
 
 type ProjectSideMenuProps = {
 
@@ -25,6 +26,8 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
+    const router = useRouter()
+    const projectId = router.query.projectId as string
     const { classes: s, cx } = useStyles()
     const { open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit } = useContext(ProjectSideMenuContext)
 
@@ -73,7 +76,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
             </ToggleSideButton>
 
             <SideButton
-                active={openId === "info"}
+                href={`/project/${projectId}/`}
                 wide={wide}
                 icon={(
                     <IconNotes />
@@ -83,30 +86,28 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
                 Описание проекта
             </SideButton>
             <SideButton
-                active={openId === "tasks"}
                 wide={wide}
                 icon={(
                     <IconCheckupList />
                 )}
-                onClick={() => onAction("tasks")}
+                href={`/project/${projectId}/tasks`}
             >
                 Задачи проекта
             </SideButton>
             {!isAdmin ? null : (
                 <>
                     <SideButton
-                        active={openId === "add-task"}
+                        href={`/project/${projectId}/new-task`}
                         wide={wide}
                         icon={(
                             <IconClipboardList />
                         )}
                         disabled={isInit}
-                        onClick={() => onAction("add-task")}
                     >
                         Добавить задачу
                     </SideButton>
                     <SideButton
-                        active={openId === "edit"}
+                        href={`/project/${projectId}/edit`}
                         wide={wide}
                         icon={(
                             <IconTools />
