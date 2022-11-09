@@ -71,7 +71,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
             </ToggleSideButton>
 
             <SideButton
-                href={`/project/${projectId}/`}
+                href={`/project/${projectId}`}
                 wide={wide}
                 icon={(
                     <IconNotes />
