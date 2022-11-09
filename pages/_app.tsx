@@ -1,12 +1,10 @@
 import "@/style.css"
 
 import Head from "next/head"
-import { MapProvider } from "react-map-gl"
 import { SessionProvider } from "next-auth/react"
 import { SWRConfig } from "swr"
 import { AppProps } from "next/app"
 import { Session } from "next-auth"
-import { App } from "@/components/App"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { NotificationsProvider } from "@mantine/notifications"
 import { RouterTransition } from "@/components/RouterTransition"
