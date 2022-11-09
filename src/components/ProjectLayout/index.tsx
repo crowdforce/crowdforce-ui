@@ -8,6 +8,8 @@ import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { useMediaQuery } from "@mantine/hooks"
 import type { Dto, ProjectDto } from "@/common/types"
 import { Permission } from "@/common/types"
+import { App } from "../App"
+import { MapProvider } from "react-map-gl"
 
 export type AdminProjectData = {
     id: string
@@ -41,39 +43,43 @@ export const ProjectLayout: React.FC<ProjectLayoutProps> = ({ children }) => {
     }, [smallerThanSm])
 
     return (
-        <Box
-            sx={{
-                position: "relative",
-                display: "flex",
-            }}
-        >
-            <ProjectSideMenuContext.Provider
-                value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin: canEdit, isInit }}
-            >
+        <App showFooter={false}>
+            <MapProvider>
                 <Box
                     sx={{
                         position: "relative",
-                    }}
-                >
-                    <ProjectSideMenu />
-                    {children}
-                </Box>
-
-                <Box
-                    sx={{
-                        flex: "1 1 100%",
-                        position: "relative",
-                        height: "calc(100vh - 60px)",
                         display: "flex",
                     }}
                 >
-                    <SchemaMap
-                        id={"schema"}
-                        projectId={projectId}
-                        renderSchema={true}
-                    />
+                    <ProjectSideMenuContext.Provider
+                        value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin: canEdit, isInit }}
+                    >
+                        <Box
+                            sx={{
+                                position: "relative",
+                            }}
+                        >
+                            <ProjectSideMenu />
+                            {children}
+                        </Box>
+
+                        <Box
+                            sx={{
+                                flex: "1 1 100%",
+                                position: "relative",
+                                height: "calc(100vh - 60px)",
+                                display: "flex",
+                            }}
+                        >
+                            <SchemaMap
+                                id={"schema"}
+                                projectId={projectId}
+                                renderSchema={true}
+                            />
+                        </Box>
+                    </ProjectSideMenuContext.Provider>
                 </Box>
-            </ProjectSideMenuContext.Provider>
-        </Box>
+            </MapProvider>
+        </App>
     )
 }

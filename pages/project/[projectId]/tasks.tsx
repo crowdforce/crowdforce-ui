@@ -1,14 +1,12 @@
 import { useRouter } from "next/router"
 import useSWR, { SWRConfig } from "swr"
 import { Center, Loader } from "@mantine/core"
-import { MapProvider } from "react-map-gl"
 import type { GetServerSideProps } from "next"
 import { getProject } from "pages/api/projects/[projectId]"
 import { ProjectAside } from "@/components/ProjectAside"
 import { getTasks } from "pages/api/projects/[projectId]/tasks"
 import type { Dto, ProjectDto } from "@/common/types"
 import { NextPageWithLayout } from "pages/_app"
-import { App } from "@/components/App"
 import { ProjectLayout } from "@/components/ProjectLayout"
 import { Tasks } from "@/components/ProjectAsideTab/Tasks"
 
@@ -51,13 +49,9 @@ const Index: NextPageWithLayout<Props> = ({ fallback }) => (
 
 Index.getLayout = function getLayout(page) {
     return (
-        <App showFooter={false}>
-            <MapProvider>
-                <ProjectLayout>
-                    {page}
-                </ProjectLayout>
-            </MapProvider>
-        </App>
+        <ProjectLayout>
+            {page}
+        </ProjectLayout>
     )
 }
 

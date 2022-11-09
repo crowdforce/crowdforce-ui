@@ -1,18 +1,11 @@
 import { useRouter } from "next/router"
-import Page from "@/components/Page"
 import useSWR, { SWRConfig } from "swr"
-import { Alert, Button, Card, Center, Grid, Loader, Stack } from "@mantine/core"
-import { ProjectEditForm } from "@/components/ProjectEditForm"
-import { Dto, EditProjectDto, ProjectDto } from "@/common/types"
-import { useCallback } from "react"
-import { useSession } from "next-auth/react"
-import { ProjectMapEditor } from "@/components/ProjectMapEditor"
-import { MapProvider } from "react-map-gl"
+import { Center, Loader } from "@mantine/core"
+import { Dto, ProjectDto } from "@/common/types"
 import { getUserId } from "@/server/lib"
 import type { GetServerSideProps } from "next"
 import { getAdminProject } from "pages/api/edit/projects/[projectId]"
 import { NextPageWithLayout } from "pages/_app"
-import { App } from "@/components/App"
 import { ProjectLayout } from "@/components/ProjectLayout"
 import ProjectMap from "@/components/ProjectMap"
 import { ProjectAside } from "@/components/ProjectAside"
@@ -82,13 +75,9 @@ const Index: NextPageWithLayout<Props> = ({ fallback }) => (
 
 Index.getLayout = function getLayout(page) {
     return (
-        <App showFooter={false}>
-            <MapProvider>
-                <ProjectLayout>
-                    {page}
-                </ProjectLayout>
-            </MapProvider>
-        </App>
+        <ProjectLayout>
+            {page}
+        </ProjectLayout>
     )
 }
 
