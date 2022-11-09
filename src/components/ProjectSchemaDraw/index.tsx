@@ -162,8 +162,7 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                                 break
                             }
                             case "trash": {
-                                const ids = draw.getSelectedIds()
-                                draw.delete(ids)
+                                draw.trash()
                                 break
                             }
                             case "tree": {
