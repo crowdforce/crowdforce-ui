@@ -1,4 +1,4 @@
-import { ActionIcon, createStyles, Group } from "@mantine/core"
+import { ActionIcon, createStyles, Flex, Group } from "@mantine/core"
 
 const useStyles = createStyles(theme => ({
     toolbar: {
@@ -18,13 +18,14 @@ export type ToolbarClick = (name: string) => void
 export type ToolbarProps = {
     items: ToolbarItem[]
     onClick: ToolbarClick
+    className?: string
 }
 
-export const Toolbar: React.FC<ToolbarProps> = ({ onClick, items }) => {
-    const { classes: s } = useStyles()
+export const Toolbar: React.FC<ToolbarProps> = ({ onClick, items, className }) => {
+    const { classes: s, cx } = useStyles()
 
     return (
-        <Group className={s.toolbar} spacing={"sm"}>
+        <Flex className={cx(s.toolbar, className)} gap={"sm"} justify={"center"}>
             {items.map(x => (
                 <ActionIcon
                     key={x.name}
@@ -34,6 +35,6 @@ export const Toolbar: React.FC<ToolbarProps> = ({ onClick, items }) => {
                     {x.icon}
                 </ActionIcon>
             ))}
-        </Group>
+        </Flex>
     )
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react"
+import { useCallback, useContext, useEffect } from "react"
 import { OnChangeDraw } from "./useDrawControl"
 import useSWR, { useSWRConfig } from "swr"
 import { useDrawControl } from "./useDrawControl"
@@ -8,20 +8,21 @@ import { dataToGeojson } from "./lib"
 import { Box, Center, createStyles } from "@mantine/core"
 import { IconPoint, IconPolygon, IconTrash } from "@tabler/icons"
 import { Toolbar } from "./Toolbar"
+import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 
 const useStyles = createStyles(theme => ({
-    toolbar: {
-        backgroundColor: theme.white,
-        padding: theme.spacing.xs,
-        borderRadius: theme.radius.md,
-    },
     container: {
         position: "absolute",
         top: 0,
         left: 0,
-        // margin: 10,
-        width: "100%",
-        padding: theme.spacing.md,
+        right: 0,
+        marginLeft: "auto",
+        marginRight: "auto",
+        padding: theme.spacing.sm,
+        pointerEvents: "none",
+    },
+    toolbar: {
+        pointerEvents: "auto",
     },
 }))
 
@@ -34,6 +35,7 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data: features } = useSWR<EditFeatureDto[]>(`/api/edit/projects/${projectId}/features`)
+    const { open, wide } = useContext(ProjectSideMenuContext)
 
     const onChange = useCallback<OnChangeDraw>(async (event, draw) => {
         const feature = event.features[0]
@@ -121,10 +123,14 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
         }
     }, [features, draw])
 
+    const openShift = open ? 530 : 0
     return (
-        <Box className={s.container}>
+        <Box className={s.container} style={{
+            left: openShift,
+        }}>
             <Center>
                 <Toolbar
+                    className={s.toolbar}
                     items={[
                         {
                             name: "point",
@@ -173,6 +179,6 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                     }}
                 />
             </Center>
-        </Box>
+        </Box >
     )
 }
