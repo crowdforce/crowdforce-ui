@@ -16,6 +16,13 @@ const useStyles = createStyles((theme) => ({
         border: "none",
         color: theme.colors.gray[0],
     },
+    selected: {
+        color: theme.colors.lime,
+        background: "#ECF2F6",
+        "&:hover": {
+            background: theme.colors.lime[0],
+        },
+    },
 }))
 
 export const SideButton: React.FC<SideButtonProps> = ({ active, wide, icon, href, onClick, ...props }) => {
@@ -29,7 +36,9 @@ export const SideButton: React.FC<SideButtonProps> = ({ active, wide, icon, href
                 fullWidth
                 radius="md"
                 variant={active ? "light" : "outline"}
-                className={cx(s.button, props.className)}
+                className={cx(s.button, props.className, {
+                    [s.selected]: active,
+                })}
                 leftIcon={icon}
                 onClick={onClick}
                 component={href ? "a" : "button"}

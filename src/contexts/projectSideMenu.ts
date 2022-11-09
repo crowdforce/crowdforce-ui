@@ -4,8 +4,8 @@ import React, { Dispatch, SetStateAction } from "react"
 type ProjectSideMenuContextProps = {
     open: boolean
     setOpen: Dispatch<SetStateAction<boolean>>
-    openId: Exclude<ProjectSideMenuIds, "aside">
-    setOpenId: Dispatch<SetStateAction<Exclude<ProjectSideMenuIds, "aside">>>
+    openId: ProjectSideMenuIds
+    setOpenId: Dispatch<SetStateAction<ProjectSideMenuIds>>
     wide: boolean
     setWide: React.Dispatch<React.SetStateAction<boolean>>
     isAdmin: boolean

@@ -41,7 +41,7 @@ const Container: React.FC = () => {
     const canEdit = data?.permission === Permission.edit
     const isInit = canEdit && Boolean(router.query.init)
     const [open, setOpen] = useState(true)
-    const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>(isInit ? "edit" : "info")
+    const [openId, setOpenId] = useState<ProjectSideMenuIds>(isInit ? "edit" : "info")
     const [task, setTask] = useState<Partial<ProjectTaskDto> | null>(null)
     const smallerThanSm = useMediaQuery("(max-width: 800px)", false)
     const [wide, setWide] = useState(!smallerThanSm)
@@ -98,7 +98,7 @@ const Container: React.FC = () => {
                             <SchemaMap
                                 id={"schema"}
                                 projectId={projectId}
-                                renderSchema={openId !== "schema"}
+                                renderSchema={true}
                             />
                         </MapProvider>
                     </Box>
