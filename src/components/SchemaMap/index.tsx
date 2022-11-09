@@ -4,10 +4,9 @@ import { memo, useContext, useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import useSWR from "swr"
 import { MapViewportDto } from "@/common/types"
-import { GeolocateControl, Layer, NavigationControl, useMap } from "react-map-gl"
+import { GeolocateControl, NavigationControl, useMap } from "react-map-gl"
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { MapStyleSelector } from "./MapStyleSelector"
-import { SchemaSource } from "./SchemaSource"
 
 const MapGl = dynamic(
     () => import("react-map-gl"),
@@ -72,39 +71,6 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
             <MapStyleSelector
                 {...{ mapStyle, setMapStyle, mapStyles }}
             />
-
-            <SchemaSource
-                id={"trees"}
-                projectId={projectId}
-                type={"Point"}
-            >
-                <Layer
-                    id={"trees"}
-                    type='circle'
-                    paint={{
-                        "circle-radius": 10,
-                        "circle-color": "#0f0",
-                    }}
-                />
-            </SchemaSource>
-            <SchemaSource
-                id={"border"}
-                projectId={projectId}
-                type={"Polygon"}
-            >
-                <Layer
-                    id={"border"}
-                    type='line'
-                    paint={{
-                        "line-color": "#ff0000",
-                        "line-width": 2,
-                    }}
-                    layout={{
-                        "line-join": "round",
-                        "line-cap": "round",
-                    }}
-                />
-            </SchemaSource>
         </MapGl>
     )
 }

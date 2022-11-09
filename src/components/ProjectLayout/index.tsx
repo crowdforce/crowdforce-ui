@@ -73,7 +73,6 @@ export const ProjectLayout: React.FC<ProjectLayoutProps> = ({ children }) => {
                             <SchemaMap
                                 id={"schema"}
                                 projectId={projectId}
-                                renderSchema={true}
                             />
                         </Box>
                     </ProjectSideMenuContext.Provider>

@@ -9,6 +9,7 @@ import type { Dto, ProjectDto } from "@/common/types"
 import { NextPageWithLayout } from "pages/_app"
 import { ProjectLayout } from "@/components/ProjectLayout"
 import { AddTask } from "@/components/ProjectAsideTab/AddTask"
+import { ProjectSchema } from "@/components/SchemaMap/ProjectSchema"
 
 type Props = {
     fallback: Record<string, any>
@@ -63,6 +64,7 @@ Index.getLayout = function getLayout(page) {
     return (
         <ProjectLayout>
             {page}
+            <ProjectSchema />
         </ProjectLayout>
     )
 }
