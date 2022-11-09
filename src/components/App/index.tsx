@@ -15,13 +15,13 @@ const UserButton = dynamic<UserButtonProps>(
 
 export type AppProps = {
     children?: React.ReactNode
+    showFooter: boolean
 }
 
-export const App: React.FC<AppProps> = ({ children }) => {
+export const App: React.FC<AppProps> = ({ children, showFooter }) => {
     const [opened, setOpened] = useState(false)
     const router = useRouter()
     const isProjectPage = router.pathname === "/project/[projectId]"
-    const noFooter = isProjectPage
 
     return (
         <AppShell
@@ -68,7 +68,7 @@ export const App: React.FC<AppProps> = ({ children }) => {
                     </Navbar>
                 </MediaQuery>
             )}
-            footer={noFooter ? undefined : (
+            footer={!showFooter ? undefined : (
                 <>
                     <div style={{
                         height: "8rem",

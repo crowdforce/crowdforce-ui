@@ -3,7 +3,7 @@ import Page from "@/components/Page"
 import useSWR, { SWRConfig } from "swr"
 import { Box, Center, Loader } from "@mantine/core"
 import { MapProvider } from "react-map-gl"
-import type { GetServerSideProps, NextPage } from "next"
+import type { GetServerSideProps } from "next"
 import SchemaMap from "@/components/SchemaMap"
 import { getProject } from "pages/api/projects/[projectId]"
 import { ProjectSideMenu, ProjectSideMenuIds } from "@/components/ProjectSideMenu"
@@ -15,6 +15,8 @@ import { getTasks } from "pages/api/projects/[projectId]/tasks"
 import { ProjectTaskContext } from "@/contexts/projectTask"
 import type { Dto, ProjectDto, ProjectTaskDto } from "@/common/types"
 import { Permission } from "@/common/types"
+import { NextPageWithLayout } from "pages/_app"
+import { App } from "@/components/App"
 
 type Props = {
     fallback: Record<string, any>
@@ -60,58 +62,69 @@ const Container: React.FC = () => {
     }
 
     return (
-        <Page>
-            <Box
-                sx={{
-                    position: "relative",
-                    display: "flex",
-                }}
+        <Box
+            sx={{
+                position: "relative",
+                display: "flex",
+            }}
+        >
+            <ProjectSideMenuContext.Provider
+                value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin: canEdit, isInit }}
             >
-                <ProjectSideMenuContext.Provider
-                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin: canEdit, isInit }}
+                <ProjectTaskContext.Provider
+                    value={{ task, setTask }}
                 >
-                    <ProjectTaskContext.Provider
-                        value={{ task, setTask }}
+                    <Box
+                        sx={{
+                            position: "relative",
+                        }}
                     >
-                        <Box
-                            sx={{
-                                position: "relative",
-                            }}
-                        >
-                            <ProjectSideMenu />
-                            <ProjectAside
-                                title={data.payload.title}
-                                followers={data.payload.followers}
-                            />
-                        </Box>
+                        <ProjectSideMenu />
+                        <ProjectAside
+                            title={data.payload.title}
+                            followers={data.payload.followers}
+                        />
+                    </Box>
 
-                        <Box
-                            sx={{
-                                flex: "1 1 100%",
-                                position: "relative",
-                                height: "calc(100vh - 60px)",
-                                display: "flex",
-                            }}
-                        >
-                            <MapProvider>
-                                <SchemaMap
-                                    id={"schema"}
-                                    projectId={projectId}
-                                />
-                            </MapProvider>
-                        </Box>
-                    </ProjectTaskContext.Provider>
-                </ProjectSideMenuContext.Provider>
-            </Box>
-        </Page>
+                    <Box
+                        sx={{
+                            flex: "1 1 100%",
+                            position: "relative",
+                            height: "calc(100vh - 60px)",
+                            display: "flex",
+                        }}
+                    >
+                        <MapProvider>
+                            <SchemaMap
+                                id={"schema"}
+                                projectId={projectId}
+                                renderSchema={openId !== "schema"}
+                            />
+                        </MapProvider>
+                    </Box>
+                </ProjectTaskContext.Provider>
+            </ProjectSideMenuContext.Provider>
+        </Box>
     )
 }
 
-const Index: NextPage<Props> = ({ fallback }) => (
+const Index: NextPageWithLayout<Props> = ({ fallback }) => (
     <SWRConfig value={{ fallback }}>
         <Container />
     </SWRConfig>
 )
+
+Index.getLayout = function getLayout(page) {
+    return (
+        <App showFooter={false}>
+            <MapProvider>
+                <Page>
+                    {page}
+                </Page>
+            </MapProvider>
+        </App>
+    )
+}
 
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const projectId = ctx.params?.projectId as string

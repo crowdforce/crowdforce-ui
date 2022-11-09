@@ -9,12 +9,14 @@ import phone from "@/../public/index/phone.png"
 import list from "@/../public/index/list.png"
 import planet from "@/../public/index/planet.png"
 import target from "@/../public/index/target.png"
-import { GetStaticProps, NextPage } from "next"
+import { GetStaticProps } from "next"
 import { ProjectCard } from "@/components/ProjectCard"
 import React from "react"
 import { PublicProjectDto } from "@/common/types"
 import useSWR, { SWRConfig } from "swr"
 import { getTopProjects } from "@/server/controllers/projects/public"
+import { NextPageWithLayout } from "./_app"
+import { App } from "@/components/App"
 
 type Props = {
     fallback: Record<string, any>
@@ -475,11 +477,19 @@ const MainPageContainer: React.FC<Props> = () => {
     )
 }
 
-const MainPage: NextPage<Props> = (props) => (
+const Index: NextPageWithLayout<Props> = (props) => (
     <SWRConfig value={{ fallback: props.fallback }}>
         <MainPageContainer {...props} />
     </SWRConfig>
 )
+
+Index.getLayout = function getLayout(page) {
+    return (
+        <App showFooter>
+            {page}
+        </App>
+    )
+}
 
 export const getStaticProps: GetStaticProps<Props> = async ctx => {
     const projects = await getTopProjects()
@@ -492,4 +502,4 @@ export const getStaticProps: GetStaticProps<Props> = async ctx => {
     }
 }
 
-export default MainPage
+export default Index

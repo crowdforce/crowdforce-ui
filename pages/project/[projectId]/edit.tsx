@@ -9,8 +9,10 @@ import { useSession } from "next-auth/react"
 import { ProjectMapEditor } from "@/components/ProjectMapEditor"
 import { MapProvider } from "react-map-gl"
 import { getUserId } from "@/server/lib"
-import type { GetServerSideProps, NextPage } from "next"
+import type { GetServerSideProps } from "next"
 import { getAdminProject } from "pages/api/edit/projects/[projectId]"
+import { NextPageWithLayout } from "pages/_app"
+import { App } from "@/components/App"
 
 type Props = {
     fallback: Record<string, any>
@@ -131,11 +133,21 @@ const Container: React.FC = () => {
     )
 }
 
-const ProjectEditPage: NextPage<Props> = ({ fallback }) => (
+const Index: NextPageWithLayout<Props> = ({ fallback }) => (
     <SWRConfig value={{ fallback }}>
         <Container />
     </SWRConfig>
 )
+
+Index.getLayout = function getLayout(page) {
+    return (
+        <App showFooter={false}>
+            <MapProvider>
+                {page}
+            </MapProvider>
+        </App>
+    )
+}
 
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const userId = await getUserId(ctx)
@@ -160,4 +172,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     }
 }
 
-export default ProjectEditPage
+export default Index

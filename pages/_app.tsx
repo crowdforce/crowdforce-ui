@@ -10,12 +10,24 @@ import { App } from "@/components/App"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { NotificationsProvider } from "@mantine/notifications"
 import { RouterTransition } from "@/components/RouterTransition"
+import { NextPage } from "next"
+
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+    getLayout?: (page: React.ReactElement) => React.ReactNode
+
+}
+
+type AppPropsWithLayout<T> = AppProps<T> & {
+    Component: NextPageWithLayout<T>
+}
 
 type Props = {
     session: Session
 }
 
-export default function MyApp({ Component, pageProps }: AppProps<Props>) {
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout<Props>) {
+    const getLayout = Component.getLayout ?? ((page) => page)
+
     return (
         <>
             <Head>
@@ -41,31 +53,27 @@ export default function MyApp({ Component, pageProps }: AppProps<Props>) {
 
             <ThemeProvider>
                 <SessionProvider session={pageProps.session}>
-                    <MapProvider>
-                        <SWRConfig value={{
-                            fetcher: async (resource: string, init?: RequestInit) => {
-                                try {
-                                    const res = await fetch(resource, init)
-                                    if (res.ok) {
-                                        const value = await res.json()
-                                        if (value.hasOwnProperty("error")) {
-                                            throw new Error(value.error)
-                                        }
-                                        return value
+                    <SWRConfig value={{
+                        fetcher: async (resource: string, init?: RequestInit) => {
+                            try {
+                                const res = await fetch(resource, init)
+                                if (res.ok) {
+                                    const value = await res.json()
+                                    if (value.hasOwnProperty("error")) {
+                                        throw new Error(value.error)
                                     }
-                                } catch (error) {
-                                    return { error }
+                                    return value
                                 }
-                            },
-                        }}>
-                            <NotificationsProvider position="top-center">
-                                <App>
-                                    <RouterTransition />
-                                    <Component {...pageProps} />
-                                </App>
-                            </NotificationsProvider>
-                        </SWRConfig>
-                    </MapProvider>
+                            } catch (error) {
+                                return { error }
+                            }
+                        },
+                    }}>
+                        <NotificationsProvider position="top-center">
+                            <RouterTransition />
+                            {getLayout(<Component {...pageProps} />)}
+                        </NotificationsProvider>
+                    </SWRConfig>
                 </SessionProvider>
             </ThemeProvider>
         </>
