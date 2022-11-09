@@ -1,7 +1,6 @@
 import { Button, Center, Container, createStyles, Group, keyframes, Loader, MediaQuery, SimpleGrid, Stack, Text, Title } from "@mantine/core"
 import { IconCornerLeftDownDouble, IconMouse } from "@tabler/icons"
 import Image from "next/image"
-import Page from "@/components/Page"
 import heroLine from "@/../public/index/heroLine.svg"
 import bigLine from "@/../public/index/bigLine.svg"
 import blueLine from "@/../public/index/blueLine.svg"
