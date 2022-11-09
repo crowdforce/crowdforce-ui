@@ -1,12 +1,14 @@
 import Page from "@/components/Page"
 import { createStyles, Stack, Title, Loader, Breadcrumbs, Group } from "@mantine/core"
-import { GetServerSideProps, NextPage } from "next"
+import { GetServerSideProps } from "next"
 import { hasAdminRole } from "@/server/lib"
 import useSWR from "swr"
 import { AdminProjectDto } from "@/common/types"
 import { AdminProjectsTable } from "@/components/AdminProjectsTable"
 import { getAllProjects } from "@/server/controllers/admin/projects"
 import Link from "next/link"
+import { App } from "@/components/App"
+import { NextPageWithLayout } from "pages/_app"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -19,7 +21,7 @@ const useStyles = createStyles((theme) => ({
 type Props = {
 }
 
-const Index: NextPage<Props> = () => {
+const Index: NextPageWithLayout<Props> = () => {
     const { classes: s } = useStyles()
     const { data: items } = useSWR<AdminProjectDto[]>("/api/admin/projects", null, {
         fallback: [],
@@ -59,6 +61,14 @@ const Index: NextPage<Props> = () => {
                 )}
             </Stack>
         </Page >
+    )
+}
+
+Index.getLayout = function getLayout(page) {
+    return (
+        <App showFooter>
+            {page}
+        </App>
     )
 }
 

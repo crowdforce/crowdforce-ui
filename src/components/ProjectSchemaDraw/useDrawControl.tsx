@@ -10,12 +10,13 @@ type Handler = (ev: any) => void
 export type OnChangeDraw = (event: { features: GeoJSON.Feature[]; type: string }, draw: MapboxDraw) => void
 
 export type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
+    id?: string
     position?: ControlPosition
     onChange?: OnChangeDraw
 };
 
-export function useDrawControl({ onChange, ...props }: DrawControlProps): MapboxDraw {
-    const { current: map } = useMap()
+export function useDrawControl({ id, onChange, ...props }: DrawControlProps): MapboxDraw {
+    const { [id ?? "current"]: map } = useMap()
     const draw = useControl<MapboxDraw>(
         () => new MapboxDraw(props),
         {

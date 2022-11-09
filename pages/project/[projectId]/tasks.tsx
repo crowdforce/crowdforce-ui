@@ -6,10 +6,9 @@ import { getProject } from "pages/api/projects/[projectId]"
 import { ProjectAside } from "@/components/ProjectAside"
 import { getTasks } from "pages/api/projects/[projectId]/tasks"
 import type { Dto, ProjectDto } from "@/common/types"
-// import { Permission } from "@/common/types"
 import { NextPageWithLayout } from "pages/_app"
 import { ProjectLayout } from "@/components/ProjectLayout"
-import { Edit } from "@/components/ProjectAsideTab/Edit"
+import { Tasks } from "@/components/ProjectAsideTab/Tasks"
 import { ProjectSchema } from "@/components/SchemaMap/ProjectSchema"
 
 type Props = {
@@ -20,7 +19,6 @@ const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${projectId}`)
-    // const canEdit = data?.permission === Permission.edit
 
     if (!data) {
         return (
@@ -39,7 +37,7 @@ const Container: React.FC = () => {
             title={data.payload.title}
             followers={data.payload.followers}
         >
-            <Edit />
+            <Tasks />
         </ProjectAside>
     )
 }

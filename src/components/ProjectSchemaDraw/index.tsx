@@ -1,15 +1,20 @@
 import { useCallback, useEffect } from "react"
 import { OnChangeDraw } from "./useDrawControl"
-import { useSWRConfig } from "swr"
+import useSWR, { useSWRConfig } from "swr"
 import { useDrawControl } from "./useDrawControl"
+import { useRouter } from "next/router"
+import { EditFeatureDto } from "@/common/types"
+import { dataToGeojson } from "./lib"
 
-export type ProjectDrawProps = {
-    projectId: string
-    initialValue?: GeoJSON.FeatureCollection
+export type ProjectSchemaDrawProps = {
 }
 
-export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectId }) => {
+export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
     const { mutate } = useSWRConfig()
+    const router = useRouter()
+    const projectId = router.query.projectId as string
+    const { data: features } = useSWR<EditFeatureDto[]>(`/api/edit/projects/${projectId}/features`)
+
     const onChange = useCallback<OnChangeDraw>(async (event, draw) => {
         const feature = event.features[0]
         const featureId = feature.id! as string
@@ -78,6 +83,7 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
     }, [projectId, mutate])
 
     const draw = useDrawControl({
+        id: "schema",
         onChange,
         position: "top-left",
         controls: {
@@ -89,10 +95,11 @@ export const ProjectDraw: React.FC<ProjectDrawProps> = ({ initialValue, projectI
     })
 
     useEffect(() => {
-        if (initialValue) {
+        if (features) {
+            const initialValue = dataToGeojson(features ?? [])
             draw.set(initialValue)
         }
-    }, [initialValue, draw])
+    }, [features, draw])
 
     return null
 }
