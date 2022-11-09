@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Badge, Group } from "@mantine/core"
 import logo from "@/../public/logo.svg"
-import Image from "next/image"
+import Image from "next/legacy/image"
 
 export const Logo = () => (
     <Link href={"/"} passHref>

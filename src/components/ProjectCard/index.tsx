@@ -1,6 +1,6 @@
 import { createStyles, Group, Text, Stack, Title, Button, Card } from "@mantine/core"
 import { IconUsers } from "@tabler/icons"
-import Image from "next/image"
+import Image from "next/legacy/image"
 import Link from "next/link"
 
 const useStyles = createStyles((theme) => ({
