@@ -9,6 +9,8 @@ import { NextPageWithLayout } from "pages/_app"
 import { ProjectLayout } from "@/components/ProjectLayout"
 import ProjectMap from "@/components/ProjectMap"
 import { ProjectAside } from "@/components/ProjectAside"
+import { ProjectMapLegend } from "@/components/ProjectMapLegend"
+import { ProjectMapEditor } from "@/components/ProjectMapEditor"
 
 type Props = {
     fallback: Record<string, any>
@@ -59,8 +61,10 @@ const Container: React.FC = () => {
             title={data.payload.title}
             followers={data.payload.followers}
         >
-            <ProjectMap
-                id={`${projectId}-schema`}
+            <ProjectMapLegend
+                projectId={projectId}
+            />
+            <ProjectMapEditor
                 projectId={projectId}
             />
         </ProjectAside>
@@ -75,7 +79,11 @@ const Index: NextPageWithLayout<Props> = ({ fallback }) => (
 
 Index.getLayout = function getLayout(page) {
     return (
-        <ProjectLayout>
+        <ProjectLayout
+            map={(
+                <ProjectMap />
+            )}
+        >
             {page}
         </ProjectLayout>
     )

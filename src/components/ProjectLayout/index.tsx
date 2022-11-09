@@ -25,9 +25,10 @@ export type AdminProjectData = {
 
 export type ProjectLayoutProps = {
     children: React.ReactNode
+    map: React.ReactNode
 }
 
-export const ProjectLayout: React.FC<ProjectLayoutProps> = ({ children }) => {
+export const ProjectLayout: React.FC<ProjectLayoutProps> = ({ children, map }) => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${projectId}`)
@@ -73,7 +74,9 @@ export const ProjectLayout: React.FC<ProjectLayoutProps> = ({ children }) => {
                             <SchemaMap
                                 id={"schema"}
                                 projectId={projectId}
-                            />
+                            >
+                                {map}
+                            </SchemaMap>
                         </Box>
                     </ProjectSideMenuContext.Provider>
                 </Box>

@@ -50,9 +50,12 @@ const Index: NextPageWithLayout<Props> = ({ fallback }) => (
 
 Index.getLayout = function getLayout(page) {
     return (
-        <ProjectLayout>
+        <ProjectLayout
+            map={(
+                <ProjectSchema />
+            )}
+        >
             {page}
-            <ProjectSchema />
         </ProjectLayout>
     )
 }
