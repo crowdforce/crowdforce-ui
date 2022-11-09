@@ -1,4 +1,4 @@
-import { ActionIcon, createStyles, Flex, Group } from "@mantine/core"
+import { ActionIcon, createStyles, Flex } from "@mantine/core"
 
 const useStyles = createStyles(theme => ({
     toolbar: {
