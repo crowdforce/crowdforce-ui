@@ -7,10 +7,10 @@ import type { GetServerSideProps } from "next"
 import { getAdminProject } from "pages/api/edit/projects/[projectId]"
 import { NextPageWithLayout } from "pages/_app"
 import { ProjectLayout } from "@/components/ProjectLayout"
-import ProjectMap from "@/components/ProjectMap"
 import { ProjectAside } from "@/components/ProjectAside"
 import { ProjectMapLegend } from "@/components/ProjectMapLegend"
 import { ProjectMapEditor } from "@/components/ProjectMapEditor"
+import { ProjectSchemaDraw } from "@/components/ProjectSchemaDraw"
 
 type Props = {
     fallback: Record<string, any>
@@ -81,7 +81,7 @@ Index.getLayout = function getLayout(page) {
     return (
         <ProjectLayout
             map={(
-                <ProjectMap />
+                <ProjectSchemaDraw />
             )}
         >
             {page}

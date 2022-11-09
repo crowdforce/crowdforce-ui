@@ -37,7 +37,7 @@ export const ProjectSchema: React.FC = memo(() => {
             })
         }
 
-        if (map.loaded()) {
+        if (map.isStyleLoaded()) {
             init()
         } else {
             map.on("load", init)

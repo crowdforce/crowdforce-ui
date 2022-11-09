@@ -16,6 +16,7 @@ const MapGl = dynamic(
 export type SchemaMapProps = {
     id: string
     projectId: string
+    children?: React.ReactNode
 }
 
 const mapStyles = {
@@ -29,7 +30,7 @@ const mapStyles = {
     },
 }
 
-export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
+export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId, children }) => {
     const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
     const { data: viewport } = useSWR<MapViewportDto>(`/api/projects/${projectId}/viewport`)
     const [mapStyle, setMapStyle] = useState(mapStyles.satellite.style)
@@ -71,6 +72,8 @@ export const SchemaMap: React.FC<SchemaMapProps> = ({ id, projectId }) => {
             <MapStyleSelector
                 {...{ mapStyle, setMapStyle, mapStyles }}
             />
+
+            {children}
         </MapGl>
     )
 }
