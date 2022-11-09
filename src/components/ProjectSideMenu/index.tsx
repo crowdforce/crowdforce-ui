@@ -10,52 +10,12 @@ type ProjectSideMenuProps = {
 
 }
 
-export type ProjectSideMenuIds = "aside" | "info" | "tasks" | "add-task" | "edit"
-type ProjectSideMenuButtons = {
-    icon: JSX.Element
-    text: string
-    id: ProjectSideMenuIds
-}[]
-
-export const buttons: ProjectSideMenuButtons = [
-    {
-        icon: <IconNotes />,
-        text: "Описание проекта",
-        id: "info",
-    },
-    {
-        icon: <IconCheckupList />,
-        text: "Задачи проекта",
-        id: "tasks",
-    },
-    {
-        icon: <IconClipboardList />,
-        text: "Добавить задачу",
-        id: "add-task",
-    },
-    {
-        icon: <IconTools />,
-        text: "Редактирование",
-        id: "edit",
-    },
-]
+export type ProjectSideMenuIds = "info" | "tasks" | "add-task" | "edit"
 
 const useStyles = createStyles((theme) => ({
     icon: {
         border: "none",
         color: theme.colors.gray[0],
-    },
-    iconSelected: {
-        color: theme.colors.lime,
-        background: "#ECF2F6",
-        "&:hover": {
-            background: theme.colors.lime[0],
-        },
-    },
-    asideId: {
-        "& svg": {
-            transform: "rotate(-180deg)",
-        },
     },
     mobileHidden: {
         [theme.fn.smallerThan("sm")]: {
@@ -66,18 +26,12 @@ const useStyles = createStyles((theme) => ({
 
 export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
     const { classes: s, cx } = useStyles()
-
     const { open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit } = useContext(ProjectSideMenuContext)
 
     const onAction = useCallback<(id: ProjectSideMenuIds) => void>(id => {
-        if (id == "aside") {
-            setOpen(!open)
-            return
-        }
-
         setOpenId(id)
         setOpen(true)
-    }, [open, setOpen, setOpenId])
+    }, [setOpen, setOpenId])
 
     return (
         <SideMenu
@@ -118,31 +72,51 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
                 {["Закрыть панель", "Открыть панель"]}
             </ToggleSideButton>
 
-            {buttons
-                .filter(x => {
-                    if (isInit) {
-                        return ["edit"].includes(x.id)
-                    }
-
-                    if (isAdmin) {
-                        return true
-                    }
-
-                    return ["info", "tasks"].includes(x.id)
-                })
-                .map(x => (
+            <SideButton
+                active={openId === "info"}
+                wide={wide}
+                icon={(
+                    <IconNotes />
+                )}
+                onClick={() => onAction("info")}
+            >
+                Описание проекта
+            </SideButton>
+            <SideButton
+                active={openId === "tasks"}
+                wide={wide}
+                icon={(
+                    <IconCheckupList />
+                )}
+                onClick={() => onAction("tasks")}
+            >
+                Задачи проекта
+            </SideButton>
+            {!isAdmin ? null : (
+                <>
                     <SideButton
-                        key={x.id}
-                        active={openId === x.id}
+                        active={openId === "add-task"}
                         wide={wide}
-                        radius="md"
-                        className={cx(s.icon, openId === x.id && s.iconSelected, x.id == "aside" && open && s.asideId)}
-                        icon={x.icon}
-                        onClick={() => onAction(x.id)}
+                        icon={(
+                            <IconClipboardList />
+                        )}
+                        disabled={isInit}
+                        onClick={() => onAction("add-task")}
                     >
-                        {x.id == "aside" ? (open ? "Закрыть панель" : "Открыть панель") : (x.text)}
+                        Добавить задачу
                     </SideButton>
-                ))}
+                    <SideButton
+                        active={openId === "edit"}
+                        wide={wide}
+                        icon={(
+                            <IconTools />
+                        )}
+                        onClick={() => onAction("edit")}
+                    >
+                        Редактирование
+                    </SideButton>
+                </>
+            )}
         </SideMenu>
     )
 }
