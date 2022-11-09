@@ -1,6 +1,6 @@
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ActionIcon, createStyles } from "@mantine/core"
-import { IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSelector, IconSettings, IconTools } from "@tabler/icons"
+import { IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSelector, IconSettings, IconTools, IconTree } from "@tabler/icons"
 import React, { useCallback, useContext } from "react"
 import { SideMenu } from "@/components/SideMenu"
 import { SideButton } from "../SideMenu/SideButton"
@@ -112,9 +112,17 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
                         icon={(
                             <IconTools />
                         )}
-                        onClick={() => onAction("edit")}
                     >
                         Редактирование
+                    </SideButton>
+                    <SideButton
+                        href={`/project/${projectId}/schema`}
+                        wide={wide}
+                        icon={(
+                            <IconTree />
+                        )}
+                    >
+                        Схема
                     </SideButton>
                 </>
             )}
