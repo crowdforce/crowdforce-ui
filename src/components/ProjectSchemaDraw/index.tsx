@@ -35,7 +35,7 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data: features } = useSWR<EditFeatureDto[]>(`/api/edit/projects/${projectId}/features`)
-    const { open, wide } = useContext(ProjectSideMenuContext)
+    const { open } = useContext(ProjectSideMenuContext)
 
     const onChange = useCallback<OnChangeDraw>(async (event, draw) => {
         const feature = event.features[0]
