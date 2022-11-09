@@ -1,7 +1,7 @@
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ActionIcon, createStyles } from "@mantine/core"
 import { IconArrowBarToRight, IconCheckupList, IconClipboardList, IconNotes, IconSelector, IconSettings, IconTools, IconTree } from "@tabler/icons"
-import React, { useCallback, useContext } from "react"
+import React, { useContext } from "react"
 import { SideMenu } from "@/components/SideMenu"
 import { SideButton } from "../SideMenu/SideButton"
 import { ToggleSideButton } from "../SideMenu/ToggleSideButton"
@@ -29,12 +29,7 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { classes: s, cx } = useStyles()
-    const { open, setOpen, openId, setOpenId, wide, setWide, isAdmin, isInit } = useContext(ProjectSideMenuContext)
-
-    const onAction = useCallback<(id: ProjectSideMenuIds) => void>(id => {
-        setOpenId(id)
-        setOpen(true)
-    }, [setOpen, setOpenId])
+    const { open, setOpen, wide, setWide, isAdmin, isInit } = useContext(ProjectSideMenuContext)
 
     return (
         <SideMenu
@@ -81,7 +76,6 @@ export const ProjectSideMenu: React.FC<ProjectSideMenuProps> = ({ }) => {
                 icon={(
                     <IconNotes />
                 )}
-                onClick={() => onAction("info")}
             >
                 Описание проекта
             </SideButton>

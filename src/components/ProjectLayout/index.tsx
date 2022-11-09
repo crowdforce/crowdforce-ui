@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import useSWR from "swr"
 import { Box } from "@mantine/core"
 import SchemaMap from "@/components/SchemaMap"
-import { ProjectSideMenu, ProjectSideMenuIds } from "@/components/ProjectSideMenu"
+import { ProjectSideMenu } from "@/components/ProjectSideMenu"
 import { useEffect, useState } from "react"
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { useMediaQuery } from "@mantine/hooks"
@@ -34,7 +34,6 @@ export const ProjectLayout: React.FC<ProjectLayoutProps> = ({ children }) => {
     const canEdit = data?.permission === Permission.edit
     const isInit = canEdit && Boolean(router.query.init)
     const [open, setOpen] = useState(true)
-    const [openId, setOpenId] = useState<ProjectSideMenuIds>(isInit ? "edit" : "info")
     const smallerThanSm = useMediaQuery("(max-width: 800px)", false)
     const [wide, setWide] = useState(!smallerThanSm)
 
@@ -52,7 +51,7 @@ export const ProjectLayout: React.FC<ProjectLayoutProps> = ({ children }) => {
                     }}
                 >
                     <ProjectSideMenuContext.Provider
-                        value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin: canEdit, isInit }}
+                        value={{ open, setOpen, wide, setWide, isAdmin: canEdit, isInit }}
                     >
                         <Box
                             sx={{
