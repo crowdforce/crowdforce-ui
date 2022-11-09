@@ -5,12 +5,32 @@ import { useDrawControl } from "./useDrawControl"
 import { useRouter } from "next/router"
 import { EditFeatureDto } from "@/common/types"
 import { dataToGeojson } from "./lib"
+import { Box, Center, createStyles } from "@mantine/core"
+import { IconPoint, IconPolygon, IconTrash } from "@tabler/icons"
+import { Toolbar } from "./Toolbar"
+
+const useStyles = createStyles(theme => ({
+    toolbar: {
+        backgroundColor: theme.white,
+        padding: theme.spacing.xs,
+        borderRadius: theme.radius.md,
+    },
+    container: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        // margin: 10,
+        width: "100%",
+        padding: theme.spacing.md,
+    },
+}))
 
 export type ProjectSchemaDrawProps = {
 }
 
 export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
     const { mutate } = useSWRConfig()
+    const { classes: s } = useStyles()
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data: features } = useSWR<EditFeatureDto[]>(`/api/edit/projects/${projectId}/features`)
@@ -85,11 +105,11 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
     const draw = useDrawControl({
         id: "schema",
         onChange,
-        position: "top-left",
+        position: "top-right",
         controls: {
-            point: true,
-            polygon: true,
-            trash: true,
+            point: false,
+            polygon: false,
+            trash: false,
         },
         displayControlsDefault: false,
     })
@@ -101,5 +121,59 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
         }
     }, [features, draw])
 
-    return null
+    return (
+        <Box className={s.container}>
+            <Center>
+                <Toolbar
+                    items={[
+                        {
+                            name: "point",
+                            icon: (
+                                <IconPoint size={16} />
+                            ),
+                        },
+                        {
+                            name: "polygon",
+                            icon: (
+                                <IconPolygon size={16} />
+                            ),
+                        },
+                        // {
+                        //     name: "tree",
+                        //     icon: (
+                        //         <IconTree size={16} />
+                        //     ),
+                        // },
+                        {
+                            name: "trash",
+                            icon: (
+                                <IconTrash size={16} />
+                            ),
+                        },
+                    ]}
+                    onClick={(name) => {
+                        switch (name) {
+                            case "point": {
+                                draw.changeMode("draw_point")
+                                break
+                            }
+                            case "polygon": {
+                                draw.changeMode("draw_polygon")
+                                break
+                            }
+                            case "trash": {
+                                const ids = draw.getSelectedIds()
+                                draw.delete(ids)
+                                break
+                            }
+                            case "tree": {
+                                draw.changeMode("draw_point")
+                                break
+                            }
+                        }
+                    }}
+                />
+            </Center>
+        </Box>
+    )
 }
