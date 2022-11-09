@@ -37,6 +37,7 @@ const useStyles = createStyles((theme) => ({
             paddingLeft: "unset",
             paddingRight: "unset",
         },
+        marginBottom: theme.spacing.xl,
     },
     containerHero: {
         [theme.fn.smallerThan("xs")]: {
@@ -246,7 +247,7 @@ const MainPageContainer: React.FC<Props> = () => {
     const { data: projects } = useSWR<PublicProjectDto[]>("/api/projects/top")
     const { classes: s, cx } = useStyles()
     return (
-        <Page>
+        <>
             <Container
                 className={cx(s.container, s.containerHero)}
             >
@@ -473,7 +474,7 @@ const MainPageContainer: React.FC<Props> = () => {
                     </SimpleGrid>
                 )}
             </Container>
-        </Page>
+        </>
     )
 }
 
