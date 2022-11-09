@@ -1,5 +1,4 @@
 import { useRouter } from "next/router"
-import Page from "@/components/Page"
 import useSWR, { SWRConfig } from "swr"
 import { Center, Loader } from "@mantine/core"
 import { MapProvider } from "react-map-gl"
@@ -66,11 +65,9 @@ Index.getLayout = function getLayout(page) {
     return (
         <App showFooter={false}>
             <MapProvider>
-                <Page>
-                    <ProjectLayout>
-                        {page}
-                    </ProjectLayout>
-                </Page>
+                <ProjectLayout>
+                    {page}
+                </ProjectLayout>
             </MapProvider>
         </App>
     )
