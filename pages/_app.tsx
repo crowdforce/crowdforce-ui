@@ -43,7 +43,20 @@ export default function MyApp({ Component, pageProps }: AppProps<Props>) {
                 <SessionProvider session={pageProps.session}>
                     <MapProvider>
                         <SWRConfig value={{
-                            fetcher: (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json()),
+                            fetcher: async (resource: string, init?: RequestInit) => {
+                                try {
+                                    const res = await fetch(resource, init)
+                                    if (res.ok) {
+                                        const value = await res.json()
+                                        if (value.hasOwnProperty("error")) {
+                                            throw new Error(value.error)
+                                        }
+                                        return value
+                                    }
+                                } catch (error) {
+                                    return { error }
+                                }
+                            },
                         }}>
                             <NotificationsProvider position="top-center">
                                 <App>
