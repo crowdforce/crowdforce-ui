@@ -135,18 +135,18 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                 <Toolbar
                     className={s.toolbar}
                     items={[
-                        {
-                            name: "point",
-                            icon: (
-                                <IconPoint size={16} />
-                            ),
-                        },
-                        {
-                            name: "polygon",
-                            icon: (
-                                <IconPolygon size={16} />
-                            ),
-                        },
+                        // {
+                        //     name: "point",
+                        //     icon: (
+                        //         <IconPoint size={16} />
+                        //     ),
+                        // },
+                        // {
+                        //     name: "polygon",
+                        //     icon: (
+                        //         <IconPolygon size={16} />
+                        //     ),
+                        // },
                         {
                             name: "tree",
                             icon: (
@@ -174,16 +174,16 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                     ]}
                     onClick={(name) => {
                         switch (name) {
-                            // case "point": {
-                            //     setCurrentType(FeatureType.Unknown)
-                            //     draw.changeMode("draw_point")
-                            //     break
-                            // }
-                            // case "polygon": {
-                            //     setCurrentType(FeatureType.Unknown)
-                            //     draw.changeMode("draw_polygon")
-                            //     break
-                            // }
+                            case "point": {
+                                setCurrentType(FeatureType.Unknown)
+                                draw.changeMode("draw_point")
+                                break
+                            }
+                            case "polygon": {
+                                setCurrentType(FeatureType.Unknown)
+                                draw.changeMode("draw_polygon")
+                                break
+                            }
                             case "trash": {
                                 draw.trash()
                                 break
