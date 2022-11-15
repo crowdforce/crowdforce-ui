@@ -6,6 +6,9 @@ const useStyles = createStyles(theme => ({
         padding: theme.spacing.xs,
         borderRadius: theme.radius.md,
     },
+    button: {
+        color: theme.black,
+    },
 }))
 
 export type ToolbarItem = {
@@ -30,6 +33,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({ onClick, items, className }) =
                 <ActionIcon
                     key={x.name}
                     variant="subtle"
+                    className={s.button}
                     onClick={() => { onClick(x.name) }}
                 >
                     {x.icon}
