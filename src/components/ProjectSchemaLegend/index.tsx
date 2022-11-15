@@ -1,4 +1,4 @@
-import { List, Stack } from "@mantine/core"
+import { List } from "@mantine/core"
 import useSWR from "swr"
 import { EditFeatureDto } from "@/common/types"
 import { GeometryIcon } from "./GeometryIcon"
