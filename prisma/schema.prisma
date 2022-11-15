@@ -183,7 +183,7 @@ model Feature {
   // objectTypeId Int
   // objectType   ObjectType? @relation("objectType", fields: [objectTypeId], references: [id])
 
-  status FeatureStatus
+  status FeatureStatus @default(Active)
 
   geometry Json
 
@@ -204,7 +204,7 @@ model Task {
   title       String
   description String
 
-  status TaskStatus
+  status TaskStatus @default(Open)
 
   // eventId  Int   @map("eventId")
   // schedule Event @relation(fields: [eventId], references: [id])
@@ -247,7 +247,7 @@ model UserResponse {
 
   createAt DateTime? @map(name: "created_at")
 
-  status UserResponseStatus
+  status UserResponseStatus @default(Participant)
 
   @@id([userId, taskId])
   @@map(name: "user_responses")
