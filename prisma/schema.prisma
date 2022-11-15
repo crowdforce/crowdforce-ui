@@ -59,6 +59,15 @@ enum UserResponseStatus {
   @@map("user_response_status")
 }
 
+enum FeatureType {
+  Unknown
+  Border
+  Tree
+  Lawn
+
+  @@map("feature_type")
+}
+
 model TelegramAccount {
   id        Int      @id
   username  String
@@ -184,6 +193,7 @@ model Feature {
   // objectType   ObjectType? @relation("objectType", fields: [objectTypeId], references: [id])
 
   status FeatureStatus @default(Active)
+  type   FeatureType   @default(Unknown)
 
   geometry Json
 
