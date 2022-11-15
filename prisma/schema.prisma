@@ -23,42 +23,6 @@ enum UserRole {
   @@map("user_role")
 }
 
-model TelegramAccount {
-  id        Int      @id
-  username  String
-  firstName String   @map("first_name")
-  lastName  String   @map("last_name")
-  photoUrl  String   @map("photo_url")
-  authDate  DateTime @map("auth_date")
-
-  User User[]
-
-  @@map("telegram_accounts")
-}
-
-model User {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  role          UserRole  @default(User)
-
-  enabled Boolean @default(true)
-
-  telegramId Int             @map("telegram_id")
-  telegram   TelegramAccount @relation(fields: [telegramId], references: [id], onDelete: Cascade)
-
-  projects Project[]
-  follows  UserFollows[]
-  tasks    UserResponse[]
-  assets   Asset[]
-
-  @@map("users")
-}
-
 enum ProjectStatus {
   Init
   Active
@@ -93,6 +57,42 @@ enum UserResponseStatus {
   Leader
 
   @@map("user_response_status")
+}
+
+model TelegramAccount {
+  id        Int      @id
+  username  String
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  photoUrl  String   @map("photo_url")
+  authDate  DateTime @map("auth_date")
+
+  User User[]
+
+  @@map("telegram_accounts")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  role          UserRole  @default(User)
+
+  enabled Boolean @default(true)
+
+  telegramId Int             @map("telegram_id")
+  telegram   TelegramAccount @relation(fields: [telegramId], references: [id], onDelete: Cascade)
+
+  projects Project[]
+  follows  UserFollows[]
+  tasks    UserResponse[]
+  assets   Asset[]
+
+  @@map("users")
 }
 
 model MapViewport {
