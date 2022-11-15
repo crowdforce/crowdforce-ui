@@ -269,4 +269,3 @@ model UserFollows {
   @@index([active])
   @@map(name: "user_follows")
 }
-// }
