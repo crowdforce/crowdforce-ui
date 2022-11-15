@@ -1,5 +1,5 @@
 import prisma from "@/server/prisma"
-import { Feature, FeatureStatus } from "@prisma/client"
+import { Feature, FeatureStatus, FeatureType } from "@prisma/client"
 import { feature, featureCollection } from "@turf/helpers"
 import { NextApiRequest, NextApiResponse } from "next"
 import { ErrorDto } from "@/common/types"
@@ -26,19 +26,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<GeoJSON.Feature
     }
 
     const projectId = req.query.projectId as string
-    const type = req.query.type as string
+    const type = req.query.type as FeatureType
 
-    const features = await prisma.feature.findMany({
+    const items = await prisma.feature.findMany({
         where: {
             projectId,
             status: FeatureStatus.Active,
+            type,
         },
     })
 
-    const items = features.filter(x => {
-        const geom = x.geometry as unknown as GeoJSON.Geometry
-        return geom.type === type
-    })
+    // const items = features.filter(x => {
+    //     const geom = x.geometry as unknown as GeoJSON.Geometry
+    //     return geom.type === type
+    // })
 
     return res.json(mapResponse(items))
 }

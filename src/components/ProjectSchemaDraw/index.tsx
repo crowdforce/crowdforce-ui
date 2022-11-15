@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { OnChangeDraw } from "./useDrawControl"
 import useSWR, { useSWRConfig } from "swr"
 import { useDrawControl } from "./useDrawControl"
@@ -6,9 +6,10 @@ import { useRouter } from "next/router"
 import { EditFeatureDto } from "@/common/types"
 import { dataToGeojson } from "./lib"
 import { Box, Center, createStyles } from "@mantine/core"
-import { IconPoint, IconPolygon, IconTrash } from "@tabler/icons"
+import { IconMarquee2, IconTallymark4, IconTrash, IconTree } from "@tabler/icons"
 import { Toolbar } from "./Toolbar"
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
+import { FeatureType } from "@prisma/client"
 
 const useStyles = createStyles(theme => ({
     container: {
@@ -30,6 +31,7 @@ export type ProjectSchemaDrawProps = {
 }
 
 export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
+    const [currentType, setCurrentType] = useState<FeatureType | null>(null)
     const { mutate } = useSWRConfig()
     const { classes: s } = useStyles()
     const router = useRouter()
@@ -46,6 +48,7 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
             case "draw.create": {
                 const payload = {
                     geometry: feature.geometry,
+                    type: currentType ?? FeatureType.Unknown,
                 }
                 fetch(`/api/edit/projects/${projectId}/features/create`, {
                     method: "POST",
@@ -102,7 +105,7 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                 break
             }
         }
-    }, [projectId, mutate])
+    }, [currentType, projectId, mutate])
 
     const draw = useDrawControl({
         id: "schema",
@@ -132,24 +135,36 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                 <Toolbar
                     className={s.toolbar}
                     items={[
-                        {
-                            name: "point",
-                            icon: (
-                                <IconPoint size={16} />
-                            ),
-                        },
-                        {
-                            name: "polygon",
-                            icon: (
-                                <IconPolygon size={16} />
-                            ),
-                        },
                         // {
-                        //     name: "tree",
+                        //     name: "point",
                         //     icon: (
-                        //         <IconTree size={16} />
+                        //         <IconPoint size={16} />
                         //     ),
                         // },
+                        // {
+                        //     name: "polygon",
+                        //     icon: (
+                        //         <IconPolygon size={16} />
+                        //     ),
+                        // },
+                        {
+                            name: "tree",
+                            icon: (
+                                <IconTree size={16} />
+                            ),
+                        },
+                        {
+                            name: "border",
+                            icon: (
+                                <IconMarquee2 size={16} />
+                            ),
+                        },
+                        {
+                            name: "lawn",
+                            icon: (
+                                <IconTallymark4 size={16} />
+                            ),
+                        },
                         {
                             name: "trash",
                             icon: (
@@ -160,10 +175,12 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                     onClick={(name) => {
                         switch (name) {
                             case "point": {
+                                setCurrentType(FeatureType.Unknown)
                                 draw.changeMode("draw_point")
                                 break
                             }
                             case "polygon": {
+                                setCurrentType(FeatureType.Unknown)
                                 draw.changeMode("draw_polygon")
                                 break
                             }
@@ -172,7 +189,18 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                                 break
                             }
                             case "tree": {
+                                setCurrentType(FeatureType.Tree)
                                 draw.changeMode("draw_point")
+                                break
+                            }
+                            case "lawn": {
+                                setCurrentType(FeatureType.Lawn)
+                                draw.changeMode("draw_polygon")
+                                break
+                            }
+                            case "border": {
+                                setCurrentType(FeatureType.Border)
+                                draw.changeMode("draw_polygon")
                                 break
                             }
                         }
