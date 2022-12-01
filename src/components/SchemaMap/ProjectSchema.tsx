@@ -19,6 +19,14 @@ export const ProjectSchema: React.FC = memo(() => {
         const lawnLayer = "project-lawn-fill"
         const lawnLayer2 = "project-lawn-outline"
 
+        const flowersSource = "project-flowers"
+        const flowersLayer = "project-flowers-fill"
+        const flowersLayer2 = "project-flowers-outline"
+
+        const gardenbedSource = "project-gardenbed"
+        const gardenbedLayer = "project-gardenbed-fill"
+        const gardenbedLayer2 = "project-gardenbed-outline"
+
         const borderSource = "project-border"
         const borderLayer = "project-border-dash"
         
@@ -60,6 +68,52 @@ export const ProjectSchema: React.FC = memo(() => {
                 "id": lawnLayer2,
                 "type": "line",
                 "source": lawnSource,
+                "paint": {
+                    "line-color": "#00FC67",
+                    "line-width": 3,
+                },
+            })
+
+            map.addSource(flowersSource, {
+                type: "geojson",
+                data: `/api/projects/${projectId}/features?type=${FeatureType.Flowers}`,
+            })
+            map.addLayer({
+                "id": flowersLayer,
+                "type": "fill",
+                "source": flowersSource,
+                "paint": {
+                    "fill-color": "#0E0E0E",
+                    "fill-opacity": 0.25,
+                },
+            })
+            map.addLayer({
+                "id": flowersLayer2,
+                "type": "line",
+                "source": flowersSource,
+                "paint": {
+                    "line-color": "#00FC67",
+                    "line-width": 3,
+                },
+            })
+
+            map.addSource(gardenbedSource, {
+                type: "geojson",
+                data: `/api/projects/${projectId}/features?type=${FeatureType.GardenBed}`,
+            })
+            map.addLayer({
+                "id": gardenbedLayer,
+                "type": "fill",
+                "source": gardenbedSource,
+                "paint": {
+                    "fill-color": "#D00E5D",
+                    "fill-opacity": 0.25,
+                },
+            })
+            map.addLayer({
+                "id": gardenbedLayer2,
+                "type": "line",
+                "source": gardenbedSource,
                 "paint": {
                     "line-color": "#00FC67",
                     "line-width": 3,
@@ -134,6 +188,14 @@ export const ProjectSchema: React.FC = memo(() => {
                 map.removeLayer(lawnLayer)
                 map.removeLayer(lawnLayer2)
                 map.removeSource(lawnSource)
+
+                map.removeLayer(flowersLayer)
+                map.removeLayer(flowersLayer2)
+                map.removeSource(flowersSource)
+
+                map.removeLayer(gardenbedLayer)
+                map.removeLayer(gardenbedLayer2)
+                map.removeSource(gardenbedSource)
             } catch (error) {
 
             }
