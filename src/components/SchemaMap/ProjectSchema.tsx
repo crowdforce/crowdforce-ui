@@ -12,9 +12,20 @@ export const ProjectSchema: React.FC = memo(() => {
         const treesSource = "project-trees"
         const treesLayer = "project-trees-circle"
 
+        const bushSource = "project-bushes"
+        const bushLayer = "project-bushes-circle"
+
         const lawnSource = "project-lawn"
         const lawnLayer = "project-lawn-fill"
         const lawnLayer2 = "project-lawn-outline"
+
+        const flowersSource = "project-flowers"
+        const flowersLayer = "project-flowers-fill"
+        const flowersLayer2 = "project-flowers-outline"
+
+        const gardenbedSource = "project-gardenbed"
+        const gardenbedLayer = "project-gardenbed-fill"
+        const gardenbedLayer2 = "project-gardenbed-outline"
 
         const borderSource = "project-border"
         const borderLayer = "project-border-dash"
@@ -63,6 +74,52 @@ export const ProjectSchema: React.FC = memo(() => {
                 },
             })
 
+            map.addSource(flowersSource, {
+                type: "geojson",
+                data: `/api/projects/${projectId}/features?type=${FeatureType.Flowers}`,
+            })
+            map.addLayer({
+                "id": flowersLayer,
+                "type": "fill",
+                "source": flowersSource,
+                "paint": {
+                    "fill-color": "#0E0E0E",
+                    "fill-opacity": 0.25,
+                },
+            })
+            map.addLayer({
+                "id": flowersLayer2,
+                "type": "line",
+                "source": flowersSource,
+                "paint": {
+                    "line-color": "#00FC67",
+                    "line-width": 3,
+                },
+            })
+
+            map.addSource(gardenbedSource, {
+                type: "geojson",
+                data: `/api/projects/${projectId}/features?type=${FeatureType.GardenBed}`,
+            })
+            map.addLayer({
+                "id": gardenbedLayer,
+                "type": "fill",
+                "source": gardenbedSource,
+                "paint": {
+                    "fill-color": "#D00E5D",
+                    "fill-opacity": 0.25,
+                },
+            })
+            map.addLayer({
+                "id": gardenbedLayer2,
+                "type": "line",
+                "source": gardenbedSource,
+                "paint": {
+                    "line-color": "#00FC67",
+                    "line-width": 3,
+                },
+            })
+
             map.addSource(treesSource, {
                 type: "geojson",
                 data: `/api/projects/${projectId}/features?type=${FeatureType.Tree}`,
@@ -79,6 +136,21 @@ export const ProjectSchema: React.FC = memo(() => {
                 },
             })
 
+            map.addSource(bushSource, {
+                type: "geojson",
+                data: `/api/projects/${projectId}/features?type=${FeatureType.Bush}`,
+            })
+            map.addLayer({
+                "id": bushLayer,
+                "type": "circle",
+                "source": bushSource,
+                "paint": {
+                    "circle-color": "#D05D0E",
+                    "circle-radius": 7,
+                    "circle-stroke-color": "#00FC67",
+                    "circle-stroke-width": 3,
+                },
+            })
             // map.addLayer({
             //     "id": "border",
             //     "type": "line",
@@ -110,9 +182,20 @@ export const ProjectSchema: React.FC = memo(() => {
                 map.removeLayer(treesLayer)
                 map.removeSource(treesSource)
 
+                map.removeLayer(bushLayer)
+                map.removeSource(bushSource)
+
                 map.removeLayer(lawnLayer)
                 map.removeLayer(lawnLayer2)
                 map.removeSource(lawnSource)
+
+                map.removeLayer(flowersLayer)
+                map.removeLayer(flowersLayer2)
+                map.removeSource(flowersSource)
+
+                map.removeLayer(gardenbedLayer)
+                map.removeLayer(gardenbedLayer2)
+                map.removeSource(gardenbedSource)
             } catch (error) {
 
             }

@@ -8,7 +8,7 @@ import { getAdminProject } from "pages/api/edit/projects/[projectId]"
 import { NextPageWithLayout } from "pages/_app"
 import { ProjectLayout } from "@/components/ProjectLayout"
 import { ProjectAside } from "@/components/ProjectAside"
-import { ProjectMapLegend } from "@/components/ProjectMapLegend"
+import { ProjectSchemaLegend } from "@/components/ProjectSchemaLegend"
 import { ProjectMapEditor } from "@/components/ProjectMapEditor"
 import { ProjectSchemaDraw } from "@/components/ProjectSchemaDraw"
 
@@ -61,7 +61,7 @@ const Container: React.FC = () => {
             title={data.payload.title}
             followers={data.payload.followers}
         >
-            <ProjectMapLegend
+            <ProjectSchemaLegend
                 projectId={projectId}
             />
             <ProjectMapEditor
