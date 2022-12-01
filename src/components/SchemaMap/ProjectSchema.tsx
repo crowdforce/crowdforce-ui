@@ -12,6 +12,9 @@ export const ProjectSchema: React.FC = memo(() => {
         const treesSource = "project-trees"
         const treesLayer = "project-trees-circle"
 
+        const bushSource = "project-bushes"
+        const bushLayer = "project-bushes-circle"
+
         const lawnSource = "project-lawn"
         const lawnLayer = "project-lawn-fill"
         const lawnLayer2 = "project-lawn-outline"
@@ -79,6 +82,21 @@ export const ProjectSchema: React.FC = memo(() => {
                 },
             })
 
+            map.addSource(bushSource, {
+                type: "geojson",
+                data: `/api/projects/${projectId}/features?type=${FeatureType.Bush}`,
+            })
+            map.addLayer({
+                "id": bushLayer,
+                "type": "circle",
+                "source": bushSource,
+                "paint": {
+                    "circle-color": "#D05D0E",
+                    "circle-radius": 7,
+                    "circle-stroke-color": "#00FC67",
+                    "circle-stroke-width": 3,
+                },
+            })
             // map.addLayer({
             //     "id": "border",
             //     "type": "line",
@@ -109,6 +127,9 @@ export const ProjectSchema: React.FC = memo(() => {
 
                 map.removeLayer(treesLayer)
                 map.removeSource(treesSource)
+
+                map.removeLayer(bushLayer)
+                map.removeSource(bushSource)
 
                 map.removeLayer(lawnLayer)
                 map.removeLayer(lawnLayer2)

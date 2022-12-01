@@ -6,7 +6,14 @@ import { useRouter } from "next/router"
 import { EditFeatureDto } from "@/common/types"
 import { dataToGeojson } from "./lib"
 import { Box, Center, createStyles } from "@mantine/core"
-import { IconMarquee2, IconTallymark4, IconTrash, IconTree } from "@tabler/icons"
+import { IconMarquee2, IconTrash } from "@tabler/icons"
+import IconLawn from "@/icons/IconLawn"
+import IconTree from "@/icons/IconTree"
+import IconBush from "@/icons/IconBush"
+import IconFlowers from "@/icons/IconFlowers"
+import IconGardenBed from "@/icons/IconGardenBed"
+import IconPoint from "@/icons/IconPoint"
+import IconPolygon from "@/icons/IconPolygon"
 import { Toolbar } from "./Toolbar"
 import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { FeatureType } from "@prisma/client"
@@ -135,24 +142,6 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                 <Toolbar
                     className={s.toolbar}
                     items={[
-                        // {
-                        //     name: "point",
-                        //     icon: (
-                        //         <IconPoint size={16} />
-                        //     ),
-                        // },
-                        // {
-                        //     name: "polygon",
-                        //     icon: (
-                        //         <IconPolygon size={16} />
-                        //     ),
-                        // },
-                        {
-                            name: "tree",
-                            icon: (
-                                <IconTree size={16} />
-                            ),
-                        },
                         {
                             name: "border",
                             icon: (
@@ -160,9 +149,45 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                             ),
                         },
                         {
+                            name: "point",
+                            icon: (
+                                <IconPoint size={20} stroke={1.5} />
+                            ),
+                        },
+                        {
+                            name: "polygon",
+                            icon: (
+                                <IconPolygon size={20} stroke={1.5} />
+                            ),
+                        },
+                        {
+                            name: "tree",
+                            icon: (
+                                <IconTree size={20} stroke={1.5} />
+                            ),
+                        },
+                        {
+                            name: "bush",
+                            icon: (
+                                <IconBush size={20} stroke={1.5} />
+                            ),
+                        },
+                        {
                             name: "lawn",
                             icon: (
-                                <IconTallymark4 size={16} />
+                                <IconLawn size={20} stroke={1.5} />
+                            ),
+                        },
+                        {
+                            name: "flowers",
+                            icon: (
+                                <IconFlowers size={20} stroke={1.5} />
+                            ),
+                        },
+                        {
+                            name: "gardenbed",
+                            icon: (
+                                <IconGardenBed size={20} stroke={1.5} />
                             ),
                         },
                         {
@@ -174,18 +199,33 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                     ]}
                     onClick={(name) => {
                         switch (name) {
-                            case "point": {
-                                setCurrentType(FeatureType.Unknown)
+                            // case "point": {
+                            //     setCurrentType(FeatureType.Unknown)
+                            //     draw.changeMode("draw_point")
+                            //     break
+                            // }
+                            // case "polygon": {
+                            //     setCurrentType(FeatureType.Unknown)
+                            //     draw.changeMode("draw_polygon")
+                            //     break
+                            // }
+                            case "trash": {
+                                draw.trash()
+                                break
+                            }
+                            case "bush": {
+                                setCurrentType(FeatureType.Bush)
                                 draw.changeMode("draw_point")
                                 break
                             }
-                            case "polygon": {
-                                setCurrentType(FeatureType.Unknown)
+                            case "flowers": {
+                                setCurrentType(FeatureType.Flowers)
                                 draw.changeMode("draw_polygon")
                                 break
                             }
-                            case "trash": {
-                                draw.trash()
+                            case "gardenbed": {
+                                setCurrentType(FeatureType.GardenBed)
+                                draw.changeMode("draw_polygon")
                                 break
                             }
                             case "tree": {
