@@ -64,6 +64,9 @@ enum FeatureType {
   Border
   Tree
   Lawn
+  Bush
+  Flowers
+  GardenBed
 
   @@map("feature_type")
 }
