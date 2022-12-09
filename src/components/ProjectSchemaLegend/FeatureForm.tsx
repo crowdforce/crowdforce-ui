@@ -1,5 +1,5 @@
 import { FeatureDto } from "@/common/types"
-import { Button, Flex, TextInput } from "@mantine/core"
+import { Button, Flex, Textarea, TextInput } from "@mantine/core"
 import { useForm } from "react-hook-form"
 
 export type FeatureOnSubmit = (feature: FeatureDto) => void
@@ -27,17 +27,17 @@ export const FeatureForm: React.FC<FeatureFormProps> = ({ data,onSubmit }) => {
                     label='Название'
                     required
                 />
-                {/* <Textarea
+                <Textarea
                     {...register(
                         "description",
                         {
                             required: "Добавьте описание",
                         },
                     )}
-                    label='Описание проекта'
+                    label='Описание'
                     required
                     minRows={4}
-                /> */}
+                />
 
                 <Button
                     fullWidth

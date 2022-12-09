@@ -137,7 +137,7 @@ export type ProjectTaskDto = {
 export type FeatureDto = {
   id: string
   title: string | null
-  // description: string | null
+  description: string | null
   // imageUrl: string | null
   // status: FeatureStatus
   // type: FeatureType
