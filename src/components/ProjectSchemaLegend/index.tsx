@@ -1,7 +1,8 @@
-import { List } from "@mantine/core"
 import useSWR from "swr"
 import { EditFeatureDto } from "@/common/types"
 import { GeometryIcon } from "./GeometryIcon"
+import { Accordion } from "@mantine/core"
+import { FeatureItem } from "./FeatureItem"
 
 export type ProjectSchemaLegendProps = {
     projectId: string
@@ -11,17 +12,28 @@ export const ProjectSchemaLegend: React.FC<ProjectSchemaLegendProps> = ({ projec
     const { data } = useSWR<EditFeatureDto[]>(`/api/edit/projects/${projectId}/features`)
 
     return (
-        <List>
+        <Accordion
+            variant="contained"
+        >
             {(data ?? []).map(item => (
-                <List.Item
+                <Accordion.Item
                     key={item.id}
-                    icon={(
-                        <GeometryIcon type={item.geometryType} />
-                    )}
-                >
-                    {item.title}
-                </List.Item>
+                    value={item.id}>
+                    <Accordion.Control
+                        icon={(
+                            // <IconPhoto size={20} color={getColor("red")} />
+                            <GeometryIcon type={item.geometryType} />
+                        )}>
+                        {item.title}
+                    </Accordion.Control>
+                    <Accordion.Panel>
+                        <FeatureItem
+                            featureId={item.id}
+                            projectId={projectId}
+                        />
+                    </Accordion.Panel>
+                </Accordion.Item>
             ))}
-        </List>
+        </Accordion>
     )
 }

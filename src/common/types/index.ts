@@ -134,6 +134,20 @@ export type ProjectTaskDto = {
   features?: any[]
 }
 
+export type FeatureDto = {
+  id: string
+  title: string | null
+  // description: string | null
+  // imageUrl: string | null
+  // status: FeatureStatus
+  // type: FeatureType
+  // geometry: Prisma.JsonValue
+  // projectId: string
+  // createdAt: Date
+  // updatedAt: Date
+  // deletedAt: Date | null
+}
+
 export type NewFeatureDto = {
   id: string
 }

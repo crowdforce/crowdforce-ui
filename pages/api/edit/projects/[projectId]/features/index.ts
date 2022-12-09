@@ -1,7 +1,7 @@
 import prisma from "@/server/prisma"
 import { EditFeatureDto } from "@/common/types"
 import { withUser } from "@/server/middlewares/withUser"
-import { Feature, FeatureStatus } from "@prisma/client"
+import { Feature, FeatureStatus, FeatureType } from "@prisma/client"
 
 const placeholderData = {
     type: "Куст",
@@ -49,6 +49,14 @@ export default withUser<EditFeatureDto[]>(async (req, res) => {
         where: {
             projectId,
             status: FeatureStatus.Active,
+            type: {
+                notIn: [
+                    FeatureType.Border,
+                ],
+            },
+        },
+        orderBy: {
+            createdAt: "asc",
         },
     })
 

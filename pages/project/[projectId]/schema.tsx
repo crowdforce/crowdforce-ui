@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import useSWR, { SWRConfig } from "swr"
-import { Center, Loader } from "@mantine/core"
+import { Center, Flex, Loader } from "@mantine/core"
 import { Dto, ProjectDto } from "@/common/types"
 import { getUserId } from "@/server/lib"
 import type { GetServerSideProps } from "next"
@@ -61,12 +61,14 @@ const Container: React.FC = () => {
             title={data.payload.title}
             followers={data.payload.followers}
         >
-            <ProjectSchemaLegend
-                projectId={projectId}
-            />
-            <ProjectMapEditor
-                projectId={projectId}
-            />
+            <Flex direction={"column"} gap={"md"}>
+                <ProjectSchemaLegend
+                    projectId={projectId}
+                />
+                <ProjectMapEditor
+                    projectId={projectId}
+                />
+            </Flex>
         </ProjectAside>
     )
 }
