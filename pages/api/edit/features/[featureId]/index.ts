@@ -8,6 +8,7 @@ function mapResponse(feature: Feature): FeatureDto {
     return {
         id: feature.id,
         title: feature.title,
+        description: feature.description,
     }
 }
 
