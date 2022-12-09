@@ -61,7 +61,7 @@ const Container: React.FC = () => {
             title={data.payload.title}
             followers={data.payload.followers}
         >
-            <Flex direction={"column"} gap={"md"}>
+            <Flex direction={"column"} gap={"md"} mb={"md"}>
                 <ProjectSchemaLegend
                     projectId={projectId}
                 />
