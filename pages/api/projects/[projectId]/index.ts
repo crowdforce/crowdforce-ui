@@ -12,13 +12,6 @@ type ProjectAndFollow = {
 }
 
 const placeholderData = {
-    address: "Санкт-Петербург, наб. р. Карповки, 26/4",
-    link: "www.redisYdorogi.ru",
-    admin: {
-        name: "Товарищ Админ",
-        image: "",
-        id: "placeholder-admin-user-id",
-    },
 }
 
 function mapResponse(item: ProjectAndFollow): Dto<ProjectDto> {
@@ -46,6 +39,8 @@ function mapResponse(item: ProjectAndFollow): Dto<ProjectDto> {
             id: item.project.id,
             title: item.project.title,
             description: item.project.description,
+            permalink: item.project.permalink,
+            address: item.project.address,
             imageUrl,
             followingStatus,
             followers: item.followers,

@@ -74,6 +74,14 @@ export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
                     required
                     minRows={4}
                 />
+                <TextInput
+                    {...register("address")}
+                    label='Адрeс'
+                />
+                <TextInput
+                    {...register("permalink")}
+                    label='Ссылка'
+                />
 
                 <Button
                     fullWidth

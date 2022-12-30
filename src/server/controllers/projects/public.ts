@@ -17,6 +17,8 @@ function mapResponse(item: ProjectWithOthers): PublicProjectDto {
         id: item.id,
         title: item.title,
         description: item.description,
+        address: item.address,
+        permalink: item.permalink,
         imageUrl,
         lng: item.viewport.lng,
         lat: item.viewport.lat,

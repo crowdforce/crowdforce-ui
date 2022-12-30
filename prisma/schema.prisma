@@ -134,6 +134,8 @@ model Project {
   description String
   imageUrl    String?       @map(name: "image_url")
   status      ProjectStatus
+  address     String        @default("")
+  permalink   String        @default("")
 
   coverId String? @map(name: "cover_id")
   cover   Asset?  @relation(fields: [coverId], references: [id])

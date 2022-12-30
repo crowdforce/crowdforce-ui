@@ -7,6 +7,8 @@ import { switchProjectToActiveStatus } from "@/server/app/project"
 type Payload = {
   title?: string
   description?: string
+  address?: string
+  permalink?: string
 }
 
 function mapResponse<T extends { id: string } = Project>(project: T): NewProjectDto {
@@ -27,6 +29,8 @@ export default withUser<NewProjectDto>(async (req, res) => {
     const payload = req.body as Payload
     const title = payload.title ?? ""
     const description = payload.description ?? ""
+    const address = payload.address ?? ""
+    const permalink = payload.permalink ?? ""
 
     const project = await prisma.project.update({
         where: {
@@ -35,6 +39,8 @@ export default withUser<NewProjectDto>(async (req, res) => {
         data: {
             title,
             description,
+            address,
+            permalink,
             updatedAt: new Date(),
         },
     })

@@ -41,6 +41,8 @@ export type ProjectDto = {
   title: string
   description: string
   imageUrl: string | null
+  permalink: string
+  address: string
   followingStatus: ProjectFollowingStatus
   followers: number
 }
@@ -49,6 +51,8 @@ export type PublicProjectDto = {
   id: string
   title: string
   description: string
+  permalink: string
+  address: string
   imageUrl: string | null
   followers?: number
   lng: number
@@ -59,6 +63,8 @@ export type EditProjectDto = {
   id: string
   title: string
   description: string
+  permalink: string
+  address: string
   status: string
   imageUrl: string | null
   viewport: {
