@@ -13,6 +13,8 @@ function mapResponse(project: ProjectWithViewport): EditProjectDto {
         id: project.id,
         title: project.title,
         description: project.description,
+        address: project.address,
+        permalink: project.permalink,
         status: project.status,
         imageUrl: project.cover?.src ?? null,
         viewport: {
