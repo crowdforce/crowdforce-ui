@@ -63,7 +63,9 @@ export const SideButton: React.FC<SideButtonProps> = ({ wide, icon, href, onClic
             size="xl"
             radius="md"
             variant={active ? "light" : "outline"}
-            className={cx(s.button, props.className)}
+            className={cx(s.button, props.className, {
+                [s.selected]: active,
+            })}
             component={(href ? NextLink : "button") as any}
             href={href!}
             onClick={onClick}
