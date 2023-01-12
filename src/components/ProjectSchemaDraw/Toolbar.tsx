@@ -1,4 +1,4 @@
-import { ActionIcon, createStyles, Flex } from "@mantine/core"
+import { ActionIcon, createStyles, Flex, Tooltip } from "@mantine/core"
 
 const useStyles = createStyles(theme => ({
     toolbar: {
@@ -13,6 +13,7 @@ const useStyles = createStyles(theme => ({
 
 export type ToolbarItem = {
     name: string
+    label: string
     icon: React.ReactNode
 }
 
@@ -29,15 +30,19 @@ export const Toolbar: React.FC<ToolbarProps> = ({ onClick, items, className }) =
 
     return (
         <Flex className={cx(s.toolbar, className)} gap={"sm"} justify={"center"}>
-            {items.map(x => (
-                <ActionIcon
-                    key={x.name}
-                    variant="subtle"
-                    className={s.button}
-                    onClick={() => { onClick(x.name) }}
+            {items.map(({ name, label, icon }) => (
+                <Tooltip
+                    key={name}
+                    label={label}
                 >
-                    {x.icon}
-                </ActionIcon>
+                    <ActionIcon
+                        variant="subtle"
+                        className={s.button}
+                        onClick={() => { onClick(name) }}
+                    >
+                        {icon}
+                    </ActionIcon>
+                </Tooltip>
             ))}
         </Flex>
     )
