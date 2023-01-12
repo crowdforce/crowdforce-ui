@@ -27,7 +27,6 @@ export const Info: React.FC<ProjectInfoProps> = () => {
             <Aside.Section
                 grow
                 component={ScrollArea}
-                px='md'
             >
                 <Stack>
                     <Image
