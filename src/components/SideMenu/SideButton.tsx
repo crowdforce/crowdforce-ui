@@ -74,3 +74,4 @@ export const SideButton: React.FC<SideButtonProps> = ({ wide, icon, href, onClic
         </ActionIcon>
     )
 }
+
