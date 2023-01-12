@@ -43,3 +43,4 @@ export async function upload(file: File): Promise<NewAssetDto> {
 
     return asset
 }
+

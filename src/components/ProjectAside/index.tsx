@@ -67,7 +67,13 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ title, followers, ch
                 </Group>
             </Aside.Section>
 
-            {children}
+            <Aside.Section
+                grow
+                px="md"
+                pb="md"
+            >
+                {children}
+            </Aside.Section>
         </Aside>
     )
 }
