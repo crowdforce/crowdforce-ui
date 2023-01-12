@@ -144,54 +144,63 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                     items={[
                         {
                             name: "border",
+                            label: "Граница",
                             icon: (
                                 <IconMarquee2 size={16} />
                             ),
                         },
                         {
                             name: "point",
+                            label: "Строение или другое",
                             icon: (
                                 <IconPoint size={20} stroke={1.5} />
                             ),
                         },
                         {
                             name: "polygon",
+                            label: "Другое",
                             icon: (
                                 <IconPolygon size={20} stroke={1.5} />
                             ),
                         },
                         {
                             name: "tree",
+                            label: "Дерево",
                             icon: (
                                 <IconTree size={20} stroke={1.5} />
                             ),
                         },
                         {
                             name: "bush",
+                            label: "Кустарник",
                             icon: (
                                 <IconBush size={20} stroke={1.5} />
                             ),
                         },
                         {
                             name: "lawn",
+                            label: "Газон",
                             icon: (
                                 <IconLawn size={20} stroke={1.5} />
                             ),
                         },
                         {
                             name: "flowers",
+                            label: "Цветник",
                             icon: (
                                 <IconFlowers size={20} stroke={1.5} />
                             ),
                         },
                         {
                             name: "gardenbed",
+                            label: "Грядка",
                             icon: (
                                 <IconGardenBed size={20} stroke={1.5} />
                             ),
                         },
                         {
                             name: "trash",
+                            label: "Удалить",
                             icon: (
                                 <IconTrash size={16} />
                             ),
