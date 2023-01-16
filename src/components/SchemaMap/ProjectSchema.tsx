@@ -13,7 +13,7 @@ async function loadImages(map: mapboxgl.Map, images: MapImage[]): Promise<void> 
     for (const { name, url } of images) {
         map.loadImage(url, (err, image) => {
             if (err) {
-                console.log("failed to load image", err);
+                return
             }
             if (!image) {
                 return
