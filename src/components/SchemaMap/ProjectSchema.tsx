@@ -5,8 +5,8 @@ import { FeatureType } from "@prisma/client"
 import mapboxgl from "mapbox-gl"
 
 type MapImage = {
-  name: string,
-  url: string
+    name: string,
+    url: string
 }
 
 async function loadImages(map: mapboxgl.Map, images: MapImage[]): Promise<void> {
