@@ -71,6 +71,9 @@ export const ProjectAside: React.FC<ProjectAsideProps> = ({ title, followers, ch
                 grow
                 px="md"
                 pb="md"
+                style={{
+                    overflow: "auto",
+                }}
             >
                 {children}
             </Aside.Section>
