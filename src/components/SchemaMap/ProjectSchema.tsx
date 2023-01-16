@@ -2,6 +2,26 @@ import { useRouter } from "next/router"
 import { useMap } from "react-map-gl"
 import { memo, useEffect } from "react"
 import { FeatureType } from "@prisma/client"
+import mapboxgl from "mapbox-gl"
+
+type MapImage = {
+  name: string,
+  url: string
+}
+
+async function loadImages(map: mapboxgl.Map, images: MapImage[]): Promise<void> {
+    for (const { name, url } of images) {
+        map.loadImage(url, (err, image) => {
+            if (err) {
+                return
+            }
+            if (!image) {
+                return
+            }
+            map.addImage(name, image)
+        })
+    }
+}
 
 export const ProjectSchema: React.FC = memo(() => {
     const router = useRouter()
@@ -16,154 +36,192 @@ export const ProjectSchema: React.FC = memo(() => {
         const bushLayer = "project-bushes-circle"
 
         const lawnSource = "project-lawn"
-        const lawnLayer = "project-lawn-fill"
-        const lawnLayer2 = "project-lawn-outline"
+        const lawnLayerPattern = "project-lawn-fill"
+        const lawnLayerOutline = "project-lawn-outline"
+        const lawnLayerLine = "project-lawn-line"
 
         const flowersSource = "project-flowers"
-        const flowersLayer = "project-flowers-fill"
-        const flowersLayer2 = "project-flowers-outline"
+        const flowersLayerFill = "project-flowers-fill"
+        const flowersLayerOutline = "project-flowers-outline"
+        const flowersLayerLine = "project-flowers-line"
 
         const gardenbedSource = "project-gardenbed"
-        const gardenbedLayer = "project-gardenbed-fill"
-        const gardenbedLayer2 = "project-gardenbed-outline"
+        const gardenbedLayerFill = "project-gardenbed-fill"
+        const gardenbedLayerOutline = "project-gardenbed-outline"
+        const gardenbedLayerLine = "project-gardenbed-line"
 
         const borderSource = "project-border"
-        const borderLayer = "project-border-dash"
-        
+        const borderLayerDash = "project-border-dash"
+        const borderLayerOutline = "project-border-outline"
+
         if (!schema) {
             return
         }
 
         const map = schema.getMap()
-        const init = () => {
+        // Load an image to use as the pattern from an external URL.
+        const init = async () => {
+            await loadImages(map, [
+                { name: "icon-tree", url: "/assets/map/icon-tree.png" },
+                { name: "icon-bush", url: "/assets/map/icon-bush.png" },
+                { name: "icon-unknown", url: "/assets/map/icon-unknown.png" },
+                { name: "pattern-lawn", url: "/assets/map/pattern-lawn.png" },
+            ])
+
+            // BORDER
             map.addSource(borderSource, {
                 type: "geojson",
                 data: `/api/projects/${projectId}/features?type=${FeatureType.Border}`,
             })
             map.addLayer({
-                "id": borderLayer,
+                "id": borderLayerOutline,
+                "type": "line",
+                "source": borderSource,
+                "paint": {
+                    "line-color": "#FFFFFF",
+                    "line-width": 5,
+                },
+            })
+            map.addLayer({
+                "id": borderLayerDash,
                 "type": "line",
                 "source": borderSource,
                 "paint": {
                     "line-color": "#D00000",
-                    "line-width": 3,
-                    "line-dasharray": [2, 1],
+                    "line-width": 2,
+                    "line-dasharray": [3, 1],
                 },
             })
 
+            // LAWN
             map.addSource(lawnSource, {
                 type: "geojson",
                 data: `/api/projects/${projectId}/features?type=${FeatureType.Lawn}`,
             })
             map.addLayer({
-                "id": lawnLayer,
+                "id": lawnLayerPattern,
                 "type": "fill",
                 "source": lawnSource,
                 "paint": {
-                    "fill-color": "#0ED05D",
-                    "fill-opacity": 0.25,
+                    "fill-pattern": "pattern-lawn",
                 },
             })
             map.addLayer({
-                "id": lawnLayer2,
+                "id": lawnLayerOutline,
                 "type": "line",
                 "source": lawnSource,
                 "paint": {
-                    "line-color": "#00FC67",
+                    "line-color": "#FFFFFF",
                     "line-width": 3,
                 },
             })
+            map.addLayer({
+                "id": lawnLayerLine,
+                "type": "line",
+                "source": lawnSource,
+                "paint": {
+                    "line-color": "#289F66",
+                    "line-width": 1,
+                },
+            })
 
+            // FLOWER
             map.addSource(flowersSource, {
                 type: "geojson",
                 data: `/api/projects/${projectId}/features?type=${FeatureType.Flowers}`,
             })
             map.addLayer({
-                "id": flowersLayer,
+                "id": flowersLayerFill,
                 "type": "fill",
                 "source": flowersSource,
                 "paint": {
-                    "fill-color": "#0E0E0E",
+                    "fill-pattern": "pattern-lawn",
                     "fill-opacity": 0.25,
                 },
             })
             map.addLayer({
-                "id": flowersLayer2,
+                "id": flowersLayerOutline,
                 "type": "line",
                 "source": flowersSource,
                 "paint": {
-                    "line-color": "#00FC67",
+                    "line-color": "#FFFFFF",
                     "line-width": 3,
                 },
             })
+            map.addLayer({
+                "id": flowersLayerLine,
+                "type": "line",
+                "source": flowersSource,
+                "paint": {
+                    "line-color": "#FC6700",
+                    "line-width": 1,
+                },
+            })
 
+            // GARDENBED
             map.addSource(gardenbedSource, {
                 type: "geojson",
                 data: `/api/projects/${projectId}/features?type=${FeatureType.GardenBed}`,
             })
             map.addLayer({
-                "id": gardenbedLayer,
+                "id": gardenbedLayerFill,
                 "type": "fill",
                 "source": gardenbedSource,
                 "paint": {
-                    "fill-color": "#D00E5D",
-                    "fill-opacity": 0.25,
+                    "fill-pattern": "pattern-lawn",
+                    "fill-opacity": 0.5,
                 },
             })
             map.addLayer({
-                "id": gardenbedLayer2,
+                "id": gardenbedLayerOutline,
+                "type": "line",
+                "source": gardenbedSource,
+                "paint": {
+                    "line-color": "#FFFFFF",
+                    "line-width": 3,
+                },
+            })
+            map.addLayer({
+                "id": gardenbedLayerLine,
                 "type": "line",
                 "source": gardenbedSource,
                 "paint": {
                     "line-color": "#00FC67",
-                    "line-width": 3,
+                    "line-width": 1,
                 },
             })
 
+            // TREES
             map.addSource(treesSource, {
                 type: "geojson",
                 data: `/api/projects/${projectId}/features?type=${FeatureType.Tree}`,
             })
             map.addLayer({
-                "id": treesLayer,
-                "type": "circle",
-                "source": treesSource,
-                "paint": {
-                    "circle-color": "#0ED05D",
-                    "circle-radius": 7,
-                    "circle-stroke-color": "#00FC67",
-                    "circle-stroke-width": 3,
+                id: treesLayer,
+                source: treesSource,
+                type: "symbol",
+                layout: {
+                    "icon-image": "icon-tree",
+                    "icon-size": 0.4,
+                    "icon-allow-overlap": true,
                 },
             })
 
+            // BUSHES
             map.addSource(bushSource, {
                 type: "geojson",
                 data: `/api/projects/${projectId}/features?type=${FeatureType.Bush}`,
             })
             map.addLayer({
-                "id": bushLayer,
-                "type": "circle",
-                "source": bushSource,
-                "paint": {
-                    "circle-color": "#D05D0E",
-                    "circle-radius": 7,
-                    "circle-stroke-color": "#00FC67",
-                    "circle-stroke-width": 3,
+                id: bushLayer,
+                source: bushSource,
+                type: "symbol",
+                layout: {
+                    "icon-image": "icon-bush",
+                    "icon-size": 0.4,
+                    "icon-allow-overlap": true,
                 },
             })
-            // map.addLayer({
-            //     "id": "border",
-            //     "type": "line",
-            //     "source": "project-polygons",
-            //     "paint": {
-            //         "line-color": "#ff0000",
-            //         "line-width": 2,
-            //     },
-            //     "layout": {
-            //         "line-join": "round",
-            //         "line-cap": "round",
-            //     },
-            // })
         }
 
         if (map.isStyleLoaded()) {
@@ -176,7 +234,8 @@ export const ProjectSchema: React.FC = memo(() => {
             map.off("load", init)
 
             try {
-                map.removeLayer(borderLayer)
+                map.removeLayer(borderLayerDash)
+                map.removeLayer(borderLayerOutline)
                 map.removeSource(borderSource)
 
                 map.removeLayer(treesLayer)
@@ -185,16 +244,19 @@ export const ProjectSchema: React.FC = memo(() => {
                 map.removeLayer(bushLayer)
                 map.removeSource(bushSource)
 
-                map.removeLayer(lawnLayer)
-                map.removeLayer(lawnLayer2)
+                map.removeLayer(lawnLayerPattern)
+                map.removeLayer(lawnLayerOutline)
+                map.removeLayer(lawnLayerLine)
                 map.removeSource(lawnSource)
 
-                map.removeLayer(flowersLayer)
-                map.removeLayer(flowersLayer2)
+                map.removeLayer(flowersLayerFill)
+                map.removeLayer(flowersLayerOutline)
+                map.removeLayer(flowersLayerLine)
                 map.removeSource(flowersSource)
 
-                map.removeLayer(gardenbedLayer)
-                map.removeLayer(gardenbedLayer2)
+                map.removeLayer(gardenbedLayerFill)
+                map.removeLayer(gardenbedLayerLine)
+                map.removeLayer(gardenbedLayerOutline)
                 map.removeSource(gardenbedSource)
             } catch (error) {
 
