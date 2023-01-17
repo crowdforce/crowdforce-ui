@@ -18,7 +18,9 @@ async function loadImages(map: mapboxgl.Map, images: MapImage[]): Promise<void> 
             if (!image) {
                 return
             }
-            map.addImage(name, image)
+            map.addImage(name, image, {
+                pixelRatio: 1.5,
+            })
         })
     }
 }
