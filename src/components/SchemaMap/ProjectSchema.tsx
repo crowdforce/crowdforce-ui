@@ -66,6 +66,8 @@ export const ProjectSchema: React.FC = memo(() => {
                 { name: "icon-bush", url: "/assets/map/icon-bush.png" },
                 { name: "icon-unknown", url: "/assets/map/icon-unknown.png" },
                 { name: "pattern-lawn", url: "/assets/map/pattern-lawn.png" },
+                { name: "pattern-flowers", url: "/assets/map/pattern-flowers.png" },
+                { name: "pattern-gardenbed", url: "/assets/map/pattern-gardenbed.png" },
             ])
 
             // BORDER
@@ -135,8 +137,7 @@ export const ProjectSchema: React.FC = memo(() => {
                 "type": "fill",
                 "source": flowersSource,
                 "paint": {
-                    "fill-pattern": "pattern-lawn",
-                    "fill-opacity": 0.25,
+                    "fill-pattern": "pattern-flowers",
                 },
             })
             map.addLayer({
@@ -168,8 +169,7 @@ export const ProjectSchema: React.FC = memo(() => {
                 "type": "fill",
                 "source": gardenbedSource,
                 "paint": {
-                    "fill-pattern": "pattern-lawn",
-                    "fill-opacity": 0.5,
+                    "fill-pattern": "pattern-gardenbed",
                 },
             })
             map.addLayer({
