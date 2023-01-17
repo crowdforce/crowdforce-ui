@@ -1,7 +1,7 @@
 import prisma from "@/server/prisma"
 import { EditFeatureDto } from "@/common/types"
 import { withUser } from "@/server/middlewares/withUser"
-import { Feature, FeatureStatus, FeatureType } from "@prisma/client"
+import { Feature, FeatureStatus } from "@prisma/client"
 
 const placeholderData = {
     type: "Куст",
