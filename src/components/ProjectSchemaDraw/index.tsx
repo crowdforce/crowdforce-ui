@@ -149,20 +149,20 @@ export const ProjectSchemaDraw: React.FC<ProjectSchemaDrawProps> = () => {
                                 <IconMarquee2 size={16} />
                             ),
                         },
-                        {
-                            name: "point",
-                            label: "Строение или другое",
-                            icon: (
-                                <IconPoint size={20} stroke={1.5} />
-                            ),
-                        },
-                        {
-                            name: "polygon",
-                            label: "Другое",
-                            icon: (
-                                <IconPolygon size={20} stroke={1.5} />
-                            ),
-                        },
+                        // {
+                        //     name: "point",
+                        //     label: "Строение или другое",
+                        //     icon: (
+                        //         <IconPoint size={20} stroke={1.5} />
+                        //     ),
+                        // },
+                        // {
+                        //     name: "polygon",
+                        //     label: "Другое",
+                        //     icon: (
+                        //         <IconPolygon size={20} stroke={1.5} />
+                        //     ),
+                        // },
                         {
                             name: "tree",
                             label: "Дерево",
