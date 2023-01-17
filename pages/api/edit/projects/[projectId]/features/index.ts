@@ -49,11 +49,6 @@ export default withUser<EditFeatureDto[]>(async (req, res) => {
         where: {
             projectId,
             status: FeatureStatus.Active,
-            type: {
-                notIn: [
-                    FeatureType.Border,
-                ],
-            },
         },
         orderBy: {
             createdAt: "asc",
