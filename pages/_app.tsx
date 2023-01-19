@@ -31,9 +31,8 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout<Props
             <Head>
                 <title>Crowd Force</title>
                 <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png" />
-                <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-                <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
-                <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+                <link rel="icon" href="/assets/favicon.png" sizes="any" />
+                <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
                 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
                 <link rel="manifest" href="/manifest.json" />
                 <meta name="msapplication-TileColor" content="#ffffff" />
