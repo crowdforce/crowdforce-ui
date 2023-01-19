@@ -17,7 +17,6 @@ type AppHeaderProps = {
 
 const useStyles = createStyles((theme) => ({
     header: {
-        height: 56,
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -30,6 +29,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
     const { classes: s } = useStyles()
     return (
         <Header
+            height={56}
             withBorder={false}
             pl={"sm"}
             className={s.header}
