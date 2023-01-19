@@ -30,7 +30,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout<Props
         <>
             <Head>
                 <title>Crowd Force</title>
-                <link rel="icon" type="image/png" href="/assets/favicon.png" sizes="any" />
+                <link rel="icon" type="image/png" href="/assets/favicon.png" sizes="32x32" />
                 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
                 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
                 <link rel="manifest" href="/manifest.json" />
