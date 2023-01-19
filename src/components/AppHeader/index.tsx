@@ -32,6 +32,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
             height={60}
             withBorder={false}
             pl={"sm"}
+            pr={"sm"}
             className={s.header}
         >
             <Logo />
