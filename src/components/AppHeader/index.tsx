@@ -29,7 +29,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
     const { classes: s } = useStyles()
     return (
         <Header
-            height={56}
+            height={60}
             withBorder={false}
             pl={"sm"}
             className={s.header}
