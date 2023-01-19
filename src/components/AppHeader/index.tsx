@@ -15,7 +15,7 @@ type AppHeaderProps = {
     burger: React.ReactNode
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     header: {
         display: "flex",
         justifyContent: "space-between",
