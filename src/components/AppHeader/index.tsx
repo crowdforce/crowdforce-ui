@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic"
 import { createStyles, Group, Header, MediaQuery } from "@mantine/core"
-import { Logo } from "./Logo"
+import { Logo } from "@/components/Logo"
 import { AppMenu } from "../AppMenu"
 import { UserButtonProps } from "@/components/UserButton"
 
@@ -15,20 +15,13 @@ type AppHeaderProps = {
     burger: React.ReactNode
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     header: {
         display: "flex",
-        justifyContent: "center",
-        alignItems: "baseline",
+        justifyContent: "space-between",
+        alignItems: "center",
         position: "sticky",
         top: 0,
-    },
-    root: {
-        flex: 1,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        maxWidth: 1160,
     },
 }))
 
@@ -36,27 +29,26 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ burger }) => {
     const { classes: s } = useStyles()
     return (
         <Header
-            withBorder={false}
             height={60}
-            p={"sm"}
+            withBorder={false}
+            pl={"sm"}
+            pr={"sm"}
             className={s.header}
         >
-            <div className={s.root}>
-                <Logo />
+            <Logo />
 
-                <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
-                    <Group
-                        noWrap
-                    >
-                        <AppMenu />
-                        <UserButton />
-                    </Group>
-                </MediaQuery>
+            <MediaQuery smallerThan='xs' styles={{ display: "none" }}>
+                <Group
+                    noWrap
+                >
+                    <AppMenu />
+                    <UserButton />
+                </Group>
+            </MediaQuery>
 
-                <MediaQuery largerThan='xs' styles={{ display: "none" }}>
-                    {burger}
-                </MediaQuery>
-            </div>
+            <MediaQuery largerThan='xs' styles={{ display: "none" }}>
+                {burger}
+            </MediaQuery>
         </Header>
     )
 
