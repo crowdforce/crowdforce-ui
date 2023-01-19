@@ -35,7 +35,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout<Props
                 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
                 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
                 <link rel="manifest" href="/manifest.json" />
-                <meta name="msapplication-TileColor" content="#ffffff" />
+                <meta name="msapplication-TileColor" content="#ECF2F6" />
                 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
                 <meta name="theme-color" content="#ECF2F6" />
             </Head>
