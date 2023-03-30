@@ -3,7 +3,7 @@ import { AdminProjectDto } from "@/common/types"
 import { IconBulb, IconBulbOff, IconDots } from "@tabler/icons"
 import Link from "next/link"
 import { useCallback } from "react"
-import Image from "next/future/image"
+import Image from "next/image"
 import { useSWRConfig } from "swr"
 import { UserAvatar } from "../UserAvatar"
 

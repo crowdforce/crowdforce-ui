@@ -1,6 +1,7 @@
 import { Button, Center, Container, createStyles, Group, keyframes, Loader, MediaQuery, SimpleGrid, Stack, Text, Title } from "@mantine/core"
 import { IconCornerLeftDownDouble, IconMouse } from "@tabler/icons"
-import Image from "next/image"
+import Image from "next/legacy/image"
+import Page from "@/components/Page"
 import heroLine from "@/../public/index/heroLine.svg"
 import bigLine from "@/../public/index/bigLine.svg"
 import blueLine from "@/../public/index/blueLine.svg"
@@ -8,14 +9,12 @@ import phone from "@/../public/index/phone.png"
 import list from "@/../public/index/list.png"
 import planet from "@/../public/index/planet.png"
 import target from "@/../public/index/target.png"
-import { GetStaticProps } from "next"
+import { GetStaticProps, NextPage } from "next"
 import { ProjectCard } from "@/components/ProjectCard"
 import React from "react"
 import { PublicProjectDto } from "@/common/types"
 import useSWR, { SWRConfig } from "swr"
 import { getTopProjects } from "@/server/controllers/projects/public"
-import { NextPageWithLayout } from "./_app"
-import { App } from "@/components/App"
 
 type Props = {
     fallback: Record<string, any>
@@ -36,7 +35,6 @@ const useStyles = createStyles((theme) => ({
             paddingLeft: "unset",
             paddingRight: "unset",
         },
-        marginBottom: theme.spacing.xl,
     },
     containerHero: {
         [theme.fn.smallerThan("xs")]: {
@@ -246,7 +244,7 @@ const MainPageContainer: React.FC<Props> = () => {
     const { data: projects } = useSWR<PublicProjectDto[]>("/api/projects/top")
     const { classes: s, cx } = useStyles()
     return (
-        <>
+        <Page>
             <Container
                 className={cx(s.container, s.containerHero)}
             >
@@ -473,23 +471,15 @@ const MainPageContainer: React.FC<Props> = () => {
                     </SimpleGrid>
                 )}
             </Container>
-        </>
+        </Page>
     )
 }
 
-const Index: NextPageWithLayout<Props> = (props) => (
+const MainPage: NextPage<Props> = (props) => (
     <SWRConfig value={{ fallback: props.fallback }}>
         <MainPageContainer {...props} />
     </SWRConfig>
 )
-
-Index.getLayout = function getLayout(page) {
-    return (
-        <App showFooter>
-            {page}
-        </App>
-    )
-}
 
 export const getStaticProps: GetStaticProps<Props> = async ctx => {
     const projects = await getTopProjects()
@@ -502,4 +492,4 @@ export const getStaticProps: GetStaticProps<Props> = async ctx => {
     }
 }
 
-export default Index
+export default MainPage
