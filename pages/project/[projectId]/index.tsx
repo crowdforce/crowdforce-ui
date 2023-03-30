@@ -1,20 +1,15 @@
 import { useRouter } from "next/router"
-import Page from "@/components/Page"
 import useSWR, { SWRConfig } from "swr"
-import { Box, Center, Loader } from "@mantine/core"
-import { MapProvider } from "react-map-gl"
-import type { GetServerSideProps, NextPage } from "next"
-import SchemaMap from "@/components/SchemaMap"
+import { Center, Loader } from "@mantine/core"
+import type { GetServerSideProps } from "next"
 import { getProject } from "pages/api/projects/[projectId]"
-import { ProjectSideMenu, ProjectSideMenuIds } from "@/components/ProjectSideMenu"
-import { useEffect, useState } from "react"
-import { ProjectSideMenuContext } from "@/contexts/projectSideMenu"
 import { ProjectAside } from "@/components/ProjectAside"
-import { useMediaQuery } from "@mantine/hooks"
 import { getTasks } from "pages/api/projects/[projectId]/tasks"
-import { ProjectTaskContext } from "@/contexts/projectTask"
-import type { Dto, ProjectDto, ProjectTaskDto } from "@/common/types"
-import { Permission } from "@/common/types"
+import type { Dto, ProjectDto } from "@/common/types"
+import { NextPageWithLayout } from "pages/_app"
+import { ProjectLayout } from "@/components/ProjectLayout"
+import { Info } from "@/components/ProjectAsideTab/Info"
+import { ProjectSchema } from "@/components/SchemaMap/ProjectSchema"
 
 type Props = {
     fallback: Record<string, any>
@@ -36,17 +31,6 @@ const Container: React.FC = () => {
     const router = useRouter()
     const projectId = router.query.projectId as string
     const { data } = useSWR<Dto<ProjectDto>>(`/api/projects/${projectId}`)
-    const canEdit = data?.permission === Permission.edit
-    const isInit = canEdit && Boolean(router.query.init)
-    const [open, setOpen] = useState(true)
-    const [openId, setOpenId] = useState<Exclude<ProjectSideMenuIds, "aside">>(isInit ? "edit" : "info")
-    const [task, setTask] = useState<Partial<ProjectTaskDto> | null>(null)
-    const smallerThanSm = useMediaQuery("(max-width: 800px)", false)
-    const [wide, setWide] = useState(!smallerThanSm)
-    useEffect(() => {
-        setWide(!smallerThanSm)
-    }, [smallerThanSm])
-
     if (!data) {
         return (
             <Center
@@ -60,58 +44,32 @@ const Container: React.FC = () => {
     }
 
     return (
-        <Page>
-            <Box
-                sx={{
-                    position: "relative",
-                    display: "flex",
-                }}
-            >
-                <ProjectSideMenuContext.Provider
-                    value={{ open, setOpen, openId, setOpenId, wide, setWide, isAdmin: canEdit, isInit }}
-                >
-                    <ProjectTaskContext.Provider
-                        value={{ task, setTask }}
-                    >
-                        <Box
-                            sx={{
-                                position: "relative",
-                            }}
-                        >
-                            <ProjectSideMenu />
-                            <ProjectAside
-                                title={data.payload.title}
-                                followers={data.payload.followers}
-                            />
-                        </Box>
-
-                        <Box
-                            sx={{
-                                flex: "1 1 100%",
-                                position: "relative",
-                                height: "calc(100vh - 60px)",
-                                display: "flex",
-                            }}
-                        >
-                            <MapProvider>
-                                <SchemaMap
-                                    id={"schema"}
-                                    projectId={projectId}
-                                />
-                            </MapProvider>
-                        </Box>
-                    </ProjectTaskContext.Provider>
-                </ProjectSideMenuContext.Provider>
-            </Box>
-        </Page>
+        <ProjectAside
+            title={data.payload.title}
+            followers={data.payload.followers}
+        >
+            <Info />
+        </ProjectAside>
     )
 }
 
-const Index: NextPage<Props> = ({ fallback }) => (
+const Index: NextPageWithLayout<Props> = ({ fallback }) => (
     <SWRConfig value={{ fallback }}>
         <Container />
     </SWRConfig>
 )
+
+Index.getLayout = function getLayout(page) {
+    return (
+        <ProjectLayout
+            map={(
+                <ProjectSchema />
+            )}
+        >
+            {page}
+        </ProjectLayout>
+    )
+}
 
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const projectId = ctx.params?.projectId as string

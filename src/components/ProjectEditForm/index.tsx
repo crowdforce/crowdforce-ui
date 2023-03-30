@@ -1,4 +1,4 @@
-import { Textarea, TextInput, Button, Stack } from "@mantine/core"
+import { Textarea, TextInput, Button, Flex, Stack } from "@mantine/core"
 import { useForm } from "react-hook-form"
 import { EditProjectDto } from "@/common/types"
 import React, { useCallback } from "react"
@@ -74,13 +74,22 @@ export const ProjectEditForm: React.FC<ProjectEditFormProps> = ({ data }) => {
                     required
                     minRows={4}
                 />
+                <TextInput
+                    {...register("address")}
+                    label='Адрeс'
+                />
+                <TextInput
+                    {...register("permalink")}
+                    label='Ссылка'
+                />
 
-                <Button
-                    fullWidth
-                    type='submit'
-                >
-                    Сохранить
-                </Button>
+                <Flex justify={"center"}>
+                    <Button
+                        type='submit'
+                    >
+                        Сохранить
+                    </Button>
+                </Flex>
             </Stack>
         </form>
     )

@@ -1,6 +1,7 @@
-import { createStyles, Stack } from "@mantine/core"
+import { Box, createStyles, Stack } from "@mantine/core"
 
 type ProjectSideMenuLayoutProps = {
+    wide: boolean
     children: React.ReactNode
     extra?: React.ReactNode
 }
@@ -18,32 +19,38 @@ const useStyles = createStyles((theme) => ({
     },
 }))
 
-export const SideMenu: React.FC<ProjectSideMenuLayoutProps> = ({ children, extra }) => {
+export const SideMenu: React.FC<ProjectSideMenuLayoutProps> = ({ children, extra, wide }) => {
     const { classes: s } = useStyles()
 
     return (
-        <Stack
-            className={s.container}
-            justify="space-between"
+        <Box
             sx={{
-                overflow: "hidden",
+                width: wide ? 260 : 64,
             }}
         >
             <Stack
-                align="center"
-                spacing={"sm"}
-            >
-                {children}
-            </Stack>
-
-            <Stack
-                spacing={2}
+                className={s.container}
+                justify="space-between"
                 sx={{
-                    position: "sticky",
+                    overflow: "hidden",
                 }}
             >
-                {extra}
+                <Stack
+                    align="center"
+                    spacing={"sm"}
+                >
+                    {children}
+                </Stack>
+
+                <Stack
+                    spacing={2}
+                    sx={{
+                        position: "sticky",
+                    }}
+                >
+                    {extra}
+                </Stack>
             </Stack>
-        </Stack>
+        </Box>
     )
 }

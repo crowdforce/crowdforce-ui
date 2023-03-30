@@ -1,7 +1,7 @@
 import { signOut, useSession } from "next-auth/react"
 import Page from "@/components/Page"
 import { Avatar, createStyles, Group, Stack, Title, Text, Button, SimpleGrid, Box, Divider } from "@mantine/core"
-import { GetServerSideProps, NextPage } from "next"
+import { GetServerSideProps } from "next"
 import { getUserId } from "@/server/lib"
 import { getFollowingProjects, getOwnProjects } from "@/server/controllers/profile/projects"
 import { ProjectCard } from "@/components/ProjectCard"
@@ -14,6 +14,8 @@ import { getUserTasks } from "@/server/controllers/profile/tasks"
 import useSWR from "swr"
 import { ProjectDto } from "@/common/types"
 import { FollowingProjects } from "@/components/FollowingProjects"
+import { App } from "@/components/App"
+import { NextPageWithLayout } from "./_app"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -48,7 +50,7 @@ const useStyles = createStyles((theme) => ({
 type Props = {
 }
 
-const ProfilePage: NextPage<Props> = () => {
+const Index: NextPageWithLayout<Props> = () => {
     const session = useSession()
     const { classes: s, cx } = useStyles()
     const { data: own } = useSWR<ProjectDto[]>("/api/profile/projects")
@@ -157,6 +159,14 @@ const ProfilePage: NextPage<Props> = () => {
     )
 }
 
+Index.getLayout = function getLayout(page) {
+    return (
+        <App showFooter>
+            {page}
+        </App>
+    )
+}
+
 export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     const userId = await getUserId(ctx)
     if (!userId) {
@@ -183,4 +193,4 @@ export const getServerSideProps: GetServerSideProps<Props> = async ctx => {
     }
 }
 
-export default ProfilePage
+export default Index

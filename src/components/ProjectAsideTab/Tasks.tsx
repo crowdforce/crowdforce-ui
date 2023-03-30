@@ -16,7 +16,6 @@ export const Tasks: React.FC<ProjectTasksProps> = () => {
         <Aside.Section
             grow
             component={ScrollArea}
-            px='md'
         >
             <ProjectTasksList
                 header={(

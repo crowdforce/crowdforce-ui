@@ -5,7 +5,7 @@ import { AppMenu } from "@/components/AppMenu"
 import dynamic from "next/dynamic"
 import { UserButtonProps } from "@/components/UserButton"
 import { AppFooter } from "../AppFooter"
-import { useRouter } from "next/router"
+
 const UserButton = dynamic<UserButtonProps>(
     () => import("@/components/UserButton").then(x => x.UserButton),
     {
@@ -15,13 +15,11 @@ const UserButton = dynamic<UserButtonProps>(
 
 export type AppProps = {
     children?: React.ReactNode
+    showFooter: boolean
 }
 
-export const App: React.FC<AppProps> = ({ children }) => {
+export const App: React.FC<AppProps> = ({ children, showFooter }) => {
     const [opened, setOpened] = useState(false)
-    const router = useRouter()
-    const isProjectPage = router.pathname === "/project/[projectId]"
-    const noFooter = isProjectPage
 
     return (
         <AppShell
@@ -29,7 +27,7 @@ export const App: React.FC<AppProps> = ({ children }) => {
             styles={theme => ({
                 main: {
                     overflow: "hidden",
-                    padding: isProjectPage ? 0 : theme.spacing.md,
+                    padding: 0,
                 },
                 body: {
                     minHeight: "calc(100vh - 60px * 2)", // fullscreen - header - footer
@@ -68,7 +66,7 @@ export const App: React.FC<AppProps> = ({ children }) => {
                     </Navbar>
                 </MediaQuery>
             )}
-            footer={noFooter ? undefined : (
+            footer={!showFooter ? undefined : (
                 <>
                     <div style={{
                         height: "8rem",

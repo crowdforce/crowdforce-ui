@@ -41,6 +41,8 @@ export type ProjectDto = {
   title: string
   description: string
   imageUrl: string | null
+  permalink: string
+  address: string
   followingStatus: ProjectFollowingStatus
   followers: number
 }
@@ -49,6 +51,8 @@ export type PublicProjectDto = {
   id: string
   title: string
   description: string
+  permalink: string
+  address: string
   imageUrl: string | null
   followers?: number
   lng: number
@@ -59,6 +63,8 @@ export type EditProjectDto = {
   id: string
   title: string
   description: string
+  permalink: string
+  address: string
   status: string
   imageUrl: string | null
   viewport: {
@@ -132,6 +138,20 @@ export type ProjectTaskDto = {
   timeEnd: string
   followers: FollowerDto[]
   features?: any[]
+}
+
+export type FeatureDto = {
+  id: string
+  title: string | null
+  description: string | null
+  // imageUrl: string | null
+  // status: FeatureStatus
+  // type: FeatureType
+  // geometry: Prisma.JsonValue
+  // projectId: string
+  // createdAt: Date
+  // updatedAt: Date
+  // deletedAt: Date | null
 }
 
 export type NewFeatureDto = {

@@ -50,6 +50,9 @@ export default withUser<EditFeatureDto[]>(async (req, res) => {
             projectId,
             status: FeatureStatus.Active,
         },
+        orderBy: {
+            createdAt: "asc",
+        },
     })
 
     return res.json(features.map(mapResponse))

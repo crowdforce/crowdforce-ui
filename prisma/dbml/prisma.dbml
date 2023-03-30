@@ -53,6 +53,8 @@ Table projects {
   description String [not null]
   imageUrl String
   status ProjectStatus [not null]
+  address String [not null, default: '']
+  permalink String [not null, default: '']
   coverId String
   cover assets
   createdAt DateTime [default: `now()`, not null]
@@ -94,7 +96,8 @@ Table features {
   title String
   description String
   imageUrl String
-  status FeatureStatus [not null]
+  status FeatureStatus [not null, default: 'Active']
+  type FeatureType [not null, default: 'Unknown']
   geometry Json [not null]
   projectId String [not null]
   project projects [not null]
@@ -108,7 +111,7 @@ Table tasks {
   id String [pk]
   title String [not null]
   description String [not null]
-  status TaskStatus [not null]
+  status TaskStatus [not null, default: 'Open']
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
   startAt DateTime [default: `now()`, not null]
@@ -136,7 +139,7 @@ Table user_responses {
   taskId String [not null]
   task tasks [not null]
   createAt DateTime
-  status UserResponseStatus [not null]
+  status UserResponseStatus [not null, default: 'Participant']
 
   indexes {
     (userId, taskId) [pk]
@@ -179,6 +182,16 @@ Enum TaskStatus {
 Enum UserResponseStatus {
   Participant
   Leader
+}
+
+Enum FeatureType {
+  Unknown
+  Border
+  Tree
+  Lawn
+  Bush
+  Flowers
+  GardenBed
 }
 
 Ref: users.telegramId > telegram_accounts.id [delete: Cascade]

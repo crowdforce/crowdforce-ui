@@ -23,42 +23,6 @@ enum UserRole {
   @@map("user_role")
 }
 
-model TelegramAccount {
-  id        Int      @id
-  username  String
-  firstName String   @map("first_name")
-  lastName  String   @map("last_name")
-  photoUrl  String   @map("photo_url")
-  authDate  DateTime @map("auth_date")
-
-  User User[]
-
-  @@map("telegram_accounts")
-}
-
-model User {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  role          UserRole  @default(User)
-
-  enabled Boolean @default(true)
-
-  telegramId Int             @map("telegram_id")
-  telegram   TelegramAccount @relation(fields: [telegramId], references: [id], onDelete: Cascade)
-
-  projects Project[]
-  follows  UserFollows[]
-  tasks    UserResponse[]
-  assets   Asset[]
-
-  @@map("users")
-}
-
 enum ProjectStatus {
   Init
   Active
@@ -95,6 +59,54 @@ enum UserResponseStatus {
   @@map("user_response_status")
 }
 
+enum FeatureType {
+  Unknown
+  Border
+  Tree
+  Lawn
+  Bush
+  Flowers
+  GardenBed
+
+  @@map("feature_type")
+}
+
+model TelegramAccount {
+  id        Int      @id
+  username  String
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  photoUrl  String   @map("photo_url")
+  authDate  DateTime @map("auth_date")
+
+  User User[]
+
+  @@map("telegram_accounts")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  role          UserRole  @default(User)
+
+  enabled Boolean @default(true)
+
+  telegramId Int             @map("telegram_id")
+  telegram   TelegramAccount @relation(fields: [telegramId], references: [id], onDelete: Cascade)
+
+  projects Project[]
+  follows  UserFollows[]
+  tasks    UserResponse[]
+  assets   Asset[]
+
+  @@map("users")
+}
+
 model MapViewport {
   id       String  @id @default(cuid())
   lng      Float
@@ -122,6 +134,8 @@ model Project {
   description String
   imageUrl    String?       @map(name: "image_url")
   status      ProjectStatus
+  address     String        @default("")
+  permalink   String        @default("")
 
   coverId String? @map(name: "cover_id")
   cover   Asset?  @relation(fields: [coverId], references: [id])
@@ -183,7 +197,8 @@ model Feature {
   // objectTypeId Int
   // objectType   ObjectType? @relation("objectType", fields: [objectTypeId], references: [id])
 
-  status FeatureStatus
+  status FeatureStatus @default(Active)
+  type   FeatureType   @default(Unknown)
 
   geometry Json
 
@@ -204,7 +219,7 @@ model Task {
   title       String
   description String
 
-  status TaskStatus
+  status TaskStatus @default(Open)
 
   // eventId  Int   @map("eventId")
   // schedule Event @relation(fields: [eventId], references: [id])
@@ -247,7 +262,7 @@ model UserResponse {
 
   createAt DateTime? @map(name: "created_at")
 
-  status UserResponseStatus
+  status UserResponseStatus @default(Participant)
 
   @@id([userId, taskId])
   @@map(name: "user_responses")
@@ -269,4 +284,3 @@ model UserFollows {
   @@index([active])
   @@map(name: "user_follows")
 }
-// }

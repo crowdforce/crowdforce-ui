@@ -1,10 +1,11 @@
 import { Dto, ProjectDto } from "@/common/types"
-import { Aside, ScrollArea, Text, Stack, Loader, Image } from "@mantine/core"
+import { Text, Stack, Loader, Image, Group, Flex } from "@mantine/core"
 import { useAuthenticated } from "@/hooks/useAuthenticated"
 import { useRouter } from "next/router"
 import React from "react"
 import useSWR from "swr"
 import { FollowProjectButton } from "../FollowProjectButton"
+import Link from "next/link"
 
 type ProjectInfoProps = {
 
@@ -22,78 +23,64 @@ export const Info: React.FC<ProjectInfoProps> = () => {
     }
 
     return (
-        <>
-            <Aside.Section
-                grow
-                component={ScrollArea}
-                px='md'
+        <Flex direction='column' style={{ height: "100%" }}>
+            <Image
+                src={data?.payload.imageUrl ?? "/wip.png"}
+                alt={data.payload.title}
+                radius="md"
+            />
+
+            <Group
+                noWrap
+                py='sm'
+                px='sm'
             >
-                <Stack>
-                    <Image
-                        src={data?.payload.imageUrl ?? "/wip.png"}
-                        alt={data.payload.title}
-                        radius="md"
-                    />
-
-                    {/* <Group
-                        noWrap
-                        py='sm'
-                        px='sm'
-                    >
-                        <IconMapPin
+                {/* <IconMapPin
                             className={s.icon}
-                        />
-                        <Stack
-                            spacing='xs'
+                        /> */}
+                <Stack
+                    spacing='xs'
+                >
+                    {data.payload.address && (
+                        <Text
+                            color='dimmed'
                         >
-                            {data?.address && (
-                                <Text
-                                    color='dimmed'
-                                >
-                                    {data.address}
-                                </Text>
-                            )}
-                            <Group
-                                noWrap
-                                spacing='xs'
-                                className={s.ownerAndLink}
-                            >
-                                <Text
-                                    color='dimmed'
-                                >
-                                    {data.admin.name}
-                                </Text>
-                                {data?.link && (
-                                    <Link href={data.link} passHref>
-                                        <Text
-                                            color='dimmed'
-                                            component='a'
-                                            underline
-                                        >
-                                            {data.link}
-                                        </Text>
-                                    </Link>
-                                )}
-                            </Group>
-                        </Stack>
-                    </Group> */}
-                    <Text
-                    // p={"md" }
+                            {data.payload.address}
+                        </Text>
+                    )}
+                    <Group
+                        noWrap
+                        spacing='xs'
+                    // className={s.ownerAndLink}
                     >
-                        {data?.payload.description}
-                    </Text>
+                        {data.payload.permalink && (
+                            <Link href={data.payload.permalink} passHref>
+                                <Text
+                                    color='dimmed'
+                                    component='a'
+                                    underline
+                                >
+                                    {data.payload.permalink}
+                                </Text>
+                            </Link>
+                        )}
+                    </Group>
                 </Stack>
-            </Aside.Section>
+            </Group>
 
-            <Aside.Section p='md' >
-                <FollowProjectButton
-                    disabled={!data || data.payload.followingStatus === "unavailable" || isUnauthenticated}
-                    size='xl'
-                    fullWidth
-                    status={data?.payload.followingStatus === "following" ? true : false}
-                    projectId={data?.payload.id ?? ""}
-                />
-            </Aside.Section>
-        </>
+            <Text>
+                {data?.payload.description}
+            </Text>
+
+            <div style={{ flex: 1 }} />
+
+            <FollowProjectButton
+                disabled={!data || data.payload.followingStatus === "unavailable" || isUnauthenticated}
+                size='xl'
+                fullWidth
+                status={data?.payload.followingStatus === "following" ? true : false}
+                projectId={data?.payload.id ?? ""}
+            />
+        </Flex>
     )
 }

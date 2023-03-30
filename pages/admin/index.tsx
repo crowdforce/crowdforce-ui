@@ -1,8 +1,10 @@
 import Page from "@/components/Page"
 import { createStyles, Stack, Title } from "@mantine/core"
-import { GetServerSideProps, NextPage } from "next"
+import { GetServerSideProps } from "next"
 import { hasAdminRole } from "@/server/lib"
 import Link from "next/link"
+import { NextPageWithLayout } from "pages/_app"
+import { App } from "@/components/App"
 
 const useStyles = createStyles((theme) => ({
     section: {
@@ -15,7 +17,7 @@ const useStyles = createStyles((theme) => ({
 type Props = {
 }
 
-const Index: NextPage<Props> = () => {
+const Index: NextPageWithLayout<Props> = () => {
     const { classes: s } = useStyles()
 
     return (
@@ -35,6 +37,14 @@ const Index: NextPage<Props> = () => {
                 </Link>
             </Stack>
         </Page >
+    )
+}
+
+Index.getLayout = function getLayout(page) {
+    return (
+        <App showFooter>
+            {page}
+        </App>
     )
 }
 

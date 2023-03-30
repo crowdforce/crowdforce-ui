@@ -1,11 +1,10 @@
 import { Aside, Button, Center, createStyles, Group, Loader, MultiSelect, ScrollArea, Stack, Textarea, TextInput } from "@mantine/core"
 import { IconCalendarEvent, IconClock } from "@tabler/icons"
-import React, { useCallback, useContext, useEffect } from "react"
+import React, { useCallback } from "react"
 import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import useSWR, { useSWRConfig } from "swr"
 import { DatePicker, TimeInput } from "@mantine/dates"
 import { useRouter } from "next/router"
-import { ProjectTaskContext } from "@/contexts/projectTask"
 import { EditNewProjectTaskDto } from "@/common/types"
 import "dayjs/locale/ru"
 
@@ -37,15 +36,10 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
     const projectId = router.query.projectId as string
     const { data } = useSWR<FeaturesData[]>(`/api/edit/projects/${projectId}/features`)
     const { mutate } = useSWRConfig()
-    const { task, setTask } = useContext(ProjectTaskContext)
     const { handleSubmit, register, setValue, control, reset, formState: { isSubmitting } } = useForm<EditNewProjectTaskDto>({
-        defaultValues: task
-            ? task
-            : { features: [] },
-    })
-
-    useEffect(() => {
-        setTask(null)
+        defaultValues: {
+            features: [],
+        },
     })
 
     const onSubmit = useCallback<SubmitHandler<EditNewProjectTaskDto>>(async formData => {
@@ -68,7 +62,6 @@ export const AddTask: React.FC<ProjectAddTaskProps> = () => {
         <Aside.Section
             grow
             component={ScrollArea}
-            px='md'
             styles={{
                 viewport: {
                     "& > div": {
